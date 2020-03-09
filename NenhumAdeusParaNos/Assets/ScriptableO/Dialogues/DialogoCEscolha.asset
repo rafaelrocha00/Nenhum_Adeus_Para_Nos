@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4825ceb27fa0f34c9ae7d003d92d851, type: 3}
+  m_Name: DialogoCEscolha
+  m_EditorClassIdentifier: 
+  allStrings:
+  - Fala 1 do NPC
+  - Fala 2 do NPC
+  - Fala 1 do Player
+  - Fala 3 do NPC
+  - Fala 4 do NPC
+  mcStrings: 02000000
+  dialogueChoices:
+  - {fileID: 11400000, guid: ca1b4e4146da0344b80f49042483628b, type: 2}
+  - {fileID: 11400000, guid: efdf61f74ac96814a9441fa0b854cf59, type: 2}
+  options:
+  - Sim
+  - "N\xE3o"
