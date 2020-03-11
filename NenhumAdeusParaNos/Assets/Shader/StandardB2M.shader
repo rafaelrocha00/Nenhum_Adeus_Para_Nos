@@ -7,7 +7,7 @@
        
         [NoScaleOffset]_BumpMap ("Normal", 2D) = "bump" {}
         [NoScaleOffset]_AmbientOcclusion ("Ambient Occlusion", 2D) = "white" {}
-        [NoScaleOffset]_GlossinessTex ("Glossiness texture", 2D) = "white" {}
+        [NoScaleOffset]_GlossinessTex ("Glossiness texture", 2D) = "black" {}
         [NoScaleOffset]_MetallicTex ("Metallic Textura", 2D) = "white" {}
         _Metallic ("Metallic", Range(0,1)) = 0.0
         _Glossiness ("Glossiness", Range(0,1)) = 0.0
@@ -57,6 +57,7 @@
             
             o.Albedo = c.rgb;
             // Metallic and smoothness come from slider variables
+            o.Normal = n;
             o.Occlusion = ao;
             o.Metallic = _Metallic * m;
             o.Smoothness = saturate(_Glossiness + g);
