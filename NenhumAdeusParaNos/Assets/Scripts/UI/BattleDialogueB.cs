@@ -1,18 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleDialogueB : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [HideInInspector] DialogueBattle thisDialogueBattle;
+    public DialogueBattle DialogueB { get { return thisDialogueBattle; } set { thisDialogueBattle = value; } }
+
+    Button thisButton;
+
+    private void Start()
     {
-        
+        thisButton = GetComponent<Button>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

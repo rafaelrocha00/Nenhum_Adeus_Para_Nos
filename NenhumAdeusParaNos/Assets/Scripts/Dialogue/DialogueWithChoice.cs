@@ -14,6 +14,7 @@ public class DialogueWithChoice : Dialogue
         {
             actualID++;
             CheckMCStrings();
+            return allStrings[actualID];
         }
         else if (actualID < allStrings.Length - 1)
         {
@@ -21,7 +22,8 @@ public class DialogueWithChoice : Dialogue
             actualID++;
             CheckMCStrings();
             GameManager.gameManager.mainHud.OpenDialogueOptTab(this);
+            return allStrings[actualID];
         }
-        return allStrings[actualID];
+        else return "";
     }
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, BattleUnit
 {
+    public DialogueBattle[] battleDialogues = new DialogueBattle[5];
+
     [HideInInspector] CharacterStats charStats;
     public CharacterStats CharStats { get { return charStats; } }
 
@@ -14,7 +16,10 @@ public class Player : MonoBehaviour, BattleUnit
     public float acceleration = 3.0f;
     public float accelerationTime = 1.0f;
 
-    public MeleeW myMelee;
+    public MeleeW equippedMelee;
+    public RangedW equippedRanged;
+
+    public Weapon myWeapon;
 
     public float moveSpeed;
     float acceleratedSpeed;
@@ -26,12 +31,19 @@ public class Player : MonoBehaviour, BattleUnit
     public float strongAtkHoldTime = 0.7f;
     float strongAtkTimer = 0.0f;
     bool releasedAtk = false;
-    public float defaultAttackCD = 0.5f;
-    public float strongAttackCD = 1.0f;
-    float attackCD;
-    int strongAtk = 1;
+    //public float defaultAttackCD = 0.5f;
+    //public float strongAttackCD = 1.0f;
+    //float attackCD;
+    //int strongAtk = 1;
+    bool strongAtk = false;
 
-    bool attacking;
+    Vector3 battleAim = new Vector3(0, 0, 0);
+    bool aimLocked = false;
+    INPC targetedEnemy;
+
+    [HideInInspector] bool battleDialoguing = false;
+    public bool BattleDialoguing { get { return battleDialoguing; } set { battleDialoguing = value; } }
+    bool attacking = false;
 
     CamMove cam;
 
@@ -45,6 +57,11 @@ public class Player : MonoBehaviour, BattleUnit
 
     private void Start()
     {
+        for (int i = 0; i < battleDialogues.Length; i++)
+        {
+            if (battleDialogues[i] != null) battleDialogues[i].MainCharacter = this;
+        }
+
         charStats = new CharacterStats(this);
 
         moveSpeed = defaultSpeed;
@@ -72,19 +89,42 @@ public class Player : MonoBehaviour, BattleUnit
             moveTime = 0.0f;
         }
 
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            SwitchWeapon();
+        }
+
         if (inBattle)
         {
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                UseDialogue();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                LockAim();
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (myWeapon is RangedW)
+                {
+                    Attack();
+                }
+            }
+
             if (Input.GetMouseButton(0))
             {
-                if (!releasedAtk)
+                if (!releasedAtk && myWeapon is MeleeW)
                 {
                     strongAtkTimer += Time.deltaTime;
                     if (strongAtkTimer >= strongAtkHoldTime)
                     {
                         releasedAtk = true;
-                        //Debug.Log("AtaqueForte");
-                        strongAtk = 2;
-                        attackCD = strongAttackCD;
+                        Debug.Log("AtaqueForte");
+                        strongAtk = true;
+                        //attackCD = strongAttackCD;
 
                         Attack();
                     }
@@ -92,16 +132,19 @@ public class Player : MonoBehaviour, BattleUnit
             }
             if (Input.GetMouseButtonUp(0))
             {
-                Debug.Log(strongAtkTimer);
-                if (strongAtkTimer < strongAtkHoldTime && !releasedAtk)
+                if (myWeapon is MeleeW)
                 {
-                    //Debug.Log("AtaqueFraco");
-                    strongAtk = 1;
-                    attackCD = defaultAttackCD;
+                    Debug.Log(strongAtkTimer);
+                    if (strongAtkTimer < strongAtkHoldTime && !releasedAtk)
+                    {
+                        //Debug.Log("AtaqueFraco");
+                        strongAtk = false;
+                        //attackCD = defaultAttackCD;
 
-                    Attack();
+                        Attack();
+                    }
+                    releasedAtk = false;
                 }
-                releasedAtk = false;
             }
         }
 
@@ -153,15 +196,53 @@ public class Player : MonoBehaviour, BattleUnit
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
+            //Vector3 lookPos;
 
-            if (Physics.Raycast(ray, out hit, 1000, layermask))
-            {                
-                Vector3 lookPos = new Vector3(hit.point.x, transform.position.y, hit.point.z);
-                transform.LookAt(lookPos);
-                //Debug.Log(lookPos);
-            }            
+            if (!aimLocked)
+            {
+                if (Physics.Raycast(ray, out hit, 1000, layermask))
+                {
+                    battleAim = new Vector3(hit.point.x, transform.position.y, hit.point.z);
+                    //Debug.Log(lookPos);
+                }
+            }
+            else battleAim = new Vector3(targetedEnemy.transform.position.x, transform.position.y, targetedEnemy.transform.position.z);
+
+            transform.LookAt(battleAim);
         }
         //cam.Move(transform.position);
+    }
+
+    void LockAim()
+    {
+        if (!aimLocked)
+        {
+            FindNearestEnemy();
+        }
+
+        aimLocked = !aimLocked;
+    }
+
+    void FindNearestEnemy()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        INPC[] allEnemies = GameManager.gameManager.battleController.AllEnemyFighters.ToArray();
+        if (Physics.Raycast(ray, out hit, 1000, layermask))
+        {
+
+            for (int i = 0; i < allEnemies.Length; i++)
+            {
+                if (i > 0)
+                {
+                    if (Vector3.Distance(hit.point, allEnemies[i].transform.position) < Vector3.Distance(hit.point, allEnemies[i - 1].transform.position))
+                        targetedEnemy = allEnemies[i];
+                }
+                else targetedEnemy = allEnemies[i];
+            }
+        }
+        else targetedEnemy = allEnemies[0];
     }
 
     void Attack()
@@ -170,7 +251,13 @@ public class Player : MonoBehaviour, BattleUnit
         {
             //Debug.Log("Atacando");
             attacking = true;
-            myMelee.Attack(attackCD, strongAtk);            
+            float attackCD;
+            if (strongAtk && myWeapon is MeleeW)
+            {
+                MeleeW myMelee = (MeleeW)myWeapon;
+                myMelee.SetStrongAttack();
+            }
+            attackCD = myWeapon.Attack();            
             Invoke("AttackCooldown", attackCD);
         }
     }
@@ -181,7 +268,36 @@ public class Player : MonoBehaviour, BattleUnit
         strongAtkTimer = 0;       
     }
 
-    public void StartBattle()
+    void SwitchWeapon()
+    {
+        if (myWeapon is MeleeW)
+        {
+            myWeapon = equippedRanged;
+            equippedRanged.gameObject.SetActive(true);
+            equippedMelee.gameObject.SetActive(false);
+        }
+        else
+        {
+            myWeapon = equippedMelee;
+            equippedRanged.gameObject.SetActive(false);
+            equippedMelee.gameObject.SetActive(true);
+        }
+    }
+
+    public void UseDialogue()
+    {
+        if (!battleDialoguing)
+        {
+            battleDialoguing = true;
+            //GameManager.gameManager.dialogueController.OpenDialoguePopUp(transform, null);
+            if (!aimLocked) FindNearestEnemy();
+            battleDialogues[0].TagetedNPC = targetedEnemy;
+            GameManager.gameManager.dialogueController.StartDialogue(battleDialogues[0], transform);
+            //GameManager.gameManager.dialogueController.UpdateText(battleDialogues[0].NextString());
+        }
+    }
+
+    public void StartBattle(bool byTrigger = false)
     {
         inBattle = true;
         GameManager.gameManager.battleController.MainCharacter = this;
@@ -190,10 +306,21 @@ public class Player : MonoBehaviour, BattleUnit
     public void EndBattle()
     {
         inBattle = false;
+        aimLocked = false;
     }
 
     public bool CanFight()
     {
         return charStats.CanFight;
+    }
+
+    public bool IsInBattle()
+    {
+        return inBattle;
+    }
+
+    public void ReceiveDamage(float damage)
+    {
+        charStats.ReceiveDamage(damage);
     }
 }

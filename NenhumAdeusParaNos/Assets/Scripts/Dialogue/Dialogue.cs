@@ -19,7 +19,7 @@ public class Dialogue : ScriptableObject
 
     private void OnDisable()
     {
-        actualID = -1;
+        ResetDialogue();
     }
 
     public void ResetDialogue()
@@ -37,9 +37,20 @@ public class Dialogue : ScriptableObject
         }
         else
         {
+            //Debug.Log("Ending Dialogue");
+            GameManager.gameManager.dialogueController.EndDialogue();
             myNPC.EndDialogue();
+            ResetDialogue();
             return "";
         }
+    }
+
+    public string GetActualString()
+    {
+        if (actualID >= 0)
+            return allStrings[actualID];
+        else
+            return allStrings[0];
     }
 
     protected void CheckMCStrings()
@@ -53,7 +64,7 @@ public class Dialogue : ScriptableObject
             }
             else mcSpeak = false;
         }
-        if (mcSpeak) GameManager.gameManager.dialogueUIMain.ChangePopUpPos(mainCharacter.transform.position);
-        else GameManager.gameManager.dialogueUIMain.ChangePopUpPos(myNPC.transform.position);
+        if (mcSpeak) GameManager.gameManager.dialogueController.ChangePopUpPos(mainCharacter.transform);
+        else GameManager.gameManager.dialogueController.ChangePopUpPos(myNPC.transform);
     }
 }

@@ -30,8 +30,9 @@ public class DialogueOption : MonoBehaviour
 
     public void Choose()
     {
-        actualNPC.ChangeDialogue(myDialogue);
-        actualNPC.NextString();
+        //actualNPC.ChangeDialogue(myDialogue);
+        //actualNPC.NextString();
+        GameManager.gameManager.dialogueController.ChangeDialogue(myDialogue);
         GameManager.gameManager.mainHud.CloseDialogueOptTab();
     }
 }

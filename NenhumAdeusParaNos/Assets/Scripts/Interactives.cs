@@ -11,7 +11,7 @@ public abstract class Interactives : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<Player>() != null)
+        if (other.GetComponent<Player>() != null && !other.GetComponent<Player>().IsInBattle())
         {
             Player player = other.GetComponent<Player>();
             if (buttonPref == null) buttonPref = Instantiate(buttonToPressPref, transform.position + Vector3.up * popUPHigh, Quaternion.identity);
@@ -32,14 +32,17 @@ public abstract class Interactives : MonoBehaviour
 
     protected void DesactiveBtp()
     {
-        buttonPref.transform.position = transform.position + Vector3.up * popUPHigh;
-        buttonPref.SetActive(false);
+        if (buttonPref != null)
+        {
+            buttonPref.transform.position = transform.position + Vector3.up * popUPHigh;
+            buttonPref.SetActive(false);
+        }
     }
 
     public abstract void Interact(Player player);
 
     public virtual void OnExit()
     {
-        
+        Debug.Log("Do on exit");
     }
 }

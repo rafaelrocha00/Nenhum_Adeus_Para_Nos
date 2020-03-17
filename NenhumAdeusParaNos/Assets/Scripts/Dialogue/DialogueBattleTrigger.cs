@@ -15,10 +15,12 @@ public class DialogueBattleTrigger : Dialogue
         }
         else
         {
+            GameManager.gameManager.dialogueController.EndDialogue();
             myNPC.EndDialogue();
 
             myNPC.StartBattle();
             mainCharacter.StartBattle();
+            ResetDialogue();
             return "";
         }
     }

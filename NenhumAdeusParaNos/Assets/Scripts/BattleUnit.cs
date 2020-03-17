@@ -4,9 +4,13 @@ using UnityEngine;
 
 public interface BattleUnit
 {
-    void StartBattle();
+    void StartBattle(bool byTrigger = false);
 
     void EndBattle();
 
     bool CanFight();
+
+    bool IsInBattle();
+
+    void ReceiveDamage(float damage);
 }
