@@ -8,6 +8,15 @@ public class DialogueWithChoice : Dialogue
     public Dialogue[] dialogueChoices;
     public string[] options;
 
+    [HideInInspector] bool lastString = false;
+    public bool LastString { get { return lastString; } }
+
+    public override void ResetDialogue()
+    {
+        base.ResetDialogue();
+        lastString = false;
+    }
+
     public override string NextString()
     {
         if (actualID < allStrings.Length - 2)
@@ -21,8 +30,10 @@ public class DialogueWithChoice : Dialogue
             //myNPC.EndDialogue();
             actualID++;
             CheckMCStrings();
-            GameManager.gameManager.mainHud.OpenDialogueOptTab(this);
+            //GameManager.gameManager.MainHud.OpenDialogueOptTab(this);
+            lastString = true;
             return allStrings[actualID];
+            //return "";
         }
         else return "";
     }

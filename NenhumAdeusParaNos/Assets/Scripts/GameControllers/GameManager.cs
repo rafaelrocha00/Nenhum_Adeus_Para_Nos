@@ -7,8 +7,13 @@ public class GameManager : MonoBehaviour
     public static GameManager gameManager;
     [HideInInspector] public DialogueController dialogueController;
     [HideInInspector] public BattleController battleController;
-    //[HideInInspector] public PersonalitiesPercentages personalitiesPercentages;
-    [HideInInspector] public MainHud mainHud;
+    [HideInInspector] public TimeController timeController;
+
+    [HideInInspector] MainHud mainHud;
+    public MainHud MainHud { get { return mainHud; } set { mainHud = value; } }
+
+    //[HideInInspector] Player mainCharacter;
+    //public Player MainCharacter { get { return mainCharacter; } set { mainCharacter = value; } }
 
     public float[] Dandere = new float[5];
     public float[] Kuudere = new float[5];
@@ -29,10 +34,10 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
 
-        mainHud = GameObject.Find("/MainHud").GetComponent<MainHud>();
+        //mainHud = GameObject.Find("/MainHud").GetComponent<MainHud>();
         dialogueController = GetComponent<DialogueController>();
         battleController = GetComponent<BattleController>();
-        //personalitiesPercentages = GetComponent<PersonalitiesPercentages>();
+        timeController = GetComponent<TimeController>();
 
         personalities[0] = Dandere;
         personalities[1] = Kuudere;

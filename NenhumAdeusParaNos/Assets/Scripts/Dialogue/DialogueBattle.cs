@@ -23,7 +23,7 @@ public class DialogueBattle : Dialogue
         {
             GameManager.gameManager.dialogueController.EndDialogue();
             //Mandar para o inimigo/alvo atual o dialogo para ser respondido            
-            mainCharacter.BattleDialoguing = false;
+            //mainCharacter.BattleDialoguing = false;
             ResetDialogue();
             targetedNPC.ReceiveBattleDialogue(this);
             return "";

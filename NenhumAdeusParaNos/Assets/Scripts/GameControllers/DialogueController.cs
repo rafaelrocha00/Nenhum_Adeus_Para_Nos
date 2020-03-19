@@ -13,8 +13,12 @@ public class DialogueController : MonoBehaviour
 
     Dialogue actualDialogue;
 
-    bool activeDialogue = false;
+    [HideInInspector] bool activeDialogue = false;
+    public bool ActiveDialogue { get { return activeDialogue; } }
     bool writing = false;
+
+    public float writingSpeed = 0.05f;
+    float writingTime = 0.0f;
 
     public void StartDialogue(Dialogue newDialogue, Transform transf/*, INPC npc = null*/)
     {
@@ -31,12 +35,21 @@ public class DialogueController : MonoBehaviour
     }
     public void NextString()
     {
-        //Bug no dialogo combate
-        Debug.Log("NextString");
-        if (!writing) UpdateText(actualDialogue.NextString());
-        else writing = false;
+        if (!GameManager.gameManager.MainHud.ActiveOptionsToChoose)
+        {
+            //Bug no dialogo combate
+            //Debug.Log("NextString");
+            Debug.Log(writing);
+            if (!writing) UpdateText(actualDialogue.NextString());
+            else
+            {
+                CheckForDialogueOptions();
+                writing = false;
+            }
 
-        if (GameManager.gameManager.battleController.ActiveBattle && activeDialogue) StartCoroutine("NextStringCountdown");
+
+            if (GameManager.gameManager.battleController.ActiveBattle && activeDialogue) StartCoroutine("NextStringCountdown");
+        }
     }
     public void EndDialogue()
     {
@@ -46,9 +59,22 @@ public class DialogueController : MonoBehaviour
 
     //Quando implementar texto escrito aos poucos, este método tem q retornar o tempo q levou pra ser escrito o texto
     public void UpdateText(string dialogueString)
-    {
-        if (!dialogueString.Equals("")) StartCoroutine(WriteString(dialogueString));
+    {       
+        if (!dialogueString.Equals(""))
+        {
+            writingTime = dialogueString.Length * writingSpeed + 1.5f;
+            StartCoroutine(WriteString(dialogueString));
+        }
         //dialogueText.text = dialogueString;
+    }
+
+    void CheckForDialogueOptions()
+    {
+        if (actualDialogue is DialogueWithChoice)
+        {
+            DialogueWithChoice aux = (DialogueWithChoice)actualDialogue;
+            if (aux.LastString) GameManager.gameManager.MainHud.OpenDialogueOptTab(aux);
+        }        
     }
 
     public void OpenDialoguePopUp(Transform transf/*, INPC npc = null*/)
@@ -68,7 +94,7 @@ public class DialogueController : MonoBehaviour
             //dialoguePopUp.GetComponent<DialoguePopUpFollow>().SetTransform(transf);
             dialogueText = dialoguePopUp.transform.GetChild(0).GetComponentInChildren<Text>();
             popUPB = dialoguePopUp.transform.GetChild(0).GetComponent<Button>();
-            Debug.Log("Abrindo Balao de dialogo");
+            //Debug.Log("Abrindo Balao de dialogo");
         }
         //Mudar posição;
         //if (npc != null) popUPB.onClick.AddListener(npc.NextString);
@@ -85,7 +111,7 @@ public class DialogueController : MonoBehaviour
     {
         //dialoguePopUp.transform.position = newPos;
         dialoguePopUp.GetComponent<DialoguePopUpFollow>().SetTransform(transf);
-        Debug.Log(transf.name);
+        //Debug.Log(transf.name);
     }
 
     //public void TimerForNextString()
@@ -95,9 +121,10 @@ public class DialogueController : MonoBehaviour
 
     IEnumerator NextStringCountdown()
     {
-        Debug.Log("Countdown");
-        yield return new WaitForSeconds(4.0f);
-        NextString();    
+        //Debug.Log("Countdown");
+        yield return new WaitForSeconds(writingTime);
+        writingTime = 0;
+        NextString();
     }
 
     IEnumerator WriteString(string dialogueString)
@@ -112,10 +139,11 @@ public class DialogueController : MonoBehaviour
             if (!writing)
             {
                 dialogueText.text = dialogueString;
-                break;
+                yield break;
             }
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(writingSpeed);
         }
+        CheckForDialogueOptions();
         writing = false;
     }
 }

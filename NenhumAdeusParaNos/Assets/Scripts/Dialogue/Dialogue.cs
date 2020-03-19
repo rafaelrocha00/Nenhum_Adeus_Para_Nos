@@ -22,7 +22,7 @@ public class Dialogue : ScriptableObject
         ResetDialogue();
     }
 
-    public void ResetDialogue()
+    public virtual void ResetDialogue()
     {
         actualID = -1;
     }

@@ -36,6 +36,8 @@ public class INPC : Interactives, BattleUnit
     float atkInterval = 0.15f;
     float timer = 0.0f;
 
+    bool firstInteraction = false;
+
     //LayerMask layermask = 1 << 10;
 
     private void Start()
@@ -60,11 +62,12 @@ public class INPC : Interactives, BattleUnit
     public override void Interact(Player player)
     {
         mCharacter = player;
+        myDialogue.MyNPC = this;
         myDialogue.MainCharacter = player;
-        interacting = true;
         DesactiveBtp();
         //GameManager.gameManager.dialogueController.OpenDialoguePopUp(this.transform, this);
         GameManager.gameManager.dialogueController.StartDialogue(myDialogue, transform/*, this*/);
+        interacting = true;
         //NextString();
     }
 
@@ -81,6 +84,7 @@ public class INPC : Interactives, BattleUnit
         myDialogue.ResetDialogue();
         //myDialogue = initialDialogue;
         interacting = false;
+        firstInteraction = false;
     }
 
     public override void OnExit()
@@ -98,7 +102,8 @@ public class INPC : Interactives, BattleUnit
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && interacting) NextString();
+        if (Input.GetKeyDown(KeyCode.E) && interacting && !firstInteraction) firstInteraction = true;
+        else if (Input.GetKeyDown(KeyCode.E) && interacting && firstInteraction) NextString();
 
         if (inBattle)
         { 
@@ -115,7 +120,11 @@ public class INPC : Interactives, BattleUnit
                     Vector3 desiredPos = -(mCharacter.transform.position - transform.position) + transform.position;
                     MoveNavMesh(desiredPos);
                 }
-                else navMesh.isStopped = true;
+                else
+                {
+                    navMesh.isStopped = true;
+                    //parar animação de andar
+                }
 
                 if (Physics.Raycast(ray, out hit))
                 {
@@ -128,7 +137,8 @@ public class INPC : Interactives, BattleUnit
             }
             else
             {
-                MoveNavMesh(mCharacter.transform.position);
+                Vector3 desiredPos = (mCharacter.transform.position - transform.position).normalized * (Vector3.Distance(transform.position, mCharacter.transform.position) - myWeapon.range / 2) + transform.position;
+                MoveNavMesh(desiredPos);
                 if (Vector3.Distance(mCharacter.transform.position, transform.position) <= myWeapon.range)
                     TryAttack();
             }
@@ -140,7 +150,36 @@ public class INPC : Interactives, BattleUnit
     {
         navMesh.destination = pos;
         navMesh.isStopped = false;
+        //??? if (isRanged) //animação de andar para trás;
+        //else animação de andar pra frente;
+
+        //CheckLook_WalkDir(navMesh.steeringTarget.normalized);
     }
+
+    //void CheckLook_WalkDir(Vector3 moveDir)
+    //{
+    //    float auxDot = Vector3.Dot(transform.forward, moveDir);
+    //    if (auxDot > 0.0f)
+    //    {
+    //        Debug.Log("Andando e olhando para mesma direção");
+    //    }
+    //    //else if (auxDot > -0.5f)
+    //    //{
+    //    //    float auxDotRight = Vector3.Dot(transform.right, moveDir);
+    //    //    if (auxDotRight > 0)
+    //    //    {
+    //    //        //Andando pra direita e olhando pre frente
+    //    //    }
+    //    //    else
+    //    //    {
+    //    //        //Andando pra esquerda e olhando pre frente
+    //    //    }
+    //    //}
+    //    else
+    //    {
+    //        Debug.Log("Andando pra trás e olhando pra frente");
+    //    }
+    //}
 
     void TryAttack()
     {
@@ -220,7 +259,7 @@ public class INPC : Interactives, BattleUnit
     public void EndBattle()
     {
         inBattle = false;
-        //GetComponent<SphereCollider>().enabled = true;
+        Invoke("ActiveInteractionCollider", 3.0f);
     }
 
     public bool CanFight()
@@ -236,5 +275,10 @@ public class INPC : Interactives, BattleUnit
     public void ReceiveDamage(float damage)
     {
         charStats.ReceiveDamage(damage);
+    }
+
+    void ActiveInteractionCollider()
+    {
+        GetComponent<SphereCollider>().enabled = true;
     }
 }

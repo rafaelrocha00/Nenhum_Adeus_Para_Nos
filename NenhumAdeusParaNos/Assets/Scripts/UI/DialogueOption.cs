@@ -32,7 +32,7 @@ public class DialogueOption : MonoBehaviour
     {
         //actualNPC.ChangeDialogue(myDialogue);
         //actualNPC.NextString();
-        GameManager.gameManager.dialogueController.ChangeDialogue(myDialogue);
-        GameManager.gameManager.mainHud.CloseDialogueOptTab();
+        GameManager.gameManager.MainHud.CloseDialogueOptTab();
+        GameManager.gameManager.dialogueController.ChangeDialogue(myDialogue);        
     }
 }
