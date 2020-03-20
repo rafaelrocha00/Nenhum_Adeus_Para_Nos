@@ -20,6 +20,7 @@ public class MeleeW : Weapon
     private void Start()
     {
         actualAtkspeed = defaultAtkSpeed;
+        selectedDamage = defaultDamage;
     }
 
     public void SetStrongAttack()
@@ -51,18 +52,18 @@ public class MeleeW : Weapon
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!hitted)
+        if (!hitted && !other.isTrigger)
         {
             try
             {
                 //if (other.GetComponent<Player>() != null) other.GetComponent<Player>().CharStats.ReceiveDamage(selectedDamage);
                 //else if (other.GetComponent<INPC>() != null) other.GetComponent<INPC>().CharStats.ReceiveDamage(selectedDamage);
-                if (other.GetComponent<BattleUnit>().IsInBattle())
-                {
+                //if (other.GetComponent<BattleUnit>().IsInBattle())
+                //{
                     other.GetComponent<BattleUnit>().ReceiveDamage(selectedDamage);
                     hitted = true;
                     Invoke("ResetHit", actualAtkspeed);
-                }
+                //}
             }
             catch
             {

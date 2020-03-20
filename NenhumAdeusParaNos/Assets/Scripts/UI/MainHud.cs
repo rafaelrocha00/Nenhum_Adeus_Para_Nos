@@ -12,6 +12,8 @@ public class MainHud : MonoBehaviour
     [HideInInspector] bool isQuickMenuActive;
     public bool IsQuickMenuActive { get { return isQuickMenuActive; } }
 
+    public GameObject diaryMenu;
+
     public GameObject dialogueOptionsTab;
     public GameObject dialogueOptionPref;
 
@@ -54,6 +56,13 @@ public class MainHud : MonoBehaviour
 
     public BattleDialogueB[] battleDialoguesSlots = new BattleDialogueB[2];
     BattleDialogueB[] equipablesBattleDialogues;
+
+    public GameObject quickDialogueTab;
+
+    public void OpenCloseQuickDialogueTab()
+    {
+        quickDialogueTab.SetActive(!quickDialogueTab.activeSelf);
+    }
 
     void TryChangeBattleDialogue(int idx)
     {
@@ -105,9 +114,13 @@ public class MainHud : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            OpenCloseQuiCkMenu();
+            OpenCloseQuickMenu();
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            OpenCloseDiaryMenu();
         }
 
         if (isQuickMenuActive)
@@ -123,7 +136,7 @@ public class MainHud : MonoBehaviour
         }
     }
 
-    public void OpenCloseQuiCkMenu()
+    public void OpenCloseQuickMenu()
     {
         isQuickMenuActive = !isQuickMenuActive;
         quickMenu.SetActive(isQuickMenuActive);
@@ -133,6 +146,12 @@ public class MainHud : MonoBehaviour
             if (IsQuickMenuActive) GameManager.gameManager.timeController.StartSlowdown();
             else GameManager.gameManager.timeController.EndSlowdown();
         }
+        else GameManager.gameManager.MainHud.OpenCloseQuickDialogueTab();
+    }
+
+    public void OpenCloseDiaryMenu()
+    {
+        diaryMenu.SetActive(!diaryMenu.activeSelf);
     }
 
     void DestroyChilds(Transform transform)

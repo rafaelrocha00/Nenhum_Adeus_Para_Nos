@@ -38,6 +38,7 @@ public class INPC : Interactives, BattleUnit
 
     bool firstInteraction = false;
 
+    Vector3 startPos;
     //LayerMask layermask = 1 << 10;
 
     private void Start()
@@ -89,6 +90,7 @@ public class INPC : Interactives, BattleUnit
 
     public override void OnExit()
     {
+        base.OnExit();
         EndDialogue();
     }
 
@@ -148,12 +150,20 @@ public class INPC : Interactives, BattleUnit
 
     void MoveNavMesh(Vector3 pos)
     {
-        navMesh.destination = pos;
         navMesh.isStopped = false;
-        //??? if (isRanged) //animação de andar para trás;
-        //else animação de andar pra frente;
+        navMesh.destination = pos;
+       
+        //if (inBattle)
+        //{
+            //??? if (isRanged) //animação de andar para trás;
+            //else animação de andar pra frente;
 
-        //CheckLook_WalkDir(navMesh.steeringTarget.normalized);
+            //CheckLook_WalkDir(navMesh.steeringTarget.normalized);
+        //}
+        //else
+        //{
+            //animção de andar pra frente
+        //}
     }
 
     //void CheckLook_WalkDir(Vector3 moveDir)
@@ -242,22 +252,50 @@ public class INPC : Interactives, BattleUnit
         GameManager.gameManager.dialogueController.StartDialogue(answerDialogues[(int)playerDialogue.approachType], transform);
     }
 
-    public void StartBattle(bool byTrigger = false)
+    void Flee()
+    {
+        mCharacter = GameManager.gameManager.battleController.MainCharacter;
+        StartCoroutine("FleeCoroutine");
+    }
+    IEnumerator FleeCoroutine()
+    {
+        bool notUnreachable = true;
+        navMesh.speed *= 3;
+        while (notUnreachable)
+        {
+            Vector3 desiredPos = -((mCharacter.transform.position - transform.position).normalized) + transform.position;
+            MoveNavMesh(desiredPos);
+            notUnreachable = navMesh.CalculatePath(desiredPos, navMesh.path);
+            if ((mCharacter.transform.position - transform.position).sqrMagnitude >= 40 * 40) Destroy(this.gameObject);// Ou só desativa temporariamente
+            yield return new WaitForEndOfFrame();
+        }
+        navMesh.speed /= 3;
+        navMesh.isStopped = true;
+    }
+
+    public void StartBattle(bool byDialogue = true)
     {
         if (!inBattle)
         {
-            if ((byTrigger && hostile) || !byTrigger)
+            startPos = transform.position;
+            OnExit();
+            if ((!byDialogue && hostile) || byDialogue)
             {                
                 GetComponent<SphereCollider>().enabled = false;
                 GameManager.gameManager.battleController.AddFighter(this);
                 inBattle = true;
                 Debug.Log("NPC entrou na batalha");             
             }
+            else
+            {
+                Invoke("Flee", 0.2f);
+            }
         }
     }
 
     public void EndBattle()
     {
+        if (CanFight()) MoveNavMesh(startPos);
         inBattle = false;
         Invoke("ActiveInteractionCollider", 3.0f);
     }

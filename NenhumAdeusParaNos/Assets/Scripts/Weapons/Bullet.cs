@@ -25,19 +25,23 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //if (other.GetComponent<Player>() != null) other.GetComponent<Player>().CharStats.ReceiveDamage(damage);
-        //else if (other.GetComponent<INPC>() != null) other.GetComponent<INPC>().CharStats.ReceiveDamage(damage);
-        try
+        if (!other.isTrigger)
         {
-            if (other.GetComponent<BattleUnit>().IsInBattle())
+            //if (other.GetComponent<Player>() != null) other.GetComponent<Player>().CharStats.ReceiveDamage(damage);
+            //else if (other.GetComponent<INPC>() != null) other.GetComponent<INPC>().CharStats.ReceiveDamage(damage);
+            try
             {
+                //if (other.GetComponent<BattleUnit>().IsInBattle())
+                //{
                 other.GetComponent<BattleUnit>().ReceiveDamage(damage);
+                //}
             }
+            catch
+            {
+            }
+            /*if (!other.isTrigger) */
+            Destroy(this.gameObject);
         }
-        catch
-        {        
-        }
-        if (!other.isTrigger) Destroy(this.gameObject);
     }
 
     private void Update()

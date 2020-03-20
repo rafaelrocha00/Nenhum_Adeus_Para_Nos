@@ -18,6 +18,18 @@ public class CharacterStats
 
     public void ReceiveDamage(float damage)
     {
+
+        if (myBattleUnit is Player)
+        {
+            Player aux = (Player)myBattleUnit;           
+            if (aux.Dashing) return;
+        }
+        else if (!GameManager.gameManager.battleController.ActiveBattle)
+        {
+            INPC aux = (INPC)myBattleUnit;
+            GameManager.gameManager.battleController.TriggerHostileNPCs(aux.transform.position);
+            return;
+        }
         life -= damage;
         life = Mathf.Clamp(life, 0, life + damage);
 

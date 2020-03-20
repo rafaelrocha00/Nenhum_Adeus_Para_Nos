@@ -24,8 +24,7 @@ public abstract class Interactives : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.GetComponent<Player>() != null)
-        {
-            DesactiveBtp();
+        {            
             OnExit();
         }
     }
@@ -43,6 +42,6 @@ public abstract class Interactives : MonoBehaviour
 
     public virtual void OnExit()
     {
-        Debug.Log("Do on exit");
+        DesactiveBtp();
     }
 }

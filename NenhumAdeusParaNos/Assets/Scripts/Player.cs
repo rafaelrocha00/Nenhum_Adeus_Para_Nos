@@ -16,6 +16,8 @@ public class Player : MonoBehaviour, BattleUnit
     public float rotateSpeed = 1.0f;
     public float acceleration = 3.0f;
     public float accelerationTime = 1.0f;
+    public float dashSpeed = 25.0f;
+    public float dashTime = 0.75f;
 
     public MeleeW equippedMelee;
     public RangedW equippedRanged;
@@ -29,6 +31,9 @@ public class Player : MonoBehaviour, BattleUnit
     float moveTime = 0.0f;
     bool running;
 
+    [HideInInspector] bool dashing = false;
+    public bool Dashing { get { return dashing; } }
+
     public float strongAtkHoldTime = 0.7f;
     float strongAtkTimer = 0.0f;
     bool releasedAtk = false;
@@ -41,6 +46,8 @@ public class Player : MonoBehaviour, BattleUnit
     Vector3 battleAim = new Vector3(0, 0, 0);
     bool aimLocked = false;
     INPC targetedEnemy;
+
+    bool isWeaponHide = false;
 
     [HideInInspector] bool battleDialoguing = false;
     public bool BattleDialoguing { get { return battleDialoguing; } set { battleDialoguing = value; } }
@@ -83,7 +90,7 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
-            Move();
+            if (!dashing) Move();
         }
         else
         {
@@ -91,27 +98,27 @@ public class Player : MonoBehaviour, BattleUnit
             moveTime = 0.0f;
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetMouseButtonDown(1))
+        {
+            Debug.Log("Item rápido");
+        }
+
+        if (Input.mouseScrollDelta.y > 0)
         {
             SwitchWeapon();
         }
-
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.mouseScrollDelta.y < 0)
         {
-            UseDialogue(0);
+            //Trocar item
         }
-        if (Input.GetKeyDown(KeyCode.V))
+
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            UseDialogue(1);
+            HideShowWeapon();
         }
-        if (inBattle)
+
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                LockAim();
-            }
-
             if (Input.GetMouseButtonDown(0))
             {
                 if (myWeapon is RangedW)
@@ -120,39 +127,36 @@ public class Player : MonoBehaviour, BattleUnit
                 }
             }
 
-            if (!EventSystem.current.IsPointerOverGameObject())
+            if (Input.GetMouseButton(0))
             {
-                if (Input.GetMouseButton(0))
+                if (!releasedAtk && myWeapon is MeleeW)
                 {
-                    if (!releasedAtk && myWeapon is MeleeW)
+                    strongAtkTimer += Time.deltaTime;
+                    if (strongAtkTimer >= strongAtkHoldTime)
                     {
-                        strongAtkTimer += Time.deltaTime;
-                        if (strongAtkTimer >= strongAtkHoldTime)
-                        {
-                            releasedAtk = true;
-                            Debug.Log("AtaqueForte");
-                            strongAtk = true;
-                            //attackCD = strongAttackCD;
+                        releasedAtk = true;
+                        Debug.Log("AtaqueForte");
+                        strongAtk = true;
+                        //attackCD = strongAttackCD;
 
-                            Attack();
-                        }
+                        Attack();
                     }
                 }
-                if (Input.GetMouseButtonUp(0))
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                if (myWeapon is MeleeW)
                 {
-                    if (myWeapon is MeleeW)
+                    Debug.Log(strongAtkTimer);
+                    if (strongAtkTimer < strongAtkHoldTime && !releasedAtk)
                     {
-                        Debug.Log(strongAtkTimer);
-                        if (strongAtkTimer < strongAtkHoldTime && !releasedAtk)
-                        {
-                            //Debug.Log("AtaqueFraco");
-                            strongAtk = false;
-                            //attackCD = defaultAttackCD;
+                        //Debug.Log("AtaqueFraco");
+                        strongAtk = false;
+                        //attackCD = defaultAttackCD;
 
-                            Attack();
-                        }
-                        releasedAtk = false;
+                        Attack();
                     }
+                    releasedAtk = false;
                 }
             }
         }
@@ -164,7 +168,24 @@ public class Player : MonoBehaviour, BattleUnit
                 interactingObj.Interact(this);
                 canInteract = false;
             }
-        }        
+        }
+
+        if (inBattle)
+        {
+            if (Input.GetMouseButtonDown(2))
+            {
+                LockAim();
+            }
+
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                UseDialogue(0);
+            }
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                UseDialogue(1);
+            }
+        }
     }
 
     void RunSwitch(bool value)
@@ -220,7 +241,24 @@ public class Player : MonoBehaviour, BattleUnit
             transform.LookAt(battleAim);
             CheckLook_WalkDir(heading);
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StartCoroutine(Dash(heading));
+        }
         //cam.Move(transform.position);        
+    }
+    IEnumerator Dash(Vector3 dir)
+    {
+        dashing = true;
+        float timer = 0.0f;
+        do
+        {
+            transform.position += dir * dashSpeed * Time.deltaTime;
+            timer += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        } while (timer < dashTime);
+        dashing = false;
     }
 
     void CheckLook_WalkDir(Vector3 moveDir)
@@ -305,24 +343,42 @@ public class Player : MonoBehaviour, BattleUnit
 
     void SwitchWeapon()
     {
-        if (myWeapon is MeleeW)
+        if (!isWeaponHide)
         {
-            myWeapon = equippedRanged;
-            equippedRanged.gameObject.SetActive(true);
+            if (myWeapon is MeleeW)
+            {
+                myWeapon = equippedRanged;
+                equippedRanged.gameObject.SetActive(true);
+                equippedMelee.gameObject.SetActive(false);
+            }
+            else
+            {
+                myWeapon = equippedMelee;
+                equippedRanged.gameObject.SetActive(false);
+                equippedMelee.gameObject.SetActive(true);
+            }
+        }
+    }
+
+    void HideShowWeapon()
+    {
+        if (!isWeaponHide)
+        {
             equippedMelee.gameObject.SetActive(false);
+            equippedRanged.gameObject.SetActive(false);
         }
         else
         {
-            myWeapon = equippedMelee;
-            equippedRanged.gameObject.SetActive(false);
-            equippedMelee.gameObject.SetActive(true);
+            if (myWeapon is MeleeW) equippedMelee.gameObject.SetActive(true);
+            else equippedRanged.gameObject.SetActive(true);
         }
+        isWeaponHide = !isWeaponHide;
     }
 
     public void UseDialogue(int idx)
     {
         //Debug.Log("Tentando usar dialogo");
-        if (inBattle && !GameManager.gameManager.dialogueController.ActiveDialogue && !GameManager.gameManager.MainHud.IsQuickMenuActive)
+        if (!GameManager.gameManager.dialogueController.ActiveDialogue && !GameManager.gameManager.MainHud.IsQuickMenuActive)
         {
             //Debug.Log("Tentando usar dialogo em batalha");
             try
@@ -353,10 +409,15 @@ public class Player : MonoBehaviour, BattleUnit
     //    battleDialoguing = false;
     //}
 
-    public void StartBattle(bool byTrigger = false)
+    public void StartBattle(bool byDialogue = true)
+    {
+        //if (!byDialogue && !GameManager.gameManager.battleController.EnoughNPCs()) return;
+        if (byDialogue) inBattle = true;
+        GameManager.gameManager.battleController.MainCharacter = this;
+    }
+    public void DelayStartBattle()
     {
         inBattle = true;
-        GameManager.gameManager.battleController.MainCharacter = this;
     }
 
     public void EndBattle()

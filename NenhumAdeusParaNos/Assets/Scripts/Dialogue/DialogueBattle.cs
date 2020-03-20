@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Dialogue of battle", menuName = "Dialogue/Dialogue of battle")]
 public class DialogueBattle : Dialogue
 {
-    public enum ApproachType { ap1, ap2, ap3, ap4, ap5 }
+    public enum ApproachType { Seduzir, Acalmar, Agredir, Zombar, Alegrar }
     public ApproachType approachType;
 
     [HideInInspector] INPC targetedNPC;
