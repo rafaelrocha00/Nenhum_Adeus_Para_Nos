@@ -11,6 +11,7 @@
         [NoScaleOffset]_MetallicTex ("Metallic Textura", 2D) = "white" {}
         _Metallic ("Metallic", Range(0,1)) = 0.0
         _Glossiness ("Glossiness", Range(0,1)) = 0.0
+        _NormalStr ("Normal Strength", Range(0,1)) = 0.5
     }
     SubShader
     {
@@ -37,6 +38,7 @@
 
         half _Metallic;
         half _Glossiness;
+        half _NormalStr;
         fixed4 _Color;
 
         // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
@@ -57,7 +59,7 @@
             
             o.Albedo = c.rgb;
             // Metallic and smoothness come from slider variables
-            o.Normal = n;
+            o.Normal = lerp(float3(0, 0, 1), n, _NormalStr);
             o.Occlusion = ao;
             o.Metallic = _Metallic * m;
             o.Smoothness = saturate(_Glossiness + g);
