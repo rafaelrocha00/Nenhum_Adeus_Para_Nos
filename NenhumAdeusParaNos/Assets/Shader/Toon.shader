@@ -5,6 +5,8 @@
         _Color ("Color", Color) = (0.8, 0.8, 0.8, 1)
         _MainTex ("Texture", 2D) = "white" {}
         _Ramp ("Ramp", 2D) = "white" {}
+        
+        _XRayColor ("X-Ray Color", Color) = (1,1,1,1)
     }
     SubShader
     {
@@ -211,6 +213,42 @@
                 }
             ENDCG
         }
+        
+        Pass 
+        {
+            Tags {"Queue"="Transparent"}
+            ZTest Greater         
+            CGPROGRAM
+                #pragma vertex vert
+                #pragma fragment frag
+                
+                #include "UnityCG.cginc"
+                
+                struct v2f
+                {
+                    float4 pos : SV_POSITION;                  
+                };
+                
+ 
+                v2f vert (appdata_base v)
+                {
+                    v2f o;   
+                    o.pos = UnityObjectToClipPos( v.vertex);
+                    return o;
+                }
+ 
+                float4 _XRayColor;
+ 
+                float4 frag(v2f i) : COLOR
+                {
+                    float checker = floor(i.pos.x) + floor(i.pos.y);
+                    checker = frac(checker * 0.5) * 2;
+                    clip(checker - 0.1);
+                    return checker * _XRayColor;
+                }
+            ENDCG
+        }
+
         UsePass "Legacy Shaders/VertexLit/SHADOWCASTER"
     }
     FallBack "VertexLit"
