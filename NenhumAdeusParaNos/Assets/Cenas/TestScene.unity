@@ -319,6 +319,85 @@ Transform:
   m_Father: {fileID: 731597894}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 84.407005, y: -149.677, z: 101.327}
+--- !u!1001 &187163650
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1056499128}
+    m_Modifications:
+    - target: {fileID: -4216859302048453862, guid: 88e93ae698c1ec642b85a883560074df,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 88e93ae698c1ec642b85a883560074df,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 88e93ae698c1ec642b85a883560074df,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 88e93ae698c1ec642b85a883560074df,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 88e93ae698c1ec642b85a883560074df,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.1506917
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 88e93ae698c1ec642b85a883560074df,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 88e93ae698c1ec642b85a883560074df,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9885808
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 88e93ae698c1ec642b85a883560074df,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 88e93ae698c1ec642b85a883560074df,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 88e93ae698c1ec642b85a883560074df,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 107.33401
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 88e93ae698c1ec642b85a883560074df,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 88e93ae698c1ec642b85a883560074df,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 88e93ae698c1ec642b85a883560074df,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 88e93ae698c1ec642b85a883560074df,
+        type: 3}
+      propertyPath: m_Name
+      value: Edward
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 88e93ae698c1ec642b85a883560074df, type: 3}
 --- !u!1 &208164951
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,7 +451,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d5a9ed20eb042043a724132e5c91695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisDialogueBattle: {fileID: 0}
+  thisBattleDialogues:
+  - {fileID: 0}
+  - {fileID: 0}
   dialogueCooldown: 10
   cooldownIm: {fileID: 1417589601}
 --- !u!114 &208164954
@@ -465,6 +546,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!4 &281098742 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 88e93ae698c1ec642b85a883560074df,
+    type: 3}
+  m_PrefabInstance: {fileID: 187163650}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &351584017
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,7 +646,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d5a9ed20eb042043a724132e5c91695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisDialogueBattle: {fileID: 11400000, guid: 3add84a26c2d8cb42ab68ec9d0d96f72, type: 2}
+  thisBattleDialogues:
+  - {fileID: 11400000, guid: 3add84a26c2d8cb42ab68ec9d0d96f72, type: 2}
+  - {fileID: 11400000, guid: 3d9c75b7dea1b9f4da749f77e9b753ec, type: 2}
   dialogueCooldown: 10
   cooldownIm: {fileID: 0}
 --- !u!114 &351584021
@@ -830,7 +919,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d5a9ed20eb042043a724132e5c91695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisDialogueBattle: {fileID: 11400000, guid: 4aa85c7a8889a6348a53c4169913f01c, type: 2}
+  thisBattleDialogues:
+  - {fileID: 11400000, guid: 4aa85c7a8889a6348a53c4169913f01c, type: 2}
+  - {fileID: 11400000, guid: 0f88cbc51ac43c64bb893a3a8663cd81, type: 2}
   dialogueCooldown: 10
   cooldownIm: {fileID: 0}
 --- !u!114 &489307933
@@ -896,12 +987,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 570589724}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.56, y: 0, z: 0.201}
-  m_LocalScale: {x: 0.30585688, y: 0.30585688, z: 0.61321247}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.5250001, y: 0.88199997, z: 0.2010003}
+  m_LocalScale: {x: 0.30585694, y: 0.30585688, z: 0.6132126}
   m_Children: []
   m_Father: {fileID: 1056499128}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &570589726
 BoxCollider:
@@ -1529,12 +1620,12 @@ MonoBehaviour:
   buttonToPressPref: {fileID: 6638989974725394705, guid: 1a98f6b0eb2747648aedcb7a647713cd,
     type: 3}
   popUPHigh: 3
-  thisPersonality: 2
+  thisPersonality: 0
   myDialogue: {fileID: 11400000, guid: 340b3aaef16b42e4f870748064a7cf91, type: 2}
   answerDialogues:
-  - {fileID: 11400000, guid: 1106abe451414374ead1f63eae4b92f4, type: 2}
-  - {fileID: 11400000, guid: 2595932d4ebcdde458f1acc2fab08ff2, type: 2}
-  - {fileID: 11400000, guid: 5a2db24ad9f6dd84b9924cc4adbd4f36, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   hostile: 1
@@ -1799,6 +1890,7 @@ GameObject:
   - component: {fileID: 795877767}
   - component: {fileID: 795877770}
   - component: {fileID: 795877771}
+  - component: {fileID: 795877772}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1836,30 +1928,31 @@ MonoBehaviour:
   dialogueController: {fileID: 0}
   battleController: {fileID: 0}
   timeController: {fileID: 0}
-  Dandere:
-  - 80
-  - 20
-  - 20
-  - 20
-  - 20
-  Kuudere:
-  - 78
-  - 80
-  - 85
-  - 87
-  - 4
-  Tsundere:
-  - 25
-  - 12
-  - 32
-  - 54
-  - 87
-  Yandere:
-  - 12
-  - 45
-  - 78
-  - 98
-  - 65
+  npcAnswers: {fileID: 0}
+  DereDereP:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  KuudereP:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  TsundereP:
+  - 0
+  - 90
+  - 0
+  - 0
+  - 0
+  YandereP:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
 --- !u!4 &795877769
 Transform:
   m_ObjectHideFlags: 0
@@ -1901,6 +1994,78 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slowdownFactor: 0.1
+--- !u!114 &795877772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795877766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d0f2a482f158f348a45a4def1a8bd0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  failDereDere_seduce:
+  - {fileID: 11400000, guid: 9b25dd29a00fd7e46af5c1c1a48a69a8, type: 2}
+  - {fileID: 11400000, guid: 8c51840d576a0064799a356ce3df684a, type: 2}
+  failDereDere_calmdown:
+  - {fileID: 11400000, guid: 0d7c699badb0d484b9f0865bab40accd, type: 2}
+  - {fileID: 11400000, guid: da915c9fe9c14f64886a90c39e3b4e7e, type: 2}
+  failDereDere_hurt:
+  - {fileID: 11400000, guid: 0c754a969456d654abffecc4b66a570c, type: 2}
+  - {fileID: 11400000, guid: 416b71d245c442c47b171fbdf257cbbd, type: 2}
+  failDereDere_mock:
+  - {fileID: 11400000, guid: 1ea1406a625a68941976156947a3cffa, type: 2}
+  - {fileID: 11400000, guid: a67085fcacb549841ab0dd0e2d475597, type: 2}
+  failDereDere_cheerup:
+  - {fileID: 11400000, guid: f3629de858c78314495ffaf28f81c7ce, type: 2}
+  - {fileID: 11400000, guid: c9079e395ae9cf74ab0e634a8a9efbb0, type: 2}
+  failYandere_seduce:
+  - {fileID: 11400000, guid: 4d5ecc86f101820488ecaf5f8056d35d, type: 2}
+  - {fileID: 11400000, guid: 22a9ca75159102e48aff61f1e746a64e, type: 2}
+  failYandere_calmdown:
+  - {fileID: 11400000, guid: 4e8673957c158aa4a89902fecd0be64a, type: 2}
+  - {fileID: 11400000, guid: c97ece200b9255945bd6e650a32a9dc5, type: 2}
+  failYandere_hurt:
+  - {fileID: 11400000, guid: 4e5e3c54b399f81458033ae78eaaf5cc, type: 2}
+  - {fileID: 11400000, guid: f9b4645bb002f4d46957dc3504e2d0e2, type: 2}
+  failYandere_mock:
+  - {fileID: 11400000, guid: 33198fc6d2fcf1b408b55fe52e65ff43, type: 2}
+  - {fileID: 11400000, guid: acc030bf34fdd3f41a5bc53c364a454d, type: 2}
+  failYandere_cheerup:
+  - {fileID: 11400000, guid: 1e3f7396f3c72774cb6f234a1b191a66, type: 2}
+  - {fileID: 11400000, guid: aebc67ab288054440900a548ddea2e1f, type: 2}
+  failTsundere_seduce:
+  - {fileID: 11400000, guid: b82178ab9aee8a9449b17beae0bd61f4, type: 2}
+  - {fileID: 11400000, guid: d2670f48fa172fa41a843a78b31d9d3c, type: 2}
+  failTsundere_calmdown:
+  - {fileID: 11400000, guid: fd29ac7e184fe3f42ad1e257122bb410, type: 2}
+  - {fileID: 11400000, guid: 674eb1f17657612448202819b2eded90, type: 2}
+  failTsundere_hurt:
+  - {fileID: 11400000, guid: 963e1431d11e1264db7f1f480b9a1dd8, type: 2}
+  - {fileID: 11400000, guid: 1ec1568ba8457854baa2782652371a5a, type: 2}
+  failTsundere_mock:
+  - {fileID: 11400000, guid: d74577bec54f8904aacfdfb3c2537af4, type: 2}
+  - {fileID: 11400000, guid: bf12c9bf67654d147968f8a4bda9db6d, type: 2}
+  failTsundere_cheerup:
+  - {fileID: 11400000, guid: 3e688c85bc27ab24ba455124f05bb8c9, type: 2}
+  - {fileID: 11400000, guid: 365ee4bfa99e3a147a04eea237a6519f, type: 2}
+  failKuudere_seduce:
+  - {fileID: 11400000, guid: df245b1f85cfb9240b5f3c5b3f4d2599, type: 2}
+  - {fileID: 11400000, guid: 87c2c424e03091a42b9b1f0ac7a032bd, type: 2}
+  failKuudere_calmdown:
+  - {fileID: 11400000, guid: 1b0fc335262368f418f842dc2b9e0e19, type: 2}
+  - {fileID: 11400000, guid: f44ed4f04e01e6e4da5d8657d36e51b0, type: 2}
+  failKuudere_hurt:
+  - {fileID: 11400000, guid: b466ac0aaddcaf14994ac49021bc2c98, type: 2}
+  - {fileID: 11400000, guid: 46821b39276af114bb220c07fe7d0033, type: 2}
+  failKuudere_mock:
+  - {fileID: 11400000, guid: edc294ee4b6aadd40a6a597d821e3022, type: 2}
+  - {fileID: 11400000, guid: 893a3a617fec11948bbf1fa562d14bcc, type: 2}
+  failKuudere_cheerup:
+  - {fileID: 11400000, guid: 41ed0fb13d8d29044a43684d5c1fad76, type: 2}
+  - {fileID: 11400000, guid: b7e8b2308325d8442a29158f1a6cc6fe, type: 2}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -2244,7 +2409,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d5a9ed20eb042043a724132e5c91695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisDialogueBattle: {fileID: 11400000, guid: 49d542ec2b9fafe4bbd3c2b6b8319e32, type: 2}
+  thisBattleDialogues:
+  - {fileID: 11400000, guid: 49d542ec2b9fafe4bbd3c2b6b8319e32, type: 2}
+  - {fileID: 11400000, guid: 7978d09ea327c2d4b974b881d22bf5de, type: 2}
   dialogueCooldown: 10
   cooldownIm: {fileID: 0}
 --- !u!114 &1046828489
@@ -2292,8 +2459,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1056499128}
-  - component: {fileID: 1056499127}
-  - component: {fileID: 1056499126}
   - component: {fileID: 1056499125}
   - component: {fileID: 1056499124}
   - component: {fileID: 1056499129}
@@ -2342,54 +2507,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &1056499126
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1056499123}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: e90940e73e421bc4d9acfdcc41b48d9d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &1056499127
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1056499123}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!4 &1056499128
 Transform:
   m_ObjectHideFlags: 0
@@ -2398,9 +2516,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1056499123}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -42.03, y: 1, z: 0}
+  m_LocalPosition: {x: -42.03, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 281098742}
   - {fileID: 1327529136}
   - {fileID: 570589725}
   m_Father: {fileID: 0}
@@ -2516,7 +2635,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d5a9ed20eb042043a724132e5c91695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisDialogueBattle: {fileID: 11400000, guid: ddaf189e9f6da4a458434c69fe5a6979, type: 2}
+  thisBattleDialogues:
+  - {fileID: 11400000, guid: ddaf189e9f6da4a458434c69fe5a6979, type: 2}
+  - {fileID: 11400000, guid: d98044f508f69d04d837bd063fbda077, type: 2}
   dialogueCooldown: 10
   cooldownIm: {fileID: 0}
 --- !u!114 &1145770025
@@ -2743,7 +2864,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d5a9ed20eb042043a724132e5c91695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisDialogueBattle: {fileID: 11400000, guid: b0f7ff310d32691419d6a299512e1354, type: 2}
+  thisBattleDialogues:
+  - {fileID: 11400000, guid: b0f7ff310d32691419d6a299512e1354, type: 2}
+  - {fileID: 11400000, guid: 069374d64169da341a43b8db4b712d4d, type: 2}
   dialogueCooldown: 10
   cooldownIm: {fileID: 0}
 --- !u!114 &1254327480
@@ -2935,13 +3058,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1327529135}
-  m_LocalRotation: {x: 0.5671676, y: 0.4764819, z: -0.4334654, w: 0.513219}
-  m_LocalPosition: {x: 0.15, y: 0.099, z: -0.22}
-  m_LocalScale: {x: 0.21990307, y: 1.9294077, z: 0.062327128}
+  m_LocalRotation: {x: 0.5671675, y: 0.47648197, z: -0.43346536, w: 0.513219}
+  m_LocalPosition: {x: 0.10200004, y: 0.78, z: -0.22000124}
+  m_LocalScale: {x: 0.21990319, y: 1.9294081, z: 0.062327147}
   m_Children:
   - {fileID: 1407639712}
   m_Father: {fileID: 1056499128}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 84.407005, y: 181.538, z: 101.327}
 --- !u!95 &1327529137
 Animator:
@@ -3695,7 +3818,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d5a9ed20eb042043a724132e5c91695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisDialogueBattle: {fileID: 0}
+  thisBattleDialogues:
+  - {fileID: 0}
+  - {fileID: 0}
   dialogueCooldown: 10
   cooldownIm: {fileID: 1346499524}
 --- !u!114 &1524033599
@@ -4538,9 +4663,9 @@ MonoBehaviour:
   thisPersonality: 2
   myDialogue: {fileID: 11400000, guid: 340b3aaef16b42e4f870748064a7cf91, type: 2}
   answerDialogues:
-  - {fileID: 11400000, guid: 1106abe451414374ead1f63eae4b92f4, type: 2}
-  - {fileID: 11400000, guid: 2595932d4ebcdde458f1acc2fab08ff2, type: 2}
-  - {fileID: 11400000, guid: 5a2db24ad9f6dd84b9924cc4adbd4f36, type: 2}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 57c2ebff633e63c47b4aeffa0bad2d82, type: 2}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   hostile: 1

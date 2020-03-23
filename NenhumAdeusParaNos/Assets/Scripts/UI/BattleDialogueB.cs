@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class BattleDialogueB : MonoBehaviour
 {
-    [SerializeField] DialogueBattle thisDialogueBattle;
-    public DialogueBattle DialogueB { get { return thisDialogueBattle; } set { thisDialogueBattle = value; } }
+    [SerializeField] DialogueBattle[] thisBattleDialogues = new DialogueBattle[2];
+    public DialogueBattle[] DialoguesB { get { return thisBattleDialogues; } set { thisBattleDialogues = value; } }
 
     /*[HideInInspector] */bool refreshing;
     //public bool Refreshing { get { return refreshing; } set { refreshing = value; } }
@@ -30,19 +30,21 @@ public class BattleDialogueB : MonoBehaviour
 
     #region Botão de dialogo do slot rapido
     //Vai mudar de Color para Sprite;
-    public void SetDialogue(DialogueBattle newDialogue, Color newIcon)
+    public void SetDialogue(DialogueBattle[] newDialogues, Color newIcon)
     {
-        thisDialogueBattle = newDialogue;
+        thisBattleDialogues = newDialogues;
         GetComponent<Image>().color = newIcon;
     }
 
     public DialogueBattle UseMyDialogue()
     {
-        if (!refreshing && thisDialogueBattle != null)
+        int random = Random.Range(0, 2);
+        DialogueBattle aux = thisBattleDialogues[random];
+        if (!refreshing && aux != null)
         {
             refreshing = true;
             StartCoroutine("CoolDown");
-            return thisDialogueBattle;
+            return aux;
         }
         return null;
     }

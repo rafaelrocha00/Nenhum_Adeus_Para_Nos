@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class INPC : Interactives, BattleUnit
 {
-    public enum Personalities { Dandere, Kuudere, Tsundere, Yandere }
+    public enum Personalities { DereDere, Kuudere, Tsundere, Yandere }
 
     [HideInInspector] CharacterStats charStats;
     public CharacterStats CharStats { get { return charStats; } }
@@ -49,8 +49,6 @@ public class INPC : Interactives, BattleUnit
         charStats = new CharacterStats(this);
         navMesh = GetComponent<NavMeshAgent>();
         if (myWeapon is RangedW) isRanged = true;
-
-        //initialDialogue = myDialogue;
     }
     void SetPersonalityPercentages()
     {
@@ -81,7 +79,7 @@ public class INPC : Interactives, BattleUnit
     public void EndDialogue()
     {
         //GameManager.gameManager.dialogueController.CloseDialoguePopUp();
-        //GameManager.gameManager.dialogueController.EndDialogue();
+        GameManager.gameManager.dialogueController.EndDialogue();
         myDialogue.ResetDialogue();
         //myDialogue = initialDialogue;
         interacting = false;
@@ -241,15 +239,28 @@ public class INPC : Interactives, BattleUnit
                 answerDialogues[(int)playerDialogue.approachType].MyNPC = this;
                 answerDialogues[(int)playerDialogue.approachType].MainCharacter = mCharacter;
                 //GameManager.gameManager.dialogueController.StartDialogue(answerDialogues[(int)playerDialogue.approachType], transform);
-                StartCoroutine(DelayStartDialogue(playerDialogue));
+                StartCoroutine(DelayStartDialogueBattle(playerDialogue));
             }
             Debug.Log("Respondendo diálogo");
         }
+        else
+        {
+            Debug.Log("Dialogo Falhou");
+            int random = Random.Range(0, 2);
+            Dialogue answer = GameManager.gameManager.npcAnswers.GetFailAnswer(thisPersonality, playerDialogue.approachType, random);
+            answer.MyNPC = this;
+            StartCoroutine(DelayStartDialogue(answer));
+        }
     }
-    IEnumerator DelayStartDialogue(DialogueBattle playerDialogue)
+    IEnumerator DelayStartDialogueBattle(DialogueBattle playerDialogue)
     {
         yield return new WaitForEndOfFrame();
         GameManager.gameManager.dialogueController.StartDialogue(answerDialogues[(int)playerDialogue.approachType], transform);
+    }
+    IEnumerator DelayStartDialogue(Dialogue failDialogue)
+    {
+        yield return new WaitForEndOfFrame();
+        GameManager.gameManager.dialogueController.StartDialogue(failDialogue, transform);
     }
 
     void Flee()

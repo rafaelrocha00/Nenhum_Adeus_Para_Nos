@@ -135,9 +135,8 @@ public class Player : MonoBehaviour, BattleUnit
                     if (strongAtkTimer >= strongAtkHoldTime)
                     {
                         releasedAtk = true;
-                        Debug.Log("AtaqueForte");
+                        //Debug.Log("AtaqueForte");
                         strongAtk = true;
-                        //attackCD = strongAttackCD;
 
                         Attack();
                     }
@@ -152,7 +151,6 @@ public class Player : MonoBehaviour, BattleUnit
                     {
                         //Debug.Log("AtaqueFraco");
                         strongAtk = false;
-                        //attackCD = defaultAttackCD;
 
                         Attack();
                     }

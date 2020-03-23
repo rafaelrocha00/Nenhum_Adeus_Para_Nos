@@ -77,17 +77,17 @@ public class MainHud : MonoBehaviour
         }
         if (aux != null)
         {
-            ChangeBattleDialogue(idx, aux.DialogueB, aux.GetComponent<Image>().color);
+            ChangeBattleDialogue(idx, aux.DialoguesB, aux.GetComponent<Image>().color);
         }
     }
 
     //Mudar para sprite
-    public void ChangeBattleDialogue(int idx, DialogueBattle newDialogue, Color newIcon)
+    public void ChangeBattleDialogue(int idx, DialogueBattle[] newDialogues, Color newIcon)
     {
         int aux = (idx == 0)? 1 : 0;
-        if (battleDialoguesSlots[aux].DialogueB != newDialogue)
+        if (battleDialoguesSlots[aux].DialoguesB != newDialogues)
         {
-            battleDialoguesSlots[idx].SetDialogue(newDialogue, newIcon);
+            battleDialoguesSlots[idx].SetDialogue(newDialogues, newIcon);
         }
     }
 
