@@ -33,6 +33,9 @@ public class EffectBattleStart : MonoBehaviour
         
         var pp = postProcessVolume.GetComponent<PostProcessVolume>();
         pp.profile.TryGetSettings(out _colorGrading);
+
+        StartCoroutine("StartBattleAnimation");
+        Invoke("Stop", 5);
     }
 
     private void Update()
@@ -89,5 +92,10 @@ public class EffectBattleStart : MonoBehaviour
             Shader.SetGlobalFloat(Range, range - i);
             yield return new WaitForSeconds (0.05f);
         }
+    }
+
+    void Stop()
+    {
+        StartCoroutine("StopBattleAnimation");
     }
 }
