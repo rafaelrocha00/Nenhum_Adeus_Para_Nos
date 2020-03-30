@@ -29,6 +29,7 @@
                 float3 worldNormal : NORMAL;
                 float3 viewDir : TEXCOORD3;
                 float4 screenPosition : TEXCOORD4;
+                float3 wPos : TEXCOORD5;
             };
             
             sampler2D _MainTex;
@@ -45,13 +46,30 @@
                 o.ambient = ShadeSH9(half4(o.worldNormal,1));
                 o.viewDir = WorldSpaceViewDir (v.vertex);
                 o.screenPosition = ComputeScreenPos(o.pos);
+                o.wPos = mul(unity_ObjectToWorld, v.vertex);
                 TRANSFER_SHADOW(o)
                 return o;
             }
 
             fixed3 frag (v2f i) : SV_Target
             {
+                float k = 2 * UNITY_PI;          
+                float heightSin = 0;
+                
+                i.wPos.y -= 0.4;
+                _Time.y += 0.5;
+                    
+                heightSin += cos(k * i.wPos.x * 0.1 - _Time.y) * 0.1;
+                //heightSin += cos(k * i.wPos.z * 0.3 - _Time.y) * 0.1;           
+                //heightSin += cos(k * (i.wPos.z + i.wPos.x) * 0.2 - _Time.y) * 0.05 * cos(k * i.wPos.z * 0.5 - _Time.y);
+                
+                i.wPos.y += heightSin;
+                float mask = pow(saturate(i.wPos.y),4);
+                float mask2 = saturate(i.wPos.y + 1.3);
+            
                 fixed4 col = tex2D(_MainTex, i.uv) * _Color;
+                col = lerp(col * 0.1, col, mask);
+                col *= _LightColor0;
                 fixed shadow = SHADOW_ATTENUATION(i);
                 
                 i.viewDir = normalize(i.viewDir);
@@ -65,18 +83,20 @@
                 float3 noise = normalize(tex2D(_Noise, screenUv * screenUvScale) * 2 - 1);
                 noise = reflect(_WorldSpaceLightPos0.xyz, noise);
                 float glitter = max(0, dot(noise, i.viewDir));
-                if(glitter > 0.9)
+                if(glitter > 1)
                     glitter = 0;
                 
                 glitter = 1 - glitter;
                 
                 float3 halfDir = normalize(i.worldNormal + i.viewDir);
                 float specular = max(0, dot(halfDir, i.worldNormal));
-                specular = pow(specular, 64) * shadow * diff * glitter * 3;
+                specular = pow(specular, 256) * shadow * diff * glitter * 3;
+                
+                float3 specColor = _LightColor0;
                 
                 fixed3 lighting = diff * shadow + i.ambient;
                 col.rgb *= lighting;
-                return col + specular;
+                return col + specular * specColor * (1 - saturate(mask - 0.2) * mask2);
             }
             ENDCG
         }
