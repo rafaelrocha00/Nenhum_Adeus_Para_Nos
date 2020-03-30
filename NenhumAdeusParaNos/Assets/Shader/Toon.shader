@@ -49,9 +49,9 @@
 
             float4 frag (v2f i) : SV_Target
             {
-                float col = i.color;
+                float3 col = i.color;
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                return col * 0.75;
+                return float4(col * 0.75, 1);
             }
             ENDCG
         }
@@ -98,7 +98,7 @@
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                UNITY_TRANSFER_FOG(o,o.vertex);
+                UNITY_TRANSFER_FOG(o,o.pos);
                 TRANSFER_SHADOW(o)
                 o.normal = UnityObjectToWorldNormal(v.normal);
                 o.viewDir = WorldSpaceViewDir(v.vertex);
