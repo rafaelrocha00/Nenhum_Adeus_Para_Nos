@@ -5,6 +5,7 @@ using UnityEngine;
 public class RangedW : Weapon
 {
     public GameObject bulletPref;
+    public bool auto;
 
     public override float Attack()
     {

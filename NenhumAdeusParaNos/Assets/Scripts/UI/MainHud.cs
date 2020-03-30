@@ -20,6 +20,9 @@ public class MainHud : MonoBehaviour
     [HideInInspector] bool activeOptionsToChoose;
     public bool ActiveOptionsToChoose { get { return activeOptionsToChoose; } }
 
+    public Image staminaBar;
+    public Image lifeBar;
+    public Image defenseBar;
     //public int[] battleDialogues = new int[5];
 
     #region Opçoes_de_Dialogo
@@ -57,6 +60,8 @@ public class MainHud : MonoBehaviour
     public BattleDialogueB[] battleDialoguesSlots = new BattleDialogueB[2];
     BattleDialogueB[] equipablesBattleDialogues;
 
+    public BattleDialogueB equippedDialogueB;
+
     public GameObject quickDialogueTab;
 
     public void OpenCloseQuickDialogueTab()
@@ -64,41 +69,20 @@ public class MainHud : MonoBehaviour
         quickDialogueTab.SetActive(!quickDialogueTab.activeSelf);
     }
 
-    void TryChangeBattleDialogue(int idx)
+    public void EquipDialogue(int idx)
     {
-        BattleDialogueB aux = null;
-        for (int i = 0; i < equipablesBattleDialogues.Length; i++)
-        {
-            if (equipablesBattleDialogues[i].IsMouseOverMe)
-            {
-                aux = equipablesBattleDialogues[i];
-                break;
-            }
-        }
-        if (aux != null)
-        {
-            ChangeBattleDialogue(idx, aux.DialoguesB, aux.GetComponent<Image>().color);
-        }
+        //Muda somente a cor/sprite do ícone do diálogo.
+        if (GameManager.gameManager.battleController.ActiveBattle) equippedDialogueB.SetIcon(GameManager.gameManager.dialogueController.dialogueColors[idx]);
     }
 
-    //Mudar para sprite
-    public void ChangeBattleDialogue(int idx, DialogueBattle[] newDialogues, Color newIcon)
+    public void IconCooldown(float value)
     {
-        int aux = (idx == 0)? 1 : 0;
-        if (battleDialoguesSlots[aux].DialoguesB != newDialogues)
-        {
-            battleDialoguesSlots[idx].SetDialogue(newDialogues, newIcon);
-        }
+        equippedDialogueB.Cooldown(value);
     }
 
-    public DialogueBattle GetDialogueFromSlot(int idx)
+    public void UseDialogue(/*int idx*/)
     {
-        return battleDialoguesSlots[idx].UseMyDialogue();
-    }
-
-    public void UseDialogue(int idx)
-    {
-        mainCharacter.UseDialogue(idx);
+        mainCharacter.UseDialogue(/*idx*/);
     }
 
     #endregion
@@ -107,33 +91,38 @@ public class MainHud : MonoBehaviour
     {
         GameManager.gameManager.MainHud = this;
     }
-    private void Start()
-    {
-        equipablesBattleDialogues = equipableDialoguesTab.GetComponentsInChildren<BattleDialogueB>();
-    }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            OpenCloseQuickMenu();
+            if (!GameManager.gameManager.battleController.ActiveBattle)
+                OpenCloseQuickMenu();
         }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            OpenCloseDiaryMenu();
-        }
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    OpenCloseDiaryMenu();
+        //}
 
-        if (isQuickMenuActive)
-        {
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                TryChangeBattleDialogue(0);
-            }
-            if (Input.GetKeyDown(KeyCode.V))
-            {
-                TryChangeBattleDialogue(1);
-            }
-        }
+    }
+
+    public void UpdateStamina(float staminaValue)
+    {
+        staminaBar.rectTransform.localScale = new Vector3(staminaValue, 1, 1);
+    }
+    public void UpdateLife(float lifeValue)
+    {
+        Debug.Log(lifeValue);
+        lifeBar.rectTransform.localScale = new Vector3(lifeValue, 1, 1);
+    }
+
+    public void UpdateDefense(float defenseValue)
+    {
+        defenseBar.rectTransform.localScale = new Vector3(defenseValue, 1, 1);
+    }
+    public void ShowHideDefenseBar()
+    {
+        defenseBar.transform.parent.gameObject.SetActive(!defenseBar.transform.parent.gameObject.activeSelf);
     }
 
     public void OpenCloseQuickMenu()

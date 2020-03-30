@@ -13,4 +13,6 @@ public interface BattleUnit
     bool IsInBattle();
 
     void ReceiveDamage(float damage);
+
+    void Die();
 }

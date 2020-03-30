@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public DialogueController dialogueController;
     [HideInInspector] public BattleController battleController;
     [HideInInspector] public TimeController timeController;
-    [HideInInspector] public NPCAnswers npcAnswers;
+    //[HideInInspector] public NPCAnswers npcAnswers;
 
     [HideInInspector] MainHud mainHud;
     public MainHud MainHud { get { return mainHud; } set { mainHud = value; } }
@@ -39,11 +39,16 @@ public class GameManager : MonoBehaviour
         dialogueController = GetComponent<DialogueController>();
         battleController = GetComponent<BattleController>();
         timeController = GetComponent<TimeController>();
-        npcAnswers = GetComponent<NPCAnswers>();
+        //npcAnswers = GetComponent<NPCAnswers>();
 
         personalities[0] = DereDereP;
         personalities[1] = KuudereP;
         personalities[2] = TsundereP;
         personalities[3] = YandereP;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 }

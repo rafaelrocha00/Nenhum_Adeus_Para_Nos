@@ -60,9 +60,9 @@ public class MeleeW : Weapon
                 //else if (other.GetComponent<INPC>() != null) other.GetComponent<INPC>().CharStats.ReceiveDamage(selectedDamage);
                 //if (other.GetComponent<BattleUnit>().IsInBattle())
                 //{
-                    other.GetComponent<BattleUnit>().ReceiveDamage(selectedDamage);
-                    hitted = true;
-                    Invoke("ResetHit", actualAtkspeed);
+                other.GetComponent<BattleUnit>().ReceiveDamage(selectedDamage);
+                hitted = true;
+                Invoke("ResetHit", defaultAtkSpeed);
                 //}
             }
             catch

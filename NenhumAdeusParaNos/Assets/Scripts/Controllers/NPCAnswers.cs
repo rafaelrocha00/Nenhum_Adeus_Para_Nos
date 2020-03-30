@@ -38,49 +38,49 @@ public class NPCAnswers : MonoBehaviour
     Dialogue[][] allTsundereFailAnswers = new Dialogue[5][];
     Dialogue[][] allKuudereFailAnswers = new Dialogue[5][];
 
-    private void Start()
-    {
-        #region Set_Dialogues
-        allDereDereFailAnswers[0] = failDereDere_seduce;
-        allDereDereFailAnswers[1] = failDereDere_calmdown;
-        allDereDereFailAnswers[2] = failDereDere_hurt;
-        allDereDereFailAnswers[3] = failDereDere_mock;
-        allDereDereFailAnswers[4] = failDereDere_cheerup;
+    //private void Start()
+    //{
+    //    #region Set_Dialogues
+    //    allDereDereFailAnswers[0] = failDereDere_seduce;
+    //    allDereDereFailAnswers[1] = failDereDere_calmdown;
+    //    allDereDereFailAnswers[2] = failDereDere_hurt;
+    //    allDereDereFailAnswers[3] = failDereDere_mock;
+    //    allDereDereFailAnswers[4] = failDereDere_cheerup;
 
-        allKuudereFailAnswers[0] = failKuudere_seduce;
-        allKuudereFailAnswers[1] = failKuudere_calmdown;
-        allKuudereFailAnswers[2] = failKuudere_hurt;
-        allKuudereFailAnswers[3] = failKuudere_mock;
-        allKuudereFailAnswers[4] = failKuudere_cheerup;
+    //    allKuudereFailAnswers[0] = failKuudere_seduce;
+    //    allKuudereFailAnswers[1] = failKuudere_calmdown;
+    //    allKuudereFailAnswers[2] = failKuudere_hurt;
+    //    allKuudereFailAnswers[3] = failKuudere_mock;
+    //    allKuudereFailAnswers[4] = failKuudere_cheerup;
 
-        allTsundereFailAnswers[0] = failTsundere_seduce;
-        allTsundereFailAnswers[1] = failTsundere_calmdown;
-        allTsundereFailAnswers[2] = failTsundere_hurt;
-        allTsundereFailAnswers[3] = failTsundere_mock;
-        allTsundereFailAnswers[4] = failTsundere_cheerup;
+    //    allTsundereFailAnswers[0] = failTsundere_seduce;
+    //    allTsundereFailAnswers[1] = failTsundere_calmdown;
+    //    allTsundereFailAnswers[2] = failTsundere_hurt;
+    //    allTsundereFailAnswers[3] = failTsundere_mock;
+    //    allTsundereFailAnswers[4] = failTsundere_cheerup;
 
-        allYandereFailAnswers[0] = failYandere_seduce;
-        allYandereFailAnswers[1] = failYandere_calmdown;
-        allYandereFailAnswers[2] = failYandere_hurt;
-        allYandereFailAnswers[3] = failYandere_mock;
-        allYandereFailAnswers[4] = failYandere_cheerup;
-        #endregion
-    }
+    //    allYandereFailAnswers[0] = failYandere_seduce;
+    //    allYandereFailAnswers[1] = failYandere_calmdown;
+    //    allYandereFailAnswers[2] = failYandere_hurt;
+    //    allYandereFailAnswers[3] = failYandere_mock;
+    //    allYandereFailAnswers[4] = failYandere_cheerup;
+    //    #endregion
+    //}
 
-    public Dialogue GetFailAnswer(INPC.Personalities personality, DialogueBattle.ApproachType apType, int rIdx)
-    {
-        switch (personality)
-        {
-            case INPC.Personalities.DereDere:
-                return allDereDereFailAnswers[(int)apType][rIdx];
-            case INPC.Personalities.Kuudere:
-                return allKuudereFailAnswers[(int)apType][rIdx];
-            case INPC.Personalities.Tsundere:
-                return allTsundereFailAnswers[(int)apType][rIdx];
-            case INPC.Personalities.Yandere:
-                return allYandereFailAnswers[(int)apType][rIdx];
-            default:
-                return null;
-        }
-    }
+    //public Dialogue GetFailAnswer(INPC.Personalities personality, DialogueBattle.ApproachType apType, int rIdx)
+    //{
+    //    switch (personality)
+    //    {
+    //        case INPC.Personalities.DereDere:
+    //            return allDereDereFailAnswers[(int)apType][rIdx];
+    //        case INPC.Personalities.Kuudere:
+    //            return allKuudereFailAnswers[(int)apType][rIdx];
+    //        case INPC.Personalities.Tsundere:
+    //            return allTsundereFailAnswers[(int)apType][rIdx];
+    //        case INPC.Personalities.Yandere:
+    //            return allYandereFailAnswers[(int)apType][rIdx];
+    //        default:
+    //            return null;
+    //    }
+    //}
 }

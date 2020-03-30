@@ -33,13 +33,19 @@ public class BattleController : MonoBehaviour
     IEnumerator CheckPlayerPos()
     {
         while (activeBattle)
-        {
-            yield return new WaitForSeconds(1);
+        {            
+            INPC closestEnemy = null;
             for (int i = 0; i < allEnemyFighters.Count; i++)
             {
-                if ((mainCharacter.transform.position - allEnemyFighters[i].transform.position).sqrMagnitude >= playerMaxDistance * playerMaxDistance)
-                    EndAllFightersBattle();
+                if (i == 0) closestEnemy = allEnemyFighters[i];
+                else if (mainCharacter != null && (closestEnemy.transform.position - mainCharacter.transform.position).sqrMagnitude > (mainCharacter.transform.position - allEnemyFighters[i].transform.position).sqrMagnitude)
+                {
+                    closestEnemy = allEnemyFighters[i];
+                }                    
             }
+            if ((mainCharacter.transform.position - closestEnemy.transform.position).sqrMagnitude >= playerMaxDistance * playerMaxDistance)
+                EndAllFightersBattle();
+            yield return new WaitForSeconds(1);
         }
     }
 
@@ -109,5 +115,16 @@ public class BattleController : MonoBehaviour
             return true;
         }
         else return false;
+    }
+
+    public void FindAndRemove(string fighterName)
+    {
+        if (activeBattle)
+        {
+            for (int i = 0; i < allEnemyFighters.Count; i++)
+            {
+                if (fighterName.Equals(allEnemyFighters[i].name)) allEnemyFighters.RemoveAt(i);
+            }
+        }
     }
 }

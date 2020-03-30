@@ -6,12 +6,14 @@ using UnityEngine.AI;
 public class INPC : Interactives, BattleUnit
 {
     public enum Personalities { DereDere, Kuudere, Tsundere, Yandere }
+    public enum EnemyType { Monstro, Estatal, NaoEstatal, Cidadao }
 
     [HideInInspector] CharacterStats charStats;
     public CharacterStats CharStats { get { return charStats; } }
 
     //[SerializeField] Behavior behavior;
     public Personalities thisPersonality;// { get { return behavior; } set { behavior = value; } }
+    public EnemyType enemyType;
     Personality personality;
     NavMeshAgent navMesh;
 
@@ -137,7 +139,7 @@ public class INPC : Interactives, BattleUnit
             }
             else
             {
-                Vector3 desiredPos = (mCharacter.transform.position - transform.position).normalized * (Vector3.Distance(transform.position, mCharacter.transform.position) - myWeapon.range / 2) + transform.position;
+                Vector3 desiredPos = (mCharacter.transform.position - transform.position).normalized * (Vector3.Distance(transform.position, mCharacter.transform.position) - myWeapon.range * 0.6f) + transform.position;
                 MoveNavMesh(desiredPos);
                 if (Vector3.Distance(mCharacter.transform.position, transform.position) <= myWeapon.range)
                     TryAttack();
@@ -241,13 +243,15 @@ public class INPC : Interactives, BattleUnit
                 //GameManager.gameManager.dialogueController.StartDialogue(answerDialogues[(int)playerDialogue.approachType], transform);
                 StartCoroutine(DelayStartDialogueBattle(playerDialogue));
             }
+
             Debug.Log("Respondendo diálogo");
         }
         else
         {
             Debug.Log("Dialogo Falhou");
             int random = Random.Range(0, 2);
-            Dialogue answer = GameManager.gameManager.npcAnswers.GetFailAnswer(thisPersonality, playerDialogue.approachType, random);
+            //Dialogue answer = GameManager.gameManager.npcAnswers.GetFailAnswer(thisPersonality, playerDialogue.approachType, random);
+            Dialogue answer = GameManager.gameManager.dialogueController.GetAnswer((int)enemyType, (int)thisPersonality, (int)playerDialogue.approachType, random);
             answer.MyNPC = this;
             StartCoroutine(DelayStartDialogue(answer));
         }
@@ -256,6 +260,8 @@ public class INPC : Interactives, BattleUnit
     {
         yield return new WaitForEndOfFrame();
         GameManager.gameManager.dialogueController.StartDialogue(answerDialogues[(int)playerDialogue.approachType], transform);
+        //Dialogue answer = GameManager.gameManager.dialogueController.GetAnswer((int)enemyType, (int)thisPersonality, (int)playerDialogue.approachType, 2);
+        //GameManager.gameManager.dialogueController.StartDialogue(answer, transform);
     }
     IEnumerator DelayStartDialogue(Dialogue failDialogue)
     {
@@ -324,6 +330,13 @@ public class INPC : Interactives, BattleUnit
     public void ReceiveDamage(float damage)
     {
         charStats.ReceiveDamage(damage);
+    }
+
+    public void Die()
+    {
+        GameManager.gameManager.dialogueController.EndDialogue();
+        GameManager.gameManager.battleController.FindAndRemove(name);
+        Destroy(this.gameObject);
     }
 
     void ActiveInteractionCollider()
