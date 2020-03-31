@@ -59,6 +59,7 @@
                 float3 viewDir : TEXCOORD3;
                 float4 grabPos : TEXCOORD4;
                 float3 normal : NORMAL;
+                float3 wPos : TEXCOORD5;
             };
 
             sampler2D _MainTex;
@@ -84,6 +85,7 @@
                 o.viewDir = WorldSpaceViewDir(v.vertex);
                 o.grabPos = ComputeGrabScreenPos(o.vertex);
                 o.normal = UnityObjectToWorldNormal(v.normal);
+                o.wPos = mul(unity_ObjectToWorld, v.vertex);
                 return o;
             }
 
@@ -126,19 +128,20 @@
                     float heightSin = 0;
                     float heightCos = 0;
                     
-                    heightSin += sin(k * wPos.x * 0.1 - _Time.y) * 0.1;
-                    heightSin += sin(k * wPos.z * 0.3 - _Time.y) * 0.1;           
-                    heightSin += sin(k * (wPos.z + wPos.x) * 0.2 - _Time.y) * 0.05 * sin(k * wPos.z * 0.5 - _Time.y);
+                    heightSin += sin(k * wPos.x * 0.1 - _Time.y * 0.314) * 0.1;
+                    heightSin += sin(k * wPos.z * 0.2 - _Time.y * 0.543) * 0.1;           
+                    heightSin += sin(k * (wPos.z + wPos.x) * 0.02 - _Time.y) * 0.5;// * sin(k * wPos.z * 0.5 - _Time.y);
                     
-                    heightCos += cos(k * wPos.x * 0.1 - _Time.y) * 0.1;
-                    heightCos += cos(k * wPos.z * 0.3 - _Time.y) * 0.1;           
-                    heightCos += cos(k * (wPos.z + wPos.x) * 0.2 - _Time.y) * 0.05 * cos(k * wPos.z * 0.5 - _Time.y);
+                    heightCos += cos(k * wPos.x * 0.1 - _Time.y * 0.314) * 0.1;
+                    heightCos += cos(k * wPos.z * 0.2 - _Time.y * 0.543) * 0.1;           
+                    heightCos += cos(k * (wPos.z + wPos.x) * 0.02 - _Time.y) * 0.5;// * cos(k * wPos.z * 0.5 - _Time.y);
                     
                     float3 tangent = normalize(float3(1, k * heightCos, 0));
                     v.normal = float3(-tangent.y, tangent.x, 0);
                     v.normal = lerp(v.normal, float3(0, 1, 0), 0.9);
                     
                     v.vertex.y += heightSin;
+                    v.vertex.y += sin(_Time.y) * 0.5;
                     v.vertex = mul(unity_WorldToObject, v.vertex);
                     
                 }
@@ -189,7 +192,11 @@
 
             float4 frag (v2f i) : SV_Target
             {
-                //fixed4 col = tex2D(_MainTex, i.uv);
+                fixed caustics1 = tex2D(_MainTex, i.wPos.xz * 0.1 - _Time.x);
+                fixed caustics2 = tex2D(_MainTex, i.wPos.xz * 0.05 + float2(1.232, 0.31415) * _Time.x);
+                
+                fixed finalCaustics = min(caustics1, caustics2);
+                finalCaustics = pow(finalCaustics, 10) * 50;
                 
                 //UNITY_APPLY_FOG(i.fogCoord, col);
                 i.normal = normalize(i.normal);
@@ -217,11 +224,11 @@
                 finalColor.rgb += skyColor * fresnel;
                 finalColor.a = 1;
                 
-                finalColor = lerp(1, finalColor, depth) * _LightColor0;
+                finalColor = lerp(saturate(lerp(1, caustics1, depth)), finalColor, depth) * _LightColor0;
                 
                 UNITY_APPLY_FOG(i.fogCoord, finalColor);
                 //return float4(i.normal, 1);
-                return finalColor;
+                return finalColor + finalCaustics;
             }
             ENDCG
         }
