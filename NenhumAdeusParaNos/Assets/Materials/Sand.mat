@@ -27,9 +27,25 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: f42d6f3762efda948b0831b266cb8502, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap0:
+        m_Texture: {fileID: 2800000, guid: f42d6f3762efda948b0831b266cb8502, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap1:
+        m_Texture: {fileID: 2800000, guid: 0b77224baf5d37f42bbfa005c375036e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap2:
+        m_Texture: {fileID: 2800000, guid: 4d1e1c785fc22024088f05c3f6ca9479, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0, y: 0}
     - _Noise:
         m_Texture: {fileID: 2800000, guid: 1577d7b76df7c904dbc817616cfeb8e2, type: 3}
@@ -39,5 +55,5 @@ Material:
     - _Glossiness: 0.5
     - _Metallic: 0
     m_Colors:
-    - _Color: {r: 1, g: 0.80255395, b: 0.41037738, a: 1}
+    - _Color: {r: 1, g: 0.8154921, b: 0.6084906, a: 1}
     - _GlitterColor: {r: 1.319508, g: 1.1953189, b: 0.79170483, a: 1}
