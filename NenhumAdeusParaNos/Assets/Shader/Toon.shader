@@ -5,13 +5,50 @@
         _Color ("Color", Color) = (0.8, 0.8, 0.8, 1)
         _MainTex ("Texture", 2D) = "white" {}
         _Ramp ("Ramp", 2D) = "white" {}
+        _Scale ("Outline Scale", float) = 0.01
         
-        _XRayColor ("X-Ray Color", Color) = (1,1,1,1)
+        //_XRayColor ("X-Ray Color", Color) = (1,1,1,1)
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Opaque" "Queue"="AlphaTest"}
         LOD 100
+        
+        // occlusion
+        Pass 
+        {
+            ZTest Greater
+            ZTest Off
+            CGPROGRAM
+                #pragma vertex vert
+                #pragma fragment frag
+                
+                #include "UnityCG.cginc"
+                
+                struct v2f
+                {
+                    float4 pos : SV_POSITION;                  
+                };
+                
+ 
+                v2f vert (appdata_base v)
+                {
+                    v2f o;   
+                    o.pos = UnityObjectToClipPos(v.vertex);
+                    return o;
+                }
+ 
+                //float4 _XRayColor;
+ 
+                float4 frag(v2f i) : COLOR
+                {
+                    float checker = floor(i.pos.x) + floor(i.pos.y);
+                    checker = frac(checker * 0.5) * 2;
+                    clip(checker - 0.1);
+                    return checker;// * _XRayColor;
+                }
+            ENDCG
+        }
         
         Pass // outline
         {
@@ -36,10 +73,12 @@
                 float4 color : COLOR;
             };
 
+            float _Scale;
+
             v2f vert (appdata v)
             {
                 v2f o;
-                v.vertex.xyz += v.normal * 0.01;
+                v.vertex.xyz += v.normal * 0.01 * _Scale;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 float3 normal = UnityObjectToWorldNormal(v.normal);
@@ -59,7 +98,7 @@
         Pass // directional light
         {
             Tags {"LightMode"="ForwardBase"}
-            
+            Cull Back
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -210,41 +249,6 @@
                     c.rgb = (col.rgb * _LightColor0.rgb * warpLighting) * (atten) + specular;
                     c.a = col.a;
                     return c;
-                }
-            ENDCG
-        }
-        
-        Pass 
-        {
-            Tags {"Queue"="Transparent"}
-            ZTest Greater         
-            CGPROGRAM
-                #pragma vertex vert
-                #pragma fragment frag
-                
-                #include "UnityCG.cginc"
-                
-                struct v2f
-                {
-                    float4 pos : SV_POSITION;                  
-                };
-                
- 
-                v2f vert (appdata_base v)
-                {
-                    v2f o;   
-                    o.pos = UnityObjectToClipPos( v.vertex);
-                    return o;
-                }
- 
-                float4 _XRayColor;
- 
-                float4 frag(v2f i) : COLOR
-                {
-                    float checker = floor(i.pos.x) + floor(i.pos.y);
-                    checker = frac(checker * 0.5) * 2;
-                    clip(checker - 0.1);
-                    return checker * _XRayColor;
                 }
             ENDCG
         }
