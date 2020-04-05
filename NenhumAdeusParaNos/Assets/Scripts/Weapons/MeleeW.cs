@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class MeleeW : Weapon
 {
-    public float strongAtkDamage = 40.0f;
-    public float strongAtkCD = 1.0f;
+    public MeleeConfig meleeConfig;
+
+    //public float strongAtkDamage = 40.0f;
+    //public float strongAtkCD = 1.0f;
     float actualAtkspeed;
     int atkType = 1;
 
@@ -19,14 +21,17 @@ public class MeleeW : Weapon
 
     private void Start()
     {
-        actualAtkspeed = defaultAtkSpeed;
-        selectedDamage = defaultDamage;
+        //meleeConfig = (MeleeConfig)weaponConfig;
+        weaponConfig = meleeConfig;
+
+        actualAtkspeed = meleeConfig.defaultAttackSpeed;
+        selectedDamage = meleeConfig.defaultDamage;
     }
 
     public void SetStrongAttack()
     {
-        selectedDamage = strongAtkDamage;
-        actualAtkspeed = strongAtkCD;
+        selectedDamage = meleeConfig.strongAttackDamage;
+        actualAtkspeed = meleeConfig.strongAttackCD;
         atkType = 2;
     }
 
@@ -45,8 +50,8 @@ public class MeleeW : Weapon
     {
         anim.SetInteger("AttackType", 0);
         sCollider.enabled = false;
-        selectedDamage = defaultDamage;
-        actualAtkspeed = defaultAtkSpeed;
+        selectedDamage = meleeConfig.defaultDamage;
+        actualAtkspeed = meleeConfig.defaultAttackSpeed;
         atkType = 1;
     }
 
@@ -62,7 +67,7 @@ public class MeleeW : Weapon
                 //{
                 other.GetComponent<BattleUnit>().ReceiveDamage(selectedDamage);
                 hitted = true;
-                Invoke("ResetHit", defaultAtkSpeed);
+                Invoke("ResetHit", meleeConfig.defaultAttackSpeed);
                 //}
             }
             catch

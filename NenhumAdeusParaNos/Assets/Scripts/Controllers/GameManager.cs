@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector] MainHud mainHud;
     public MainHud MainHud { get { return mainHud; } set { mainHud = value; } }
+    [HideInInspector] CamMove mainCamera;
+    public CamMove MainCamera { get { if (mainCamera == null) { mainCamera = Camera.main.GetComponent<CamMove>(); return mainCamera; } else return mainCamera; } }
 
     //[HideInInspector] Player mainCharacter;
     //public Player MainCharacter { get { return mainCharacter; } set { mainCharacter = value; } }

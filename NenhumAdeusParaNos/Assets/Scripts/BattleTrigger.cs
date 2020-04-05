@@ -11,6 +11,7 @@ public class BattleTrigger : MonoBehaviour
             GetComponent<Collider>().enabled = false;
             if (!GameManager.gameManager.battleController.ActiveBattle)
             {
+                //Invoke("DelayedTrigger", GameManager.gameManager.battleController.WaitTime);
                 GameManager.gameManager.battleController.TriggerHostileNPCs(transform.position, GetComponent<SphereCollider>().radius);
                 //Collider[] collidersWithin = Physics.OverlapSphere(transform.position, GetComponent<SphereCollider>().radius);
                 //for (int i = 0; i < collidersWithin.Length; i++)
@@ -32,4 +33,9 @@ public class BattleTrigger : MonoBehaviour
             }
         }
     }
+
+    //void DelayedTrigger()
+    //{
+    //    GameManager.gameManager.battleController.TriggerHostileNPCs(transform.position, GetComponent<SphereCollider>().radius);
+    //}
 }

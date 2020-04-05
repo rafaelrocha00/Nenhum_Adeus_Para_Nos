@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface BattleUnit
 {
-    void StartBattle(bool byTrigger = false);
+    void StartBattle(bool byTrigger = true);
 
     void EndBattle();
 
@@ -12,7 +12,9 @@ public interface BattleUnit
 
     bool IsInBattle();
 
-    void ReceiveDamage(float damage);
+    bool ReceiveDamage(float damage);
 
     void Die();
+
+    Vector3 GetPos();
 }

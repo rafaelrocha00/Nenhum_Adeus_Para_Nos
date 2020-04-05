@@ -25,8 +25,12 @@ public class INPC : Interactives, BattleUnit
 
     bool attacking = false;
     public Weapon myWeapon;
+    RangedW rangedW;
     bool strongAtk = false;
     bool isRanged = false;
+
+    public float defaultSpeed = 6.0f;
+    public float rangedKiteSpeed = 4.0f;
 
     [HideInInspector] Player mCharacter;
     public Player MCharacter { get { return mCharacter; } set { mCharacter = value; } }
@@ -50,7 +54,13 @@ public class INPC : Interactives, BattleUnit
 
         charStats = new CharacterStats(this);
         navMesh = GetComponent<NavMeshAgent>();
-        if (myWeapon is RangedW) isRanged = true;
+
+        if (myWeapon == null) myWeapon = GetComponentInChildren<Weapon>();
+        if (myWeapon is RangedW)
+        {
+            isRanged = true;
+            rangedW = (RangedW)myWeapon;
+        }
     }
     void SetPersonalityPercentages()
     {
@@ -117,20 +127,28 @@ public class INPC : Interactives, BattleUnit
 
             if (isRanged)
             {
-                if (Vector3.Distance(mCharacter.transform.position, transform.position) <= myWeapon.range)
+                if ((mCharacter.transform.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
                 {
                     Vector3 desiredPos = -(mCharacter.transform.position - transform.position) + transform.position;
                     MoveNavMesh(desiredPos);
+                    navMesh.speed = rangedKiteSpeed;
+                }
+                else if ((mCharacter.transform.position - transform.position).sqrMagnitude >= rangedW.GetMaxRange() * rangedW.GetMaxRange())
+                {
+                    Vector3 toPlayerVec = mCharacter.transform.position - transform.position;
+                    Vector3 desiredPos = toPlayerVec.normalized * (toPlayerVec.magnitude - rangedW.GetMaxRange() * 0.2f) + transform.position;
+                    navMesh.speed = defaultSpeed;
+                    MoveNavMesh(desiredPos);
                 }
                 else
-                {
+                {                    
                     navMesh.isStopped = true;
                     //parar animação de andar
                 }
 
                 if (Physics.Raycast(ray, out hit))
                 {
-                    if (hit.collider.CompareTag("player") || Vector3.Distance(hit.transform.position, transform.position) >= Vector3.Distance(mCharacter.transform.position, transform.position))
+                    if (hit.collider.CompareTag("player") || /*Vector3.Distance*/(hit.transform.position - transform.position).sqrMagnitude >= /*Vector3.Distance*/(mCharacter.transform.position - transform.position).sqrMagnitude)
                     {
                         TryAttack();
                     }
@@ -139,9 +157,10 @@ public class INPC : Interactives, BattleUnit
             }
             else
             {
-                Vector3 desiredPos = (mCharacter.transform.position - transform.position).normalized * (Vector3.Distance(transform.position, mCharacter.transform.position) - myWeapon.range * 0.6f) + transform.position;
+                Vector3 toPlayerVec = mCharacter.transform.position - transform.position;
+                Vector3 desiredPos = toPlayerVec.normalized * (toPlayerVec.magnitude - myWeapon.GetRange() * 0.6f) + transform.position;
                 MoveNavMesh(desiredPos);
-                if (Vector3.Distance(mCharacter.transform.position, transform.position) <= myWeapon.range)
+                if ((mCharacter.transform.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
                     TryAttack();
             }
 
@@ -195,15 +214,25 @@ public class INPC : Interactives, BattleUnit
     {
         //if (isRanged)
         //{
-            timer += Time.deltaTime;
-            if (timer >= atkInterval)
+        timer += Time.deltaTime;
+        if (timer >= atkInterval)
+        {
+            bool canAtk = true;
+            if (isRanged && rangedW.HasAmmo())
             {
-                int randomType = Random.Range(0, 2);
-                if (randomType == 1) strongAtk = false;
-                else strongAtk = true;
-                Attack();
-                timer = 0.0f;
+                canAtk = true;
             }
+            else if (isRanged)
+            {
+                //animação de reload
+                canAtk = false;
+            }
+            int randomType = Random.Range(0, 2);
+            if (randomType == 1) strongAtk = false;
+            else strongAtk = true;
+            if (canAtk) Attack();
+            timer = 0.0f;
+        }
         //}
     }
 
@@ -296,6 +325,8 @@ public class INPC : Interactives, BattleUnit
         {
             startPos = transform.position;
             OnExit();
+            Debug.Log("Bydialogue: " + byDialogue);
+            Debug.Log("Hostil: " + hostile);
             if ((!byDialogue && hostile) || byDialogue)
             {                
                 GetComponent<SphereCollider>().enabled = false;
@@ -314,6 +345,7 @@ public class INPC : Interactives, BattleUnit
     {
         if (CanFight()) MoveNavMesh(startPos);
         inBattle = false;
+        navMesh.speed = defaultSpeed;
         Invoke("ActiveInteractionCollider", 3.0f);
     }
 
@@ -327,9 +359,9 @@ public class INPC : Interactives, BattleUnit
         return inBattle;
     }
 
-    public void ReceiveDamage(float damage)
+    public bool ReceiveDamage(float damage)
     {
-        charStats.ReceiveDamage(damage);
+        return charStats.ReceiveDamage(damage);
     }
 
     public void Die()
@@ -337,6 +369,11 @@ public class INPC : Interactives, BattleUnit
         GameManager.gameManager.dialogueController.EndDialogue();
         GameManager.gameManager.battleController.FindAndRemove(name);
         Destroy(this.gameObject);
+    }
+
+    public Vector3 GetPos()
+    {
+        return transform.position;
     }
 
     void ActiveInteractionCollider()

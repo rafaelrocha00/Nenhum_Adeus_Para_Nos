@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91d9dfb9b17415c41b078a6cbe9d0c8e, type: 3}
+  m_Name: NPCShotgun
+  m_EditorClassIdentifier: 
+  weaponName: Escopeta curta
+  defaultDamage: 15
+  defaultAttackSpeed: 1.5
+  range: 2
+  bulletPref: {fileID: 2060041394054689681, guid: 97c64051a94660e4c8f842a654ff3816,
+    type: 3}
+  maxRange: 5
+  auto: 0
+  maxAmmo: 10
+  shootAngle: 6
+  shootQuant: 1

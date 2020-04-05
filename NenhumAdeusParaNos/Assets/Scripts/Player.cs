@@ -10,6 +10,8 @@ public class Player : MonoBehaviour, BattleUnit
     [HideInInspector] CharacterStats charStats;
     public CharacterStats CharStats { get { return charStats; } }
 
+    public Animator animator;
+
     public float defaultSpeed = 3.5f;
     public float maxSpeed = 6.0f;
     public float runningSpeed = 9.0f;
@@ -37,7 +39,7 @@ public class Player : MonoBehaviour, BattleUnit
     [SerializeField] float defense_maxLife = 40.0f;
     public float Defense_MaxLife { get { return defense_maxLife; } }
     float defense_life;
-    public float defense_slow = 40.0f;//Porcentagem da diminuição de velocidade;
+    //public float defense_slow = 40.0f;//Porcentagem da diminuição de velocidade;
 
     public MeleeW equippedMelee;
     public RangedW equippedRanged;
@@ -49,6 +51,8 @@ public class Player : MonoBehaviour, BattleUnit
     public float moveSpeed;
     float acceleratedSpeed;
     Vector3 forward, right;
+    //float directionMod = 0;
+    bool moving = false;
 
     float moveTime = 0.0f;
     bool running;
@@ -83,7 +87,9 @@ public class Player : MonoBehaviour, BattleUnit
 
     CamMove cam;
 
-    [HideInInspector] bool canInteract;
+    [HideInInspector] bool interacting = false;
+    public bool Interacting { get { return interacting; } set { interacting = value; } }
+    [HideInInspector] bool canInteract = true;
     public bool CanInteract { get { return canInteract; } set { canInteract = value; } }
     [HideInInspector] Interactives interactingObj;
     public Interactives InteractingObj { get { return interactingObj; } set { interactingObj = value; } }
@@ -101,8 +107,11 @@ public class Player : MonoBehaviour, BattleUnit
         charStats = new CharacterStats(this);
 
         moveSpeed = defaultSpeed;
+        //acceleratedSpeed = moveSpeed * 1.75f;
         stamina = maxStamina;
         defense_life = defense_maxLife;
+
+        if (myWeapon == null) myWeapon = GetComponentInChildren<Weapon>();
 
         forward = Camera.main.transform.forward;
         cam = Camera.main.GetComponent<CamMove>();
@@ -137,9 +146,11 @@ public class Player : MonoBehaviour, BattleUnit
         {
             if (!running) moveSpeed = defaultSpeed;
             moveTime = 0.0f;
+            //moving = false;
+            if (moving) StopMoving();
         }
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             Debug.Log("Item rápido");
         }
@@ -158,25 +169,38 @@ public class Player : MonoBehaviour, BattleUnit
             HideShowWeapon();
         }
 
-        if (!EventSystem.current.IsPointerOverGameObject())
+        if (!EventSystem.current.IsPointerOverGameObject() && !interacting)
         {
             if (Input.GetMouseButtonDown(0))
             {
                 if (myWeapon is RangedW)
                 {
-                    Attack();                    
                     RangedW ranged = (RangedW)myWeapon;
-                    if (ranged.auto)
+
+                    if (ranged.HasAmmo())
                     {
-                        autoShooting = true;
-                        StartCoroutine("AutoShoot");
+                        if (!ranged.Reloading)
+                        {
+                            if (defending) CancelDefense();
+                            Attack();
+                            if (ranged.IsAuto())
+                            {
+                                autoShooting = true;
+                                StartCoroutine(AutoShoot(ranged));
+                            }
+                            else
+                            {
+                                StopCoroutine("ResetNormalSpeed");
+                                shooting = true;
+                                //slowMoving = true;
+                                StartCoroutine(Slowdown(defaultSlow));
+                                StartCoroutine("ResetNormalSpeed");
+                            }
+                        }
                     }
                     else
                     {
-                        StopCoroutine("ResetNormalSpeed");
-                        shooting = true;
-                        slowMoving = true;
-                        StartCoroutine("ResetNormalSpeed");
+                        //Animação de reload;
                     }
                 }
             }
@@ -205,7 +229,7 @@ public class Player : MonoBehaviour, BattleUnit
                     {
                         //Debug.Log("AtaqueFraco");
                         strongAtk = false;
-
+                        if (defending) CancelDefense();
                         Attack();
                     }
                     releasedAtk = false;
@@ -221,8 +245,19 @@ public class Player : MonoBehaviour, BattleUnit
         {
             if (canInteract)
             {
+                interacting = true;
                 interactingObj.Interact(this);
                 canInteract = false;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (myWeapon is RangedW)
+            {
+                RangedW ranged = (RangedW)myWeapon;
+                ranged.Reload();
+                //Animação de reload
             }
         }
 
@@ -268,12 +303,16 @@ public class Player : MonoBehaviour, BattleUnit
             //    UseDialogue(1);
             //}
 
-            if (Input.GetKeyDown(KeyCode.V))
+            if (Input.GetMouseButtonDown(1))
             {
-                defending = true;
-                GameManager.gameManager.MainHud.ShowHideDefenseBar();
+                if (!autoShooting)
+                {
+                    defending = true;
+                    if (!slowMoving) StartCoroutine(Slowdown(defaultSlow));
+                    GameManager.gameManager.MainHud.ShowHideDefenseBar();
+                }
             }
-            if (Input.GetKeyUp(KeyCode.V))
+            if (Input.GetMouseButtonUp(1))
             {
                 if (defending) CancelDefense();
             }
@@ -290,21 +329,33 @@ public class Player : MonoBehaviour, BattleUnit
 
     IEnumerator ResetNormalSpeed()
     {
-        yield return new WaitForSeconds(0.5f);
-        if (running) moveSpeed = runningSpeed;
-        slowMoving = false;
+        yield return new WaitForSeconds(0.8f);
+        //if (running) moveSpeed = runningSpeed;
+        //slowMoving = false;
+        CancelSlow();
         shooting = false;
     }
 
-    IEnumerator AutoShoot()
+    IEnumerator AutoShoot(RangedW ranged)
     {
-        slowMoving = true;
+        //slowMoving = true;
+        StartCoroutine(Slowdown(defaultSlow));
         do
         {
             yield return new WaitForSeconds(0.1f);
-            Attack();
+            if (ranged.HasAmmo())
+            {
+               if (!ranged.Reloading) Attack();
+            }
+            else
+            {
+                //Animação de reload
+                CancelSlow();
+                yield break;
+            }
         } while (autoShooting);
-        slowMoving = false;
+        //slowMoving = false;
+        CancelSlow();
     }
 
     void RunSwitch(bool value)
@@ -326,9 +377,10 @@ public class Player : MonoBehaviour, BattleUnit
 
     void Move()
     {
+        moving = true;
         moveTime += Time.deltaTime;
         if (moveTime < accelerationTime) moveSpeed += acceleration * Time.deltaTime;
-        else if (!running && moveSpeed < maxSpeed) moveSpeed = maxSpeed;
+        else if (!running && moveSpeed < maxSpeed && !slowMoving) moveSpeed = maxSpeed;
 
         if (running && stamina > 0 && !defending)
         {
@@ -343,15 +395,15 @@ public class Player : MonoBehaviour, BattleUnit
             UpdateStamina(-stamina_runDecay * Time.deltaTime);
             if (stamina == 0) RunSwitch(false);
         }
-        else if (defending)
-        {
-            moveSpeed = defaultSpeed - defaultSpeed * defense_slow / 100;
-        }
-        if (!defending && slowMoving)
-        {
-            if (running) moveSpeed = runningSpeed - runningSpeed * defaultSlow / 100;
-            else moveSpeed = defaultSpeed*2 - defaultSpeed*2 * defaultSlow / 100;
-        }
+        //else if (defending)
+        //{
+        //    moveSpeed = defaultSpeed - defaultSpeed * defense_slow / 100;
+        //}
+        //if (!defending && slowMoving)
+        //{
+        //    if (running) moveSpeed = runningSpeed - runningSpeed * defaultSlow / 100;
+        //    else moveSpeed = defaultSpeed*2 - defaultSpeed*2 * defaultSlow / 100;
+        //}
 
         float xMov = Input.GetAxis("Horizontal");
         float zMov = Input.GetAxis("Vertical");
@@ -387,8 +439,16 @@ public class Player : MonoBehaviour, BattleUnit
             else LockAim();
         }
 
-        transform.LookAt(battleAim);
-        CheckLook_WalkDir(heading);
+        CheckLook_WalkDir(heading, xMov, zMov);
+
+
+        //float velX = heading.x * moveSpeed / runningSpeed;
+        //float velY = heading.z * moveSpeed / runningSpeed;
+        ////Debug.Log(velX + " | " + velY);
+        //animator.SetFloat("VelX", velX);
+        //animator.SetFloat("VelY", velY);
+
+        transform.LookAt(battleAim);        
         //}
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -405,6 +465,35 @@ public class Player : MonoBehaviour, BattleUnit
         }
         //cam.Move(transform.position);        
     }
+
+    void StopMoving()
+    {
+        animator.SetFloat("VelX", 0);
+        animator.SetFloat("VelY", 0);
+
+        moving = false;
+    }
+
+    IEnumerator Slowdown(float slowValue)
+    {
+        slowMoving = true;
+        while (slowMoving || defending)
+        {
+            float actualMoveSpeed = (running) ? runningSpeed : defaultSpeed * 2;
+            if (!defending) moveSpeed = actualMoveSpeed - actualMoveSpeed * slowValue / 100;
+            yield return new WaitForEndOfFrame();            
+        }        
+    }
+    void CancelSlow()
+    {
+        if (!autoShooting && !shooting && slowMoving && !defending)
+        {
+            slowMoving = false;
+            if (running) moveSpeed = runningSpeed;
+            else moveSpeed = defaultSpeed;
+        }
+    }
+
     IEnumerator Dash(Vector3 dir)
     {
         dashing = true;
@@ -429,35 +518,53 @@ public class Player : MonoBehaviour, BattleUnit
         defending = false;
         StartCoroutine("StartStaminaRegen");
         stoppedStaminaRegen = false;
+        CancelSlow();
         GameManager.gameManager.MainHud.ShowHideDefenseBar();
     }
 
-    void CheckLook_WalkDir(Vector3 moveDir)
+    void CheckLook_WalkDir(Vector3 moveDir, float xmov, float zmov)
     {
         float auxDot = Vector3.Dot(transform.forward, moveDir);
+        float dirX = 0;
+        float dirZ = 0;
+
         if (auxDot > 0.5f)
         {
+            dirZ = 1;
             //Andando e olhando para mesma direção
-            if (!autoShooting && !shooting) slowMoving = false;
+            /*if (!autoShooting && !shooting && slowMoving)*/ CancelSlow(); //slowMoving = false;
         }
         else if (auxDot > -0.5f)
         {
-            if (!autoShooting && !shooting) slowMoving = false;
+            //dirZ = 0;           
+            /*if (!autoShooting && !shooting && slowMoving)*/ CancelSlow();//slowMoving = false;
             float auxDotRight = Vector3.Dot(transform.right, moveDir);
             if (auxDotRight > 0)
             {
+                dirX = 1;
                 //Andando pra direita e olhando pre frente
             }
             else
             {
+                dirX = -1;
                 //Andando pra esquerda e olhando pre frente
             }
         }
         else
         {
+            dirZ = -1;
             //Andando pra trás e olhando pra frente
-            if (inBattle) slowMoving = true;
+            if (inBattle && !slowMoving) StartCoroutine(Slowdown(defaultSlow));//slowMoving = true;
         }
+
+        if (xmov == 0) xmov = 1;
+        if (zmov == 0) zmov = 1;
+
+        float velX = dirX * moveSpeed / runningSpeed * Mathf.Abs(xmov);
+        float velY = dirZ * moveSpeed / runningSpeed * Mathf.Abs(zmov);
+        //Debug.Log(velX + " | " + velY);
+        animator.SetFloat("VelX", velX);
+        animator.SetFloat("VelY", velY);
     }
 
     void LockAim()
@@ -611,6 +718,8 @@ public class Player : MonoBehaviour, BattleUnit
         {
             CancelDefense();
         }
+        defense_life = defense_maxLife;
+        UpdateDefense(0);
     }
 
     public bool CanFight()
@@ -623,15 +732,21 @@ public class Player : MonoBehaviour, BattleUnit
         return inBattle;
     }
 
-    public void ReceiveDamage(float damage)
+    public bool ReceiveDamage(float damage)
     {
-        charStats.ReceiveDamage(damage);
+        bool aux = charStats.ReceiveDamage(damage);
         UpdateLife();
+        return aux;
     }
 
     public void Die()
     {
         GameManager.gameManager.dialogueController.EndDialogue();
+    }
+
+    public Vector3 GetPos()
+    {
+        return transform.position;
     }
 
     IEnumerator StartStaminaRegen()

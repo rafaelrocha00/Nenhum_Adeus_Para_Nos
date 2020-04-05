@@ -20,34 +20,35 @@ public class CharacterStats
         life = maxLife;
     }
 
-    public void ReceiveDamage(float damage)
+    public bool ReceiveDamage(float damage)
     {
 
         if (myBattleUnit is Player)
         {
             Player aux = (Player)myBattleUnit;
-            if (aux.Dashing) return;
+            if (aux.Dashing) return true;
             else if (aux.Defending)
             {
                 damage -= damage * aux.Defense_Strength / 100;
                 aux.UpdateDefense(-(damage * aux.Defense_Strength / 100));
             }
         }
-        else if (!GameManager.gameManager.battleController.ActiveBattle)
+        else if (!GameManager.gameManager.battleController.ActiveBattle && !GameManager.gameManager.battleController.TriggeringBattle)
         {
             INPC aux = (INPC)myBattleUnit;
             GameManager.gameManager.battleController.TriggerHostileNPCs(aux.transform.position);
-            return;
+            return false;
         }
         //life -= damage;
         //life = Mathf.Clamp(life, 0, maxLife);
 
         //if (life == 0) Die();
         //Debug.Log(life);
-        life -= damage;
+        if (myBattleUnit.IsInBattle()) life -= damage;
         life = Mathf.Clamp(life, 0, maxLife);
         if (life == 0) Die();
         Debug.Log(life);
+        return false;
     }
 
     public float LifePercentage()

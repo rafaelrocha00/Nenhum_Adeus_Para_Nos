@@ -4,9 +4,16 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    public float defaultDamage;
-    public float defaultAtkSpeed;
-    public float range;
+    protected WeaponConfig weaponConfig;
+
+    //public float defaultDamage;
+    //public float defaultAtkSpeed;
+    //public float range;
 
     public abstract float Attack();
+
+    public float GetRange()
+    {
+        return weaponConfig.range;
+    }
 }

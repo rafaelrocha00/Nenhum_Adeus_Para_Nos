@@ -120,6 +120,7 @@ public class DialogueController : MonoBehaviour
         if (activeDialogue)
         {
             activeDialogue = false;
+            actualDialogue.ResetDialogue();
             CloseDialoguePopUp();
         }
     }

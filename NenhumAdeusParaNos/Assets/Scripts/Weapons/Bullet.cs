@@ -29,18 +29,19 @@ public class Bullet : MonoBehaviour
         {
             //if (other.GetComponent<Player>() != null) other.GetComponent<Player>().CharStats.ReceiveDamage(damage);
             //else if (other.GetComponent<INPC>() != null) other.GetComponent<INPC>().CharStats.ReceiveDamage(damage);
+            bool aux = false;
             try
             {
                 //if (other.GetComponent<BattleUnit>().IsInBattle())
                 //{
-                other.GetComponent<BattleUnit>().ReceiveDamage(damage);
+                aux = other.GetComponent<BattleUnit>().ReceiveDamage(damage);
                 //}
             }
             catch
             {
             }
             /*if (!other.isTrigger) */
-            Destroy(this.gameObject);
+            if (!aux) Destroy(this.gameObject);
         }
     }
 

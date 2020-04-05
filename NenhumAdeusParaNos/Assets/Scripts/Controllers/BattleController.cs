@@ -13,21 +13,43 @@ public class BattleController : MonoBehaviour
     [HideInInspector] bool activeBattle = false;
     public bool ActiveBattle { get { return activeBattle; } set { activeBattle = value; } }
 
+    [HideInInspector] bool triggeringBattle = false;
+    public bool TriggeringBattle { get { return triggeringBattle; } set { triggeringBattle = value; } }
+
+    [SerializeField] float waitTime = 0.0f;
+    public float WaitTime { get { return waitTime; } set { waitTime = value; } }
     //Vector3 battleCenter = Vector3.zero;
 
     public float triggerDistance = 8.0f;
     public float playerMaxDistance;
 
-    public void StartBattle()
+    bool byDialogue = true;
+
+    //Vector3 closestEnemyPos;
+
+    public void StartBattle(List<BattleUnit> fighters)
     {
+        StartBattleCamera(fighters[0].GetPos());
+
+        StartCoroutine(DelayedStartBattle(fighters));
+    }
+    IEnumerator DelayedStartBattle(List<BattleUnit> fighters)
+    {
+        yield return new WaitForSeconds(waitTime);
         Debug.Log("Starting Battle");
         activeBattle = true;
+        for (int i = 0; i < fighters.Count; i++)
+        {
+            fighters[i].StartBattle(byDialogue);
+        }
         for (int i = 0; i < allEnemyFighters.Count; i++)
         {
             allEnemyFighters[i].MCharacter = mainCharacter;
         }
         GameManager.gameManager.MainHud.OpenCloseQuickDialogueTab();
         StartCoroutine("CheckPlayerPos");
+        byDialogue = true;
+        triggeringBattle = false;
     }
 
     IEnumerator CheckPlayerPos()
@@ -41,11 +63,15 @@ public class BattleController : MonoBehaviour
                 else if (mainCharacter != null && (closestEnemy.transform.position - mainCharacter.transform.position).sqrMagnitude > (mainCharacter.transform.position - allEnemyFighters[i].transform.position).sqrMagnitude)
                 {
                     closestEnemy = allEnemyFighters[i];
+                    //closestEnemyPos = closestEnemy.transform.position;
                 }                    
             }
-            if ((mainCharacter.transform.position - closestEnemy.transform.position).sqrMagnitude >= playerMaxDistance * playerMaxDistance)
+            Vector3 toEnemyVector = closestEnemy.transform.position - mainCharacter.transform.position;
+
+            if (/*closestEnemy == null || */toEnemyVector.sqrMagnitude >= playerMaxDistance * playerMaxDistance)
                 EndAllFightersBattle();
-            yield return new WaitForSeconds(1);
+            else GameManager.gameManager.MainCamera.SetTarget(toEnemyVector * 0.5f + mainCharacter.transform.position);
+            yield return new WaitForEndOfFrame();
         }
     }
 
@@ -82,35 +108,46 @@ public class BattleController : MonoBehaviour
         }
 
         allEnemyFighters.Clear();
+
+        GameManager.gameManager.MainCamera.EndBattle();
     }
 
     public void TriggerHostileNPCs(Vector3 initialPoint, float radius = 0)
     {
-        if (radius == 0) radius = triggerDistance;
+        if (radius == 0) radius = triggerDistance;        
         Collider[] collidersWithin = Physics.OverlapSphere(initialPoint, radius);
+        List<BattleUnit> fighters = new List<BattleUnit>();
         for (int i = 0; i < collidersWithin.Length; i++)
         {
-            try
-            {
-                Debug.Log(collidersWithin[i].name);
-                collidersWithin[i].GetComponent<BattleUnit>().StartBattle(false);
-            }
-            catch
-            {
-                Debug.Log("Não é uma battleUnit");
-            }
+            //try
+            //{
+            //    Debug.Log(collidersWithin[i].name);
+            //    BattleUnit aux = collidersWithin[i].GetComponent<BattleUnit>();
+            //    fighters.Add(aux);//.StartBattle(false);
+            //}
+            //catch
+            //{
+            //    Debug.Log("Não é uma battleUnit");
+            //}
+            Debug.Log(collidersWithin[i].name);
+            BattleUnit aux = collidersWithin[i].GetComponent<BattleUnit>();
+            if (aux != null) fighters.Add(aux);//.StartBattle(false);
+            else Debug.Log("Não é uma battleunit");
         }
-        if (GameManager.gameManager.battleController.EnoughNPCs())
+        if (EnoughNPCs(fighters))
         {
-            GameManager.gameManager.battleController.StartBattle();
+            triggeringBattle = true;
+            byDialogue = false;
+            StartBattle(fighters);
         }
     }
 
-    public bool EnoughNPCs()
+    public bool EnoughNPCs(List<BattleUnit> fighters)
     {
-        if (allEnemyFighters.Count > 0)
+        if (fighters.Count > 1)
         {
-            if (mainCharacter == null) mainCharacter = GameObject.Find("Player").GetComponent<Player>();
+            //if (mainCharacter == null) mainCharacter = GameObject.Find("Player").GetComponent<Player>();
+            FindPlayer();
             mainCharacter.DelayStartBattle();
             return true;
         }
@@ -126,5 +163,18 @@ public class BattleController : MonoBehaviour
                 if (fighterName.Equals(allEnemyFighters[i].name)) allEnemyFighters.RemoveAt(i);
             }
         }
+    }
+
+    public void StartBattleCamera(Vector3 reference)
+    {
+        FindPlayer();
+        Vector3 toEnemyVector = reference - mainCharacter.transform.position;
+        Vector3 cameraTarget = toEnemyVector.normalized * toEnemyVector.magnitude * 0.25f + mainCharacter.transform.position;
+        GameManager.gameManager.MainCamera.StartBattle(cameraTarget);
+    }
+
+    void FindPlayer()
+    {
+       if (mainCharacter == null) mainCharacter = GameObject.Find("Player").GetComponent<Player>();
     }
 }

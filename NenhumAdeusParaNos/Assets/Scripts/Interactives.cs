@@ -24,7 +24,10 @@ public abstract class Interactives : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.GetComponent<Player>() != null)
-        {            
+        {
+            Player player = other.GetComponent<Player>();
+            player.Interacting = false;
+            Debug.Log(player.Interacting);
             OnExit();
         }
     }
