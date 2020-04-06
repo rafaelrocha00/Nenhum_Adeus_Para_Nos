@@ -138,7 +138,7 @@ public class Player : MonoBehaviour, BattleUnit
         }
 
 
-        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        if (CanFight() && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0))
         {
             if (!dashing) Move();
         }
@@ -410,6 +410,8 @@ public class Player : MonoBehaviour, BattleUnit
 
         Vector3 rightMov = right * xMov;
         Vector3 upMov = forward * zMov;
+        //if (upMov.x < 0 && rightMov == Vector3.zero) GameManager.gameManager.MainCamera.SetToWalkDown();
+        //else GameManager.gameManager.MainCamera.SetDefaultDistance();
 
         Vector3 heading = Vector3.Normalize(rightMov + upMov);
         Vector3 newDirection = Vector3.RotateTowards(transform.forward, heading, rotateSpeed * Time.deltaTime, 0);
@@ -702,7 +704,11 @@ public class Player : MonoBehaviour, BattleUnit
     public void StartBattle(bool byDialogue = true)
     {
         //if (!byDialogue && !GameManager.gameManager.battleController.EnoughNPCs()) return;
-        if (byDialogue) inBattle = true;
+        if (byDialogue)
+        {
+            inBattle = true;
+            interacting = false;
+        }
         GameManager.gameManager.battleController.MainCharacter = this;
     }
     public void DelayStartBattle()
@@ -742,6 +748,7 @@ public class Player : MonoBehaviour, BattleUnit
     public void Die()
     {
         GameManager.gameManager.dialogueController.EndDialogue();
+        GameManager.gameManager.MainHud.GameOver();
     }
 
     public Vector3 GetPos()

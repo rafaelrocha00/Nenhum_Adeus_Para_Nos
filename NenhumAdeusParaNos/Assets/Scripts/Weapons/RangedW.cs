@@ -43,6 +43,11 @@ public class RangedW : Weapon
         return normalRConfig.maxRange;
     }
 
+    public float GetDelayToShoot()
+    {
+        return normalRConfig.delayToShoot;
+    }
+
     public bool HasAmmo()
     {
         if (ammo > 0) return true;

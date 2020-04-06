@@ -66,9 +66,11 @@ public class BattleController : MonoBehaviour
                     //closestEnemyPos = closestEnemy.transform.position;
                 }                    
             }
-            Vector3 toEnemyVector = closestEnemy.transform.position - mainCharacter.transform.position;
+            Vector3 toEnemyVector = Vector3.zero;
 
-            if (/*closestEnemy == null || */toEnemyVector.sqrMagnitude >= playerMaxDistance * playerMaxDistance)
+            if (closestEnemy != null) toEnemyVector = closestEnemy.transform.position - mainCharacter.transform.position;
+
+            if (closestEnemy == null || toEnemyVector.sqrMagnitude >= playerMaxDistance * playerMaxDistance)
                 EndAllFightersBattle();
             else GameManager.gameManager.MainCamera.SetTarget(toEnemyVector * 0.5f + mainCharacter.transform.position);
             yield return new WaitForEndOfFrame();
@@ -136,6 +138,7 @@ public class BattleController : MonoBehaviour
         }
         if (EnoughNPCs(fighters))
         {
+            Debug.Log("tem");
             triggeringBattle = true;
             byDialogue = false;
             StartBattle(fighters);
@@ -144,7 +147,7 @@ public class BattleController : MonoBehaviour
 
     public bool EnoughNPCs(List<BattleUnit> fighters)
     {
-        if (fighters.Count > 1)
+        if (fighters.Count > 0)
         {
             //if (mainCharacter == null) mainCharacter = GameObject.Find("Player").GetComponent<Player>();
             FindPlayer();

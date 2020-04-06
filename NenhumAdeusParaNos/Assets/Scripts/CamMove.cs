@@ -35,6 +35,10 @@ public class CamMove : MonoBehaviour
     {
         if (targetingPlayer) transform.position = Vector3.Slerp(transform.position, playerTransform.position + distanceToTarget, Time.deltaTime * cameraSmooth);
         else transform.position = Vector3.Slerp(transform.position, targetPos + distanceToTarget, Time.deltaTime * cameraSmooth);
+
+        float xDistance = Mathf.Abs(transform.position.x - playerTransform.position.x);
+        if (xDistance < 11.5) SetToWalkDown();
+        else if (xDistance > 17) SetDefaultDistance();
     }
 
     public void StartBattle(Vector3 newTarget)
@@ -52,10 +56,18 @@ public class CamMove : MonoBehaviour
 
     public void EndBattle()
     {
-        distanceToTarget = defaultDistance;
+        SetDefaultDistance();
         targetingPlayer = true;
     }
 
+    public void SetToWalkDown()
+    {
+        distanceToTarget.x = defaultDistance.x * 1.5f;
+    }
+    public void SetDefaultDistance()
+    {
+        distanceToTarget = defaultDistance;
+    }
     //IEnumerator ResetTarget()
     //{
     //    yield return new WaitForSeconds(centralizedTime);        

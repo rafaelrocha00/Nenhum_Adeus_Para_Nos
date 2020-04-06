@@ -11,6 +11,8 @@ public class INPC : Interactives, BattleUnit
     [HideInInspector] CharacterStats charStats;
     public CharacterStats CharStats { get { return charStats; } }
 
+    public Animator anim;
+
     //[SerializeField] Behavior behavior;
     public Personalities thisPersonality;// { get { return behavior; } set { behavior = value; } }
     public EnemyType enemyType;
@@ -55,12 +57,16 @@ public class INPC : Interactives, BattleUnit
         charStats = new CharacterStats(this);
         navMesh = GetComponent<NavMeshAgent>();
 
+        if (anim == null) anim = GetComponentInChildren<Animator>();
+
         if (myWeapon == null) myWeapon = GetComponentInChildren<Weapon>();
         if (myWeapon is RangedW)
         {
             isRanged = true;
             rangedW = (RangedW)myWeapon;
         }
+
+        navMesh.speed = defaultSpeed;
     }
     void SetPersonalityPercentages()
     {
@@ -117,8 +123,10 @@ public class INPC : Interactives, BattleUnit
         if (Input.GetKeyDown(KeyCode.E) && interacting && !firstInteraction) firstInteraction = true;
         else if (Input.GetKeyDown(KeyCode.E) && interacting && firstInteraction) NextString();
 
+        float actualVelocity = navMesh.velocity.magnitude / navMesh.speed;
+        if (isRanged) anim.SetFloat("Vel", actualVelocity);
         if (inBattle)
-        { 
+        {             
             Ray ray = new Ray(transform.position, mCharacter.transform.position - transform.position);
             RaycastHit hit;
 
@@ -240,6 +248,7 @@ public class INPC : Interactives, BattleUnit
     {
         if (!attacking)
         {
+            if (isRanged) anim.SetInteger("AtkType", 1);
             //Debug.Log("Atacando");
             attacking = true;
             float attackCD;
@@ -248,13 +257,27 @@ public class INPC : Interactives, BattleUnit
                 MeleeW myMelee = (MeleeW)myWeapon;
                 myMelee.SetStrongAttack();
             }
-            attackCD = myWeapon.Attack();
-            Invoke("AttackCooldown", attackCD);
+            if (!isRanged)
+            {
+                attackCD = myWeapon.Attack();
+                Invoke("AttackCooldown", attackCD);
+            }
+            else
+            {
+                Invoke("DelayedAttack", rangedW.GetDelayToShoot());
+            }
         }
     }
+    void DelayedAttack()
+    {
+        float cd = myWeapon.Attack();
+        Invoke("AttackCooldown", cd);
+    }
+
     void AttackCooldown()
     {
         attacking = false;
+        if (isRanged) anim.SetInteger("AtkType", 0);
     }
 
     public void ReceiveBattleDialogue(DialogueBattle playerDialogue)

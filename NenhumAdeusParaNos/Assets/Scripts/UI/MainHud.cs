@@ -8,6 +8,8 @@ public class MainHud : MonoBehaviour
     [HideInInspector] Player mainCharacter;
     public Player MainCharacter { get { return mainCharacter; } set { mainCharacter = value; } }
 
+    public GameObject gameOverScreen;
+
     public GameObject quickMenu;
     [HideInInspector] bool isQuickMenuActive;
     public bool IsQuickMenuActive { get { return isQuickMenuActive; } }
@@ -94,11 +96,11 @@ public class MainHud : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            if (!GameManager.gameManager.battleController.ActiveBattle)
-                OpenCloseQuickMenu();
-        }
+        //if (Input.GetKeyDown(KeyCode.F))
+        //{
+        //    if (!GameManager.gameManager.battleController.ActiveBattle)
+        //        OpenCloseQuickMenu();
+        //}
         //if (Input.GetKeyDown(KeyCode.Q))
         //{
         //    OpenCloseDiaryMenu();
@@ -135,12 +137,17 @@ public class MainHud : MonoBehaviour
             if (IsQuickMenuActive) GameManager.gameManager.timeController.StartSlowdown();
             else GameManager.gameManager.timeController.EndSlowdown();
         }
-        else GameManager.gameManager.MainHud.OpenCloseQuickDialogueTab();
+        //else GameManager.gameManager.MainHud.OpenCloseQuickDialogueTab();
     }
 
     public void OpenCloseDiaryMenu()
     {
         diaryMenu.SetActive(!diaryMenu.activeSelf);
+    }
+
+    public void GameOver()
+    {
+        gameOverScreen.SetActive(true);
     }
 
     void DestroyChilds(Transform transform)
