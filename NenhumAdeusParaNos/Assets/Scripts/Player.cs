@@ -212,11 +212,14 @@ public class Player : MonoBehaviour, BattleUnit
                     strongAtkTimer += Time.deltaTime;
                     if (strongAtkTimer >= strongAtkHoldTime)
                     {
-                        releasedAtk = true;
-                        //Debug.Log("AtaqueForte");
-                        strongAtk = true;
+                        if (!GameManager.gameManager.inventoryController.Dragging)
+                        {
+                            releasedAtk = true;
+                            //Debug.Log("AtaqueForte");
+                            strongAtk = true;
 
-                        Attack();
+                            Attack();
+                        }
                     }
                 }
             }
@@ -224,15 +227,18 @@ public class Player : MonoBehaviour, BattleUnit
             {
                 if (myWeapon is MeleeW)
                 {
-                    Debug.Log(strongAtkTimer);
-                    if (strongAtkTimer < strongAtkHoldTime && !releasedAtk)
+                    if (!GameManager.gameManager.inventoryController.Dragging)
                     {
-                        //Debug.Log("AtaqueFraco");
-                        strongAtk = false;
-                        if (defending) CancelDefense();
-                        Attack();
+                        Debug.Log(strongAtkTimer);
+                        if (strongAtkTimer < strongAtkHoldTime && !releasedAtk)
+                        {
+                            //Debug.Log("AtaqueFraco");
+                            strongAtk = false;
+                            if (defending) CancelDefense();
+                            Attack();
+                        }
+                        releasedAtk = false;
                     }
-                    releasedAtk = false;
                 }
                 else
                 {
@@ -243,7 +249,7 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (canInteract)
+            if (canInteract && CanFight())
             {
                 interacting = true;
                 interactingObj.Interact(this);

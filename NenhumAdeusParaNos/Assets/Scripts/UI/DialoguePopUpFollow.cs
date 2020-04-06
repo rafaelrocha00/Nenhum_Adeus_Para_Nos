@@ -5,6 +5,7 @@ using UnityEngine;
 public class DialoguePopUpFollow : MonoBehaviour
 {
     Transform attachedTransform;
+    Camera mainCam;
     //Vector3 fixedDistance;
 
     private void Awake()
@@ -13,6 +14,11 @@ public class DialoguePopUpFollow : MonoBehaviour
         //fixedDistance = Vector3.zero;
 
         Debug.Log("Start");
+    }
+
+    private void Start()
+    {
+        mainCam = GameManager.gameManager.MainCamera.GetComponent<Camera>();
     }
 
     public void SetTransform(Transform atTransform)
@@ -31,6 +37,6 @@ public class DialoguePopUpFollow : MonoBehaviour
 
     private void Update()
     {
-        transform.position = attachedTransform.position;// + fixedDistance;   
+        transform.position = mainCam.WorldToScreenPoint(attachedTransform.position);// + fixedDistance;   
     }
 }

@@ -38,7 +38,7 @@ public class CamMove : MonoBehaviour
 
         float xDistance = Mathf.Abs(transform.position.x - playerTransform.position.x);
         if (xDistance < 11.5) SetToWalkDown();
-        else if (xDistance > 17) SetDefaultDistance();
+        else if (xDistance > 22.5) SetDefaultDistance();
     }
 
     public void StartBattle(Vector3 newTarget)
@@ -62,11 +62,13 @@ public class CamMove : MonoBehaviour
 
     public void SetToWalkDown()
     {
-        distanceToTarget.x = defaultDistance.x * 1.5f;
+        if (!GameManager.gameManager.battleController.ActiveBattle) distanceToTarget.x = defaultDistance.x * 1.8f;
+        else distanceToTarget.x = distanceInBattle.x * 1.8f;
     }
     public void SetDefaultDistance()
     {
-        distanceToTarget = defaultDistance;
+        if (!GameManager.gameManager.battleController.ActiveBattle) distanceToTarget = defaultDistance;
+        else distanceToTarget = distanceInBattle;
     }
     //IEnumerator ResetTarget()
     //{

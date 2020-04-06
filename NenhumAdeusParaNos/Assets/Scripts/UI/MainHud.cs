@@ -10,6 +10,9 @@ public class MainHud : MonoBehaviour
 
     public GameObject gameOverScreen;
 
+    public GameObject inventory;
+    public Transform itemStorages;
+
     public GameObject quickMenu;
     [HideInInspector] bool isQuickMenuActive;
     public bool IsQuickMenuActive { get { return isQuickMenuActive; } }
@@ -105,6 +108,10 @@ public class MainHud : MonoBehaviour
         //{
         //    OpenCloseDiaryMenu();
         //}
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            OpenCloseInventory(!inventory.activeSelf);
+        }
 
     }
 
@@ -143,6 +150,11 @@ public class MainHud : MonoBehaviour
     public void OpenCloseDiaryMenu()
     {
         diaryMenu.SetActive(!diaryMenu.activeSelf);
+    }
+
+    public void OpenCloseInventory(bool value)
+    {
+        inventory.SetActive(value);
     }
 
     public void GameOver()

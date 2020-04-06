@@ -9,6 +9,8 @@ public class DialogueController : MonoBehaviour
     GameObject dialoguePopUp;
     Button popUPB;
 
+    Camera mainCam;
+
     public GameObject dialoguePref;
 
     Dialogue actualDialogue;
@@ -65,6 +67,7 @@ public class DialogueController : MonoBehaviour
                 }
             }
         }
+        mainCam = GameManager.gameManager.MainCamera.GetComponent<Camera>();
     }
 
     public DialogueBattle GetDialogueBattle(int enType, int apType, int idx)
@@ -149,7 +152,7 @@ public class DialogueController : MonoBehaviour
     {
         try
         {
-            dialoguePopUp.transform.position = transf.position;
+            dialoguePopUp.transform.position = mainCam.WorldToScreenPoint(transf.position);
             dialoguePopUp.SetActive(true);
         }
         catch
@@ -158,7 +161,9 @@ public class DialogueController : MonoBehaviour
             //Pegar no filho do filho, e filho o botao
             //dialogueText = dialoguePopUp.GetComponentInChildren<Text>();
             //popUPB = dialoguePopUp.GetComponent<Button>();
-            dialoguePopUp = Instantiate(dialoguePref, transf.position, dialoguePref.transform.rotation) as GameObject;
+            //dialoguePopUp = Instantiate(dialoguePref, transf.position, dialoguePref.transform.rotation) as GameObject;
+            dialoguePopUp = Instantiate(dialoguePref, GameManager.gameManager.MainHud.transform, false) as GameObject;
+            dialoguePopUp.transform.position = mainCam.WorldToScreenPoint(transf.position);
             //dialoguePopUp.GetComponent<DialoguePopUpFollow>().SetTransform(transf);
             dialogueText = dialoguePopUp.transform.GetChild(0).GetComponentInChildren<Text>();
             popUPB = dialoguePopUp.transform.GetChild(0).GetComponent<Button>();
