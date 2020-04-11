@@ -84,4 +84,10 @@ public class MeleeW : Weapon
         //atkType = 1;
         hitted = false;
     }
+
+    public override void Equip(WeaponConfig config)
+    {
+        meleeConfig = (MeleeConfig)config;
+        weaponConfig = meleeConfig;
+    }
 }

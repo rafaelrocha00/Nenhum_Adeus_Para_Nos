@@ -8,7 +8,8 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
 {
     Image image;
     Vector3 originPos;
-    ItemButton itemButton;
+    [HideInInspector] ItemButton itemButton;
+    public ItemButton ThisItemB { get { return itemButton; } }
 
     private void Start()
     {
@@ -24,6 +25,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         transform.SetParent(GameManager.gameManager.MainHud.transform);
         //itemButton.InvenSlot = null;
         itemButton.ClearSlots();
+        if (itemButton.OriginDropSlot != null) itemButton.OriginDropSlot.OnRemove();
         originPos = transform.position;
         image.raycastTarget = false;
         image.color = new Color(1, 1, 1, 0.5f);
@@ -39,72 +41,89 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     {
         Debug.Log("Drop");
         GameManager.gameManager.inventoryController.Dragging = false;
-        InvenSlot auxSlot = GameManager.gameManager.inventoryController.ActualInvenSlot;
+        //InvenSlot auxSlot = GameManager.gameManager.inventoryController.ActualInvenSlot;
 
-        if (auxSlot != null && auxSlot.IsEmpty())
+        //if (auxSlot != null && auxSlot.IsEmpty())
+        //{
+        //    if (itemButton.Item.slotSize == Vector2Int.one)
+        //    {
+        //        auxSlot.DropItem(itemButton);
+        //        ResetIcon();
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        GridManager auxGrid = auxSlot.MyGridManager;
+        //        //IntVector2[,] itemSlotsCoord = new IntVector2[itemButton.Item.slotSize.x, itemButton.Item.slotSize.y];
+        //        InvenSlot[,] invenSlots = new InvenSlot[itemButton.Item.slotSize.x, itemButton.Item.slotSize.y];
+
+        //        int xOffset, yOffset;
+
+        //        if (itemButton.Item.slotSize.x == 1) xOffset = (auxSlot.GetQuadrantRed().x == 0) ? 0 : -1;
+        //        else
+        //        {
+        //            xOffset = (itemButton.Item.slotSize.x % 2 == 1 && auxSlot.GetQuadrantRed().x == 0) ? 1 : 0;
+        //            if (itemButton.Item.slotSize.x > 3) xOffset += itemButton.Item.slotSize.x / 2 - 1;
+        //        }
+
+        //        if (itemButton.Item.slotSize.y == 1) yOffset = (auxSlot.GetQuadrantRed().y == 0) ? 0 : -1;
+        //        else
+        //        {
+        //            yOffset = (itemButton.Item.slotSize.y % 2 == 1 && auxSlot.GetQuadrantRed().y == 0) ? 1 : 0;
+        //            if (itemButton.Item.slotSize.y > 3) yOffset += itemButton.Item.slotSize.y / 2 - 1;
+        //        }
+
+        //        int i = 0;
+        //        for (int x = auxSlot.Coordinates.x + auxSlot.GetQuadrantRed().x - xOffset; x < auxSlot.Coordinates.x + itemButton.Item.slotSize.x + auxSlot.GetQuadrantRed().x - xOffset; x++)
+        //        {
+        //            int j = 0;
+        //            for (int y = auxSlot.Coordinates.y + auxSlot.GetQuadrantRed().y - yOffset; y < auxSlot.Coordinates.y + itemButton.Item.slotSize.y + auxSlot.GetQuadrantRed().y - yOffset; y++)
+        //            {
+        //                Debug.Log(new Vector2Int(x, y));
+        //                try
+        //                {
+        //                    if (auxGrid.invenGrid[x, y].IsEmpty())
+        //                    {
+        //                        invenSlots[i, j] = auxGrid.invenGrid[x, y];
+        //                        Debug.Log("Adding " + new Vector2Int(x, y) + " in position " + i + " | " + j);
+        //                    }
+        //                    else
+        //                    {
+        //                        ResetPos();
+        //                        ResetIcon();
+        //                        return;
+        //                    }
+        //                }
+        //                catch
+        //                {
+        //                    ResetPos();
+        //                    ResetIcon();
+        //                    return;
+        //                }
+        //                j++;
+        //            }
+        //            i++;
+        //        }
+
+        //        //auxSlot.DropBigItem(itemButton, invenSlots);
+        //        auxGrid.AlocateBigItem(itemButton, invenSlots);
+        //        ResetIcon();
+        //    }
+        //}
+        ////else if (GameManager.gameManager.inventoryController.DeletingItem && auxSlot == null)
+        ////{
+        ////    itemButton.RemoveAndDestroy();
+        ////}
+        if (GameManager.gameManager.inventoryController.ActualDropSlot != null)
         {
-            if (itemButton.Item.slotSize == Vector2Int.one)
+            if (!GameManager.gameManager.inventoryController.ActualDropSlot.OnDrop(itemButton))
             {
-                auxSlot.DropItem(itemButton);
+                ResetPos();
                 ResetIcon();
-                return;
             }
             else
             {
-                GridManager auxGrid = auxSlot.MyGridManager;
-                //IntVector2[,] itemSlotsCoord = new IntVector2[itemButton.Item.slotSize.x, itemButton.Item.slotSize.y];
-                InvenSlot[,] invenSlots = new InvenSlot[itemButton.Item.slotSize.x, itemButton.Item.slotSize.y];
-
-                int xOffset, yOffset;
-
-                if (itemButton.Item.slotSize.x == 1) xOffset = (auxSlot.GetQuadrantRed().x == 0) ? 0 : -1;
-                else
-                {
-                    xOffset = (itemButton.Item.slotSize.x % 2 == 1 && auxSlot.GetQuadrantRed().x == 0) ? 1 : 0;
-                    if (itemButton.Item.slotSize.x > 3) xOffset += itemButton.Item.slotSize.x / 2 - 1;
-                }
-
-                if (itemButton.Item.slotSize.y == 1) yOffset = (auxSlot.GetQuadrantRed().y == 0) ? 0 : -1;
-                else
-                {
-                    yOffset = (itemButton.Item.slotSize.y % 2 == 1 && auxSlot.GetQuadrantRed().y == 0) ? 1 : 0;
-                    if (itemButton.Item.slotSize.y > 3) yOffset += itemButton.Item.slotSize.y / 2 - 1;
-                }
-
-                int i = 0;
-                for (int x = auxSlot.Coordinates.x + auxSlot.GetQuadrantRed().x - xOffset; x < auxSlot.Coordinates.x + itemButton.Item.slotSize.x + auxSlot.GetQuadrantRed().x - xOffset; x++)
-                {
-                    int j = 0;
-                    for (int y = auxSlot.Coordinates.y + auxSlot.GetQuadrantRed().y - yOffset; y < auxSlot.Coordinates.y + itemButton.Item.slotSize.y + auxSlot.GetQuadrantRed().y - yOffset; y++)
-                    {
-                        Debug.Log(new Vector2Int(x, y));
-                        try
-                        {
-                            if (auxGrid.invenGrid[x, y].IsEmpty())
-                            {
-                                invenSlots[i, j] = auxGrid.invenGrid[x, y];
-                                Debug.Log("Adding " + new Vector2Int(x, y) + " in position " + i + " | " + j);
-                            }
-                            else
-                            {
-                                ResetPos();
-                                ResetIcon();
-                                return;
-                            }
-                        }
-                        catch
-                        {
-                            ResetPos();
-                            ResetIcon();
-                            return;
-                        }
-                        j++;
-                    }
-                    i++;
-                }
-
-                //auxSlot.DropBigItem(itemButton, invenSlots);
-                auxGrid.AlocateBigItem(itemButton, invenSlots);
+                //itemButton.OriginDropSlot = null;
                 ResetIcon();
             }
         }
@@ -119,10 +138,12 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     {
         //GridManager auxGrid = GameManager.gameManager.inventoryController.ActualInvenSlot.MyGridManager;
         //GameManager.gameManager.inventoryController.ActualGridManager.AlocateBigItem(itemButton, itemButton.OriginSlots);
-        try
+
+        if (itemButton.OriginSlots != null)
         {
             itemButton.OriginSlots[0, 0].MyGridManager.AlocateBigItem(itemButton, itemButton.OriginSlots);
-        } catch { }
+        }
+        else if (itemButton.OriginDropSlot != null) itemButton.OriginDropSlot.OnDrop(itemButton);
 
         transform.position = originPos;
     }

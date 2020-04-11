@@ -20,11 +20,11 @@ public class Player : MonoBehaviour, BattleUnit
     public float accelerationTime = 1.0f;
     public float dashSpeed = 25.0f;
     public float dashTime = 0.75f;
-    public float dashCooldown = 2.0f;
-    bool dashInCooldown = false;
+    //public float dashCooldown = 2.0f;
+    //bool dashInCooldown = false;
 
     public float maxStamina = 100.0f;
-    public float stamina_runDecay = 25f;
+    //public float stamina_runDecay = 25f;//TIRAR
     public float stamina_dashCost = 25f;
     public float stamina_defendingDecay = 10.0f;
     public float stamina_regen = 15f;
@@ -43,6 +43,8 @@ public class Player : MonoBehaviour, BattleUnit
 
     public MeleeW equippedMelee;
     public RangedW equippedRanged;
+    RangedConfig originalRconfig;
+    MeleeConfig originalMconfig;
     bool autoShooting = false;
     bool shooting = false;
 
@@ -87,6 +89,13 @@ public class Player : MonoBehaviour, BattleUnit
 
     CamMove cam;
 
+    [HideInInspector] bool aimingThrowable = false;
+    public bool AimingThrowable { get { return aimingThrowable; } set { aimingThrowable = value; } }
+    public GameObject launchTrajectory;
+    ThrowableItem itemToThrow;
+    GameObject granadeObj;
+    public Transform rightHand;
+
     [HideInInspector] bool interacting = false;
     public bool Interacting { get { return interacting; } set { interacting = value; } }
     [HideInInspector] bool canInteract = true;
@@ -113,6 +122,9 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (myWeapon == null) myWeapon = GetComponentInChildren<Weapon>();
 
+        originalMconfig = equippedMelee.meleeConfig;
+        originalRconfig = equippedRanged.rangedWConfig;
+
         forward = Camera.main.transform.forward;
         cam = Camera.main.GetComponent<CamMove>();
         forward.y = 0;
@@ -128,19 +140,33 @@ public class Player : MonoBehaviour, BattleUnit
             UpdateStamina(stamina_regen * Time.deltaTime);
         }
 
-        if (Input.GetButtonDown("Fire3"))
-        {
-            RunSwitch(true);           
-        }
-        if (Input.GetButtonUp("Fire3"))
-        {
-            RunSwitch(false);
-        }
+        //TIRAR
+        //if (Input.GetButtonDown("Fire3"))
+        //{
+        //    RunSwitch(true);           
+        //}
+        //if (Input.GetButtonUp("Fire3"))
+        //{
+        //    RunSwitch(false);
+        //}
+        //TIRAR
 
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, 1000, layermask))
+        {
+            if (!aimLocked) battleAim = new Vector3(hit.point.x, transform.position.y, hit.point.z);
+            if (aimingThrowable) transform.LookAt(battleAim);
+            //Debug.Log(lookPos);
+        }        
 
         if (CanFight() && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0))
         {
-            if (!dashing) Move();
+            if (!dashing)
+            {
+                Move();
+            }
         }
         else
         {
@@ -152,7 +178,9 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            Debug.Log("Item rápido");
+            //Debug.Log("Item rápido");
+            if (!aimingThrowable) UseEquippedItem();
+            else CancelThrowItem();
         }
 
         if (Input.mouseScrollDelta.y > 0)
@@ -171,79 +199,86 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (!EventSystem.current.IsPointerOverGameObject() && !interacting)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (!isWeaponHide)
             {
-                if (myWeapon is RangedW)
+                if (Input.GetMouseButtonDown(0))
                 {
-                    RangedW ranged = (RangedW)myWeapon;
-
-                    if (ranged.HasAmmo())
+                    if (myWeapon is RangedW)
                     {
-                        if (!ranged.Reloading)
+                        RangedW ranged = (RangedW)myWeapon;
+
+                        if (ranged.HasAmmo())
                         {
-                            if (defending) CancelDefense();
-                            Attack();
-                            if (ranged.IsAuto())
+                            if (!ranged.Reloading)
                             {
-                                autoShooting = true;
-                                StartCoroutine(AutoShoot(ranged));
+                                if (defending) CancelDefense();
+                                Attack();
+                                if (ranged.IsAuto())
+                                {
+                                    autoShooting = true;
+                                    StartCoroutine(AutoShoot(ranged));
+                                }
+                                else
+                                {
+                                    StopCoroutine("ResetNormalSpeed");
+                                    shooting = true;
+                                    //slowMoving = true;
+                                    StartCoroutine(Slowdown(defaultSlow));
+                                    StartCoroutine("ResetNormalSpeed");
+                                }
                             }
-                            else
+                        }
+                        else
+                        {
+                            //Animação de reload;
+                        }
+                    }
+                }
+
+                if (Input.GetMouseButton(0))
+                {
+                    if (!releasedAtk && myWeapon is MeleeW)
+                    {
+                        strongAtkTimer += Time.deltaTime;
+                        if (strongAtkTimer >= strongAtkHoldTime)
+                        {
+                            if (!GameManager.gameManager.inventoryController.Dragging)
                             {
-                                StopCoroutine("ResetNormalSpeed");
-                                shooting = true;
-                                //slowMoving = true;
-                                StartCoroutine(Slowdown(defaultSlow));
-                                StartCoroutine("ResetNormalSpeed");
+                                releasedAtk = true;
+                                //Debug.Log("AtaqueForte");
+                                strongAtk = true;
+
+                                Attack();
                             }
+                        }
+                    }
+                }
+                if (Input.GetMouseButtonUp(0))
+                {
+                    if (myWeapon is MeleeW)
+                    {
+                        if (!GameManager.gameManager.inventoryController.Dragging)
+                        {
+                            Debug.Log(strongAtkTimer);
+                            if (strongAtkTimer < strongAtkHoldTime && !releasedAtk)
+                            {
+                                //Debug.Log("AtaqueFraco");
+                                strongAtk = false;
+                                if (defending) CancelDefense();
+                                Attack();
+                            }
+                            releasedAtk = false;
                         }
                     }
                     else
                     {
-                        //Animação de reload;
+                        autoShooting = false;
                     }
                 }
             }
-
-            if (Input.GetMouseButton(0))
+            else if (aimingThrowable)
             {
-                if (!releasedAtk && myWeapon is MeleeW)
-                {
-                    strongAtkTimer += Time.deltaTime;
-                    if (strongAtkTimer >= strongAtkHoldTime)
-                    {
-                        if (!GameManager.gameManager.inventoryController.Dragging)
-                        {
-                            releasedAtk = true;
-                            //Debug.Log("AtaqueForte");
-                            strongAtk = true;
-
-                            Attack();
-                        }
-                    }
-                }
-            }
-            if (Input.GetMouseButtonUp(0))
-            {
-                if (myWeapon is MeleeW)
-                {
-                    if (!GameManager.gameManager.inventoryController.Dragging)
-                    {
-                        Debug.Log(strongAtkTimer);
-                        if (strongAtkTimer < strongAtkHoldTime && !releasedAtk)
-                        {
-                            //Debug.Log("AtaqueFraco");
-                            strongAtk = false;
-                            if (defending) CancelDefense();
-                            Attack();
-                        }
-                        releasedAtk = false;
-                    }
-                }
-                else
-                {
-                    autoShooting = false;
-                }
+                if (Input.GetMouseButtonDown(0)) StartThrowItem();
             }
         }
 
@@ -366,7 +401,9 @@ public class Player : MonoBehaviour, BattleUnit
 
     void RunSwitch(bool value)
     {
-        if (value && stamina > 0)
+        //TROCAR DE ANDAR PARA CORRENDO SOMENTE QUANDO ENTRAR EM BATALHA
+        //CORRER NÃO GASTA STAMINA
+        if (value/* && stamina > 0*/)
         {
             running = value;
             acceleratedSpeed = moveSpeed;
@@ -376,31 +413,34 @@ public class Player : MonoBehaviour, BattleUnit
         {
             running = value;
             moveSpeed = acceleratedSpeed;
-            StartCoroutine("StartStaminaRegen");
-            stoppedStaminaRegen = false;
+            //StartCoroutine("StartStaminaRegen");
+            //stoppedStaminaRegen = false;
         }
     }
 
-    void Move()
+    void Move(/*Ray ray*/)
     {
         moving = true;
         moveTime += Time.deltaTime;
         if (moveTime < accelerationTime) moveSpeed += acceleration * Time.deltaTime;
         else if (!running && moveSpeed < maxSpeed && !slowMoving) moveSpeed = maxSpeed;
 
-        if (running && stamina > 0 && !defending)
-        {
-            //canRegenStamina = false;
-            //if (!stoppedStaminaRegen)
-            //{
-            //    StopCoroutine("StartStaminaRegen");
-            //    stoppedStaminaRegen = true;
-            //}
-            CancelStaminaRegen(true);
-            moveSpeed = Mathf.Clamp(moveSpeed, 0, runningSpeed);
-            UpdateStamina(-stamina_runDecay * Time.deltaTime);
-            if (stamina == 0) RunSwitch(false);
-        }
+        //TIRAR
+        //if (running && stamina > 0 && !defending)
+        //{
+        //    //canRegenStamina = false;
+        //    //if (!stoppedStaminaRegen)
+        //    //{
+        //    //    StopCoroutine("StartStaminaRegen");
+        //    //    stoppedStaminaRegen = true;
+        //    //}
+        //    CancelStaminaRegen(true);
+        //    moveSpeed = Mathf.Clamp(moveSpeed, 0, runningSpeed);
+        //    UpdateStamina(-stamina_runDecay * Time.deltaTime);
+        //    if (stamina == 0) RunSwitch(false);
+        //}
+        //TIRAR
+
         //else if (defending)
         //{
         //    moveSpeed = defaultSpeed - defaultSpeed * defense_slow / 100;
@@ -426,19 +466,19 @@ public class Player : MonoBehaviour, BattleUnit
         //if (!inBattle) transform.rotation = Quaternion.LookRotation(newDirection);
         //else
         //{
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
+        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //RaycastHit hit;
         //Vector3 lookPos;
 
-        if (!aimLocked)
-        {
-            if (Physics.Raycast(ray, out hit, 1000, layermask))
-            {
-                battleAim = new Vector3(hit.point.x, transform.position.y, hit.point.z);
-                //Debug.Log(lookPos);
-            }
-        }
-        else
+        //if (!aimLocked)
+        //{
+        //    //if (Physics.Raycast(ray, out hit, 1000, layermask))
+        //    //{
+        //    //    battleAim = new Vector3(hit.point.x, transform.position.y, hit.point.z);
+        //    //    Debug.Log(lookPos);
+        //    //}
+        //}
+        if (aimLocked)
         {
             if (targetedEnemy != null)
             {
@@ -456,15 +496,15 @@ public class Player : MonoBehaviour, BattleUnit
         //animator.SetFloat("VelX", velX);
         //animator.SetFloat("VelY", velY);
 
-        transform.LookAt(battleAim);        
+        if (!aimingThrowable) transform.LookAt(battleAim);        
         //}
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (stamina >= stamina_dashCost && !dashInCooldown)
+            if (stamina >= stamina_dashCost/* && !dashInCooldown*/)
             {
                 //Cooldown do dash
-                StartCoroutine("DashCooldown");
+                //StartCoroutine("DashCooldown");
                 CancelStaminaRegen(false);
                 UpdateStamina(-stamina_dashCost);
                 StartCoroutine(Dash(heading));
@@ -514,12 +554,12 @@ public class Player : MonoBehaviour, BattleUnit
         } while (timer < dashTime);
         dashing = false;
     }
-    IEnumerator DashCooldown()
-    {
-        dashInCooldown = true;
-        yield return new WaitForSeconds(dashCooldown);
-        dashInCooldown = false;
-    }
+    //IEnumerator DashCooldown()
+    //{
+    //    dashInCooldown = true;
+    //    yield return new WaitForSeconds(dashCooldown);
+    //    dashInCooldown = false;
+    //}
 
     void CancelDefense()
     {
@@ -630,6 +670,25 @@ public class Player : MonoBehaviour, BattleUnit
         strongAtkTimer = 0;       
     }
 
+    //////////////////////////////////////////////
+    public void EquipWeapon(WeaponConfig wconfig)
+    {
+        Debug.Log("EquippingWeapon");
+        if (wconfig is MeleeConfig)
+        {
+            equippedMelee.Equip(wconfig);
+        }
+        else
+        {
+            equippedRanged.Equip(wconfig);
+        }
+    }
+    public void EquipOriginalWeapon(bool isRanged)
+    {
+        if (isRanged) equippedRanged.Equip(originalRconfig);
+        else equippedMelee.Equip(originalMconfig);
+    }
+
     void SwitchWeapon()
     {
         if (!isWeaponHide)
@@ -662,6 +721,52 @@ public class Player : MonoBehaviour, BattleUnit
             else equippedRanged.gameObject.SetActive(true);
         }
         isWeaponHide = !isWeaponHide;
+    }
+
+    public void UseEquippedItem()
+    {
+        GameManager.gameManager.inventoryController.Inventory.quickItemSlot.UseItemEffect();
+    }
+
+    public void StartAiming(ThrowableItem tI)
+    {
+        itemToThrow = tI;
+        aimingThrowable = true;
+        launchTrajectory.SetActive(true);
+        HideShowWeapon();
+
+        granadeObj = Instantiate(tI.itemToThrow, rightHand.position, tI.itemToThrow.transform.rotation) as GameObject;
+        granadeObj.transform.SetParent(rightHand);
+        granadeObj.GetComponent<Granade>().Lock();
+    }
+    public void StartThrowItem()
+    {
+        if (aimingThrowable)
+        {
+            Debug.Log("Arremessando");
+            aimingThrowable = false;
+            //Animação de arremessar
+            Invoke("ThrowItem", itemToThrow.AnimTime);
+        }
+    }
+    void ThrowItem()
+    {
+        granadeObj.transform.SetParent(null);
+        Vector3 force = (launchTrajectory.GetComponent<LauchTragectory>().MousePos - transform.position) + Vector3.up * 10;
+        launchTrajectory.SetActive(false);
+        Granade aux = granadeObj.GetComponent<Granade>();
+        aux.Unlock();
+        itemToThrow.Throw(force, aux);
+        GameManager.gameManager.inventoryController.Inventory.quickItemSlot.ConfirmUse();
+        HideShowWeapon();
+    }
+
+    public void CancelThrowItem()
+    {
+        launchTrajectory.SetActive(false);
+        aimingThrowable = false;
+        Destroy(granadeObj);
+        HideShowWeapon();
     }
 
     public void UseDialogue(/*int idx*/)
@@ -714,16 +819,19 @@ public class Player : MonoBehaviour, BattleUnit
         {
             inBattle = true;
             interacting = false;
+            RunSwitch(true);
         }
-        GameManager.gameManager.battleController.MainCharacter = this;
+        GameManager.gameManager.battleController.MainCharacter = this;        
     }
     public void DelayStartBattle()
     {
         inBattle = true;
+        RunSwitch(true);
     }
 
     public void EndBattle()
     {
+        RunSwitch(false);
         inBattle = false;
         aimLocked = false;
         if (defending)
@@ -780,6 +888,12 @@ public class Player : MonoBehaviour, BattleUnit
             }
         }
         else StopCoroutine("StartStaminaRegen");
+    }
+
+    public void Heal(float value)
+    {
+        charStats.UpdateLife(value);
+        UpdateLife();
     }
 
     void UpdateStamina(float value)

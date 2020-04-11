@@ -31,6 +31,9 @@ public class INPC : Interactives, BattleUnit
     bool strongAtk = false;
     bool isRanged = false;
 
+    bool stunned = false;
+    bool slowed = false;
+
     public float defaultSpeed = 6.0f;
     public float rangedKiteSpeed = 4.0f;
 
@@ -125,7 +128,7 @@ public class INPC : Interactives, BattleUnit
 
         float actualVelocity = navMesh.velocity.magnitude / navMesh.speed;
         if (isRanged) anim.SetFloat("Vel", actualVelocity);
-        if (inBattle)
+        if (inBattle && !stunned)
         {             
             Ray ray = new Ray(transform.position, mCharacter.transform.position - transform.position);
             RaycastHit hit;
@@ -133,23 +136,24 @@ public class INPC : Interactives, BattleUnit
             Vector3 lookPos = new Vector3(mCharacter.transform.position.x, transform.position.y, mCharacter.transform.position.z);
             transform.LookAt(lookPos);
 
+
             if (isRanged)
             {
                 if ((mCharacter.transform.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
                 {
                     Vector3 desiredPos = -(mCharacter.transform.position - transform.position) + transform.position;
                     MoveNavMesh(desiredPos);
-                    navMesh.speed = rangedKiteSpeed;
+                    if (!slowed) navMesh.speed = rangedKiteSpeed;
                 }
                 else if ((mCharacter.transform.position - transform.position).sqrMagnitude >= rangedW.GetMaxRange() * rangedW.GetMaxRange())
                 {
                     Vector3 toPlayerVec = mCharacter.transform.position - transform.position;
                     Vector3 desiredPos = toPlayerVec.normalized * (toPlayerVec.magnitude - rangedW.GetMaxRange() * 0.2f) + transform.position;
-                    navMesh.speed = defaultSpeed;
+                    if (!slowed) navMesh.speed = defaultSpeed;
                     MoveNavMesh(desiredPos);
                 }
                 else
-                {                    
+                {
                     navMesh.isStopped = true;
                     //parar animação de andar
                 }
@@ -171,25 +175,30 @@ public class INPC : Interactives, BattleUnit
                 if ((mCharacter.transform.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
                     TryAttack();
             }
-
         }
+
+
+        //if (inBattle && Input.GetKeyDown(KeyCode.L)) Stun(2.0f);
+        //if (inBattle && Input.GetKeyDown(KeyCode.H)) Slow(40.0f, 2.0f);
+
     }
 
     void MoveNavMesh(Vector3 pos)
     {
+
         navMesh.isStopped = false;
         navMesh.destination = pos;
-       
+
         //if (inBattle)
         //{
-            //??? if (isRanged) //animação de andar para trás;
-            //else animação de andar pra frente;
+        //??? if (isRanged) //animação de andar para trás;
+        //else animação de andar pra frente;
 
-            //CheckLook_WalkDir(navMesh.steeringTarget.normalized);
+        //CheckLook_WalkDir(navMesh.steeringTarget.normalized);
         //}
         //else
         //{
-            //animção de andar pra frente
+        //animção de andar pra frente
         //}
     }
 
@@ -340,6 +349,28 @@ public class INPC : Interactives, BattleUnit
         }
         navMesh.speed /= 3;
         navMesh.isStopped = true;
+    }
+
+    public void Stun(float time)
+    {
+        stunned = true;
+        Invoke("CancelStun", time);
+        navMesh.isStopped = true;
+    }
+    void CancelStun()
+    {
+        stunned = false;
+    }
+    public void Slow(float slowPerc, float time)
+    {
+        slowed = true;
+        navMesh.speed = navMesh.speed / 100 * slowPerc;
+        Invoke("CancelSlow", time);
+    }
+    void CancelSlow()
+    {
+        slowed = false;
+        navMesh.speed = defaultSpeed;
     }
 
     public void StartBattle(bool byDialogue = true)

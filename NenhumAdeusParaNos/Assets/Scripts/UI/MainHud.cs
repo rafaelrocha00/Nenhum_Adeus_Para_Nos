@@ -17,6 +17,8 @@ public class MainHud : MonoBehaviour
     [HideInInspector] bool isQuickMenuActive;
     public bool IsQuickMenuActive { get { return isQuickMenuActive; } }
 
+    public GameObject destroyItemConfirm;
+
     public GameObject diaryMenu;
 
     public GameObject dialogueOptionsTab;
@@ -29,6 +31,8 @@ public class MainHud : MonoBehaviour
     public Image lifeBar;
     public Image defenseBar;
     //public int[] battleDialogues = new int[5];
+
+    public QuickDialogueItemIcon quickItemSlot;
 
     #region Opçoes_de_Dialogo
     public void OpenDialogueOptTab(DialogueWithChoice dialogue)
@@ -62,10 +66,10 @@ public class MainHud : MonoBehaviour
     #region Batalha   
     public GameObject equipableDialoguesTab;
 
-    public BattleDialogueB[] battleDialoguesSlots = new BattleDialogueB[2];
-    BattleDialogueB[] equipablesBattleDialogues;
+    //public QuickDialogueItemIcon[] battleDialoguesSlots = new QuickDialogueItemIcon[2];
+    //QuickDialogueItemIcon[] equipablesBattleDialogues;
 
-    public BattleDialogueB equippedDialogueB;
+    public QuickDialogueItemIcon equippedDialogueB;
 
     public GameObject quickDialogueTab;
 
@@ -134,6 +138,16 @@ public class MainHud : MonoBehaviour
         defenseBar.transform.parent.gameObject.SetActive(!defenseBar.transform.parent.gameObject.activeSelf);
     }
 
+    public void ShowHideQuickItemSlot(bool value)
+    {
+        quickItemSlot.transform.parent.gameObject.SetActive(value);
+    }
+
+    public void OpenCloseDestroyItem(bool value)
+    {
+        destroyItemConfirm.SetActive(value);
+    }
+
     public void OpenCloseQuickMenu()
     {
         isQuickMenuActive = !isQuickMenuActive;
@@ -155,6 +169,7 @@ public class MainHud : MonoBehaviour
     public void OpenCloseInventory(bool value)
     {
         inventory.SetActive(value);
+        ShowHideQuickItemSlot(!value);
     }
 
     public void GameOver()

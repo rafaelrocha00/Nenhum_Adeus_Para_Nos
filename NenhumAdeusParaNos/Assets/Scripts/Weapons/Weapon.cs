@@ -4,13 +4,16 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    protected WeaponConfig weaponConfig;
+    [HideInInspector] protected WeaponConfig weaponConfig;
+    public WeaponConfig WeaponConfig { get { return weaponConfig; } set { weaponConfig = value; } }
 
     //public float defaultDamage;
     //public float defaultAtkSpeed;
     //public float range;
 
     public abstract float Attack();
+
+    public abstract void Equip(WeaponConfig config);
 
     public float GetRange()
     {

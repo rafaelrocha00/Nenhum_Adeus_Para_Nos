@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InvenSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class InvenSlot : DropSlot//, IPointerEnterHandler, IPointerExitHandler
 {
     Image image;
 
@@ -30,19 +30,21 @@ public class InvenSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         image = GetComponent<Image>();
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public override void OnPointerEnter(PointerEventData eventData)
     {
+        base.OnPointerEnter(eventData);
         if (GameManager.gameManager.inventoryController.Dragging) Select();
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public override void OnPointerExit(PointerEventData eventData)
     {
+        base.OnPointerExit(eventData);
         Deselect();
     }
 
     public void Select()
     {
-        GameManager.gameManager.inventoryController.ActualInvenSlot = this;
+        //GameManager.gameManager.inventoryController.ActualInvenSlot = this;
         GameManager.gameManager.inventoryController.ActualGridManager = this.myGridManager;
         if (image == null) image = GetComponent<Image>();
         image.color = selectedColor;
@@ -50,9 +52,81 @@ public class InvenSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     }
     public void Deselect()
     {
-        GameManager.gameManager.inventoryController.ActualInvenSlot = null;
+       // GameManager.gameManager.inventoryController.ActualInvenSlot = null;
         if (IsEmpty())image.color = Color.white;
         //selected = false;
+    }
+
+    public override bool OnDrop(ItemButton itemButton)
+    {
+        if (IsEmpty())
+        {
+            if (itemButton.Item.slotSize == Vector2Int.one)
+            {
+                DropItem(itemButton);
+                if (itemButton.Item is QuickUseItem) myGridManager.CheckIfItemWasAdded();
+                return true;
+            }
+            else
+            {
+                //GridManager auxGrid = myGridManager;
+                //IntVector2[,] itemSlotsCoord = new IntVector2[itemButton.Item.slotSize.x, itemButton.Item.slotSize.y];
+                InvenSlot[,] invenSlots = new InvenSlot[itemButton.Item.slotSize.x, itemButton.Item.slotSize.y];
+
+                int xOffset, yOffset;
+
+                if (itemButton.Item.slotSize.x == 1) xOffset = (GetQuadrantRed().x == 0) ? 0 : -1;
+                else
+                {
+                    xOffset = (itemButton.Item.slotSize.x % 2 == 1 && GetQuadrantRed().x == 0) ? 1 : 0;
+                    if (itemButton.Item.slotSize.x > 3) xOffset += itemButton.Item.slotSize.x / 2 - 1;
+                }
+
+                if (itemButton.Item.slotSize.y == 1) yOffset = (GetQuadrantRed().y == 0) ? 0 : -1;
+                else
+                {
+                    yOffset = (itemButton.Item.slotSize.y % 2 == 1 && GetQuadrantRed().y == 0) ? 1 : 0;
+                    if (itemButton.Item.slotSize.y > 3) yOffset += itemButton.Item.slotSize.y / 2 - 1;
+                }
+
+                int i = 0;
+                for (int x = coordinates.x + GetQuadrantRed().x - xOffset; x < coordinates.x + itemButton.Item.slotSize.x + GetQuadrantRed().x - xOffset; x++)
+                {
+                    int j = 0;
+                    for (int y = coordinates.y + GetQuadrantRed().y - yOffset; y < coordinates.y + itemButton.Item.slotSize.y + GetQuadrantRed().y - yOffset; y++)
+                    {
+                        Debug.Log(new Vector2Int(x, y));
+                        try
+                        {
+                            if (myGridManager.invenGrid[x, y].IsEmpty())
+                            {
+                                invenSlots[i, j] = myGridManager.invenGrid[x, y];
+                                Debug.Log("Adding " + new Vector2Int(x, y) + " in position " + i + " | " + j);
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        catch
+                        {
+                            return false;
+                        }
+                        j++;
+                    }
+                    i++;
+                }
+
+                //auxSlot.DropBigItem(itemButton, invenSlots);
+                myGridManager.AlocateBigItem(itemButton, invenSlots);
+                if (itemButton.Item is QuickUseItem) myGridManager.CheckIfItemWasAdded();
+                return true;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void DropItem(ItemButton itemButton)

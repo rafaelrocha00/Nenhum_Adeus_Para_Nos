@@ -51,6 +51,7 @@ public class CamMove : MonoBehaviour
 
     public void SetTarget(Vector3 newTarget)
     {
+        //Debug.Log(newTarget);
         targetPos = newTarget;
     }
 

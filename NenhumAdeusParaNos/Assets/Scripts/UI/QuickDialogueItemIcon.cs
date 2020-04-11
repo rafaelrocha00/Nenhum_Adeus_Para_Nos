@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleDialogueB : MonoBehaviour
+public class QuickDialogueItemIcon : MonoBehaviour
 {
     Image myImage;
     //[SerializeField] DialogueBattle[] thisBattleDialogues = new DialogueBattle[2];
@@ -61,6 +61,14 @@ public class BattleDialogueB : MonoBehaviour
     }
 
     public void SetIcon(Color color)
+    {
+        myImage.color = color;
+    }
+    public void SetSprite(Sprite sprite)
+    {
+        myImage.sprite = sprite;        
+    }
+    public void SetColor(Color color)
     {
         myImage.color = color;
     }

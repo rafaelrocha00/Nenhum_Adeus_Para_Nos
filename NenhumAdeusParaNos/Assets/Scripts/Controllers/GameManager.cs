@@ -53,6 +53,10 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            battleController.ActiveBattle = false;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        }
     }
 }

@@ -8,7 +8,7 @@ public class BattleController : MonoBehaviour
     public List<INPC> AllEnemyFighters { get { return allEnemyFighters; } }
 
     [HideInInspector] Player mainCharacter;
-    public Player MainCharacter { get { return mainCharacter; } set { mainCharacter = value; } }
+    public Player MainCharacter { get { if (mainCharacter == null) FindPlayer(); return mainCharacter; } set { mainCharacter = value; } }
 
     [HideInInspector] bool activeBattle = false;
     public bool ActiveBattle { get { return activeBattle; } set { activeBattle = value; } }
@@ -38,6 +38,7 @@ public class BattleController : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         Debug.Log("Starting Battle");
         activeBattle = true;
+        allEnemyFighters.Clear();
         for (int i = 0; i < fighters.Count; i++)
         {
             fighters[i].StartBattle(byDialogue);

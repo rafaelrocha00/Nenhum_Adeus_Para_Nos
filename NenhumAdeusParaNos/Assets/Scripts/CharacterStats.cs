@@ -44,11 +44,19 @@ public class CharacterStats
 
         //if (life == 0) Die();
         //Debug.Log(life);
-        if (myBattleUnit.IsInBattle()) life -= damage;
-        life = Mathf.Clamp(life, 0, maxLife);
-        if (life == 0) Die();
+        //if (myBattleUnit.IsInBattle()) life -= damage;
+        //life = Mathf.Clamp(life, 0, maxLife);
+        //if (life == 0) Die();
+        UpdateLife(-damage);
         Debug.Log(life);
         return false;
+    }
+
+    public void UpdateLife(float value)
+    {
+        if (myBattleUnit.IsInBattle() || value > 0) life += value;
+        life = Mathf.Clamp(life, 0, maxLife);
+        if (life == 0) Die();
     }
 
     public float LifePercentage()

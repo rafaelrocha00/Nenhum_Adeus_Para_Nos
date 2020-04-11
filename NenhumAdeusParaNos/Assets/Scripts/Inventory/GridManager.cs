@@ -54,6 +54,35 @@ public class GridManager : MonoBehaviour
         Debug.Log("Alocating");
     }
 
+    public void RemoveItem(string itemName)
+    {
+        InvenSlot auxSlot = FindItem(itemName);
+
+        if (auxSlot == null) return;
+        else
+        {
+            auxSlot.ThisItemButton.RemoveAndDestroy();
+        }
+    }
+
+    public InvenSlot FindItem(string itemName)
+    {
+        for (int i = 0; i < xSize; i++)
+        {
+            for (int j = 0; j < ySize; j++)
+            {
+                if (invenGrid[i, j].ThisItemButton != null && invenGrid[i, j].ThisItemButton.Item.itemName.Equals(itemName))
+                    return invenGrid[i, j];
+            }
+        }
+        return null;
+    }
+
+    public void CheckIfItemWasAdded()
+    {
+        GameManager.gameManager.inventoryController.Inventory.ItemRemovedOrAdded();
+    }
+
     public Vector3 ItemPosition(InvenSlot[,] slots)
     {
         //Vector3 corner1 = invenGrid[coords[0, 0].x, coords[0, 0].y].transform.position;

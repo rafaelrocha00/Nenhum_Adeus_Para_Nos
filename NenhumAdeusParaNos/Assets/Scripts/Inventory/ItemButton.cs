@@ -12,6 +12,9 @@ public class ItemButton : MonoBehaviour
     [HideInInspector] InvenSlot[,] originSlots;
     public InvenSlot[,] OriginSlots { get { return originSlots; } }
 
+    [HideInInspector] DropSlot originDropSlot;
+    public DropSlot OriginDropSlot { get { return originDropSlot; } set { originDropSlot = value; } }
+
     public void SetSlot(InvenSlot[,] slot)
     {
         //if (myInvenSlots != null)
@@ -51,5 +54,22 @@ public class ItemButton : MonoBehaviour
             }
             myInvenSlots = null;
         }
+    }
+
+    public void ClearOrigin()
+    {
+        originSlots = null;
+    }
+
+    public void RemoveAndDestroy()
+    {
+        if (originSlots == null && originDropSlot != null)
+        {
+            WeaponSlot aux = (WeaponSlot)originDropSlot;
+            GameManager.gameManager.battleController.MainCharacter.EquipOriginalWeapon(aux.isRanged);
+        }
+        if (item is QuickUseItem) GameManager.gameManager.inventoryController.Inventory.ItemRemovedOrAdded();
+        ClearSlots();
+        Destroy(gameObject);
     }
 }
