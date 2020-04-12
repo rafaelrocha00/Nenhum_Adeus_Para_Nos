@@ -15,6 +15,7 @@
             <e p="BattleController.cs" t="Include" />
             <e p="DialogueController.cs" t="Include" />
             <e p="GameManager.cs" t="Include" />
+            <e p="InventoryController.cs" t="Include" />
             <e p="NPCAnswers.cs" t="Include" />
             <e p="TimeController.cs" t="Include" />
           </e>
@@ -29,22 +30,53 @@
           <e p="EffectBattleStart.cs" t="Include" />
           <e p="INPC.cs" t="Include" />
           <e p="Interactives.cs" t="Include" />
+          <e p="Inventory" t="Include">
+            <e p="DragDrop.cs" t="Include" />
+            <e p="GridManager.cs" t="Include" />
+            <e p="Inventory.cs" t="Include" />
+            <e p="InventorySlot" t="Include">
+              <e p="DropSlot.cs" t="Include" />
+              <e p="InvenSlot.cs" t="Include" />
+              <e p="QuickItemSlot.cs" t="Include" />
+              <e p="SlotQuadrant.cs" t="Include" />
+              <e p="TrashSlot.cs" t="Include" />
+              <e p="WeaponSlot.cs" t="Include" />
+            </e>
+            <e p="ItemButton.cs" t="Include" />
+            <e p="ItemGenerator.cs" t="Include" />
+            <e p="Items" t="Include">
+              <e p="Granade.cs" t="Include" />
+              <e p="HealItem.cs" t="Include" />
+              <e p="Item.cs" t="Include" />
+              <e p="PullGranade.cs" t="Include" />
+              <e p="QuickUseItem.cs" t="Include" />
+              <e p="ThrowableItem.cs" t="Include" />
+              <e p="WeaponItem.cs" t="Include" />
+            </e>
+            <e p="Storage.cs" t="Include" />
+          </e>
+          <e p="LauchTragectory.cs" t="Include" />
           <e p="Personality.cs" t="Include" />
           <e p="Player.cs" t="Include" />
           <e p="QuestPC.cs" t="Include" />
           <e p="UI" t="Include">
-            <e p="BattleDialogueB.cs" t="Include" />
             <e p="ButtonToPress.cs" t="Include" />
             <e p="DialogueOption.cs" t="Include" />
             <e p="DialoguePopUpFollow.cs" t="Include" />
             <e p="MainHud.cs" t="Include" />
+            <e p="QuickDialogueItemIcon.cs" t="Include" />
           </e>
           <e p="Weapons" t="Include">
             <e p="Bullet.cs" t="Include" />
             <e p="MeleeW.cs" t="Include" />
             <e p="RangedW.cs" t="Include" />
-            <e p="Shotgun.cs" t="Include" />
             <e p="Weapon.cs" t="Include" />
+            <e p="WeaponConfigs" t="Include">
+              <e p="MeleeConfig.cs" t="Include" />
+              <e p="RangedConfig.cs" t="Include" />
+              <e p="ShotgunConfig.cs" t="Include" />
+              <e p="WeaponConfig.cs" t="Include" />
+            </e>
           </e>
         </e>
         <e p="Shader" t="Include">
