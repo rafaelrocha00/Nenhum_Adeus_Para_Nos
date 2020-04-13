@@ -67,4 +67,11 @@ public class Dialogue : ScriptableObject
         if (mcSpeak) GameManager.gameManager.dialogueController.ChangePopUpPos(mainCharacter.transform);
         else GameManager.gameManager.dialogueController.ChangePopUpPos(myNPC.transform);
     }
+
+    public float GetPlayerNPCDistance()
+    {
+        if (myNPC != null && mainCharacter != null)
+            return (myNPC.transform.position - mainCharacter.transform.position).sqrMagnitude;
+        return 0;
+    }
 }

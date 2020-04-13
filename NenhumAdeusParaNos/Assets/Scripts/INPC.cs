@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
-public class INPC : Interactives, BattleUnit
+public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
 {
     public enum Personalities { DereDere, Kuudere, Tsundere, Yandere }
     public enum EnemyType { Monstro, Estatal, NaoEstatal, Cidadao }
@@ -12,6 +13,7 @@ public class INPC : Interactives, BattleUnit
     public CharacterStats CharStats { get { return charStats; } }
 
     public Animator anim;
+    public Image lifeBar;
 
     //[SerializeField] Behavior behavior;
     public Personalities thisPersonality;// { get { return behavior; } set { behavior = value; } }
@@ -81,17 +83,17 @@ public class INPC : Interactives, BattleUnit
         }
     }
 
-    public override void Interact(Player player)
-    {
-        //mCharacter = player;
-        //myDialogue.MyNPC = this;
-        //myDialogue.MainCharacter = player;
-        //DesactiveBtp();
-        ////GameManager.gameManager.dialogueController.OpenDialoguePopUp(this.transform, this);
-        //GameManager.gameManager.dialogueController.StartDialogue(myDialogue, transform/*, this*/);
-        //interacting = true;
-        ////NextString();
-    }
+    //public override void Interact(Player player)
+    //{
+    //    //mCharacter = player;
+    //    //myDialogue.MyNPC = this;
+    //    //myDialogue.MainCharacter = player;
+    //    //DesactiveBtp();
+    //    ////GameManager.gameManager.dialogueController.OpenDialoguePopUp(this.transform, this);
+    //    //GameManager.gameManager.dialogueController.StartDialogue(myDialogue, transform/*, this*/);
+    //    //interacting = true;
+    //    ////NextString();
+    //}
 
     public void NextString()
     {
@@ -109,11 +111,11 @@ public class INPC : Interactives, BattleUnit
         //firstInteraction = false;
     }
 
-    public override void OnExit()
-    {
-        base.OnExit();
-        //EndDialogue();
-    }
+    //public override void OnExit()
+    //{
+    //    base.OnExit();
+    //    //EndDialogue();
+    //}
 
     //
     //public void ChangeDialogue(Dialogue newDialogue)
@@ -299,15 +301,18 @@ public class INPC : Interactives, BattleUnit
     }
     void CancelDialogue()
     {
-        waitingForAnswer = false;
-        GameManager.gameManager.dialogueController.EndDialogue();
+        if (waitingForAnswer)
+        {
+            waitingForAnswer = false;
+            GameManager.gameManager.dialogueController.EndDialogue();
+        }
     }
     public void ReceiveBattleDialogue(DialogueBattle playerDialogue)
     {
         Debug.Log("Dialogo Recebido");
         if (waitingForAnswer)
         {
-            Debug.Log("ALOALOALO");
+            //Debug.Log("ALOALOALO");
             GameManager.gameManager.dialogueController.ChooseOption((int)playerDialogue.approachType);
             waitingForAnswer = false;
         }
@@ -427,7 +432,7 @@ public class INPC : Interactives, BattleUnit
         if (!inBattle)
         {
             startPos = transform.position;
-            OnExit();
+            //OnExit();
             Debug.Log("Bydialogue: " + byDialogue);
             Debug.Log("Hostil: " + hostile);
             if ((!byDialogue && hostile) || byDialogue)
@@ -435,7 +440,8 @@ public class INPC : Interactives, BattleUnit
                 GetComponent<SphereCollider>().enabled = false;
                 GameManager.gameManager.battleController.AddFighter(this);
                 inBattle = true;
-                Debug.Log("NPC entrou na batalha");             
+                Debug.Log("NPC entrou na batalha");
+                lifeBar.transform.parent.gameObject.SetActive(true);
             }
             else
             {
@@ -450,6 +456,7 @@ public class INPC : Interactives, BattleUnit
         inBattle = false;
         navMesh.speed = defaultSpeed;
         Invoke("ActiveInteractionCollider", 3.0f);
+        lifeBar.transform.parent.gameObject.SetActive(false);
     }
 
     public bool CanFight()
@@ -464,7 +471,9 @@ public class INPC : Interactives, BattleUnit
 
     public bool ReceiveDamage(float damage)
     {
-        return charStats.ReceiveDamage(damage);
+        bool aux = charStats.ReceiveDamage(damage);
+        if (lifeBar != null) lifeBar.fillAmount = charStats.LifePercentage();
+        return aux;
     }
 
     public void Die()

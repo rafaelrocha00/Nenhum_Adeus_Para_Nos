@@ -96,7 +96,7 @@ public class MainHud : MonoBehaviour
 
     #endregion
 
-    private void Awake()
+    private void Start()
     {
         GameManager.gameManager.MainHud = this;
     }
@@ -117,6 +117,11 @@ public class MainHud : MonoBehaviour
             OpenCloseInventory(!inventory.activeSelf);
         }
 
+    }
+
+    public void WaitingForAnswer(bool value)
+    {
+        equippedDialogueB.GetComponent<Animator>().SetBool("WaitingAnswer", value);
     }
 
     public void UpdateStamina(float staminaValue)

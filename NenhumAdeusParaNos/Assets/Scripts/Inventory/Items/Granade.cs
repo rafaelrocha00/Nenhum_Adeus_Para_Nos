@@ -46,10 +46,14 @@ public abstract class Granade : MonoBehaviour
     public void Lock()
     {
         rb.useGravity = false;
+        rb.constraints = RigidbodyConstraints.FreezeAll;
+        GetComponent<Collider>().enabled = false;
     }
     public void Unlock()
     {
         rb.useGravity = true;
+        rb.constraints = RigidbodyConstraints.None;
+        GetComponent<Collider>().enabled = true;
     }
 
     //protected INPC[] GetEnemies()

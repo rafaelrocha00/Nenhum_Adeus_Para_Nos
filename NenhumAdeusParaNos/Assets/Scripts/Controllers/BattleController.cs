@@ -25,6 +25,9 @@ public class BattleController : MonoBehaviour
 
     bool byDialogue = true;
 
+    public GameObject startBattleEffectPrefab;
+    ParticleSystem startBattleEffect;
+
     //Vector3 closestEnemyPos;
 
     public void StartBattle(List<BattleUnit> fighters)
@@ -48,6 +51,13 @@ public class BattleController : MonoBehaviour
             allEnemyFighters[i].MCharacter = mainCharacter;
         }
         //GameManager.gameManager.MainHud.OpenCloseQuickDialogueTab();
+        if (startBattleEffect == null)
+        {
+            GameObject aux = Instantiate(startBattleEffectPrefab, transform.position, startBattleEffectPrefab.transform.rotation) as GameObject;
+            startBattleEffect = aux.GetComponent<ParticleSystem>();
+        }
+        startBattleEffect.transform.position = mainCharacter.transform.position;
+        startBattleEffect.Play();
         StartCoroutine("CheckPlayerPos");
         byDialogue = true;
         triggeringBattle = false;

@@ -130,12 +130,18 @@ public class Player : MonoBehaviour, BattleUnit
         forward.y = 0;
         forward = Vector3.Normalize(forward);
         right = Quaternion.Euler(new Vector3(0, 90, 0)) * forward;
-        GameManager.gameManager.MainHud.MainCharacter = this;        
+        //GameManager.gameManager.MainHud.MainCharacter = this;        
+        StartCoroutine("GetMainHUD");
+    }
+    IEnumerator GetMainHUD()
+    {
+        yield return new WaitForEndOfFrame();
+        GameManager.gameManager.MainHud.MainCharacter = this;
     }
 
     void Update()
     {
-        if (canRegenStamina)
+        if (canRegenStamina && stamina < maxStamina)
         {
             UpdateStamina(stamina_regen * Time.deltaTime);
         }
@@ -832,6 +838,7 @@ public class Player : MonoBehaviour, BattleUnit
         }
         else if (GameManager.gameManager.dialogueController.WaitingForAnswer)
         {
+            GameManager.gameManager.MainHud.WaitingForAnswer(false);
             DialogueBattle actualDialogueBattle = GameManager.gameManager.dialogueController.GetDialogueBattle((int)targetedEnemy.enemyType, equippedDialogueType, 0);
             actualDialogueBattle.MainCharacter = this;
             actualDialogueBattle.TagetedNPC = targetedEnemy;

@@ -78,7 +78,11 @@ public class DialogueController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && activeDialogue && !(actualDialogue is DialogueBattle)) NextString();
+        if (Input.GetKeyDown(KeyCode.E) && activeDialogue && !(actualDialogue is DialogueBattle))
+        {
+            Debug.Log("NextString");
+            NextString();
+        }
     }
 
     public DialogueBattle GetDialogueBattle(int enType, int apType, int idx)
@@ -106,7 +110,21 @@ public class DialogueController : MonoBehaviour
         OpenDialoguePopUp(transf/*, npc*/);
         actualDialogue = newDialogue;
         NextString();
+        StartCoroutine("CheckPlayerDistance");
     }
+    IEnumerator CheckPlayerDistance()
+    {
+        while (activeDialogue)
+        {
+            if (actualDialogue.GetPlayerNPCDistance() > 100)
+            {
+                EndDialogue();
+                yield break;
+            }
+            yield return new WaitForSeconds(1);
+        }
+    }
+
     public void ChangeDialogue(Dialogue newDialogue)
     {
         actualDialogue.ResetDialogue();
@@ -121,8 +139,10 @@ public class DialogueController : MonoBehaviour
             Dialogue newDialogue = lastDialogueWithChoice.dialogueChoices[index];
             newDialogue.MyNPC = lastDialogueWithChoice.MyNPC;
             newDialogue.MainCharacter = lastDialogueWithChoice.MainCharacter;
+            StopCoroutine("NextStringCountdown");
             StartDialogue(newDialogue, lastDialogueWithChoice.MyNPC.transform);
             waitingForAnswer = false;
+            //GameManager.gameManager.MainHud.WaitingForAnswer(false);
         }
         catch { Debug.Log("Não é de opção"); }
     }
@@ -133,7 +153,7 @@ public class DialogueController : MonoBehaviour
         {
             //Bug no dialogo combate
             //Debug.Log("NextString");
-            Debug.Log(writing);
+            //Debug.Log(writing);
             if (!writing) UpdateText(actualDialogue.NextString());
             else
             {
@@ -142,7 +162,7 @@ public class DialogueController : MonoBehaviour
             }
 
             //Debug.Log("Deu nextstring");
-            if (activeDialogue && (GameManager.gameManager.battleController.ActiveBattle || actualDialogue is DialogueBattle)) StartCoroutine("NextStringCountdown");
+            if (activeDialogue && (GameManager.gameManager.battleController.ActiveBattle || (actualDialogue is DialogueBattle))) StartCoroutine("NextStringCountdown");
         }
     }
     public void EndDialogue()
@@ -153,6 +173,7 @@ public class DialogueController : MonoBehaviour
             actualDialogue.ResetDialogue();
             CloseDialoguePopUp();
             //Debug.Log("Encerrando dialogo");
+            StopCoroutine("NextStringCountdown");
         }
     }
 
@@ -177,6 +198,7 @@ public class DialogueController : MonoBehaviour
                 //GameManager.gameManager.MainHud.OpenDialogueOptTab(aux);
                 aux.MyNPC.SetWaitingForAnswer();
                 waitingForAnswer = true;
+                GameManager.gameManager.MainHud.WaitingForAnswer(true);
             }
         }        
     }
@@ -227,7 +249,7 @@ public class DialogueController : MonoBehaviour
 
     IEnumerator NextStringCountdown()
     {
-        //Debug.Log("Countdown");
+        Debug.Log("Countdown");
         yield return new WaitForSeconds(writingTime);
         writingTime = 0;
         if (activeDialogue) NextString();
