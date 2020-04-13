@@ -81,7 +81,7 @@ public class MainHud : MonoBehaviour
     public void EquipDialogue(int idx)
     {
         //Muda somente a cor/sprite do ícone do diálogo.
-        if (GameManager.gameManager.battleController.ActiveBattle) equippedDialogueB.SetIcon(GameManager.gameManager.dialogueController.dialogueColors[idx]);
+        /*if (GameManager.gameManager.battleController.ActiveBattle)*/ equippedDialogueB.SetIcon(GameManager.gameManager.dialogueController.dialogueColors[idx]);
     }
 
     public void IconCooldown(float value)

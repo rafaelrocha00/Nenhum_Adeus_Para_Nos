@@ -10,7 +10,7 @@ public class ThrowableItem : QuickUseItem
     public override bool Effect()
     {
         //Começar a mirar
-        GameManager.gameManager.battleController.MainCharacter.StartAiming(this);
+        MainCharacter.StartAiming(this);
         return false;
     }
 

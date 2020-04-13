@@ -19,8 +19,10 @@ public class INPC : Interactives, BattleUnit
     Personality personality;
     NavMeshAgent navMesh;
 
-    public Dialogue myDialogue;
-    public Dialogue[] answerDialogues = new Dialogue[5];
+    [SerializeField] bool waitingForAnswer = false;
+
+    public DialogueOptions[] myDialogues = new DialogueOptions[4];   
+    public Dialogue[] answerDialogues = new Dialogue[4];
     //Dialogue initialDialogue;
 
     public bool hostile = false;
@@ -32,7 +34,7 @@ public class INPC : Interactives, BattleUnit
     bool isRanged = false;
 
     bool stunned = false;
-    bool slowed = false;
+    bool moveSpeedChanged = false;
 
     public float defaultSpeed = 6.0f;
     public float rangedKiteSpeed = 4.0f;
@@ -40,14 +42,14 @@ public class INPC : Interactives, BattleUnit
     [HideInInspector] Player mCharacter;
     public Player MCharacter { get { return mCharacter; } set { mCharacter = value; } }
 
-    bool interacting = false;
+    //bool interacting = false;
 
     bool inBattle = false;
 
     float atkInterval = 0.15f;
     float timer = 0.0f;
 
-    bool firstInteraction = false;
+    //bool firstInteraction = false;
 
     Vector3 startPos;
     //LayerMask layermask = 1 << 10;
@@ -81,14 +83,14 @@ public class INPC : Interactives, BattleUnit
 
     public override void Interact(Player player)
     {
-        mCharacter = player;
-        myDialogue.MyNPC = this;
-        myDialogue.MainCharacter = player;
-        DesactiveBtp();
-        //GameManager.gameManager.dialogueController.OpenDialoguePopUp(this.transform, this);
-        GameManager.gameManager.dialogueController.StartDialogue(myDialogue, transform/*, this*/);
-        interacting = true;
-        //NextString();
+        //mCharacter = player;
+        //myDialogue.MyNPC = this;
+        //myDialogue.MainCharacter = player;
+        //DesactiveBtp();
+        ////GameManager.gameManager.dialogueController.OpenDialoguePopUp(this.transform, this);
+        //GameManager.gameManager.dialogueController.StartDialogue(myDialogue, transform/*, this*/);
+        //interacting = true;
+        ////NextString();
     }
 
     public void NextString()
@@ -101,16 +103,16 @@ public class INPC : Interactives, BattleUnit
     {
         //GameManager.gameManager.dialogueController.CloseDialoguePopUp();
         GameManager.gameManager.dialogueController.EndDialogue();
-        myDialogue.ResetDialogue();
+        //myDialogue.ResetDialogue();
         //myDialogue = initialDialogue;
-        interacting = false;
-        firstInteraction = false;
+        //interacting = false;
+        //firstInteraction = false;
     }
 
     public override void OnExit()
     {
         base.OnExit();
-        EndDialogue();
+        //EndDialogue();
     }
 
     //
@@ -123,8 +125,8 @@ public class INPC : Interactives, BattleUnit
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && interacting && !firstInteraction) firstInteraction = true;
-        else if (Input.GetKeyDown(KeyCode.E) && interacting && firstInteraction) NextString();
+        //if (Input.GetKeyDown(KeyCode.E) && interacting && !firstInteraction) firstInteraction = true;
+        //else if (Input.GetKeyDown(KeyCode.E) && interacting && firstInteraction) NextString();
 
         float actualVelocity = navMesh.velocity.magnitude / navMesh.speed;
         if (isRanged) anim.SetFloat("Vel", actualVelocity);
@@ -143,13 +145,13 @@ public class INPC : Interactives, BattleUnit
                 {
                     Vector3 desiredPos = -(mCharacter.transform.position - transform.position) + transform.position;
                     MoveNavMesh(desiredPos);
-                    if (!slowed) navMesh.speed = rangedKiteSpeed;
+                    if (!moveSpeedChanged) navMesh.speed = rangedKiteSpeed;
                 }
                 else if ((mCharacter.transform.position - transform.position).sqrMagnitude >= rangedW.GetMaxRange() * rangedW.GetMaxRange())
                 {
                     Vector3 toPlayerVec = mCharacter.transform.position - transform.position;
                     Vector3 desiredPos = toPlayerVec.normalized * (toPlayerVec.magnitude - rangedW.GetMaxRange() * 0.2f) + transform.position;
-                    if (!slowed) navMesh.speed = defaultSpeed;
+                    if (!moveSpeedChanged) navMesh.speed = defaultSpeed;
                     MoveNavMesh(desiredPos);
                 }
                 else
@@ -289,32 +291,79 @@ public class INPC : Interactives, BattleUnit
         if (isRanged) anim.SetInteger("AtkType", 0);
     }
 
+    public void SetWaitingForAnswer()
+    {
+        waitingForAnswer = true;
+        Invoke("CancelDialogue", 10);
+        //GameManager.gameManager.dialogueController.WaitForAnswerTimer(10)
+    }
+    void CancelDialogue()
+    {
+        waitingForAnswer = false;
+        GameManager.gameManager.dialogueController.EndDialogue();
+    }
     public void ReceiveBattleDialogue(DialogueBattle playerDialogue)
     {
         Debug.Log("Dialogo Recebido");
-        float answerChance = personality.CalculatePercentage(playerDialogue.approachType);
-        float aux = Random.Range(0, 100);
-
-        if (aux <= answerChance)
+        if (waitingForAnswer)
         {
-            if (answerDialogues[(int)playerDialogue.approachType] != null)
-            {
-                answerDialogues[(int)playerDialogue.approachType].MyNPC = this;
-                answerDialogues[(int)playerDialogue.approachType].MainCharacter = mCharacter;
-                //GameManager.gameManager.dialogueController.StartDialogue(answerDialogues[(int)playerDialogue.approachType], transform);
-                StartCoroutine(DelayStartDialogueBattle(playerDialogue));
-            }
+            Debug.Log("ALOALOALO");
+            GameManager.gameManager.dialogueController.ChooseOption((int)playerDialogue.approachType);
+            waitingForAnswer = false;
+        }
+        else if (inBattle)
+        {            
+            float answerChance = personality.CalculatePercentage(playerDialogue.approachType);
+            float aux = Random.Range(0, 100);
 
-            Debug.Log("Respondendo diálogo");
+            if (aux <= answerChance)
+            {
+                if (answerDialogues[(int)playerDialogue.approachType] != null)
+                {
+                    answerDialogues[(int)playerDialogue.approachType].MyNPC = this;
+                    answerDialogues[(int)playerDialogue.approachType].MainCharacter = mCharacter;
+                    //GameManager.gameManager.dialogueController.StartDialogue(answerDialogues[(int)playerDialogue.approachType], transform);
+                    StartCoroutine(DelayStartDialogueBattle(playerDialogue));
+                }
+
+                Debug.Log("Respondendo diálogo");
+            }
+            else
+            {
+                Debug.Log("Dialogo Falhou");
+                int random = Random.Range(0, 2);
+                //Dialogue answer = GameManager.gameManager.npcAnswers.GetFailAnswer(thisPersonality, playerDialogue.approachType, random);
+                Dialogue answer = GameManager.gameManager.dialogueController.GetAnswer((int)enemyType, (int)thisPersonality, (int)playerDialogue.approachType, random);
+                answer.MyNPC = this;
+                StartCoroutine(DelayStartDialogue(answer));
+            }
         }
         else
         {
-            Debug.Log("Dialogo Falhou");
-            int random = Random.Range(0, 2);
-            //Dialogue answer = GameManager.gameManager.npcAnswers.GetFailAnswer(thisPersonality, playerDialogue.approachType, random);
-            Dialogue answer = GameManager.gameManager.dialogueController.GetAnswer((int)enemyType, (int)thisPersonality, (int)playerDialogue.approachType, random);
-            answer.MyNPC = this;
-            StartCoroutine(DelayStartDialogue(answer));
+            Dialogue aux;
+            int auxID = 0;
+
+            switch ((int)playerDialogue.approachType)
+            {
+                case 0:
+                    auxID = (myDialogues[0] != null) ? 0 : 1;
+                    break;
+                case 1:
+                    auxID = (myDialogues[1] != null) ? 1 : 0;
+                    break;
+                case 2:
+                    auxID = (myDialogues[2] != null) ? 2 : 3;
+                    break;
+                case 3:
+                    auxID = (myDialogues[3] != null) ? 3 : 2;
+                    break;
+                default:
+                    break;
+            }
+            aux = myDialogues[auxID].GetRandomDialogue();
+            if (aux.MainCharacter == null) aux.MainCharacter = GameManager.gameManager.battleController.MainCharacter;
+            aux.MyNPC = this;
+            StartCoroutine(DelayStartDialogue(aux));
         }
     }
     IEnumerator DelayStartDialogueBattle(DialogueBattle playerDialogue)
@@ -361,15 +410,15 @@ public class INPC : Interactives, BattleUnit
     {
         stunned = false;
     }
-    public void Slow(float slowPerc, float time)
+    public void ChangeMoveSpeed(float moveSpeedPerc, float time)//+100% aumenta, - de 100% diminui
     {
-        slowed = true;
-        navMesh.speed = navMesh.speed / 100 * slowPerc;
-        Invoke("CancelSlow", time);
+        moveSpeedChanged = true;
+        navMesh.speed = navMesh.speed / 100 * moveSpeedPerc;
+        Invoke("CancelMoveSpeedChange", time);
     }
-    void CancelSlow()
+    void CancelMoveSpeedChange()
     {
-        slowed = false;
+        moveSpeedChanged = false;
         navMesh.speed = defaultSpeed;
     }
 

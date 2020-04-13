@@ -12,7 +12,7 @@ public class LauchTragectory : MonoBehaviour
     public Transform playerT;
 
     float grav;
-    float radianAngle;
+    //float radianAngle;
 
     [HideInInspector] Vector3 mousePos = Vector3.zero;
     public Vector3 MousePos { get { return mousePos; } }
@@ -73,13 +73,13 @@ public class LauchTragectory : MonoBehaviour
         return arcArray;
     }
 
-    Vector3 CalculateArcPoint(float t, float maxDistance)
-    {
-        float x = t * maxDistance;
-        float y = x * Mathf.Tan(radianAngle) - ((grav * x * x) / (2 * Mathf.Pow(velocity * Mathf.Cos(radianAngle), 2)));
+    //Vector3 CalculateArcPoint(float t, float maxDistance)
+    //{
+    //    float x = t * maxDistance;
+    //    float y = x * Mathf.Tan(radianAngle) - ((grav * x * x) / (2 * Mathf.Pow(velocity * Mathf.Cos(radianAngle), 2)));
 
-        return transform.localToWorldMatrix * new Vector4(x, y, 0, 1);
-    }
+    //    return transform.localToWorldMatrix * new Vector4(x, y, 0, 1);
+    //}
 
     Vector3 Hermite(Transform ori, Vector3 dest, float time)
     {

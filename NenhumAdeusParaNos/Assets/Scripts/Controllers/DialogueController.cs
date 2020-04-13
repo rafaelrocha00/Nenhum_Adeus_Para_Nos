@@ -15,14 +15,20 @@ public class DialogueController : MonoBehaviour
 
     Dialogue actualDialogue;
 
+    DialogueWithChoice lastDialogueWithChoice;
+
     [HideInInspector] bool activeDialogue = false;
     public bool ActiveDialogue { get { return activeDialogue; } }
     bool writing = false;
 
+    [HideInInspector] bool waitingForAnswer = false;
+    public bool WaitingForAnswer { get { return waitingForAnswer; } }
+
     public float writingSpeed = 0.05f;
     float writingTime = 0.0f;
 
-    public List<DialogueBattle>[][] approaches = new List<DialogueBattle>[4][];//Array de Approaches o primeirod Index define o tipo de inimigo, o segundo o tipo de abordagem, e dentro da lista deles estão os diálogos para serem sorteados.
+    //public List<DialogueBattle>[][] approaches = new List<DialogueBattle>[4][];//Array de Approaches o primeirod Index define o tipo de inimigo, o segundo o tipo de abordagem, e dentro da lista deles estão os diálogos para serem sorteados.
+    public DialogueBattle[] playerApproaches = new DialogueBattle[4];
 
     public List<Dialogue>[][][] npcAnswers = new List<Dialogue>[4][][];//Array das respostas dos inimigos, Uma lista de opções de respotas pra cada tipo de abordagem para cada personalidade para cada tipo de inimigo
     //Sprite dps
@@ -30,29 +36,29 @@ public class DialogueController : MonoBehaviour
     
     private void Start()
     {
-        for (int i = 0; i < approaches.Length; i++)
-        {
-            approaches[i] = new List<DialogueBattle>[5];
-            for (int j = 0; j < approaches[i].Length; j++)
-            {
-                approaches[i][j] = new List<DialogueBattle>();
-                for (int k = 0; k < 2; k++)
-                {
-                    DialogueBattle dialogueAux = Resources.Load<DialogueBattle>("Approaches/EnemyT" + (i + 1) + "/ApproachT" + (j + 1) + "/Dialogue" + (k + 1));
-                    if (dialogueAux != null)
-                    {
-                        approaches[i][j].Add(dialogueAux);
-                    }
-                }
-            }
-        }
+        //for (int i = 0; i < approaches.Length; i++)
+        //{
+        //    approaches[i] = new List<DialogueBattle>[5];
+        //    for (int j = 0; j < approaches[i].Length; j++)
+        //    {
+        //        approaches[i][j] = new List<DialogueBattle>();
+        //        for (int k = 0; k < 2; k++)
+        //        {
+        //            DialogueBattle dialogueAux = Resources.Load<DialogueBattle>("Approaches/EnemyT" + (i + 1) + "/ApproachT" + (j + 1) + "/Dialogue" + (k + 1));
+        //            if (dialogueAux != null)
+        //            {
+        //                approaches[i][j].Add(dialogueAux);
+        //            }
+        //        }
+        //    }
+        //}
 
         for (int i = 0; i < npcAnswers.Length; i++)
         {
             npcAnswers[i] = new List<Dialogue>[4][];
             for (int j = 0; j < npcAnswers[i].Length; j++)
             {
-                npcAnswers[i][j] = new List<Dialogue>[5];
+                npcAnswers[i][j] = new List<Dialogue>[4];
                 for (int k = 0; k < npcAnswers[i][j].Length; k++)
                 {
                     npcAnswers[i][j][k] = new List<Dialogue>();
@@ -70,9 +76,15 @@ public class DialogueController : MonoBehaviour
         mainCam = GameManager.gameManager.MainCamera.GetComponent<Camera>();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E) && activeDialogue && !(actualDialogue is DialogueBattle)) NextString();
+    }
+
     public DialogueBattle GetDialogueBattle(int enType, int apType, int idx)
     {
-        return approaches[enType][apType][idx];
+        //return approaches[enType][apType][idx];
+        return playerApproaches[apType];
     }
     /// <summary>
     /// 
@@ -89,6 +101,7 @@ public class DialogueController : MonoBehaviour
 
     public void StartDialogue(Dialogue newDialogue, Transform transf/*, INPC npc = null*/)
     {
+        if (newDialogue is DialogueWithChoice) lastDialogueWithChoice = (DialogueWithChoice)newDialogue;
         activeDialogue = true;
         OpenDialoguePopUp(transf/*, npc*/);
         actualDialogue = newDialogue;
@@ -99,7 +112,21 @@ public class DialogueController : MonoBehaviour
         actualDialogue.ResetDialogue();
         actualDialogue = newDialogue;
         NextString();
+        //Debug.Log("Mudando dialogo");
     }
+    public void ChooseOption(int index)
+    {
+        try
+        {
+            Dialogue newDialogue = lastDialogueWithChoice.dialogueChoices[index];
+            newDialogue.MyNPC = lastDialogueWithChoice.MyNPC;
+            newDialogue.MainCharacter = lastDialogueWithChoice.MainCharacter;
+            StartDialogue(newDialogue, lastDialogueWithChoice.MyNPC.transform);
+            waitingForAnswer = false;
+        }
+        catch { Debug.Log("Não é de opção"); }
+    }
+
     public void NextString()
     {
         if (!GameManager.gameManager.MainHud.ActiveOptionsToChoose)
@@ -114,8 +141,8 @@ public class DialogueController : MonoBehaviour
                 writing = false;
             }
 
-
-            if (GameManager.gameManager.battleController.ActiveBattle && activeDialogue) StartCoroutine("NextStringCountdown");
+            //Debug.Log("Deu nextstring");
+            if (activeDialogue && (GameManager.gameManager.battleController.ActiveBattle || actualDialogue is DialogueBattle)) StartCoroutine("NextStringCountdown");
         }
     }
     public void EndDialogue()
@@ -125,6 +152,7 @@ public class DialogueController : MonoBehaviour
             activeDialogue = false;
             actualDialogue.ResetDialogue();
             CloseDialoguePopUp();
+            //Debug.Log("Encerrando dialogo");
         }
     }
 
@@ -144,7 +172,12 @@ public class DialogueController : MonoBehaviour
         if (actualDialogue is DialogueWithChoice)
         {
             DialogueWithChoice aux = (DialogueWithChoice)actualDialogue;
-            if (aux.LastString) GameManager.gameManager.MainHud.OpenDialogueOptTab(aux);
+            if (aux.LastString)
+            {
+                //GameManager.gameManager.MainHud.OpenDialogueOptTab(aux);
+                aux.MyNPC.SetWaitingForAnswer();
+                waitingForAnswer = true;
+            }
         }        
     }
 
@@ -218,5 +251,23 @@ public class DialogueController : MonoBehaviour
         }
         CheckForDialogueOptions();
         writing = false;
+    }
+
+    public INPC[] GetNearbyNPCs(Vector3 center, float radius)
+    {
+        Collider[] colliders = Physics.OverlapSphere(center, radius, LayerMask.GetMask("Interactives"));
+        List<INPC> enemies = new List<INPC>();
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            try
+            {
+                if (!colliders[i].isTrigger)
+                {
+                    enemies.Add(colliders[i].GetComponent<INPC>());
+                }
+            }
+            catch { Debug.Log("Não é NPC"); }
+        }
+        return enemies.ToArray();
     }
 }

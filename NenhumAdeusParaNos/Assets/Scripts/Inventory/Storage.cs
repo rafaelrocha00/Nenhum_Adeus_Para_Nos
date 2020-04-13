@@ -128,6 +128,6 @@ public class Storage : Interactives
 
     public void OpenCloseStorage(bool value)
     {
-        storageMenu.SetActive(value);
+        if (storageMenu != null) storageMenu.SetActive(value);
     }
 }

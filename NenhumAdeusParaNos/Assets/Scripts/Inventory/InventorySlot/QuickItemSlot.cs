@@ -30,7 +30,7 @@ public class QuickItemSlot : DropSlot
             image.sprite = itemButton.GetComponent<Image>().sprite;
             GameManager.gameManager.MainHud.quickItemSlot.SetSprite(itemButton.GetComponent<Image>().sprite);
             hasInInventory = true;
-            CheckItemInventory();
+            Invoke("CheckItemInventory", 0.01f);
         }
         //}
         //catch
@@ -41,22 +41,25 @@ public class QuickItemSlot : DropSlot
 
     public void CheckItemInventory()
     {
-        InvenSlot aux = GameManager.gameManager.inventoryController.Inventory.FindItem(quickItem.itemName);
-        Color auxColor;
+        if (quickItem != null)
+        {
+            InvenSlot aux = GameManager.gameManager.inventoryController.Inventory.FindItem(quickItem.itemName);
+            Color auxColor;
 
-        if (aux == null)
-        {
-            auxColor = new Color(0.75f, 0.75f, 0.75f, 0.75f);
-            image.color = auxColor;
-            hasInInventory = false;
+            if (aux == null)
+            {
+                auxColor = new Color(0.75f, 0.75f, 0.75f, 0.75f);
+                image.color = auxColor;
+                hasInInventory = false;
+            }
+            else
+            {
+                auxColor = Color.white;
+                image.color = auxColor;
+                hasInInventory = true;
+            }
+            GameManager.gameManager.MainHud.quickItemSlot.SetColor(auxColor);
         }
-        else
-        {
-            auxColor = Color.white;
-            image.color = auxColor;
-            hasInInventory = true;
-        }
-        GameManager.gameManager.MainHud.quickItemSlot.SetColor(auxColor);
     }
 
     public void UseItemEffect()
@@ -69,7 +72,8 @@ public class QuickItemSlot : DropSlot
                 inCooldown = true;
                 Invoke("ResetCooldown", quickItem.AnimTime);
                 Invoke("ApplyItemEffect", quickItem.AnimTime - 0.1f);
-                GameManager.gameManager.MainHud.quickItemSlot.Cooldown(quickItem.AnimTime);               
+                GameManager.gameManager.MainHud.quickItemSlot.Cooldown(quickItem.AnimTime);
+                GameManager.gameManager.battleController.MainCharacter.HealAnim();
             }
             else
             {

@@ -6,36 +6,42 @@ public class PullGranade : Granade
 {
     public float pullForce = 5.0f;
     public float stunTime = 2.0f;
-    LayerMask layerMask;
-
-    private void Start()
-    {
-        layerMask = LayerMask.GetMask("Interactives");
-    }
 
     protected override void OnLand()
     {
         Debug.Log("OnLandEffect");
-        Invoke("DetectColliders", 0.5f);
+        Invoke("GranadeEffect", 0.5f);
     }
 
-    void DetectColliders()
+    protected override void GranadeEffect()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, areaOfEffect, layerMask);
-        for (int i = 0; i < colliders.Length; i++)
+        INPC[] enemies = GameManager.gameManager.dialogueController.GetNearbyNPCs(transform.position, areaOfEffect);
+        for (int i = 0; i < enemies.Length; i++)
         {
-            try
-            {
-                if (!colliders[i].isTrigger)
-                {
-                    colliders[i].GetComponent<INPC>().Stun(stunTime);
-                    StartCoroutine(Pull(colliders[i].transform));
-                }
-            }
-            catch { Debug.Log("Não é NPC"); }
+            enemies[i].Stun(stunTime);
+            StartCoroutine(Pull(enemies[i].transform));
         }
+
         Destroy(this.gameObject, 0.5f);
     }
+
+    //void DetectColliders()
+    //{
+    //    //Collider[] colliders = Physics.OverlapSphere(transform.position, areaOfEffect, layerMask);
+    //    //for (int i = 0; i < colliders.Length; i++)
+    //    //{
+    //    //    try
+    //    //    {
+    //    //        if (!colliders[i].isTrigger)
+    //    //        {
+    //    //            colliders[i].GetComponent<INPC>().Stun(stunTime);
+    //    //            StartCoroutine(Pull(colliders[i].transform));
+    //    //        }
+    //    //    }
+    //    //    catch { Debug.Log("Não é NPC"); }
+    //    //}
+    //    Destroy(this.gameObject, 0.5f);
+    //}
 
     IEnumerator Pull(Transform transf)
     {

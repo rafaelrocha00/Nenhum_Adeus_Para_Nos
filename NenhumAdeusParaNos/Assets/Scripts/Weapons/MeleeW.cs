@@ -35,11 +35,12 @@ public class MeleeW : Weapon
         atkType = 2;
     }
 
-    public override float Attack()
+    public override float Attack(Animator animator = null)
     {
         Debug.Log("Atacando");
         sCollider.enabled = true;
         anim.SetInteger("AttackType", atkType);
+        if (animator != null) animator.SetInteger("Attacking", atkType);
         //attackDelay = actualAtkspeed;
         Invoke("StopAnim", actualAtkspeed - 0.1f);
 

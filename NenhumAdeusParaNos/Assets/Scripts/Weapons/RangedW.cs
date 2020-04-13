@@ -22,11 +22,12 @@ public class RangedW : Weapon
         ammo = rangedWConfig.maxAmmo;
     }
 
-    public override float Attack()
+    public override float Attack(Animator animator = null)
     {
         //GameObject bulletObj = Instantiate(rangedWConfig.bulletPref, transform.position, transform.rotation) as GameObject;
         //Bullet bullet = bulletObj.GetComponent<Bullet>();
         //bullet.InitialSet(rangedWConfig.defaultDamage, gameObject.layer);
+        if (animator != null) animator.SetInteger("Attacking", 3);
         rangedWConfig.Attack(transform, gameObject.layer);
 
         ammo--;

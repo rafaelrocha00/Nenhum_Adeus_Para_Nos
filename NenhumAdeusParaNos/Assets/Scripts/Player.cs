@@ -165,6 +165,7 @@ public class Player : MonoBehaviour, BattleUnit
         {
             if (!dashing)
             {
+                if (!moving && inBattle) animator.SetLayerWeight(1, 0);
                 Move();
             }
         }
@@ -284,7 +285,7 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (canInteract && CanFight())
+            if (interactingObj != null && canInteract && CanFight() && !GameManager.gameManager.dialogueController.ActiveDialogue)
             {
                 interacting = true;
                 interactingObj.Interact(this);
@@ -302,43 +303,44 @@ public class Player : MonoBehaviour, BattleUnit
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            equippedDialogueType = 0;
+            GameManager.gameManager.MainHud.EquipDialogue(0);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            equippedDialogueType = 1;
+            GameManager.gameManager.MainHud.EquipDialogue(1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            equippedDialogueType = 2;
+            GameManager.gameManager.MainHud.EquipDialogue(2);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            equippedDialogueType = 3;
+            GameManager.gameManager.MainHud.EquipDialogue(3);
+        }
+        //else if (Input.GetKeyDown(KeyCode.Alpha5))
+        //{
+        //    equippedDialogueType = 4;
+        //    GameManager.gameManager.MainHud.EquipDialogue(4);
+        //}
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            UseDialogue();
+        }
+
         if (inBattle)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                equippedDialogueType = 0;
-                GameManager.gameManager.MainHud.EquipDialogue(0);
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                equippedDialogueType = 1;
-                GameManager.gameManager.MainHud.EquipDialogue(1);
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                equippedDialogueType = 2;
-                GameManager.gameManager.MainHud.EquipDialogue(2);
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                equippedDialogueType = 3;
-                GameManager.gameManager.MainHud.EquipDialogue(3);
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha5))
-            {
-                equippedDialogueType = 4;
-                GameManager.gameManager.MainHud.EquipDialogue(4);
-            }
-
             if (Input.GetMouseButtonDown(2))
             {
                 LockAim();
             }
 
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                UseDialogue();
-            }
             //if (Input.GetKeyDown(KeyCode.V))
             //{
             //    UseDialogue(1);
@@ -349,6 +351,7 @@ public class Player : MonoBehaviour, BattleUnit
                 if (!autoShooting)
                 {
                     defending = true;
+                    animator.SetBool("Defending", true);
                     if (!slowMoving) StartCoroutine(Slowdown(defaultSlow));
                     GameManager.gameManager.MainHud.ShowHideDefenseBar();
                 }
@@ -424,6 +427,7 @@ public class Player : MonoBehaviour, BattleUnit
         moveTime += Time.deltaTime;
         if (moveTime < accelerationTime) moveSpeed += acceleration * Time.deltaTime;
         else if (!running && moveSpeed < maxSpeed && !slowMoving) moveSpeed = maxSpeed;
+        moveSpeed = Mathf.Clamp(moveSpeed, 0, runningSpeed);
 
         //TIRAR
         //if (running && stamina > 0 && !defending)
@@ -519,6 +523,7 @@ public class Player : MonoBehaviour, BattleUnit
         animator.SetFloat("VelX", 0);
         animator.SetFloat("VelY", 0);
 
+        if (inBattle) animator.SetLayerWeight(1, 1);
         moving = false;
     }
 
@@ -545,6 +550,7 @@ public class Player : MonoBehaviour, BattleUnit
     IEnumerator Dash(Vector3 dir)
     {
         dashing = true;
+        animator.SetBool("Dashing", true);
         float timer = 0.0f;
         do
         {
@@ -553,6 +559,7 @@ public class Player : MonoBehaviour, BattleUnit
             yield return new WaitForEndOfFrame();
         } while (timer < dashTime);
         dashing = false;
+        animator.SetBool("Dashing", false);
     }
     //IEnumerator DashCooldown()
     //{
@@ -566,6 +573,7 @@ public class Player : MonoBehaviour, BattleUnit
         defending = false;
         StartCoroutine("StartStaminaRegen");
         stoppedStaminaRegen = false;
+        animator.SetBool("Defending", false);
         CancelSlow();
         GameManager.gameManager.MainHud.ShowHideDefenseBar();
     }
@@ -630,21 +638,24 @@ public class Player : MonoBehaviour, BattleUnit
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        INPC[] allEnemies = GameManager.gameManager.battleController.AllEnemyFighters.ToArray();
-        if (Physics.Raycast(ray, out hit, 1000, layermask))
+        INPC[] allEnemies = GameManager.gameManager.dialogueController.GetNearbyNPCs(transform.position, 10);
+        if (allEnemies != null && allEnemies.Length > 0)
         {
-
-            for (int i = 0; i < allEnemies.Length; i++)
+            if (Physics.Raycast(ray, out hit, 1000, layermask))
             {
-                if (i > 0)
+
+                for (int i = 0; i < allEnemies.Length; i++)
                 {
-                    if (Vector3.Distance(hit.point, allEnemies[i].transform.position) < Vector3.Distance(hit.point, allEnemies[i - 1].transform.position))
-                        targetedEnemy = allEnemies[i];
+                    if (i > 0)
+                    {
+                        if ((hit.point - allEnemies[i].transform.position).sqrMagnitude < (hit.point - allEnemies[i - 1].transform.position).sqrMagnitude)
+                            targetedEnemy = allEnemies[i];
+                    }
+                    else targetedEnemy = allEnemies[i];
                 }
-                else targetedEnemy = allEnemies[i];
             }
+            else targetedEnemy = allEnemies[0];
         }
-        else targetedEnemy = allEnemies[0];
     }
 
     void Attack()
@@ -659,9 +670,14 @@ public class Player : MonoBehaviour, BattleUnit
                 MeleeW myMelee = (MeleeW)myWeapon;
                 myMelee.SetStrongAttack();
             }
-            attackCD = myWeapon.Attack();            
+            attackCD = myWeapon.Attack(animator);            
             Invoke("AttackCooldown", attackCD);
+            Invoke("ResetAnim", 0.2f);
         }
+    }
+    void ResetAnim()
+    {
+        animator.SetInteger("Attacking", 0);
     }
 
     void AttackCooldown()
@@ -710,17 +726,20 @@ public class Player : MonoBehaviour, BattleUnit
 
     void HideShowWeapon()
     {
-        if (!isWeaponHide)
+        if (!animator.GetBool("Healing"))
         {
-            equippedMelee.gameObject.SetActive(false);
-            equippedRanged.gameObject.SetActive(false);
+            if (!isWeaponHide)
+            {
+                equippedMelee.gameObject.SetActive(false);
+                equippedRanged.gameObject.SetActive(false);
+            }
+            else
+            {
+                if (myWeapon is MeleeW) equippedMelee.gameObject.SetActive(true);
+                else equippedRanged.gameObject.SetActive(true);
+            }
+            isWeaponHide = !isWeaponHide;
         }
-        else
-        {
-            if (myWeapon is MeleeW) equippedMelee.gameObject.SetActive(true);
-            else equippedRanged.gameObject.SetActive(true);
-        }
-        isWeaponHide = !isWeaponHide;
     }
 
     public void UseEquippedItem()
@@ -732,6 +751,7 @@ public class Player : MonoBehaviour, BattleUnit
     {
         itemToThrow = tI;
         aimingThrowable = true;
+        animator.SetBool("Aiming", true);
         launchTrajectory.SetActive(true);
         HideShowWeapon();
 
@@ -745,6 +765,8 @@ public class Player : MonoBehaviour, BattleUnit
         {
             Debug.Log("Arremessando");
             aimingThrowable = false;
+            animator.SetBool("ThrowedItem", true);
+            animator.SetBool("Aiming", false);
             //Animação de arremessar
             Invoke("ThrowItem", itemToThrow.AnimTime);
         }
@@ -758,6 +780,7 @@ public class Player : MonoBehaviour, BattleUnit
         aux.Unlock();
         itemToThrow.Throw(force, aux);
         GameManager.gameManager.inventoryController.Inventory.quickItemSlot.ConfirmUse();
+        animator.SetBool("ThrowedItem", false);
         HideShowWeapon();
     }
 
@@ -765,6 +788,7 @@ public class Player : MonoBehaviour, BattleUnit
     {
         launchTrajectory.SetActive(false);
         aimingThrowable = false;
+        animator.SetBool("Aiming", false);
         Destroy(granadeObj);
         HideShowWeapon();
     }
@@ -772,27 +796,32 @@ public class Player : MonoBehaviour, BattleUnit
     public void UseDialogue(/*int idx*/)
     {
         //Debug.Log("Tentando usar dialogo");
-        if (!GameManager.gameManager.dialogueController.ActiveDialogue && !GameManager.gameManager.MainHud.IsQuickMenuActive && !dialogueInCooldown)
+        Debug.Log(GameManager.gameManager.dialogueController.ActiveDialogue);
+        Debug.Log(dialogueInCooldown);
+        if (!GameManager.gameManager.dialogueController.ActiveDialogue /*&& !GameManager.gameManager.MainHud.IsQuickMenuActive*/ && !dialogueInCooldown)
         {
             //Debug.Log("Tentando usar dialogo em batalha");
             try
             {
                 //battleDialoguing = true;
                 //DialogueBattle actualDialogueBattle = GameManager.gameManager.MainHud.GetDialogueFromSlot(idx);
-                dialogueInCooldown = true;
                 if (!aimLocked) FindNearestEnemy();
                 int random = Random.Range(0, 2);
-                DialogueBattle actualDialogueBattle = GameManager.gameManager.dialogueController.GetDialogueBattle((int)targetedEnemy.enemyType, equippedDialogueType, random);
+                DialogueBattle actualDialogueBattle = GameManager.gameManager.dialogueController.GetDialogueBattle((int)targetedEnemy.enemyType, equippedDialogueType, random);                
                 actualDialogueBattle.MainCharacter = this;
                 actualDialogueBattle.TagetedNPC = targetedEnemy;
 
-                GameManager.gameManager.MainHud.IconCooldown(dialogueCooldown);
-                GameManager.gameManager.dialogueController.StartDialogue(actualDialogueBattle, transform);
-                Invoke("DialogueCooldown", dialogueCooldown);
+                if (GameManager.gameManager.battleController.ActiveBattle)
+                {
+                    dialogueInCooldown = true;
+                    GameManager.gameManager.MainHud.IconCooldown(dialogueCooldown);
+                    Invoke("DialogueCooldown", dialogueCooldown);
+                }
+                GameManager.gameManager.dialogueController.StartDialogue(actualDialogueBattle, transform);                
             }
             catch
             {
-                Debug.Log("Dialogo nulo");
+                Debug.Log("Dialogo nulo ou Sem inimigos perto");
             }
             //GameManager.gameManager.dialogueController.OpenDialoguePopUp(transform, null);
             //if (!aimLocked) FindNearestEnemy();
@@ -800,6 +829,13 @@ public class Player : MonoBehaviour, BattleUnit
             //GameManager.gameManager.dialogueController.StartDialogue(battleDialogues[0], transform);
             //GameManager.gameManager.dialogueController.UpdateText(battleDialogues[0].NextString());
             //Invoke("BattleDialogueCooldown", 10);
+        }
+        else if (GameManager.gameManager.dialogueController.WaitingForAnswer)
+        {
+            DialogueBattle actualDialogueBattle = GameManager.gameManager.dialogueController.GetDialogueBattle((int)targetedEnemy.enemyType, equippedDialogueType, 0);
+            actualDialogueBattle.MainCharacter = this;
+            actualDialogueBattle.TagetedNPC = targetedEnemy;
+            GameManager.gameManager.dialogueController.StartDialogue(actualDialogueBattle, transform);
         }
     }
     void DialogueCooldown()
@@ -817,20 +853,34 @@ public class Player : MonoBehaviour, BattleUnit
         //if (!byDialogue && !GameManager.gameManager.battleController.EnoughNPCs()) return;
         if (byDialogue)
         {
-            inBattle = true;
             interacting = false;
-            RunSwitch(true);
+            //animator.SetLayerWeight(1, 0);
+            //inBattle = true;            
+            //RunSwitch(true);
+            //animator.SetBool("InBattle", true);
+            CombatSet();
         }
         GameManager.gameManager.battleController.MainCharacter = this;        
     }
     public void DelayStartBattle()
     {
+        //animator.SetLayerWeight(1, 0);
+        //inBattle = true;
+        //RunSwitch(true);
+        //animator.SetBool("InBattle", true);
+        CombatSet();
+    }
+    void CombatSet()
+    {
+        animator.SetLayerWeight(1, 0);
         inBattle = true;
         RunSwitch(true);
+        animator.SetBool("InBattle", true);
     }
 
     public void EndBattle()
     {
+        animator.SetBool("InBattle", false);        
         RunSwitch(false);
         inBattle = false;
         aimLocked = false;
@@ -855,8 +905,17 @@ public class Player : MonoBehaviour, BattleUnit
     public bool ReceiveDamage(float damage)
     {
         bool aux = charStats.ReceiveDamage(damage);
+        if (defending)
+        {
+            animator.SetBool("DefendedAttack", true);
+            Invoke("BackToDefending", 0.1f);
+        }
         UpdateLife();
         return aux;
+    }
+    void BackToDefending()
+    {
+        animator.SetBool("DefendedAttack", false);
     }
 
     public void Die()
@@ -892,8 +951,15 @@ public class Player : MonoBehaviour, BattleUnit
 
     public void Heal(float value)
     {
-        charStats.UpdateLife(value);
+        charStats.UpdateLife(value);        
         UpdateLife();
+        HideShowWeapon();
+        animator.SetBool("Healing", false);        
+    }
+    public void HealAnim()
+    {
+        animator.SetBool("Healing", true);
+        if (!isWeaponHide) HideShowWeapon();
     }
 
     void UpdateStamina(float value)

@@ -8,7 +8,7 @@ public class EffectBattleStart : MonoBehaviour
     [SerializeField] private bool renderWithReplacementShader;
     [SerializeField] private float range = 10;
 
-    [SerializeField] private GameObject postProcessVolume;
+    [SerializeField] public GameObject postProcessVolume;
 
     private ColorGrading _colorGrading;
     private Camera _camera;

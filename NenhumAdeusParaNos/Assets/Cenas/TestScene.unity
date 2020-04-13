@@ -346,9 +346,12 @@ MonoBehaviour:
   anim: {fileID: 1524621327}
   thisPersonality: 1
   enemyType: 2
-  myDialogue: {fileID: 11400000, guid: f5c37c15c1bcdf44e9786a81d345f735, type: 2}
-  answerDialogues:
+  myDialogues:
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  answerDialogues:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -635,10 +638,10 @@ RectTransform:
   m_Father: {fileID: 1740068212}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0.000022888, y: 19}
-  m_SizeDelta: {x: 23.87, y: 23.87}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.000022888, y: 0}
+  m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &208164953
 MonoBehaviour:
@@ -1057,7 +1060,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ccb830df67bea534dacb7c980673e261, type: 2}
   - {fileID: 11400000, guid: c9eb10bf8ccfac945bca89a23f5d135c, type: 2}
   - {fileID: 11400000, guid: ccb830df67bea534dacb7c980673e261, type: 2}
-  - {fileID: 11400000, guid: ccb830df67bea534dacb7c980673e261, type: 2}
+  - {fileID: 11400000, guid: 7e1429813e8faff4d8258f1000457ced, type: 2}
+  - {fileID: 11400000, guid: 7e1429813e8faff4d8258f1000457ced, type: 2}
 --- !u!135 &321327517
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1816,7 +1820,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -7.7, y: 8.6}
+  m_AnchoredPosition: {x: -5.6, y: 4.9}
   m_SizeDelta: {x: 18.39, y: 19.57}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &517068685
@@ -2143,9 +2147,12 @@ MonoBehaviour:
   anim: {fileID: 0}
   thisPersonality: 0
   enemyType: 2
-  myDialogue: {fileID: 11400000, guid: 340b3aaef16b42e4f870748064a7cf91, type: 2}
-  answerDialogues:
+  myDialogues:
+  - {fileID: 11400000, guid: 9d35aee0c2dc4d544b26be106b1ba1dc, type: 2}
   - {fileID: 0}
+  - {fileID: 11400000, guid: 6e612f82348da484b84cc11b39535d8b, type: 2}
+  - {fileID: 11400000, guid: 9ade35c76476a9341bc8858295c1de4a, type: 2}
+  answerDialogues:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -2639,9 +2646,12 @@ MonoBehaviour:
   anim: {fileID: 0}
   thisPersonality: 0
   enemyType: 2
-  myDialogue: {fileID: 11400000, guid: f5c37c15c1bcdf44e9786a81d345f735, type: 2}
-  answerDialogues:
+  myDialogues:
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  answerDialogues:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -3122,9 +3132,12 @@ MonoBehaviour:
   anim: {fileID: 1568472289}
   thisPersonality: 3
   enemyType: 2
-  myDialogue: {fileID: 11400000, guid: 340b3aaef16b42e4f870748064a7cf91, type: 2}
-  answerDialogues:
+  myDialogues:
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  answerDialogues:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -3192,12 +3205,16 @@ MonoBehaviour:
   dialoguePref: {fileID: 4359621061146307511, guid: 1e0ae1c102b58f04785ded89bb767800,
     type: 3}
   writingSpeed: 0.05
+  playerApproaches:
+  - {fileID: 11400000, guid: 4de02e9aca0409d46858f07db6c2a4ff, type: 2}
+  - {fileID: 11400000, guid: 5c81c4afe5cf7a14d8f8813706f3db9a, type: 2}
+  - {fileID: 11400000, guid: ad4ca3930fed45940b85b9227ae1a487, type: 2}
+  - {fileID: 11400000, guid: 7bdaffcd98506f14fad55b08c219d165, type: 2}
   dialogueColors:
   - {r: 0.74509805, g: 0, b: 1, a: 1}
   - {r: 0, g: 0.26801515, b: 1, a: 1}
   - {r: 0, g: 1, b: 0.26104426, a: 1}
   - {r: 1, g: 0.9635627, b: 0, a: 1}
-  - {r: 1, g: 0.08072951, b: 0.042452812, a: 1}
 --- !u!114 &795877768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4364,7 +4381,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 400, y: 10.006012}
+  m_AnchoredPosition: {x: 400, y: 10.005981}
   m_SizeDelta: {x: 108.619995, y: 6.74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1119942778
@@ -6323,7 +6340,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 400, y: 26.4}
+  m_AnchoredPosition: {x: 400, y: 26.400024}
   m_SizeDelta: {x: 108.619995, y: 6.74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1479890010
@@ -6396,7 +6413,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 7.3, y: -6.4}
+  m_AnchoredPosition: {x: 9.195004, y: -9.785}
   m_SizeDelta: {x: 18.39, y: 19.57}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1498816666
@@ -6424,13 +6441,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 8
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Q
+  m_Text: F
 --- !u!222 &1498816667
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7641,7 +7658,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1740068212
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8470,9 +8487,12 @@ MonoBehaviour:
   anim: {fileID: 0}
   thisPersonality: 0
   enemyType: 2
-  myDialogue: {fileID: 11400000, guid: 340b3aaef16b42e4f870748064a7cf91, type: 2}
-  answerDialogues:
+  myDialogues:
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  answerDialogues:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

@@ -47,7 +47,7 @@ public class BattleController : MonoBehaviour
         {
             allEnemyFighters[i].MCharacter = mainCharacter;
         }
-        GameManager.gameManager.MainHud.OpenCloseQuickDialogueTab();
+        //GameManager.gameManager.MainHud.OpenCloseQuickDialogueTab();
         StartCoroutine("CheckPlayerPos");
         byDialogue = true;
         triggeringBattle = false;
@@ -102,7 +102,7 @@ public class BattleController : MonoBehaviour
     public void EndAllFightersBattle()
     {
         activeBattle = false;
-        GameManager.gameManager.MainHud.OpenCloseQuickDialogueTab();        
+        //GameManager.gameManager.MainHud.OpenCloseQuickDialogueTab();        
         Debug.Log("BattleEnd");
         mainCharacter.EndBattle();
         for (int i = 0; i < allEnemyFighters.Count; i++)
