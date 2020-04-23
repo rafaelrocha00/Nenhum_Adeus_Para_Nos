@@ -17,13 +17,13 @@ public abstract class DropSlot : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("OnPointerEnter");
+        //Debug.Log("OnPointerEnter");
         GameManager.gameManager.inventoryController.ActualDropSlot = this;
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("OnPointerExit");
+        //Debug.Log("OnPointerExit");
         GameManager.gameManager.inventoryController.ActualDropSlot = null;
     }
 }

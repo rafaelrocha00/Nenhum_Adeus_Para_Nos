@@ -122,6 +122,7 @@ public class BattleController : MonoBehaviour
 
         allEnemyFighters.Clear();
 
+        GameManager.gameManager.dialogueController.EndDialogue();
         GameManager.gameManager.MainCamera.EndBattle();
     }
 

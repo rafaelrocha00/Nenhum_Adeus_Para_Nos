@@ -11,6 +11,7 @@ public class Player : MonoBehaviour, BattleUnit
     public CharacterStats CharStats { get { return charStats; } }
 
     public Animator animator;
+    public GameObject staminaBar;
 
     public float defaultSpeed = 3.5f;
     public float maxSpeed = 6.0f;
@@ -55,6 +56,7 @@ public class Player : MonoBehaviour, BattleUnit
     Vector3 forward, right;
     //float directionMod = 0;
     bool moving = false;
+    int movingTowardWall = 1;
 
     float moveTime = 0.0f;
     bool running;
@@ -89,10 +91,13 @@ public class Player : MonoBehaviour, BattleUnit
 
     CamMove cam;
 
+    [HideInInspector] bool placingItem = false;
+    public bool PlacingItem { get { return placingItem; } set { placingItem = value; } }
     [HideInInspector] bool aimingThrowable = false;
     public bool AimingThrowable { get { return aimingThrowable; } set { aimingThrowable = value; } }
     public GameObject launchTrajectory;
     ThrowableItem itemToThrow;
+    PlaceableItem itemToPlace;
     GameObject granadeObj;
     public Transform rightHand;
 
@@ -104,10 +109,15 @@ public class Player : MonoBehaviour, BattleUnit
     public Interactives InteractingObj { get { return interactingObj; } set { interactingObj = value; } }
 
     bool inBattle;
-    LayerMask layermask = 1 << 0;
+    LayerMask aimLayermask = 1 << 0;
+    LayerMask dashMask;
 
     private void Start()
     {
+        string[] aux = new string[2];
+        aux[0] = "Default";
+        aux[1] = "Walls";
+        dashMask = LayerMask.GetMask(aux);
         //for (int i = 0; i < battleDialogues.Length; i++)
         //{
         //    if (battleDialogues[i] != null) battleDialogues[i].MainCharacter = this;
@@ -160,10 +170,10 @@ public class Player : MonoBehaviour, BattleUnit
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, 1000, layermask))
+        if (Physics.Raycast(ray, out hit, 1000, aimLayermask))
         {
             if (!aimLocked) battleAim = new Vector3(hit.point.x, transform.position.y, hit.point.z);
-            if (aimingThrowable) transform.LookAt(battleAim);
+            if (aimingThrowable || placingItem) transform.LookAt(battleAim);
             //Debug.Log(lookPos);
         }        
 
@@ -186,8 +196,9 @@ public class Player : MonoBehaviour, BattleUnit
         if (Input.GetKeyDown(KeyCode.C))
         {
             //Debug.Log("Item rápido");
-            if (!aimingThrowable) UseEquippedItem();
-            else CancelThrowItem();
+            if (!aimingThrowable && !placingItem) UseEquippedItem();
+            else if (aimingThrowable) CancelThrowItem();
+            else if (placingItem) CancelPlaceItem();
         }
 
         if (Input.mouseScrollDelta.y > 0)
@@ -287,6 +298,10 @@ public class Player : MonoBehaviour, BattleUnit
             {
                 if (Input.GetMouseButtonDown(0)) StartThrowItem();
             }
+            else if (placingItem)
+            {
+                if (Input.GetMouseButtonDown(0)) PlaceItem();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -324,11 +339,11 @@ public class Player : MonoBehaviour, BattleUnit
             equippedDialogueType = 2;
             GameManager.gameManager.MainHud.EquipDialogue(2);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            equippedDialogueType = 3;
-            GameManager.gameManager.MainHud.EquipDialogue(3);
-        }
+        //else if (Input.GetKeyDown(KeyCode.Alpha4))
+        //{
+        //    equippedDialogueType = 3;
+        //    GameManager.gameManager.MainHud.EquipDialogue(3);
+        //}
         //else if (Input.GetKeyDown(KeyCode.Alpha5))
         //{
         //    equippedDialogueType = 4;
@@ -357,6 +372,7 @@ public class Player : MonoBehaviour, BattleUnit
                 if (!autoShooting)
                 {
                     defending = true;
+                    stamina_regen /= 2;
                     animator.SetBool("Defending", true);
                     if (!slowMoving) StartCoroutine(Slowdown(defaultSlow));
                     GameManager.gameManager.MainHud.ShowHideDefenseBar();
@@ -367,13 +383,13 @@ public class Player : MonoBehaviour, BattleUnit
                 if (defending) CancelDefense();
             }
 
-            if (defending && stamina > 0)
-            {
-                CancelStaminaRegen(true);
-                UpdateStamina(-stamina_defendingDecay * Time.deltaTime);
-                //moveSpeed = defaultSpeed - defaultSpeed * defense_slow / 100;
-                if (stamina == 0) CancelDefense();
-            }
+            //if (defending && stamina > 0)
+            //{
+            //    CancelStaminaRegen(true);
+            //    UpdateStamina(-stamina_defendingDecay * Time.deltaTime);
+            //    //moveSpeed = defaultSpeed - defaultSpeed * defense_slow / 100;
+            //    if (stamina == 0) CancelDefense();
+            //}
         }
     }
 
@@ -472,7 +488,11 @@ public class Player : MonoBehaviour, BattleUnit
         Vector3 heading = Vector3.Normalize(rightMov + upMov);
         Vector3 newDirection = Vector3.RotateTowards(transform.forward, heading, rotateSpeed * Time.deltaTime, 0);
 
-        transform.position += heading * moveSpeed * Time.deltaTime;
+        RaycastHit hit;
+        movingTowardWall = 1;
+        if (Physics.Raycast(transform.up * 0.2f + transform.position, heading, out hit, 0.5f, dashMask)) movingTowardWall = 0;
+
+        transform.position += heading * moveSpeed * Time.deltaTime * movingTowardWall;
         //if (!inBattle) transform.rotation = Quaternion.LookRotation(newDirection);
         //else
         //{
@@ -506,23 +526,39 @@ public class Player : MonoBehaviour, BattleUnit
         //animator.SetFloat("VelX", velX);
         //animator.SetFloat("VelY", velY);
 
-        if (!aimingThrowable) transform.LookAt(battleAim);        
+        if (!aimingThrowable && !placingItem) transform.LookAt(battleAim);        
         //}
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (stamina >= stamina_dashCost/* && !dashInCooldown*/)
             {
+                //RaycastHit hit;
+                Vector3 targetPos;
+                if (Physics.Raycast(/*new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z)*/transform.up * 0.2f + transform.position, heading, out hit, 7.5f, dashMask))
+                {
+                    
+                    targetPos = (hit.collider.bounds.ClosestPoint(transform.position) - transform.position) * 0.8f + transform.position;
+                }            
+                else targetPos = heading * 7.5f + transform.position;
                 //Cooldown do dash
                 //StartCoroutine("DashCooldown");
                 CancelStaminaRegen(false);
                 UpdateStamina(-stamina_dashCost);
-                StartCoroutine(Dash(heading));
+                //StartCoroutine(Dash(heading));
+                StartCoroutine(Dash(targetPos));
                 StartCoroutine("StartStaminaRegen");
             }            
         }
         //cam.Move(transform.position);        
     }
+
+    //Vector3 targetPos = Vector3.zero;
+
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawLine(new Vector3(transform.position.x, transform.position.y + 0.1f, transform.position.z), targetPos);
+    //}
 
     void StopMoving()
     {
@@ -556,17 +592,26 @@ public class Player : MonoBehaviour, BattleUnit
     IEnumerator Dash(Vector3 dir)
     {
         dashing = true;
+        Vector3 originPos = transform.position;
+        float distance = (dir - transform.position).magnitude;
         animator.SetBool("Dashing", true);
         float timer = 0.0f;
         do
         {
-            transform.position += dir * dashSpeed * Time.deltaTime;
-            timer += Time.deltaTime;
+            //transform.position += dir * dashSpeed * Time.deltaTime;
+            //timer += Time.deltaTime;
+            timer += Time.deltaTime / dashTime * 7.5f / distance;
+            transform.position = Vector3.Lerp(originPos, dir, timer);
             yield return new WaitForEndOfFrame();
-        } while (timer < dashTime);
+        } while (timer < 1 && dashing);
         dashing = false;
         animator.SetBool("Dashing", false);
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        //if (dashing) dashing = false;
+    }
+
     //IEnumerator DashCooldown()
     //{
     //    dashInCooldown = true;
@@ -577,7 +622,8 @@ public class Player : MonoBehaviour, BattleUnit
     void CancelDefense()
     {
         defending = false;
-        StartCoroutine("StartStaminaRegen");
+        //StartCoroutine("StartStaminaRegen");
+        stamina_regen *= 2;
         stoppedStaminaRegen = false;
         animator.SetBool("Defending", false);
         CancelSlow();
@@ -644,10 +690,15 @@ public class Player : MonoBehaviour, BattleUnit
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        INPC[] allEnemies = GameManager.gameManager.dialogueController.GetNearbyNPCs(transform.position, 10);
+        INPC[] allEnemies;
+        if (!GameManager.gameManager.battleController.ActiveBattle)
+            allEnemies = GameManager.gameManager.dialogueController.GetNearbyNPCs(transform.position, 10);
+        else
+            allEnemies = GameManager.gameManager.battleController.AllEnemyFighters.ToArray();
+
         if (allEnemies != null && allEnemies.Length > 0)
         {
-            if (Physics.Raycast(ray, out hit, 1000, layermask))
+            if (Physics.Raycast(ray, out hit, 1000, aimLayermask))
             {
 
                 for (int i = 0; i < allEnemies.Length; i++)
@@ -753,6 +804,8 @@ public class Player : MonoBehaviour, BattleUnit
         GameManager.gameManager.inventoryController.Inventory.quickItemSlot.UseItemEffect();
     }
 
+    //Uso de item Arremessavel
+    #region Throw Item
     public void StartAiming(ThrowableItem tI)
     {
         itemToThrow = tI;
@@ -789,7 +842,6 @@ public class Player : MonoBehaviour, BattleUnit
         animator.SetBool("ThrowedItem", false);
         HideShowWeapon();
     }
-
     public void CancelThrowItem()
     {
         launchTrajectory.SetActive(false);
@@ -798,13 +850,38 @@ public class Player : MonoBehaviour, BattleUnit
         Destroy(granadeObj);
         HideShowWeapon();
     }
+    #endregion
+
+    //Uso de item colocável
+    #region Place Item
+    public void StartPlaceItem(PlaceableItem pI)
+    {
+        placingItem = true;
+        itemToPlace = pI;
+        GameManager.gameManager.objectPlacer.StartPlacingItem(pI.itemToPlace, pI.itemToPlaceMeshonly, aimLayermask);
+        HideShowWeapon();
+    }
+    public void PlaceItem()
+    {
+        //itemToPlace.Place()
+        GameManager.gameManager.objectPlacer.ComfirmPlace(itemToPlace);
+        GameManager.gameManager.inventoryController.Inventory.quickItemSlot.ConfirmUse();
+        CancelPlaceItem();
+    }
+    public void CancelPlaceItem()
+    {
+        GameManager.gameManager.objectPlacer.CancelPlacing();
+        HideShowWeapon();
+        placingItem = false;
+    }
+    #endregion
 
     public void UseDialogue(/*int idx*/)
     {
         //Debug.Log("Tentando usar dialogo");
         Debug.Log(GameManager.gameManager.dialogueController.ActiveDialogue);
         Debug.Log(dialogueInCooldown);
-        if (!GameManager.gameManager.dialogueController.ActiveDialogue /*&& !GameManager.gameManager.MainHud.IsQuickMenuActive*/ && !dialogueInCooldown)
+        if ((!GameManager.gameManager.dialogueController.ActiveDialogue || GameManager.gameManager.dialogueController.PlayerCanAnswer()) /*&& !GameManager.gameManager.MainHud.IsQuickMenuActive*/ && !dialogueInCooldown)
         {
             //Debug.Log("Tentando usar dialogo em batalha");
             try
@@ -823,6 +900,11 @@ public class Player : MonoBehaviour, BattleUnit
                     GameManager.gameManager.MainHud.IconCooldown(dialogueCooldown);
                     Invoke("DialogueCooldown", dialogueCooldown);
                 }
+                if (GameManager.gameManager.dialogueController.ActiveDialogue)
+                {
+                    GameManager.gameManager.dialogueController.EndDialogue();
+                    Debug.Log("EndingDialogue");
+                }
                 GameManager.gameManager.dialogueController.StartDialogue(actualDialogueBattle, transform);                
             }
             catch
@@ -838,6 +920,7 @@ public class Player : MonoBehaviour, BattleUnit
         }
         else if (GameManager.gameManager.dialogueController.WaitingForAnswer)
         {
+            if (GameManager.gameManager.dialogueController.ActiveDialogue) GameManager.gameManager.dialogueController.EndDialogue();
             GameManager.gameManager.MainHud.WaitingForAnswer(false);
             DialogueBattle actualDialogueBattle = GameManager.gameManager.dialogueController.GetDialogueBattle((int)targetedEnemy.enemyType, equippedDialogueType, 0);
             actualDialogueBattle.MainCharacter = this;
@@ -973,7 +1056,8 @@ public class Player : MonoBehaviour, BattleUnit
     {
         stamina += value;
         stamina = Mathf.Clamp(stamina, 0, maxStamina);
-        GameManager.gameManager.MainHud.UpdateStamina(stamina / maxStamina);
+        //GameManager.gameManager.MainHud.UpdateStamina(stamina / maxStamina);
+        staminaBar.transform.localScale = new Vector3(stamina / maxStamina, stamina / maxStamina, 1);
     }
     void UpdateLife()
     {

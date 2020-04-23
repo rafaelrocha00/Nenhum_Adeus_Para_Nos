@@ -1,17 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DialogueController : MonoBehaviour
 {
-    Text dialogueText;
-    GameObject dialoguePopUp;
-    Button popUPB;
+    //Text dialogueText;
+    //GameObject dialoguePopUp;
+    DialoguePopUp dialoguePopUp;
+    //Button popUPB;
 
     Camera mainCam;
 
     public GameObject dialoguePref;
+    public float answerTime = 4f;
+    bool waitingForAnswerBattle;
+    INPC dialoguingNPC;
 
     Dialogue actualDialogue;
 
@@ -28,9 +33,11 @@ public class DialogueController : MonoBehaviour
     float writingTime = 0.0f;
 
     //public List<DialogueBattle>[][] approaches = new List<DialogueBattle>[4][];//Array de Approaches o primeirod Index define o tipo de inimigo, o segundo o tipo de abordagem, e dentro da lista deles estão os diálogos para serem sorteados.
-    public DialogueBattle[] playerApproaches = new DialogueBattle[4];
+    public DialogueBattle[] playerApproaches = new DialogueBattle[3];
 
-    public List<Dialogue>[][][] npcAnswers = new List<Dialogue>[4][][];//Array das respostas dos inimigos, Uma lista de opções de respotas pra cada tipo de abordagem para cada personalidade para cada tipo de inimigo
+    public List<Dialogue>[][][] npcAnswers = new List<Dialogue>[2][][];//Array das respostas dos inimigos, Uma lista de opções de respotas pra cada tipo de abordagem para cada personalidade para cada tipo de inimigo
+    Dialogue failResult;
+    public DialogueBattleResult[][][] battleResults = new DialogueBattleResult[2][][]; //Array de resultados de batalha, primeiro Index define o tipo de inimigo, o segundo a personalidade e o terceiro o resultado;
     //Sprite dps
     public Color[] dialogueColors = new Color[5];
     
@@ -55,10 +62,10 @@ public class DialogueController : MonoBehaviour
 
         for (int i = 0; i < npcAnswers.Length; i++)
         {
-            npcAnswers[i] = new List<Dialogue>[4][];
+            npcAnswers[i] = new List<Dialogue>[2][];
             for (int j = 0; j < npcAnswers[i].Length; j++)
             {
-                npcAnswers[i][j] = new List<Dialogue>[4];
+                npcAnswers[i][j] = new List<Dialogue>[3];
                 for (int k = 0; k < npcAnswers[i][j].Length; k++)
                 {
                     npcAnswers[i][j][k] = new List<Dialogue>();
@@ -73,12 +80,23 @@ public class DialogueController : MonoBehaviour
                 }
             }
         }
+        for (int i = 0; i < battleResults.Length; i++)
+        {
+            battleResults[i] = new DialogueBattleResult[2][];
+            for (int j = 0; j < battleResults[i].Length; j++)
+            {
+                battleResults[i][j] = Resources.LoadAll<DialogueBattleResult>("DialogueBattleResults/EnemyT" + (i + 1) + "/Personality" + (j + 1));
+            }
+        }
+        failResult = Resources.Load<Dialogue>("DialogueBattleResults/FailCombination");
+
+
         mainCam = GameManager.gameManager.MainCamera.GetComponent<Camera>();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && activeDialogue && !(actualDialogue is DialogueBattle))
+        if (Input.GetKeyDown(KeyCode.E) && activeDialogue && !(actualDialogue is DialogueBattle) && !waitingForAnswerBattle)
         {
             Debug.Log("NextString");
             NextString();
@@ -102,12 +120,37 @@ public class DialogueController : MonoBehaviour
     {
         return npcAnswers[enType][personality][apType][idx];
     }
+    public Dialogue GetBattleResult(int enType, int personality, DialogueBattle.ApproachType[] comb, INPC npc, Player p)
+    {
+        Dialogue aux = failResult;
 
-    public void StartDialogue(Dialogue newDialogue, Transform transf/*, INPC npc = null*/)
+        try
+        {
+            for (int i = 0; i < battleResults[enType][personality].Length; i++)
+            {
+                if (battleResults[enType][personality][i].apCombination.SequenceEqual(comb))
+                {
+                    battleResults[enType][personality][i].StartEffects(npc, p);
+                    if (battleResults[enType][personality][i].BattleResult())
+                        aux = battleResults[enType][personality][i];
+                }
+                //Debug.Log(comb[0] + " | " + comb[1] + " | " + comb[2]);
+                //Debug.Log(battleResults[enType][personality][i].apCombination[0] + " | " + battleResults[enType][personality][i].apCombination[1] + " | " + battleResults[enType][personality][i].apCombination[2]);
+            }
+        }
+        catch (System.Exception)
+        {
+            throw;
+        }
+
+        return aux;
+    }
+
+    public void StartDialogue(Dialogue newDialogue, Transform transf/*, INPC npc = null*/, bool timed = false)
     {
         if (newDialogue is DialogueWithChoice) lastDialogueWithChoice = (DialogueWithChoice)newDialogue;
         activeDialogue = true;
-        OpenDialoguePopUp(transf/*, npc*/);
+        OpenDialoguePopUp(transf/*, npc*/, timed);
         actualDialogue = newDialogue;
         NextString();
         StartCoroutine("CheckPlayerDistance");
@@ -162,18 +205,21 @@ public class DialogueController : MonoBehaviour
             }
 
             //Debug.Log("Deu nextstring");
-            if (activeDialogue && (GameManager.gameManager.battleController.ActiveBattle || (actualDialogue is DialogueBattle))) StartCoroutine("NextStringCountdown");
+            if (activeDialogue && ((GameManager.gameManager.battleController.ActiveBattle && !waitingForAnswerBattle) || (actualDialogue is DialogueBattle) || (actualDialogue is DialogueBattleResult))) StartCoroutine("NextStringCountdown");
         }
     }
     public void EndDialogue()
     {
         if (activeDialogue)
-        {
+        {            
             activeDialogue = false;
             actualDialogue.ResetDialogue();
+            writing = false;
             CloseDialoguePopUp();
-            //Debug.Log("Encerrando dialogo");
-            StopCoroutine("NextStringCountdown");
+            //Debug.Log("Encerrando dialogo");            
+            //StopCoroutine("NextStringCountdown");
+            //StopCoroutine("ResetCooldown");
+            StopAllCoroutines();
         }
     }
 
@@ -197,18 +243,19 @@ public class DialogueController : MonoBehaviour
             {
                 //GameManager.gameManager.MainHud.OpenDialogueOptTab(aux);
                 aux.MyNPC.SetWaitingForAnswer();
+                dialoguePopUp.StartTimer(10);
                 waitingForAnswer = true;
                 GameManager.gameManager.MainHud.WaitingForAnswer(true);
             }
         }        
     }
 
-    public void OpenDialoguePopUp(Transform transf/*, INPC npc = null*/)
+    public void OpenDialoguePopUp(Transform transf/*, INPC npc = null*/, bool timed = false)
     {
         try
         {
             dialoguePopUp.transform.position = mainCam.WorldToScreenPoint(transf.position);
-            dialoguePopUp.SetActive(true);
+            dialoguePopUp.gameObject.SetActive(true);
         }
         catch
         {
@@ -217,28 +264,34 @@ public class DialogueController : MonoBehaviour
             //dialogueText = dialoguePopUp.GetComponentInChildren<Text>();
             //popUPB = dialoguePopUp.GetComponent<Button>();
             //dialoguePopUp = Instantiate(dialoguePref, transf.position, dialoguePref.transform.rotation) as GameObject;
-            dialoguePopUp = Instantiate(dialoguePref, GameManager.gameManager.MainHud.transform, false) as GameObject;
+            GameObject aux = Instantiate(dialoguePref, GameManager.gameManager.MainHud.transform, false) as GameObject;
+            dialoguePopUp = aux.GetComponent<DialoguePopUp>();
             dialoguePopUp.transform.position = mainCam.WorldToScreenPoint(transf.position);
             //dialoguePopUp.GetComponent<DialoguePopUpFollow>().SetTransform(transf);
-            dialogueText = dialoguePopUp.transform.GetChild(0).GetComponentInChildren<Text>();
-            popUPB = dialoguePopUp.transform.GetChild(0).GetComponent<Button>();
+            //dialogueText = dialoguePopUp.transform.GetChild(0).GetComponentInChildren<Text>();
+            //popUPB = dialoguePopUp.transform.GetChild(0).GetComponent<Button>();
             //Debug.Log("Abrindo Balao de dialogo");
         }
         //Mudar posição;
         //if (npc != null) popUPB.onClick.AddListener(npc.NextString);
-        popUPB.onClick.AddListener(NextString);
+        //popUPB.onClick.AddListener(NextString);
+        dialoguePopUp.InitialSet(NextString);
     }
 
     public void CloseDialoguePopUp()
     {
-        if (dialoguePopUp != null) dialoguePopUp.SetActive(false);
-        if (popUPB != null) popUPB.onClick.RemoveAllListeners();
+        if (dialoguePopUp != null)
+        {
+            dialoguePopUp.gameObject.SetActive(false);
+            dialoguePopUp.RemoveOnClick();
+        }
+        //if (popUPB != null) popUPB.onClick.RemoveAllListeners();
     }
 
     public void ChangePopUpPos(/*Vector3 newPos, */Transform transf)
     {
         //dialoguePopUp.transform.position = newPos;
-        dialoguePopUp.GetComponent<DialoguePopUpFollow>().SetTransform(transf);
+        dialoguePopUp.GetComponent<DialoguePopUp>().SetTransform(transf);
         //Debug.Log(transf.name);
     }
 
@@ -263,16 +316,56 @@ public class DialogueController : MonoBehaviour
         for (int i = 0; i < dialogueString.Length; i++)
         {
             allText += dialogueString[i].ToString();
-            dialogueText.text = allText;
+            //dialogueText.text = allText;
+            dialoguePopUp.SetText(allText);
             if (!writing)
             {
-                dialogueText.text = dialogueString;
+                //dialogueText.text = dialogueString;
+                dialoguePopUp.SetText(dialogueString);
                 yield break;
             }
             yield return new WaitForSeconds(writingSpeed);
         }
         CheckForDialogueOptions();
         writing = false;
+    }
+
+    public bool PlayerCanAnswer()
+    {
+        return waitingForAnswerBattle;
+    }
+    public void StartPlayerAnswerCountown(INPC npc)
+    {
+        dialoguingNPC = npc;
+        waitingForAnswerBattle = true;
+        //Chamar uma barrinha de tempo na hud
+        StartCoroutine("ResetCooldown");
+    }
+    public void ContinueBattleDialogue()
+    {
+        waitingForAnswerBattle = true;
+        StopCoroutine("ResetCooldown");
+        StartCoroutine("ResetCooldown");        
+    }
+    public void CancelBattleDialogue()
+    {
+        StopCoroutine("ResetCooldown");
+        waitingForAnswerBattle = false;        
+        dialoguingNPC.CancelBattleDialogue();
+    }
+    IEnumerator ResetCooldown()
+    {
+        float aux = 0;
+        while (!dialoguePopUp.gameObject.activeSelf)
+        {
+            aux += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        dialoguePopUp.StartTimer(answerTime - aux);
+        yield return new WaitForSeconds(answerTime - aux);
+        waitingForAnswerBattle = false;
+        EndDialogue();
+        dialoguingNPC.CancelBattleDialogue();
     }
 
     public INPC[] GetNearbyNPCs(Vector3 center, float radius)

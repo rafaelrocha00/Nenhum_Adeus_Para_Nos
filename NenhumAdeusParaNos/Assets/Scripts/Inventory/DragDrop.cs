@@ -143,7 +143,10 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         {
             itemButton.OriginSlots[0, 0].MyGridManager.AlocateBigItem(itemButton, itemButton.OriginSlots);
         }
-        else if (itemButton.OriginDropSlot != null) itemButton.OriginDropSlot.OnDrop(itemButton);
+        else if (itemButton.OriginDropSlot != null)
+        {
+            itemButton.OriginDropSlot.OnDrop(itemButton);
+        }
 
         transform.position = originPos;
     }
@@ -156,7 +159,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log("PointerDown");
+        if (Input.GetKey(KeyCode.LeftShift)) Debug.Log("Transferir para outro Grid aberto");
     }
 
 }

@@ -21,16 +21,24 @@ public class QuickItemSlot : DropSlot
     {
         //try
         //{
-        if (itemButton.Item is QuickUseItem && itemButton.OriginSlots[0, 0].MyGridManager.generateOnStart)
+        if (itemButton.Item is QuickUseItem/* && itemButton.OriginSlots[0, 0].MyGridManager.generateOnStart*/)
         {
-            //Debug.Log("OnDropNoSlot de item");
-            image.color = Color.white;
-            quickItem = (QuickUseItem)itemButton.Item;
-            thisItemB = itemButton;
-            image.sprite = itemButton.GetComponent<Image>().sprite;
-            GameManager.gameManager.MainHud.quickItemSlot.SetSprite(itemButton.GetComponent<Image>().sprite);
-            hasInInventory = true;
-            Invoke("CheckItemInventory", 0.01f);
+            bool aux = true;
+            if (!itemButton.OriginSlots[0, 0].MyGridManager.generateOnStart) aux = GameManager.gameManager.inventoryController.Inventory.myGrid.TryAlocateItem(itemButton);
+
+            if (aux)
+            {
+                Debug.Log("OnDropNoSlot de item");
+                image.color = Color.white;
+                quickItem = (QuickUseItem)itemButton.Item;
+                thisItemB = itemButton;
+                image.sprite = itemButton.GetComponent<Image>().sprite;
+                GameManager.gameManager.MainHud.quickItemSlot.SetSprite(itemButton.GetComponent<Image>().sprite);
+                hasInInventory = true;
+                Invoke("CheckItemInventory", 0.01f);
+                if (!itemButton.OriginSlots[0, 0].MyGridManager.generateOnStart) return true;
+                else return false;
+            }
         }
         //}
         //catch

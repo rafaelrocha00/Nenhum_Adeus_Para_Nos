@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
 {
-    public enum Personalities { DereDere, Kuudere, Tsundere, Yandere }
-    public enum EnemyType { Monstro, Estatal, NaoEstatal, Cidadao }
+    public enum Personalities { Tsundere, Yandere }
+    public enum EnemyType { Lustro, Normal }
 
     [HideInInspector] CharacterStats charStats;
     public CharacterStats CharStats { get { return charStats; } }
@@ -25,6 +25,7 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
 
     public DialogueOptions[] myDialogues = new DialogueOptions[4];   
     public Dialogue[] answerDialogues = new Dialogue[4];
+    List<DialogueBattle.ApproachType> receivedAp = new List<DialogueBattle.ApproachType>();
     //Dialogue initialDialogue;
 
     public bool hostile = false;
@@ -164,7 +165,8 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
 
                 if (Physics.Raycast(ray, out hit))
                 {
-                    if (hit.collider.CompareTag("player") || /*Vector3.Distance*/(hit.transform.position - transform.position).sqrMagnitude >= /*Vector3.Distance*/(mCharacter.transform.position - transform.position).sqrMagnitude)
+                    //Debug.Log(hit.collider.name);
+                    if (hit.collider.CompareTag("player") || hit.collider.CompareTag("barrier") || /*Vector3.Distance*/(hit.transform.position - transform.position).sqrMagnitude >= /*Vector3.Distance*/(mCharacter.transform.position - transform.position).sqrMagnitude)
                     {
                         TryAttack();
                     }
@@ -183,7 +185,7 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
 
 
         //if (inBattle && Input.GetKeyDown(KeyCode.L)) Stun(2.0f);
-        //if (inBattle && Input.GetKeyDown(KeyCode.H)) Slow(40.0f, 2.0f);
+        //if (inBattle && Input.GetKeyDown(KeyCode.H)) ChangeMoveSpeed(120.0f, 2.0f);
 
     }
 
@@ -296,7 +298,7 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
     public void SetWaitingForAnswer()
     {
         waitingForAnswer = true;
-        Invoke("CancelDialogue", 10);
+        Invoke("CancelDialogue", 12);
         //GameManager.gameManager.dialogueController.WaitForAnswerTimer(10)
     }
     void CancelDialogue()
@@ -306,6 +308,11 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
             waitingForAnswer = false;
             GameManager.gameManager.dialogueController.EndDialogue();
         }
+    }
+    public void CancelBattleDialogue()
+    {
+        Debug.Log("Limpando ultimos approaches");
+        receivedAp.Clear();
     }
     public void ReceiveBattleDialogue(DialogueBattle playerDialogue)
     {
@@ -321,54 +328,118 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
             float answerChance = personality.CalculatePercentage(playerDialogue.approachType);
             float aux = Random.Range(0, 100);
 
-            if (aux <= answerChance)
-            {
-                if (answerDialogues[(int)playerDialogue.approachType] != null)
-                {
-                    answerDialogues[(int)playerDialogue.approachType].MyNPC = this;
-                    answerDialogues[(int)playerDialogue.approachType].MainCharacter = mCharacter;
-                    //GameManager.gameManager.dialogueController.StartDialogue(answerDialogues[(int)playerDialogue.approachType], transform);
-                    StartCoroutine(DelayStartDialogueBattle(playerDialogue));
-                }
+            receivedAp.Add(playerDialogue.approachType);
+            //if (receivedAp.Count == 1)
+            //{
+            //    GameManager.gameManager.dialogueController.StartPlayerAnswerCountown(this);
+            //}
 
-                Debug.Log("Respondendo diálogo");
-            }
-            else
+            if (receivedAp.Count < 3)
             {
-                Debug.Log("Dialogo Falhou");
+                if (receivedAp.Count == 1)
+                {
+                    GameManager.gameManager.dialogueController.StartPlayerAnswerCountown(this);
+                    Debug.Log("Startando Dialogo Em Combate");
+                }
+                else
+                {
+                    GameManager.gameManager.dialogueController.ContinueBattleDialogue();
+                }
+                Debug.Log("Respondendo dialogo");
                 int random = Random.Range(0, 2);
                 //Dialogue answer = GameManager.gameManager.npcAnswers.GetFailAnswer(thisPersonality, playerDialogue.approachType, random);
                 Dialogue answer = GameManager.gameManager.dialogueController.GetAnswer((int)enemyType, (int)thisPersonality, (int)playerDialogue.approachType, random);
                 answer.MyNPC = this;
                 StartCoroutine(DelayStartDialogue(answer));
             }
+            else if (receivedAp.Count == 3)
+            {
+                //Trigar o dialogo especifico
+                Debug.Log("Trigando o dialogo especial");                
+                Dialogue auxDialogue = GameManager.gameManager.dialogueController.GetBattleResult((int)enemyType, (int)thisPersonality, receivedAp.ToArray(), this, mCharacter);
+                GameManager.gameManager.dialogueController.CancelBattleDialogue();
+                auxDialogue.MyNPC = this;
+                auxDialogue.MainCharacter = mCharacter;
+                //if (auxDialogue is DialogueBattleResult)
+                //{
+                //    DialogueBattleResult auxBR = (DialogueBattleResult)auxDialogue;
+                //    auxBR.StartEffects();
+                //}
+                StartCoroutine(DelayStartDialogue(auxDialogue));                
+            }
+
+            //if (aux <= answerChance)
+            //{
+            //    if (answerDialogues[(int)playerDialogue.approachType] != null)
+            //    {
+            //        answerDialogues[(int)playerDialogue.approachType].MyNPC = this;
+            //        answerDialogues[(int)playerDialogue.approachType].MainCharacter = mCharacter;
+            //        //GameManager.gameManager.dialogueController.StartDialogue(answerDialogues[(int)playerDialogue.approachType], transform);
+            //        StartCoroutine(DelayStartDialogueBattle(playerDialogue));
+            //    }
+
+            //    Debug.Log("Respondendo diálogo");
+            //}
+            //if (receivedAp.Count < 3)
+            //{
+            //    Debug.Log("Dialogo Falhou");
+            //    int random = Random.Range(0, 2);
+            //    //Dialogue answer = GameManager.gameManager.npcAnswers.GetFailAnswer(thisPersonality, playerDialogue.approachType, random);
+            //    Dialogue answer = GameManager.gameManager.dialogueController.GetAnswer((int)enemyType, (int)thisPersonality, (int)playerDialogue.approachType, random);
+            //    answer.MyNPC = this;
+            //    StartCoroutine(DelayStartDialogue(answer));
+            //}
         }
         else
         {
-            Dialogue aux;
-            int auxID = 0;
+            //Dialogue aux = myDialogues[(int)playerDialogue.approachType].GetRandomDialogue();
+            //int auxID = 0;
 
-            switch ((int)playerDialogue.approachType)
+            //switch ((int)playerDialogue.approachType)
+            //{
+            //    case 0:
+            //        auxID = (myDialogues[0] != null) ? 0 : 1;
+            //        break;
+            //    case 1:
+            //        auxID = (myDialogues[1] != null) ? 1 : 0;
+            //        break;
+            //    case 2:
+            //        auxID = (myDialogues[2] != null) ? 2 : 3;
+            //        break;
+            //    case 3:
+            //        auxID = (myDialogues[3] != null) ? 3 : 2;
+            //        break;
+            //    default:
+            //        break;
+            //}
+            //aux = myDialogues[auxID].GetRandomDialogue();
+            //if (aux.MainCharacter == null) aux.MainCharacter = GameManager.gameManager.battleController.MainCharacter;
+            //aux.MyNPC = this;
+            //StartCoroutine(DelayStartDialogue(aux));
+
+            Dialogue aux = null;
+            try
             {
-                case 0:
-                    auxID = (myDialogues[0] != null) ? 0 : 1;
-                    break;
-                case 1:
-                    auxID = (myDialogues[1] != null) ? 1 : 0;
-                    break;
-                case 2:
-                    auxID = (myDialogues[2] != null) ? 2 : 3;
-                    break;
-                case 3:
-                    auxID = (myDialogues[3] != null) ? 3 : 2;
-                    break;
-                default:
-                    break;
+                aux = myDialogues[(int)playerDialogue.approachType].GetRandomDialogue();
             }
-            aux = myDialogues[auxID].GetRandomDialogue();
-            if (aux.MainCharacter == null) aux.MainCharacter = GameManager.gameManager.battleController.MainCharacter;
-            aux.MyNPC = this;
-            StartCoroutine(DelayStartDialogue(aux));
+            catch
+            {
+                Debug.Log("Pegando primeira resposta disponível");
+                for (int i = 0; i < myDialogues.Length; i++)
+                {
+                    if (myDialogues[i] != null)
+                    {
+                        aux = myDialogues[i].GetRandomDialogue();
+                        break;
+                    }
+                }
+            }
+            if (aux != null)
+            {
+                if (aux.MainCharacter == null) aux.MainCharacter = GameManager.gameManager.battleController.MainCharacter;
+                aux.MyNPC = this;
+                StartCoroutine(DelayStartDialogue(aux));
+            }
         }
     }
     IEnumerator DelayStartDialogueBattle(DialogueBattle playerDialogue)
@@ -436,8 +507,12 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
             Debug.Log("Bydialogue: " + byDialogue);
             Debug.Log("Hostil: " + hostile);
             if ((!byDialogue && hostile) || byDialogue)
-            {                
-                GetComponent<SphereCollider>().enabled = false;
+            {
+                try
+                {
+                    GetComponent<SphereCollider>().enabled = false;
+                }
+                catch { }
                 GameManager.gameManager.battleController.AddFighter(this);
                 inBattle = true;
                 Debug.Log("NPC entrou na batalha");
@@ -455,8 +530,13 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
         if (CanFight()) MoveNavMesh(startPos);
         inBattle = false;
         navMesh.speed = defaultSpeed;
-        Invoke("ActiveInteractionCollider", 3.0f);
+        //Invoke("ActiveInteractionCollider", 3.0f);
         lifeBar.transform.parent.gameObject.SetActive(false);
+    }
+    public void LeaveBattle()
+    {
+        GameManager.gameManager.battleController.FindAndRemove(this.gameObject.name);
+        EndBattle();
     }
 
     public bool CanFight()
@@ -488,8 +568,17 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
         return transform.position;
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        
+    }
+
     void ActiveInteractionCollider()
     {
-        GetComponent<SphereCollider>().enabled = true;
+        try
+        {
+            GetComponent<SphereCollider>().enabled = true;
+        }
+        catch { }     
     }
 }

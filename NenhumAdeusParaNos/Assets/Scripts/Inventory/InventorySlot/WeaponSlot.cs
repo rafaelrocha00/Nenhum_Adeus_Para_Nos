@@ -19,12 +19,17 @@ public class WeaponSlot : DropSlot
             weaponItem = (WeaponItem)itemButton.Item;
             if ((weaponItem.thisWeapon is RangedConfig && isRanged) || (weaponItem.thisWeapon is MeleeConfig && !isRanged))
             {
+                if (thisItemB != null)
+                {
+                    thisItemB.OriginDropSlot = null;
+                    itemButton.OriginSlots[0, 0].MyGridManager.AlocateBigItem(thisItemB, itemButton.OriginSlots);
+                }
+
                 itemButton.transform.SetParent(transform);
                 itemButton.OriginDropSlot = this;
                 thisItemB = itemButton;
                 itemButton.transform.position = this.transform.position;
                 itemButton.ClearOrigin();
-                //Equipar a nova arma no player
                 MainCharacter.EquipWeapon(weaponItem.thisWeapon);
                 return true;
             }
@@ -35,7 +40,9 @@ public class WeaponSlot : DropSlot
 
     public override void OnRemove()
     {
+        base.OnRemove();
         MainCharacter.EquipOriginalWeapon(isRanged);
+        thisItemB = null;
     }
 
     //public override void OnPointerEnter(PointerEventData eventData)

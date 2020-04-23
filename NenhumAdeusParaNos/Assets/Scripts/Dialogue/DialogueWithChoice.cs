@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Dialogue with choice", menuName = "Dialogue/Dialogue with choice")]
 public class DialogueWithChoice : Dialogue
 {
-    public Dialogue[] dialogueChoices;
+    public Dialogue[] dialogueChoices = new Dialogue[3];
     public string[] options;
 
     [HideInInspector] bool lastString = false;

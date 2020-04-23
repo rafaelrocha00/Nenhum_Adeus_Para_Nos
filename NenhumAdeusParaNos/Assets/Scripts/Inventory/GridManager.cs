@@ -37,6 +37,64 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    public bool TryAlocateItem(ItemButton itemB)
+    {
+        //bool itemWasPlaced = false;
+        //for (int i = 0; i < invenGrid.GetLength(0); i++)
+        for (int i = invenGrid.GetLength(1) - 1; i >= 0; i--)
+        {
+            //for (int j = 0; j < invenGrid.GetLength(1); j++)
+            for (int j = 0; j < invenGrid.GetLength(0); j++)
+            {
+                Debug.Log(invenGrid[j, i].transform.position);
+                if (invenGrid[j, i].IsEmpty())
+                {
+                    if (itemB.Item.slotSize == Vector2.one)
+                    {
+                        //ItemButton auxIB = itemGenerator.GenItem(item);
+                        invenGrid[j, i].DropItem(itemB);
+                        //itemWasPlaced = true;
+                        return true;
+                    }
+                    else
+                    {
+                        int xSize = itemB.Item.slotSize.x;
+                        int ySize = itemB.Item.slotSize.y;
+                        InvenSlot[,] itemSlots = new InvenSlot[xSize, ySize];
+                        bool canAlocateItem = true;
+                        //for (int x = 0; x < xSize; x++)
+                        for (int y = 0; y < ySize; y++)
+                        {
+                            //for (int y = 0; y < ySize; y++)
+                            for (int x = 0; x < xSize; x++)
+                            {
+                                try
+                                {
+                                    if (invenGrid[j + x, i - y].IsEmpty()) itemSlots[x, y] = invenGrid[j + x, i - y];
+                                    else canAlocateItem = false;
+                                }
+                                catch { canAlocateItem = false; }
+                                if (!canAlocateItem) break;
+
+                            }
+                            if (!canAlocateItem) break;
+                        }
+                        if (canAlocateItem)
+                        {
+                            //ItemButton auxIB = itemGenerator.GenItem(item);
+                            AlocateBigItem(itemB, itemSlots);
+                            //itemWasPlaced = true;
+                            return true;
+                        }
+                    }
+                    //if (itemWasPlaced) break;
+                }
+            }
+            //if (itemWasPlaced) break;
+        }
+        return false;
+    }
+
     public void AlocateBigItem(ItemButton itemButton, InvenSlot[,] slots)
     {
         for (int i = 0; i < slots.GetLength(0); i++)
@@ -51,6 +109,7 @@ public class GridManager : MonoBehaviour
         itemButton.SetSlot(slots);
         itemButton.transform.position = ItemPosition(slots);
         itemButton.transform.SetParent(itemHolder);
+        if (itemButton.OriginDropSlot != null) itemButton.OriginDropSlot = null;
         Debug.Log("Alocating");
     }
 
