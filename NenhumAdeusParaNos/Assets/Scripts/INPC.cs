@@ -4,16 +4,16 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
-public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
+public class INPC : NPC/*Interactives*//*, BattleUnit*/
 {
     public enum Personalities { Tsundere, Yandere }
     public enum EnemyType { Lustro, Normal }
 
-    [HideInInspector] CharacterStats charStats;
-    public CharacterStats CharStats { get { return charStats; } }
+    //[HideInInspector] CharacterStats charStats;
+    //public CharacterStats CharStats { get { return charStats; } }
 
-    public Animator anim;
-    public Image lifeBar;
+    //public Animator anim;
+    //public Image lifeBar;
 
     //[SerializeField] Behavior behavior;
     public Personalities thisPersonality;// { get { return behavior; } set { behavior = value; } }
@@ -22,30 +22,30 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
     public INPC theOtherNPC;
 
     Personality personality;
-    NavMeshAgent navMesh;
+    //NavMeshAgent navMesh;
 
     [SerializeField] bool waitingForAnswer = false;
 
     public Dialogue dialogueWithOtherNPC;
     public DialogueOptions[] myDialogues = new DialogueOptions[3];   
-    public Dialogue[] answerDialogues = new Dialogue[3];
+    //public Dialogue[] answerDialogues = new Dialogue[3];
     List<DialogueBattle.ApproachType> receivedAp = new List<DialogueBattle.ApproachType>();
     //Dialogue initialDialogue;
 
     public bool hostile = false;
     public bool heavy = false;
 
-    bool attacking = false;
-    public Weapon myWeapon;
-    RangedW rangedW;
-    bool strongAtk = false;
-    bool isRanged = false;
+    //bool attacking = false;
+    //public Weapon myWeapon;
+    //RangedW rangedW;
+    //bool strongAtk = false;
+    //bool isRanged = false;
 
     bool stunned = false;
-    bool moveSpeedChanged = false;
+    //bool moveSpeedChanged = false;
 
-    public float defaultSpeed = 6.0f;
-    public float rangedKiteSpeed = 4.0f;
+    //public float defaultSpeed = 6.0f;
+    //public float rangedKiteSpeed = 4.0f;
     public float dashTime = 0.75f;
     public float dashDistance = 7.5f;
     public float chargeTime = 1.5f;
@@ -57,40 +57,45 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
     public GameObject granadeToThrow;
     public Transform granadeInstPoint;
 
-    [HideInInspector] Player mCharacter;
-    public Player MCharacter { get { return mCharacter; } set { mCharacter = value; } }
+    //[HideInInspector] Player mCharacter;
+    //public Player MCharacter { get { return mCharacter; } set { mCharacter = value; } }
 
     //bool interacting = false;
 
-    bool inBattle = false;
+    //bool inBattle = false;
 
     float attackModifier = 1.0f;
-    float atkInterval = 0.15f;
-    float timer = 0.0f;
+    //float atkInterval = 0.15f;
+    //float timer = 0.0f;
 
     //bool firstInteraction = false;
 
     Vector3 startPos;
     //LayerMask layermask = 1 << 10;
 
-    private void Start()
+    //private void Start()
+    //{
+    //    personality = new Personality();
+    //    SetPersonalityPercentages();
+
+    //    charStats = new CharacterStats(this);
+    //    navMesh = GetComponent<NavMeshAgent>();
+
+    //    if (anim == null) anim = GetComponentInChildren<Animator>();
+
+    //    if (myWeapon == null) myWeapon = GetComponentInChildren<Weapon>();
+    //    if (myWeapon is RangedW)
+    //    {
+    //        isRanged = true;
+    //        rangedW = (RangedW)myWeapon;
+    //    }
+
+    //    navMesh.speed = defaultSpeed;
+    //}
+    protected override void Initialize()
     {
         personality = new Personality();
         SetPersonalityPercentages();
-
-        charStats = new CharacterStats(this);
-        navMesh = GetComponent<NavMeshAgent>();
-
-        if (anim == null) anim = GetComponentInChildren<Animator>();
-
-        if (myWeapon == null) myWeapon = GetComponentInChildren<Weapon>();
-        if (myWeapon is RangedW)
-        {
-            isRanged = true;
-            rangedW = (RangedW)myWeapon;
-        }
-
-        navMesh.speed = defaultSpeed;
     }
     void SetPersonalityPercentages()
     {
@@ -142,101 +147,103 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
     //}
     //
 
-    private void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.E) && interacting && !firstInteraction) firstInteraction = true;
-        //else if (Input.GetKeyDown(KeyCode.E) && interacting && firstInteraction) NextString();
+    //private void Update()
+    //{
+    //    //if (Input.GetKeyDown(KeyCode.E) && interacting && !firstInteraction) firstInteraction = true;
+    //    //else if (Input.GetKeyDown(KeyCode.E) && interacting && firstInteraction) NextString();
+    //    Movement();
+    //    //if (inBattle && Input.GetKeyDown(KeyCode.L)) Stun(2.0f);
+    //    //if (inBattle && Input.GetKeyDown(KeyCode.H)) ChangeMoveSpeed(120.0f, 2.0f);
+    //}
 
+    protected override void Movement()
+    {
         float actualVelocity = navMesh.velocity.magnitude / navMesh.speed;
         if (isRanged) anim.SetFloat("Vel", actualVelocity);
         if (inBattle && !stunned && !charging)
-        {             
-            Ray ray = new Ray(transform.position, mCharacter.transform.position - transform.position);
-            RaycastHit hit;
+        {
+            //Ray ray = new Ray(transform.position, mCharacter.transform.position - transform.position);
+            //RaycastHit hit;
 
-            Vector3 lookPos = new Vector3(mCharacter.transform.position.x, transform.position.y, mCharacter.transform.position.z);
-            transform.LookAt(lookPos);
+            //Vector3 lookPos = new Vector3(mCharacter.transform.position.x, transform.position.y, mCharacter.transform.position.z);
+            //transform.LookAt(lookPos);
 
 
-            if (isRanged)
-            {
-                if ((mCharacter.transform.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
-                {
-                    Vector3 desiredPos = -(mCharacter.transform.position - transform.position) + transform.position;
-                    MoveNavMesh(desiredPos);
-                    if (!moveSpeedChanged) navMesh.speed = rangedKiteSpeed;
-                }
-                else if ((mCharacter.transform.position - transform.position).sqrMagnitude >= rangedW.GetMaxRange() * rangedW.GetMaxRange())
-                {
-                    Vector3 toPlayerVec = mCharacter.transform.position - transform.position;
-                    Vector3 desiredPos = toPlayerVec.normalized * (toPlayerVec.magnitude - rangedW.GetMaxRange() * 0.2f) + transform.position;
-                    if (!moveSpeedChanged) navMesh.speed = defaultSpeed;
-                    MoveNavMesh(desiredPos);
-                }
-                else
-                {
-                    navMesh.isStopped = true;
-                    //parar animação de andar
-                }
+            //if (isRanged)
+            //{
+            //    if ((mCharacter.transform.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
+            //    {
+            //        Vector3 desiredPos = -(mCharacter.transform.position - transform.position) + transform.position;
+            //        MoveNavMesh(desiredPos);
+            //        if (!moveSpeedChanged) navMesh.speed = rangedKiteSpeed;
+            //    }
+            //    else if ((mCharacter.transform.position - transform.position).sqrMagnitude >= rangedW.GetMaxRange() * rangedW.GetMaxRange())
+            //    {
+            //        Vector3 toPlayerVec = mCharacter.transform.position - transform.position;
+            //        Vector3 desiredPos = toPlayerVec.normalized * (toPlayerVec.magnitude - rangedW.GetMaxRange() * 0.2f) + transform.position;
+            //        if (!moveSpeedChanged) navMesh.speed = defaultSpeed;
+            //        MoveNavMesh(desiredPos);
+            //    }
+            //    else
+            //    {
+            //        navMesh.isStopped = true;
+            //        //parar animação de andar
+            //    }
 
-                if (Physics.Raycast(ray, out hit))
-                {
-                    //Debug.Log(hit.collider.name);
-                    if (hit.collider.CompareTag("player") || hit.collider.CompareTag("barrier") || /*Vector3.Distance*/(hit.transform.position - transform.position).sqrMagnitude >= /*Vector3.Distance*/(mCharacter.transform.position - transform.position).sqrMagnitude)
-                    {
-                        TryAttack();
-                    }
-                }
-                else TryAttack();
-            }
-            else
-            {
-                Vector3 toPlayerVec = mCharacter.transform.position - transform.position;
-                Vector3 desiredPos = toPlayerVec.normalized * (toPlayerVec.magnitude - myWeapon.GetRange() * 0.6f) + transform.position;
-                MoveNavMesh(desiredPos);
-                if ((mCharacter.transform.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
-                {
-                    TryAttack();
-                }
-                else if (Physics.Raycast(ray, out hit))
-                {
-                    if (hit.collider.CompareTag("barrier") && (hit.transform.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
-                    {
-                        TryAttack();
-                    }
-                }
-            }
+            //    if (Physics.Raycast(ray, out hit))
+            //    {
+            //        //Debug.Log(hit.collider.name);
+            //        if (hit.collider.CompareTag("player") || hit.collider.CompareTag("barrier") || /*Vector3.Distance*/(hit.transform.position - transform.position).sqrMagnitude >= /*Vector3.Distance*/(mCharacter.transform.position - transform.position).sqrMagnitude)
+            //        {
+            //            TryAttack();
+            //        }
+            //    }
+            //    else TryAttack();
+            //}
+            //else
+            //{
+            //    Vector3 toPlayerVec = mCharacter.transform.position - transform.position;
+            //    Vector3 desiredPos = toPlayerVec.normalized * (toPlayerVec.magnitude - myWeapon.GetRange() * 0.6f) + transform.position;
+            //    MoveNavMesh(desiredPos);
+            //    if ((mCharacter.transform.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
+            //    {
+            //        TryAttack();
+            //    }
+            //    else if (Physics.Raycast(ray, out hit))
+            //    {
+            //        if (hit.collider.CompareTag("barrier") && (hit.transform.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
+            //        {
+            //            TryAttack();
+            //        }
+            //    }
+            //}
+            InBattleBehaviour();
         }
         else if (charging)
         {
             Vector3 lookPos = new Vector3(mCharacter.transform.position.x, transform.position.y, mCharacter.transform.position.z);
             transform.LookAt(lookPos);
         }
-
-
-        //if (inBattle && Input.GetKeyDown(KeyCode.L)) Stun(2.0f);
-        //if (inBattle && Input.GetKeyDown(KeyCode.H)) ChangeMoveSpeed(120.0f, 2.0f);
-
     }
 
-    void MoveNavMesh(Vector3 pos)
-    {
+    //void MoveNavMesh(Vector3 pos)
+    //{
 
-        navMesh.isStopped = false;
-        navMesh.destination = pos;
+    //    navMesh.isStopped = false;
+    //    navMesh.destination = pos;
 
-        //if (inBattle)
-        //{
-        //??? if (isRanged) //animação de andar para trás;
-        //else animação de andar pra frente;
+    //    //if (inBattle)
+    //    //{
+    //    //??? if (isRanged) //animação de andar para trás;
+    //    //else animação de andar pra frente;
 
-        //CheckLook_WalkDir(navMesh.steeringTarget.normalized);
-        //}
-        //else
-        //{
-        //animção de andar pra frente
-        //}
-    }
+    //    //CheckLook_WalkDir(navMesh.steeringTarget.normalized);
+    //    //}
+    //    //else
+    //    //{
+    //    //animção de andar pra frente
+    //    //}
+    //}
 
     //void CheckLook_WalkDir(Vector3 moveDir)
     //{
@@ -263,64 +270,64 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
     //    }
     //}
 
-    void TryAttack()
-    {
-        //if (isRanged)
-        //{
-        timer += Time.deltaTime;
-        if (timer >= atkInterval)
-        {
-            bool canAtk = true;
-            if (isRanged && rangedW.HasAmmo())
-            {
-                canAtk = true;
-            }
-            else if (isRanged)
-            {
-                //animação de reload
-                canAtk = false;
-            }
-            int randomType = Random.Range(0, 2);
-            if (randomType == 1) strongAtk = false;
-            else strongAtk = true;
-            if (canAtk) Attack();
-            timer = 0.0f;
-        }
-        //}
-    }
+    //void TryAttack()
+    //{
+    //    //if (isRanged)
+    //    //{
+    //    timer += Time.deltaTime;
+    //    if (timer >= atkInterval)
+    //    {
+    //        bool canAtk = true;
+    //        if (isRanged && rangedW.HasAmmo())
+    //        {
+    //            canAtk = true;
+    //        }
+    //        else if (isRanged)
+    //        {
+    //            //animação de reload
+    //            canAtk = false;
+    //        }
+    //        int randomType = Random.Range(0, 2);
+    //        if (randomType == 1) strongAtk = false;
+    //        else strongAtk = true;
+    //        if (canAtk) Attack();
+    //        timer = 0.0f;
+    //    }
+    //    //}
+    //}
 
-    void Attack()
-    {
-        if (!attacking)
-        {
-            if (isRanged) anim.SetInteger("AtkType", 1);
-            //Debug.Log("Atacando");
-            attacking = true;
-            //float attackCD;
-            if (strongAtk && myWeapon is MeleeW)
-            {
-                MeleeW myMelee = (MeleeW)myWeapon;
-                myMelee.SetStrongAttack();
-            }
-            if (!isRanged)
-            {
-                //attackCD = myWeapon.Attack(null, attackModifier);
-                //Invoke("AttackCooldown", attackCD);
-                ComfirmAttack();
-            }
-            else
-            {
-                Invoke("DelayedAttack", rangedW.GetDelayToShoot());
-            }
-        }
-    }
-    void DelayedAttack()
-    {
-        //float cd = myWeapon.Attack(null, attackModifier);
-        //Invoke("AttackCooldown", cd);
-        ComfirmAttack();
-    }
-    void ComfirmAttack()
+    //void Attack()
+    //{
+    //    if (!attacking)
+    //    {
+    //        if (isRanged) anim.SetInteger("AtkType", 1);
+    //        //Debug.Log("Atacando");
+    //        attacking = true;
+    //        //float attackCD;
+    //        if (strongAtk && myWeapon is MeleeW)
+    //        {
+    //            MeleeW myMelee = (MeleeW)myWeapon;
+    //            myMelee.SetStrongAttack();
+    //        }
+    //        if (!isRanged)
+    //        {
+    //            //attackCD = myWeapon.Attack(null, attackModifier);
+    //            //Invoke("AttackCooldown", attackCD);
+    //            ComfirmAttack();
+    //        }
+    //        else
+    //        {
+    //            Invoke("DelayedAttack", rangedW.GetDelayToShoot());
+    //        }
+    //    }
+    //}
+    //void DelayedAttack()
+    //{
+    //    //float cd = myWeapon.Attack(null, attackModifier);
+    //    //Invoke("AttackCooldown", cd);
+    //    ComfirmAttack();
+    //}
+    protected override void ComfirmAttack()
     {
         float cd = myWeapon.Attack(null, attackModifier);
         Invoke("AttackCooldown", cd);
@@ -328,11 +335,11 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
         if (atkCounter == 3) SpecialAttack();
     }
 
-    void AttackCooldown()
-    {
-        attacking = false;
-        if (isRanged) anim.SetInteger("AtkType", 0);
-    }
+    //void AttackCooldown()
+    //{
+    //    attacking = false;
+    //    if (isRanged) anim.SetInteger("AtkType", 0);
+    //}
 
     void SpecialAttack()
     {
@@ -549,7 +556,7 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
     IEnumerator DelayStartDialogueBattle(DialogueBattle playerDialogue)
     {
         yield return new WaitForEndOfFrame();
-        GameManager.gameManager.dialogueController.StartDialogue(answerDialogues[(int)playerDialogue.approachType], transform);
+        //GameManager.gameManager.dialogueController.StartDialogue(answerDialogues[(int)playerDialogue.approachType], transform);
         //Dialogue answer = GameManager.gameManager.dialogueController.GetAnswer((int)enemyType, (int)thisPersonality, (int)playerDialogue.approachType, 2);
         //GameManager.gameManager.dialogueController.StartDialogue(answer, transform);
     }
@@ -606,7 +613,7 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
         attackModifier = mod;
     }
 
-    public void StartBattle(bool byDialogue = true)
+    public override void StartBattle(bool byDialogue = true)
     {
         if (!inBattle)
         {
@@ -615,7 +622,7 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
             Debug.Log("Bydialogue: " + byDialogue);
             Debug.Log("Hostil: " + hostile);
             if ((!byDialogue && hostile) || byDialogue)
-            {
+            {                
                 try
                 {
                     GetComponent<SphereCollider>().enabled = false;
@@ -625,6 +632,7 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
                 inBattle = true;
                 Debug.Log("NPC entrou na batalha");
                 lifeBar.transform.parent.gameObject.SetActive(true);
+                StartCoroutine("SetTarget");
             }
             else
             {
@@ -632,8 +640,13 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
             }
         }
     }
+    IEnumerator SetTarget()
+    {
+        yield return new WaitForEndOfFrame();
+        inBattleTarget = mCharacter.transform;
+    }
 
-    public void EndBattle()
+    public override void EndBattle()
     {
         if (CanFight()) MoveNavMesh(startPos);
         inBattle = false;
@@ -648,37 +661,36 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
         EndBattle();
     }
 
-    public bool CanFight()
-    {
-        return charStats.CanFight;
-    }
+    //public override bool CanFight()
+    //{
+    //    return charStats.CanFight;
+    //}
 
-    public bool IsInBattle()
-    {
-        return inBattle;
-    }
+    //public override bool IsInBattle()
+    //{
+    //    return inBattle;
+    //}
 
-    public bool ReceiveDamage(float damage)
+    public override bool ReceiveDamage(float damage)
     {
         if (!damageImmune)
         {
-            charStats.ReceiveDamage(damage);
-            if (lifeBar != null) lifeBar.fillAmount = charStats.LifePercentage();
+            base.ReceiveDamage(damage);
         }
         return false;
     }
 
-    public void Die()
+    public override void Die()
     {
         GameManager.gameManager.dialogueController.EndDialogue();
         GameManager.gameManager.battleController.FindAndRemove(name);
-        Destroy(this.gameObject);
+        base.Die();
     }
 
-    public Vector3 GetPos()
-    {
-        return transform.position;
-    }
+    //public override Vector3 GetPos()
+    //{
+    //    return transform.position;
+    //}
 
     private void OnTriggerEnter(Collider other)
     {

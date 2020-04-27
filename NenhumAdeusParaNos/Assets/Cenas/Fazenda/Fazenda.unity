@@ -1247,7 +1247,7 @@ GameObject:
   - component: {fileID: 47271637}
   - component: {fileID: 47271639}
   - component: {fileID: 47271638}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: FullBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17232,8 +17232,8 @@ GameObject:
   - component: {fileID: 629888381}
   - component: {fileID: 629888380}
   - component: {fileID: 629888379}
-  m_Layer: 0
-  m_Name: Companion
+  m_Layer: 10
+  m_Name: CompanionNPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17275,6 +17275,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
   lifeBar: {fileID: 706580012}
+  myWeapon: {fileID: 0}
+  defaultSpeed: 6
+  rangedKiteSpeed: 4
   thisPersonality: 0
   enemyType: 0
   hasOtherNPCTalk: 0
@@ -17282,20 +17285,11 @@ MonoBehaviour:
   waitingForAnswer: 0
   dialogueWithOtherNPC: {fileID: 0}
   myDialogues:
+  - {fileID: 11400000, guid: f847bac38aca61446ae3fc5a172483aa, type: 2}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  answerDialogues:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  hostile: 0
+  hostile: 1
   heavy: 0
-  myWeapon: {fileID: 0}
-  defaultSpeed: 6
-  rangedKiteSpeed: 4
   dashTime: 0.75
   dashDistance: 7.5
   chargeTime: 1.5
@@ -19603,7 +19597,7 @@ GameObject:
   - component: {fileID: 706580014}
   - component: {fileID: 706580013}
   - component: {fileID: 706580012}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Lifebar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20167,7 +20161,7 @@ GameObject:
   - component: {fileID: 739523371}
   - component: {fileID: 739523370}
   - component: {fileID: 739523369}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20933,7 +20927,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
   lifeBar: {fileID: 1444810031}
-  thisPersonality: 0
+  myWeapon: {fileID: 132363972}
+  defaultSpeed: 7
+  rangedKiteSpeed: 4
+  thisPersonality: 1
   enemyType: 0
   hasOtherNPCTalk: 0
   theOtherNPC: {fileID: 0}
@@ -20943,16 +20940,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9d35aee0c2dc4d544b26be106b1ba1dc, type: 2}
   - {fileID: 11400000, guid: 6e612f82348da484b84cc11b39535d8b, type: 2}
   - {fileID: 11400000, guid: 9ade35c76476a9341bc8858295c1de4a, type: 2}
-  answerDialogues:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   hostile: 1
   heavy: 0
-  myWeapon: {fileID: 132363972}
-  defaultSpeed: 7
-  rangedKiteSpeed: 4
   dashTime: 0.2
   dashDistance: 10
   chargeTime: 1.5
@@ -33206,6 +33195,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 2133418591}
   lifeBar: {fileID: 0}
+  myWeapon: {fileID: 998742534}
+  defaultSpeed: 5.5
+  rangedKiteSpeed: 4
   thisPersonality: 1
   enemyType: 0
   hasOtherNPCTalk: 0
@@ -33216,17 +33208,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  answerDialogues:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   hostile: 0
   heavy: 0
-  myWeapon: {fileID: 998742534}
-  defaultSpeed: 5.5
-  rangedKiteSpeed: 4
   dashTime: 0.5
   dashDistance: 7.5
   chargeTime: 1.5
@@ -34941,6 +34924,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 254135148}
   lifeBar: {fileID: 1181996312}
+  myWeapon: {fileID: 0}
+  defaultSpeed: 5.5
+  rangedKiteSpeed: 4
   thisPersonality: 1
   enemyType: 0
   hasOtherNPCTalk: 0
@@ -34951,17 +34937,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  answerDialogues:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   hostile: 1
   heavy: 0
-  myWeapon: {fileID: 0}
-  defaultSpeed: 5.5
-  rangedKiteSpeed: 4
   dashTime: 0.5
   dashDistance: 7.5
   chargeTime: 1.5
@@ -44406,6 +44383,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
   lifeBar: {fileID: 1143915528}
+  myWeapon: {fileID: 609660543}
+  defaultSpeed: 7
+  rangedKiteSpeed: 4
   thisPersonality: 0
   enemyType: 0
   hasOtherNPCTalk: 0
@@ -44416,17 +44396,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  answerDialogues:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   hostile: 1
   heavy: 0
-  myWeapon: {fileID: 609660543}
-  defaultSpeed: 7
-  rangedKiteSpeed: 4
   dashTime: 0.5
   dashDistance: 7.5
   chargeTime: 1.5
@@ -52560,6 +52531,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 873736310}
   lifeBar: {fileID: 0}
+  myWeapon: {fileID: 1906450722}
+  defaultSpeed: 5.5
+  rangedKiteSpeed: 4
   thisPersonality: 1
   enemyType: 0
   hasOtherNPCTalk: 0
@@ -52570,17 +52544,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  answerDialogues:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   hostile: 0
   heavy: 0
-  myWeapon: {fileID: 1906450722}
-  defaultSpeed: 5.5
-  rangedKiteSpeed: 4
   dashTime: 0.5
   dashDistance: 7.5
   chargeTime: 1.5
@@ -57868,6 +57833,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 689937984}
   lifeBar: {fileID: 0}
+  myWeapon: {fileID: 558164356}
+  defaultSpeed: 5.5
+  rangedKiteSpeed: 4
   thisPersonality: 1
   enemyType: 0
   hasOtherNPCTalk: 0
@@ -57878,17 +57846,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  answerDialogues:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   hostile: 0
   heavy: 0
-  myWeapon: {fileID: 558164356}
-  defaultSpeed: 5.5
-  rangedKiteSpeed: 4
   dashTime: 0.5
   dashDistance: 7.5
   chargeTime: 1.5

@@ -12,7 +12,7 @@ namespace Battle_Effect
 
         public override void Effect()
         {
-            throw new System.NotImplementedException();
+            thisNPC.ChangeAttackMod(1);
         }
     }
 }

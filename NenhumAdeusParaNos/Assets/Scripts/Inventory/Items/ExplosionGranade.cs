@@ -25,7 +25,8 @@ public class ExplosionGranade : Granade
         }
         else
         {
-            GameManager.gameManager.battleController.MainCharacter.ReceiveDamage(damage);
+            if ((GameManager.gameManager.battleController.MainCharacter.transform.position - transform.position).sqrMagnitude <= areaOfEffect * areaOfEffect)
+                GameManager.gameManager.battleController.MainCharacter.ReceiveDamage(damage);
         }
 
         Destroy(this.gameObject, 0.5f);

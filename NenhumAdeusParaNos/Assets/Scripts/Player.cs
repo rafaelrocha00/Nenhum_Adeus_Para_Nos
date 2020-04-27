@@ -13,6 +13,9 @@ public class Player : MonoBehaviour, BattleUnit
     public Animator animator;
     public GameObject staminaBar;
 
+    [HideInInspector] Companion myCompanion;
+    public Companion MyCompanion { get { return myCompanion; } set { myCompanion = value; } }
+
     public float defaultSpeed = 3.5f;
     public float maxSpeed = 6.0f;
     public float runningSpeed = 9.0f;
@@ -965,6 +968,7 @@ public class Player : MonoBehaviour, BattleUnit
     {
         animator.SetLayerWeight(1, 0);
         inBattle = true;
+        if (myCompanion != null) myCompanion.StartBattle();
         RunSwitch(true);
         animator.SetBool("InBattle", true);
     }
@@ -974,6 +978,7 @@ public class Player : MonoBehaviour, BattleUnit
         animator.SetBool("InBattle", false);        
         RunSwitch(false);
         inBattle = false;
+        if (myCompanion != null) myCompanion.EndBattle();
         aimLocked = false;
         if (defending)
         {

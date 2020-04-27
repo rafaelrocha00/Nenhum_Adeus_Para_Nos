@@ -23,6 +23,9 @@ public class BattleController : MonoBehaviour
     public float triggerDistance = 8.0f;
     public float playerMaxDistance;
 
+    [HideInInspector] INPC closestEnemy;
+    public INPC ClosetEnemy { get { return closestEnemy; } }
+
     bool byDialogue = true;
 
     public GameObject startBattleEffectPrefab;
@@ -67,7 +70,7 @@ public class BattleController : MonoBehaviour
     {
         while (activeBattle)
         {            
-            INPC closestEnemy = null;
+            closestEnemy = null;
             for (int i = 0; i < allEnemyFighters.Count; i++)
             {
                 if (i == 0) closestEnemy = allEnemyFighters[i];
