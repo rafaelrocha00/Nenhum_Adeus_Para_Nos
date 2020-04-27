@@ -9,14 +9,14 @@ public class ShotgunConfig : RangedConfig
     [SerializeField] int shootQuant = 1;
     public int ShootQuantEachSide { get { return shootQuant; } set { if (value < 1) shootQuant = 1; else shootQuant = value; } }
 
-    public override void Attack(Transform transf, int layer)
+    public override void Attack(Transform transf, int layer, float atkMod = 1)
     {
         for (float i = -shootAngle * ShootQuantEachSide; i <= shootAngle * ShootQuantEachSide; i += shootAngle)
         {
             GameObject bulletObj = Instantiate(bulletPref, transf.position, transf.rotation) as GameObject;
             Bullet bullet = bulletObj.GetComponent<Bullet>();
             bulletObj.transform.Rotate(0, i, 0);
-            bullet.InitialSet(defaultDamage, layer);
+            bullet.InitialSet(defaultDamage * atkMod, layer);
         }
     }
 }

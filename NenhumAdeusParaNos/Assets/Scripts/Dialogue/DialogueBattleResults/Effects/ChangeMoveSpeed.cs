@@ -13,7 +13,7 @@ namespace Battle_Effect
 
         public override void Effect()
         {
-            throw new System.NotImplementedException();
+            if (onNPC) thisNPC.ChangeMoveSpeed(percentage, time);
         }
     }
 }

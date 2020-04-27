@@ -21,6 +21,7 @@ public class Player : MonoBehaviour, BattleUnit
     public float accelerationTime = 1.0f;
     public float dashSpeed = 25.0f;
     public float dashTime = 0.75f;
+    public float dashDistance = 7.5f;
     //public float dashCooldown = 2.0f;
     //bool dashInCooldown = false;
 
@@ -306,7 +307,7 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (interactingObj != null && canInteract && CanFight() && !GameManager.gameManager.dialogueController.ActiveDialogue)
+            if (interactingObj != null && canInteract && CanFight() && !GameManager.gameManager.dialogueController.ActiveMainDialogue)
             {
                 interacting = true;
                 interactingObj.Interact(this);
@@ -535,12 +536,12 @@ public class Player : MonoBehaviour, BattleUnit
             {
                 //RaycastHit hit;
                 Vector3 targetPos;
-                if (Physics.Raycast(/*new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z)*/transform.up * 0.2f + transform.position, heading, out hit, 7.5f, dashMask))
+                if (Physics.Raycast(/*new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z)*/transform.up * 0.2f + transform.position, heading, out hit, /*7.5f*/dashDistance, dashMask))
                 {
                     
                     targetPos = (hit.collider.bounds.ClosestPoint(transform.position) - transform.position) * 0.8f + transform.position;
                 }            
-                else targetPos = heading * 7.5f + transform.position;
+                else targetPos = heading * /*7.5f*/dashDistance + transform.position;
                 //Cooldown do dash
                 //StartCoroutine("DashCooldown");
                 CancelStaminaRegen(false);
@@ -600,7 +601,7 @@ public class Player : MonoBehaviour, BattleUnit
         {
             //transform.position += dir * dashSpeed * Time.deltaTime;
             //timer += Time.deltaTime;
-            timer += Time.deltaTime / dashTime * 7.5f / distance;
+            timer += Time.deltaTime / dashTime * /*7.5f*/dashDistance / distance;
             transform.position = Vector3.Lerp(originPos, dir, timer);
             yield return new WaitForEndOfFrame();
         } while (timer < 1 && dashing);
@@ -879,9 +880,9 @@ public class Player : MonoBehaviour, BattleUnit
     public void UseDialogue(/*int idx*/)
     {
         //Debug.Log("Tentando usar dialogo");
-        Debug.Log(GameManager.gameManager.dialogueController.ActiveDialogue);
+        Debug.Log(GameManager.gameManager.dialogueController.ActiveMainDialogue);
         Debug.Log(dialogueInCooldown);
-        if ((!GameManager.gameManager.dialogueController.ActiveDialogue || GameManager.gameManager.dialogueController.PlayerCanAnswer()) /*&& !GameManager.gameManager.MainHud.IsQuickMenuActive*/ && !dialogueInCooldown)
+        if ((!GameManager.gameManager.dialogueController.ActiveMainDialogue || GameManager.gameManager.dialogueController.PlayerCanAnswer()) /*&& !GameManager.gameManager.MainHud.IsQuickMenuActive*/ && !dialogueInCooldown)
         {
             //Debug.Log("Tentando usar dialogo em batalha");
             try
@@ -900,7 +901,7 @@ public class Player : MonoBehaviour, BattleUnit
                     GameManager.gameManager.MainHud.IconCooldown(dialogueCooldown);
                     Invoke("DialogueCooldown", dialogueCooldown);
                 }
-                if (GameManager.gameManager.dialogueController.ActiveDialogue)
+                if (GameManager.gameManager.dialogueController.ActiveMainDialogue)
                 {
                     GameManager.gameManager.dialogueController.EndDialogue();
                     Debug.Log("EndingDialogue");
@@ -920,7 +921,7 @@ public class Player : MonoBehaviour, BattleUnit
         }
         else if (GameManager.gameManager.dialogueController.WaitingForAnswer)
         {
-            if (GameManager.gameManager.dialogueController.ActiveDialogue) GameManager.gameManager.dialogueController.EndDialogue();
+            if (GameManager.gameManager.dialogueController.ActiveMainDialogue) GameManager.gameManager.dialogueController.EndDialogue();
             GameManager.gameManager.MainHud.WaitingForAnswer(false);
             DialogueBattle actualDialogueBattle = GameManager.gameManager.dialogueController.GetDialogueBattle((int)targetedEnemy.enemyType, equippedDialogueType, 0);
             actualDialogueBattle.MainCharacter = this;

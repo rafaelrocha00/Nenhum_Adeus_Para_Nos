@@ -8,7 +8,7 @@ namespace Battle_Effect
     public class ChangeAttack : BattleEffect
     {
         public bool onNPC = true;
-        public float percentage = 100.0f;
+        public float attackMod = 1;
 
         public override void Effect()
         {

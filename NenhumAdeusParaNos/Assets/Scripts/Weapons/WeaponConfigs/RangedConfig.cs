@@ -14,10 +14,10 @@ public class RangedConfig : WeaponConfig
     //[HideInInspector] int ammo;
     //public int Ammo { get { return ammo; } }
 
-    public virtual void Attack(Transform transf, int layer)
+    public virtual void Attack(Transform transf, int layer, float atkMod = 1)
     {
         GameObject bulletObj = Instantiate(bulletPref, transf.position, transf.rotation) as GameObject;
         Bullet bullet = bulletObj.GetComponent<Bullet>();
-        bullet.InitialSet(defaultDamage, layer);
+        bullet.InitialSet(defaultDamage * atkMod, layer);
     }
 }

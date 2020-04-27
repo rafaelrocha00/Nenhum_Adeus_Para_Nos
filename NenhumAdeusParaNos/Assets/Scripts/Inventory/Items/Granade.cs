@@ -9,6 +9,8 @@ public abstract class Granade : MonoBehaviour
     bool collided;
 
     public float areaOfEffect = 5.0f;
+
+    public bool onPlayer = false;
     //LayerMask layerMask;
 
     private void Awake()

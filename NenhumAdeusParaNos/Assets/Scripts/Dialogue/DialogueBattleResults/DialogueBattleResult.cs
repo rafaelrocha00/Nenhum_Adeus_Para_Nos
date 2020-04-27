@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Dialogue Battle Result", menuName = "Dialogues/Dialogue Battle Result")]
+[CreateAssetMenu(fileName = "New Dialogue Battle Result", menuName = "Dialogue/Dialogue Battle Result")]
 public class DialogueBattleResult : Dialogue
 {
     public DialogueBattle.ApproachType[] apCombination = new DialogueBattle.ApproachType[3];

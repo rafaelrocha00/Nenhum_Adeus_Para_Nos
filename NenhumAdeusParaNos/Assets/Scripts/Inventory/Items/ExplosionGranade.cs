@@ -14,11 +14,18 @@ public class ExplosionGranade : Granade
 
     protected override void GranadeEffect()
     {
-        INPC[] enemies = GameManager.gameManager.dialogueController.GetNearbyNPCs(transform.position, areaOfEffect);
-
-        for (int i = 0; i < enemies.Length; i++)
+        if (!onPlayer)
         {
-            enemies[i].ReceiveDamage(damage);
+            INPC[] enemies = GameManager.gameManager.dialogueController.GetNearbyNPCs(transform.position, areaOfEffect);
+
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                enemies[i].ReceiveDamage(damage);
+            }
+        }
+        else
+        {
+            GameManager.gameManager.battleController.MainCharacter.ReceiveDamage(damage);
         }
 
         Destroy(this.gameObject, 0.5f);

@@ -11,7 +11,7 @@ public abstract class Weapon : MonoBehaviour
     //public float defaultAtkSpeed;
     //public float range;
 
-    public abstract float Attack(Animator animator = null);
+    public abstract float Attack(Animator animator = null, float attackMod = 1);
 
     public abstract void Equip(WeaponConfig config);
 

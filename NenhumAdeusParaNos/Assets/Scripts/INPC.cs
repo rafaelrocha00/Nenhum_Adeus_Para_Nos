@@ -18,17 +18,22 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
     //[SerializeField] Behavior behavior;
     public Personalities thisPersonality;// { get { return behavior; } set { behavior = value; } }
     public EnemyType enemyType;
+    public bool hasOtherNPCTalk;
+    public INPC theOtherNPC;
+
     Personality personality;
     NavMeshAgent navMesh;
 
     [SerializeField] bool waitingForAnswer = false;
 
-    public DialogueOptions[] myDialogues = new DialogueOptions[4];   
-    public Dialogue[] answerDialogues = new Dialogue[4];
+    public Dialogue dialogueWithOtherNPC;
+    public DialogueOptions[] myDialogues = new DialogueOptions[3];   
+    public Dialogue[] answerDialogues = new Dialogue[3];
     List<DialogueBattle.ApproachType> receivedAp = new List<DialogueBattle.ApproachType>();
     //Dialogue initialDialogue;
 
     public bool hostile = false;
+    public bool heavy = false;
 
     bool attacking = false;
     public Weapon myWeapon;
@@ -41,6 +46,16 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
 
     public float defaultSpeed = 6.0f;
     public float rangedKiteSpeed = 4.0f;
+    public float dashTime = 0.75f;
+    public float dashDistance = 7.5f;
+    public float chargeTime = 1.5f;
+    public float damageImmuneTime = 5.0f;
+    bool charging = false;
+    bool dashing;
+    bool damageImmune = false;
+    int atkCounter = 0;
+    public GameObject granadeToThrow;
+    public Transform granadeInstPoint;
 
     [HideInInspector] Player mCharacter;
     public Player MCharacter { get { return mCharacter; } set { mCharacter = value; } }
@@ -49,6 +64,7 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
 
     bool inBattle = false;
 
+    float attackModifier = 1.0f;
     float atkInterval = 0.15f;
     float timer = 0.0f;
 
@@ -133,7 +149,7 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
 
         float actualVelocity = navMesh.velocity.magnitude / navMesh.speed;
         if (isRanged) anim.SetFloat("Vel", actualVelocity);
-        if (inBattle && !stunned)
+        if (inBattle && !stunned && !charging)
         {             
             Ray ray = new Ray(transform.position, mCharacter.transform.position - transform.position);
             RaycastHit hit;
@@ -179,8 +195,22 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
                 Vector3 desiredPos = toPlayerVec.normalized * (toPlayerVec.magnitude - myWeapon.GetRange() * 0.6f) + transform.position;
                 MoveNavMesh(desiredPos);
                 if ((mCharacter.transform.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
+                {
                     TryAttack();
+                }
+                else if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.collider.CompareTag("barrier") && (hit.transform.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
+                    {
+                        TryAttack();
+                    }
+                }
             }
+        }
+        else if (charging)
+        {
+            Vector3 lookPos = new Vector3(mCharacter.transform.position.x, transform.position.y, mCharacter.transform.position.z);
+            transform.LookAt(lookPos);
         }
 
 
@@ -266,7 +296,7 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
             if (isRanged) anim.SetInteger("AtkType", 1);
             //Debug.Log("Atacando");
             attacking = true;
-            float attackCD;
+            //float attackCD;
             if (strongAtk && myWeapon is MeleeW)
             {
                 MeleeW myMelee = (MeleeW)myWeapon;
@@ -274,8 +304,9 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
             }
             if (!isRanged)
             {
-                attackCD = myWeapon.Attack();
-                Invoke("AttackCooldown", attackCD);
+                //attackCD = myWeapon.Attack(null, attackModifier);
+                //Invoke("AttackCooldown", attackCD);
+                ComfirmAttack();
             }
             else
             {
@@ -285,14 +316,87 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
     }
     void DelayedAttack()
     {
-        float cd = myWeapon.Attack();
+        //float cd = myWeapon.Attack(null, attackModifier);
+        //Invoke("AttackCooldown", cd);
+        ComfirmAttack();
+    }
+    void ComfirmAttack()
+    {
+        float cd = myWeapon.Attack(null, attackModifier);
         Invoke("AttackCooldown", cd);
+        atkCounter += 1;
+        if (atkCounter == 3) SpecialAttack();
     }
 
     void AttackCooldown()
     {
         attacking = false;
         if (isRanged) anim.SetInteger("AtkType", 0);
+    }
+
+    void SpecialAttack()
+    {
+        if (enemyType == EnemyType.Lustro)
+        {
+            if (isRanged)
+            {
+                Debug.Log("Arremessar Granada");
+                //Arremessar granada na direção do player
+                StartCoroutine("ThrowGranade");
+            }
+            else
+            {
+                if (!heavy)
+                {
+                    Debug.Log("Dash");
+                    Vector3 desiredPos = (mCharacter.transform.position - transform.position).normalized * dashDistance + transform.position;
+                    StartCoroutine(MeleeDash(desiredPos));
+                }
+                else StartCoroutine("DamageImmune");
+            }
+        }
+        atkCounter = 0;
+    }
+
+    IEnumerator ThrowGranade()
+    {
+        charging = true;
+        yield return new WaitForSeconds(chargeTime);
+        if (granadeInstPoint == null) granadeInstPoint = transform;
+        Vector3 dir = (mCharacter.transform.position - transform.position) * 1.5f + Vector3.up * 10;
+        GameObject auxGo = Instantiate(granadeToThrow, granadeInstPoint.position, granadeInstPoint.rotation) as GameObject;
+        Granade aux = auxGo.GetComponent<Granade>();
+        aux.onPlayer = true;
+        aux.ApplyForce(dir);
+        charging = false;
+    }
+    IEnumerator DamageImmune()
+    {
+        charging = true;
+        yield return new WaitForSeconds(chargeTime);
+        charging = false;
+        damageImmune = true;
+        yield return new WaitForSeconds(damageImmuneTime);
+        damageImmune = false;
+    }
+    IEnumerator MeleeDash(Vector3 dir)
+    {
+        Stun(dashTime + chargeTime);
+        yield return new WaitForSeconds(chargeTime); //Charging dash;
+
+        dashing = true;
+        Vector3 originPos = transform.position;
+        float distance = (dir - transform.position).magnitude;
+        //anim.SetBool("Dashing", true);
+        float timer = 0.0f;
+        do
+        {
+            timer += Time.deltaTime / dashTime * dashDistance / distance;
+            transform.position = Vector3.Lerp(originPos, dir, timer);
+            yield return new WaitForEndOfFrame();
+        } while (timer < 1 && dashing);
+        dashing = false;
+        //anim.SetBool("Dashing", false);
     }
 
     public void SetWaitingForAnswer()
@@ -497,6 +601,10 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
         moveSpeedChanged = false;
         navMesh.speed = defaultSpeed;
     }
+    public void ChangeAttackMod(float mod)
+    {
+        attackModifier = mod;
+    }
 
     public void StartBattle(bool byDialogue = true)
     {
@@ -532,6 +640,7 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
         navMesh.speed = defaultSpeed;
         //Invoke("ActiveInteractionCollider", 3.0f);
         lifeBar.transform.parent.gameObject.SetActive(false);
+        attackModifier = 1.0f;
     }
     public void LeaveBattle()
     {
@@ -551,9 +660,12 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
 
     public bool ReceiveDamage(float damage)
     {
-        bool aux = charStats.ReceiveDamage(damage);
-        if (lifeBar != null) lifeBar.fillAmount = charStats.LifePercentage();
-        return aux;
+        if (!damageImmune)
+        {
+            charStats.ReceiveDamage(damage);
+            if (lifeBar != null) lifeBar.fillAmount = charStats.LifePercentage();
+        }
+        return false;
     }
 
     public void Die()
@@ -568,9 +680,16 @@ public class INPC : MonoBehaviour/*Interactives*/, BattleUnit
         return transform.position;
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.tag.Equals("player"))
+        {
+            //Se tem quest, inicia uma conversa com o player, sobre a quest
+            if (hasOtherNPCTalk)
+            {
+                GameManager.gameManager.dialogueController.StartDialogue(dialogueWithOtherNPC, transform, true);
+            }
+        }
     }
 
     void ActiveInteractionCollider()

@@ -41,6 +41,7 @@ public class Barrier : MonoBehaviour, BattleUnit
 
     public bool ReceiveDamage(float damage)
     {
+        Debug.Log(damage);
         life -= damage;
         return false;  
     }

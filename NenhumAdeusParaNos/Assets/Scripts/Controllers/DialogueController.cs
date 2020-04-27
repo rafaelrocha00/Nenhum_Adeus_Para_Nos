@@ -9,6 +9,7 @@ public class DialogueController : MonoBehaviour
     //Text dialogueText;
     //GameObject dialoguePopUp;
     DialoguePopUp dialoguePopUp;
+    DialoguePopUp dialoguePopUpSecond;
     //Button popUPB;
 
     Camera mainCam;
@@ -19,11 +20,12 @@ public class DialogueController : MonoBehaviour
     INPC dialoguingNPC;
 
     Dialogue actualDialogue;
+    Dialogue secondaryDialogue;
 
     DialogueWithChoice lastDialogueWithChoice;
 
-    [HideInInspector] bool activeDialogue = false;
-    public bool ActiveDialogue { get { return activeDialogue; } }
+    [HideInInspector] bool activeMainDialogue = false;
+    public bool ActiveMainDialogue { get { return activeMainDialogue; } }
     bool writing = false;
 
     [HideInInspector] bool waitingForAnswer = false;
@@ -96,7 +98,7 @@ public class DialogueController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && activeDialogue && !(actualDialogue is DialogueBattle) && !waitingForAnswerBattle)
+        if (Input.GetKeyDown(KeyCode.E) && activeMainDialogue && !(actualDialogue is DialogueBattle) && !waitingForAnswerBattle)
         {
             Debug.Log("NextString");
             NextString();
@@ -146,18 +148,18 @@ public class DialogueController : MonoBehaviour
         return aux;
     }
 
-    public void StartDialogue(Dialogue newDialogue, Transform transf/*, INPC npc = null*/, bool timed = false)
+    public void StartDialogue(Dialogue newDialogue, Transform transf/*, INPC npc = null*/, bool secondary = false)
     {
         if (newDialogue is DialogueWithChoice) lastDialogueWithChoice = (DialogueWithChoice)newDialogue;
-        activeDialogue = true;
-        OpenDialoguePopUp(transf/*, npc*/, timed);
+        activeMainDialogue = true;
+        OpenDialoguePopUp(transf/*, npc*/, secondary);
         actualDialogue = newDialogue;
         NextString();
         StartCoroutine("CheckPlayerDistance");
     }
     IEnumerator CheckPlayerDistance()
     {
-        while (activeDialogue)
+        while (activeMainDialogue)
         {
             if (actualDialogue.GetPlayerNPCDistance() > 100)
             {
@@ -205,14 +207,14 @@ public class DialogueController : MonoBehaviour
             }
 
             //Debug.Log("Deu nextstring");
-            if (activeDialogue && ((GameManager.gameManager.battleController.ActiveBattle && !waitingForAnswerBattle) || (actualDialogue is DialogueBattle) || (actualDialogue is DialogueBattleResult))) StartCoroutine("NextStringCountdown");
+            if (activeMainDialogue && ((GameManager.gameManager.battleController.ActiveBattle && !waitingForAnswerBattle) || (actualDialogue is DialogueBattle) || (actualDialogue is DialogueBattleResult))) StartCoroutine("NextStringCountdown");
         }
     }
     public void EndDialogue()
     {
-        if (activeDialogue)
-        {            
-            activeDialogue = false;
+        if (activeMainDialogue)
+        {
+            activeMainDialogue = false;
             actualDialogue.ResetDialogue();
             writing = false;
             CloseDialoguePopUp();
@@ -250,32 +252,41 @@ public class DialogueController : MonoBehaviour
         }        
     }
 
-    public void OpenDialoguePopUp(Transform transf/*, INPC npc = null*/, bool timed = false)
+    public void OpenDialoguePopUp(Transform transf/*, INPC npc = null*/, bool secondary = false)
     {
-        try
+        if (!secondary)
         {
-            dialoguePopUp.transform.position = mainCam.WorldToScreenPoint(transf.position);
-            dialoguePopUp.gameObject.SetActive(true);
+            try
+            {
+                dialoguePopUp.transform.position = mainCam.WorldToScreenPoint(transf.position);
+                dialoguePopUp.gameObject.SetActive(true);
+            }
+            catch
+            {
+                GameObject aux = Instantiate(dialoguePref, GameManager.gameManager.MainHud.transform, false) as GameObject;
+                dialoguePopUp = aux.GetComponent<DialoguePopUp>();
+                dialoguePopUp.transform.position = mainCam.WorldToScreenPoint(transf.position);
+            }
+            dialoguePopUp.InitialSet(NextString);
         }
-        catch
+        else
         {
-            //dialoguePopUp = Instantiate(dialoguePref, GameManager.gameManager.mainHud.transform, false) as GameObject;
-            //Pegar no filho do filho, e filho o botao
-            //dialogueText = dialoguePopUp.GetComponentInChildren<Text>();
-            //popUPB = dialoguePopUp.GetComponent<Button>();
-            //dialoguePopUp = Instantiate(dialoguePref, transf.position, dialoguePref.transform.rotation) as GameObject;
-            GameObject aux = Instantiate(dialoguePref, GameManager.gameManager.MainHud.transform, false) as GameObject;
-            dialoguePopUp = aux.GetComponent<DialoguePopUp>();
-            dialoguePopUp.transform.position = mainCam.WorldToScreenPoint(transf.position);
-            //dialoguePopUp.GetComponent<DialoguePopUpFollow>().SetTransform(transf);
-            //dialogueText = dialoguePopUp.transform.GetChild(0).GetComponentInChildren<Text>();
-            //popUPB = dialoguePopUp.transform.GetChild(0).GetComponent<Button>();
-            //Debug.Log("Abrindo Balao de dialogo");
+            try
+            {
+                dialoguePopUpSecond.transform.position = mainCam.WorldToScreenPoint(transf.position);
+                dialoguePopUpSecond.gameObject.SetActive(true);
+            }
+            catch
+            {
+                GameObject aux = Instantiate(dialoguePref, GameManager.gameManager.MainHud.transform, false) as GameObject;
+                dialoguePopUpSecond = aux.GetComponent<DialoguePopUp>();
+                dialoguePopUpSecond.transform.position = mainCam.WorldToScreenPoint(transf.position);
+            }
+            dialoguePopUpSecond.InitialSet(null);
         }
         //Mudar posição;
         //if (npc != null) popUPB.onClick.AddListener(npc.NextString);
-        //popUPB.onClick.AddListener(NextString);
-        dialoguePopUp.InitialSet(NextString);
+        //popUPB.onClick.AddListener(NextString);        
     }
 
     public void CloseDialoguePopUp()
@@ -284,6 +295,10 @@ public class DialogueController : MonoBehaviour
         {
             dialoguePopUp.gameObject.SetActive(false);
             dialoguePopUp.RemoveOnClick();
+        }
+        if (dialoguePopUpSecond)
+        {
+            dialoguePopUpSecond.gameObject.SetActive(false);
         }
         //if (popUPB != null) popUPB.onClick.RemoveAllListeners();
     }
@@ -305,7 +320,7 @@ public class DialogueController : MonoBehaviour
         Debug.Log("Countdown");
         yield return new WaitForSeconds(writingTime);
         writingTime = 0;
-        if (activeDialogue) NextString();
+        if (activeMainDialogue) NextString();
     }
 
     IEnumerator WriteString(string dialogueString)
