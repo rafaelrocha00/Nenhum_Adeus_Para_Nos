@@ -11,12 +11,28 @@ public class ShotgunConfig : RangedConfig
 
     public override void Attack(Transform transf, int layer, float atkMod = 1)
     {
-        for (float i = -shootAngle * ShootQuantEachSide; i <= shootAngle * ShootQuantEachSide; i += shootAngle)
+        //for (float i = -shootAngle * ShootQuantEachSide; i <= shootAngle * ShootQuantEachSide; i += shootAngle)
+        //{
+        //    GameObject bulletObj = Instantiate(bulletPref, transf.position, transf.rotation) as GameObject;
+        //    Bullet bullet = bulletObj.GetComponent<Bullet>();
+        //    bulletObj.transform.Rotate(0, i, 0);
+        //    bullet.InitialSet(defaultDamage * atkMod, layer);
+        //}
+
+        for (int i = 0; i < ShootQuantEachSide / 2; i++)
         {
             GameObject bulletObj = Instantiate(bulletPref, transf.position, transf.rotation) as GameObject;
             Bullet bullet = bulletObj.GetComponent<Bullet>();
-            bulletObj.transform.Rotate(0, i, 0);
+            bulletObj.transform.Rotate(Random.Range(-shootAngle / 3, shootAngle / 3), Random.Range(-shootAngle / 3, shootAngle / 3), 0);
             bullet.InitialSet(defaultDamage * atkMod, layer);
         }
+        for (int i = 0; i < ShootQuantEachSide - ShootQuantEachSide / 2; i++)
+        {
+            GameObject bulletObj = Instantiate(bulletPref, transf.position, transf.rotation) as GameObject;
+            Bullet bullet = bulletObj.GetComponent<Bullet>();
+            bulletObj.transform.Rotate(Random.Range(-shootAngle, shootAngle), Random.Range(-shootAngle, shootAngle), 0);
+            bullet.InitialSet(defaultDamage * atkMod, layer);
+        }
+        //Colocar pra não tentar começar um combate quando você tiver longe do inimigo e atacar ele sem querer, ou quando o inimigo for passivo
     }
 }

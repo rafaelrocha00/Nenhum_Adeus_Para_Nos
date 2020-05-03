@@ -17,4 +17,8 @@ public interface BattleUnit
     void Die();
 
     Vector3 GetPos();
+
+    Transform GetItemSpawnTransf();
+
+    void Knockback(float dis);
 }

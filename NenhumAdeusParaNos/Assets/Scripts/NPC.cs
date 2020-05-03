@@ -36,6 +36,8 @@ public abstract class NPC : MonoBehaviour, BattleUnit
     protected float atkInterval = 0.15f;
     protected float timer = 0.0f;
 
+    protected bool canReceiveKnockback = true;
+
     private void Start()
     {
         //Debug.Log("Oxi");
@@ -45,10 +47,20 @@ public abstract class NPC : MonoBehaviour, BattleUnit
         if (anim == null) anim = GetComponentInChildren<Animator>();
 
         if (myWeapon == null) myWeapon = GetComponentInChildren<Weapon>();
-        if (myWeapon is RangedW)
+
+        if (myWeapon != null)
         {
-            isRanged = true;
-            rangedW = (RangedW)myWeapon;
+            if (myWeapon is RangedW)
+            {
+                isRanged = true;
+                rangedW = (RangedW)myWeapon;
+            }
+            //else
+            //{
+            //    MeleeW m = (MeleeW)myWeapon;
+            //    m.myHolder = this;
+            //}
+            myWeapon.myHolder = this;
         }
 
         navMesh.speed = defaultSpeed;
@@ -159,15 +171,20 @@ public abstract class NPC : MonoBehaviour, BattleUnit
             //Debug.Log("Atacando");
             attacking = true;
             //float attackCD;
-            if (strongAtk && myWeapon is MeleeW)
-            {
-                MeleeW myMelee = (MeleeW)myWeapon;
-                myMelee.SetStrongAttack();
-            }
+            //if (strongAtk && myWeapon is MeleeW)
+            //{
+            //    MeleeW myMelee = (MeleeW)myWeapon;
+            //    myMelee.SetStrongAttack();
+            //}
             if (!isRanged)
             {
                 //attackCD = myWeapon.Attack(null, attackModifier);
                 //Invoke("AttackCooldown", attackCD);
+                if (strongAtk)
+                {
+                    MeleeW myMelee = (MeleeW)myWeapon;
+                    myMelee.SetStrongAttack();
+                }
                 ComfirmAttack();
             }
             else
@@ -223,8 +240,18 @@ public abstract class NPC : MonoBehaviour, BattleUnit
         return false;
     }
 
+    public virtual Transform GetItemSpawnTransf()
+    {
+        return null;
+    }
+
     public virtual void StartBattle(bool byTrigger = true)
     {
         
+    }
+
+    public virtual void Knockback(float dis)
+    {
+
     }
 }

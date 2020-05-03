@@ -10,6 +10,7 @@ public class MeleeW : Weapon
     //public float strongAtkCD = 1.0f;
     float actualAtkspeed;
     int atkType = 1;
+    bool specialAtkEnabled = true;
 
     float selectedDamage;
 
@@ -25,18 +26,38 @@ public class MeleeW : Weapon
         weaponConfig = meleeConfig;
 
         actualAtkspeed = meleeConfig.defaultAttackSpeed;
-        selectedDamage = meleeConfig.defaultDamage;
+        selectedDamage = meleeConfig.defaultDamage;        
     }
 
     public void SetStrongAttack()
     {
-        selectedDamage = meleeConfig.strongAttackDamage;
-        actualAtkspeed = meleeConfig.strongAttackCD;
-        atkType = 2;
+        selectedDamage = meleeConfig.special.damage;
+        actualAtkspeed = meleeConfig.special.animationTime;
+        atkType = meleeConfig.special.animationID;
+    }
+    public void SetNormalAttack()
+    {
+        selectedDamage = meleeConfig.defaultDamage;
+        actualAtkspeed = meleeConfig.defaultAttackSpeed;
+        atkType = 1;
     }
 
     public override float Attack(Animator animator = null, float attackMod = 1)
     {
+        if (atkType >= 3 && !specialAtkEnabled)
+        {
+            Debug.Log("Incooldown");
+            SetNormalAttack();
+            return 0;
+        }
+        else if (atkType >= 3 && specialAtkEnabled)
+        {
+            Debug.Log("Special Attack");
+            specialAtkEnabled = false;
+            Invoke("InvokeOnAttackEffect", 0.5f);
+            Invoke("SpecialAttackCooldown", meleeConfig.special.cooldown);
+        }
+
         Debug.Log("Atacando");
         sCollider.enabled = true;
         selectedDamage *= attackMod;
@@ -45,16 +66,25 @@ public class MeleeW : Weapon
         //attackDelay = actualAtkspeed;
         Invoke("StopAnim", actualAtkspeed - 0.1f);
 
-        return actualAtkspeed;
+        return meleeConfig.defaultAttackSpeed;
+    }
+
+    void InvokeOnAttackEffect()
+    {
+        if (meleeConfig.special.origin == null) meleeConfig.special.origin = myHolder;
+        meleeConfig.special.OnAttackEffect();
+    }
+
+    void SpecialAttackCooldown()
+    {
+        specialAtkEnabled = true;
     }
 
     void StopAnim()
     {
         anim.SetInteger("AttackType", 0);
         sCollider.enabled = false;
-        selectedDamage = meleeConfig.defaultDamage;
-        actualAtkspeed = meleeConfig.defaultAttackSpeed;
-        atkType = 1;
+        SetNormalAttack();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -68,6 +98,7 @@ public class MeleeW : Weapon
                 //if (other.GetComponent<BattleUnit>().IsInBattle())
                 //{
                 other.GetComponent<BattleUnit>().ReceiveDamage(selectedDamage);
+                if (atkType >= 3)meleeConfig.special.OnContactEffect(other.GetComponent<BattleUnit>());
                 hitted = true;
                 Invoke("ResetHit", meleeConfig.defaultAttackSpeed);
                 //}

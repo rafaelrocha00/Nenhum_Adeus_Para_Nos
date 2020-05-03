@@ -50,4 +50,13 @@ public class Barrier : MonoBehaviour, BattleUnit
     {
         
     }
+
+    public Transform GetItemSpawnTransf()
+    {
+        return null;
+    }
+
+    public void Knockback(float dis)
+    {
+    }
 }

@@ -25,6 +25,8 @@ public class Player : MonoBehaviour, BattleUnit
     public float dashSpeed = 25.0f;
     public float dashTime = 0.75f;
     public float dashDistance = 7.5f;
+    //float dashDamage = 0.0f;
+    //bool dashingDoingDamage = false;
     //public float dashCooldown = 2.0f;
     //bool dashInCooldown = false;
 
@@ -61,6 +63,7 @@ public class Player : MonoBehaviour, BattleUnit
     //float directionMod = 0;
     bool moving = false;
     int movingTowardWall = 1;
+    Vector3 heading = Vector3.zero;
 
     float moveTime = 0.0f;
     bool running;
@@ -116,6 +119,8 @@ public class Player : MonoBehaviour, BattleUnit
     LayerMask aimLayermask = 1 << 0;
     LayerMask dashMask;
 
+    bool canReceiveKnockback = true;
+
     private void Start()
     {
         string[] aux = new string[2];
@@ -138,6 +143,15 @@ public class Player : MonoBehaviour, BattleUnit
 
         originalMconfig = equippedMelee.meleeConfig;
         originalRconfig = equippedRanged.rangedWConfig;
+
+        equippedMelee.myHolder = this;
+        //if (myWeapon is MeleeW)
+        //{
+        //    MeleeW m = (MeleeW)myWeapon;
+        //    m.myHolder = this;
+        //}
+        equippedRanged.myHolder = this;
+        //myWeapon.myHolder = this;
 
         forward = Camera.main.transform.forward;
         cam = Camera.main.GetComponent<CamMove>();
@@ -489,7 +503,7 @@ public class Player : MonoBehaviour, BattleUnit
         //if (upMov.x < 0 && rightMov == Vector3.zero) GameManager.gameManager.MainCamera.SetToWalkDown();
         //else GameManager.gameManager.MainCamera.SetDefaultDistance();
 
-        Vector3 heading = Vector3.Normalize(rightMov + upMov);
+        heading = Vector3.Normalize(rightMov + upMov);
         Vector3 newDirection = Vector3.RotateTowards(transform.forward, heading, rotateSpeed * Time.deltaTime, 0);
 
         RaycastHit hit;
@@ -538,13 +552,13 @@ public class Player : MonoBehaviour, BattleUnit
             if (stamina >= stamina_dashCost/* && !dashInCooldown*/)
             {
                 //RaycastHit hit;
-                Vector3 targetPos;
-                if (Physics.Raycast(/*new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z)*/transform.up * 0.2f + transform.position, heading, out hit, /*7.5f*/dashDistance, dashMask))
-                {
+                Vector3 targetPos = GetDashDest();
+                //if (Physics.Raycast(/*new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z)*/transform.up * 0.2f + transform.position, heading, out hit, /*7.5f*/dashDistance, dashMask))
+                //{
                     
-                    targetPos = (hit.collider.bounds.ClosestPoint(transform.position) - transform.position) * 0.8f + transform.position;
-                }            
-                else targetPos = heading * /*7.5f*/dashDistance + transform.position;
+                //    targetPos = (hit.collider.bounds.ClosestPoint(transform.position) - transform.position) * 0.8f + transform.position;
+                //}            
+                //else targetPos = heading * /*7.5f*/dashDistance + transform.position;
                 //Cooldown do dash
                 //StartCoroutine("DashCooldown");
                 CancelStaminaRegen(false);
@@ -593,11 +607,56 @@ public class Player : MonoBehaviour, BattleUnit
         }
     }
 
-    IEnumerator Dash(Vector3 dir)
+    Vector3 GetDashDest(bool forward = true, float dis = 0.0f)
+    {
+        RaycastHit hit;
+        Vector3 targetPos;
+        Vector3 dir;
+        if (forward) dir = (moving) ? heading : transform.forward;
+        else dir = -transform.forward;
+        float dist = (dis > 0) ? dis : dashDistance;
+
+        if (Physics.Raycast(/*new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z)*/transform.up * 0.2f + transform.position, dir, out hit, /*7.5f*/dist, dashMask))
+        {
+
+            targetPos = (hit.collider.bounds.ClosestPoint(transform.position) - transform.position) * 0.8f + transform.position;
+        }
+        else targetPos = dir * /*7.5f*/dist + transform.position;
+
+        return targetPos;
+    }
+
+    public void DamageDash(float damage)
+    {
+        StartCoroutine(Dash(GetDashDest(), true, damage));
+    }
+    IEnumerator Dash(Vector3 dir, bool doDamage = false, float damage = 0.0f, float dis = 0.0f)
     {
         dashing = true;
+        //dashDamage = damage;
+        //dashingDoingDamage = doDamage;
         Vector3 originPos = transform.position;
         float distance = (dir - transform.position).magnitude;
+        float maxDis = (dis > 0) ? dis : dashDistance;
+        if (doDamage)
+        {
+            RaycastHit[] hits = hits = Physics.RaycastAll(transform.up * 1.5f + transform.position, dir - (transform.up * 1.5f + transform.position), distance + 0.25f);
+            Vector3 from = transform.up * 1.5f + transform.position;
+            Vector3 to = dir;
+            foreach (var hit in hits)
+            {
+                Debug.Log(hit.collider.name);
+                try
+                {
+                    if (!hit.collider.gameObject.layer.Equals(this.gameObject.layer))
+                    {
+                        hit.collider.GetComponent<BattleUnit>().ReceiveDamage(damage);
+                    }
+                }
+                catch {  }
+            }
+        }
+
         animator.SetBool("Dashing", true);
         float timer = 0.0f;
         do
@@ -609,11 +668,23 @@ public class Player : MonoBehaviour, BattleUnit
             yield return new WaitForEndOfFrame();
         } while (timer < 1 && dashing);
         dashing = false;
+        //dashingDoingDamage = false;
         animator.SetBool("Dashing", false);
     }
+    //Vector3 from = Vector3.zero;
+    //Vector3 to = Vector3.zero;
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawLine(from, to);
+    //}
+
     private void OnCollisionEnter(Collision collision)
     {
-        //if (dashing) dashing = false;
+        //try
+        //{
+        //    if (dashingDoingDamage) collision.collider.GetComponent<INPC>().ReceiveDamage(dashDamage);
+        //}
+        //catch { }
     }
 
     //IEnumerator DashCooldown()
@@ -1023,6 +1094,25 @@ public class Player : MonoBehaviour, BattleUnit
     public Vector3 GetPos()
     {
         return transform.position;
+    }
+
+    public Transform GetItemSpawnTransf()
+    {
+        return rightHand;
+    }
+
+    public void Knockback(float dis)
+    {
+        if (canReceiveKnockback)
+        {
+            StartCoroutine(Dash(GetDashDest(false, dis), false, 0, dis));
+            canReceiveKnockback = false;
+            Invoke("ResetReceiveKnockback", 0.1f);
+        }
+    }
+    void ResetReceiveKnockback()
+    {
+        canReceiveKnockback = true;
     }
 
     IEnumerator StartStaminaRegen()

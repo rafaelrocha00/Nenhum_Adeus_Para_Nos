@@ -11,6 +11,8 @@ public class RangedConfig : WeaponConfig
 
     public bool auto;
     public int maxAmmo;
+    public float reloadTime = 2.0f;
+    public float recoil = 0.0f;
     //[HideInInspector] int ammo;
     //public int Ammo { get { return ammo; } }
 

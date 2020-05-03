@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91f7b75a936a6bd488470a4ad55f3d31, type: 3}
-  m_Name: NPCPistol
+  m_Name: ScrewdriverShooter
   m_EditorClassIdentifier: 
-  weaponName: Sub-metralhadora
-  defaultDamage: 4.5
-  defaultAttackSpeed: 0.2
-  range: 7.5
-  bulletPref: {fileID: 2060041394054689681, guid: 97c64051a94660e4c8f842a654ff3816,
+  weaponName: 
+  defaultDamage: 6
+  defaultAttackSpeed: 0.15
+  range: 0
+  bulletPref: {fileID: 6826089898118230775, guid: 33863102643c8da4a86ec3359f17def5,
     type: 3}
-  maxRange: 14
-  auto: 1
-  maxAmmo: 30
+  maxRange: 0
+  delayToShoot: 0.1
+  auto: 0
+  maxAmmo: 5

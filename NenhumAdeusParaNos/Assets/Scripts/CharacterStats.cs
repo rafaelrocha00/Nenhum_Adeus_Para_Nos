@@ -35,8 +35,13 @@ public class CharacterStats
         }
         else if (!GameManager.gameManager.battleController.ActiveBattle && !GameManager.gameManager.battleController.TriggeringBattle)
         {
+            Player p = GameManager.gameManager.battleController.MainCharacter;            
+
             INPC aux = (INPC)myBattleUnit;
-            GameManager.gameManager.battleController.TriggerHostileNPCs(aux.transform.position);
+            if (p.CanFight() && (p.transform.position - aux.transform.position).sqrMagnitude < GameManager.gameManager.battleController.playerMaxDistance * GameManager.gameManager.battleController.playerMaxDistance - 2)
+            {
+                GameManager.gameManager.battleController.TriggerHostileNPCs(aux.transform.position);
+            }
             return false;
         }
         //life -= damage;

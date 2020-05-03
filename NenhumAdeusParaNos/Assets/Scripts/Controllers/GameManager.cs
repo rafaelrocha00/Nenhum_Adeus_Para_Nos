@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public TimeController timeController;
     [HideInInspector] public InventoryController inventoryController;
     [HideInInspector] public ObjectPlacer objectPlacer;
+    [HideInInspector] public QuestController questController;
     //[HideInInspector] public NPCAnswers npcAnswers;
 
     [HideInInspector] MainHud mainHud;
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
         timeController = GetComponent<TimeController>();
         inventoryController = GetComponent<InventoryController>();
         objectPlacer = GetComponent<ObjectPlacer>();
+        questController = GetComponent<QuestController>();
         //npcAnswers = GetComponent<NPCAnswers>();
 
         personalities[0] = DereDereP;

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
+    [HideInInspector] public BattleUnit myHolder { get; set; }
+
     [HideInInspector] protected WeaponConfig weaponConfig;
     public WeaponConfig WeaponConfig { get { return weaponConfig; } set { weaponConfig = value; } }
 

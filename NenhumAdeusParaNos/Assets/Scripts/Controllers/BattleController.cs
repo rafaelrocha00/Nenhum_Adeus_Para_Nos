@@ -34,8 +34,7 @@ public class BattleController : MonoBehaviour
     //Vector3 closestEnemyPos;
 
     public void StartBattle(List<BattleUnit> fighters)
-    {
-        StartBattleCamera(fighters[0].GetPos());
+    {       
 
         StartCoroutine(DelayedStartBattle(fighters));
     }
@@ -49,6 +48,14 @@ public class BattleController : MonoBehaviour
         {
             fighters[i].StartBattle(byDialogue);
         }
+        //if (allEnemyFighters.Count == 0)
+        //{
+        //    activeBattle = false;
+        //    byDialogue = true;
+        //    triggeringBattle = false;
+        //    yield break;
+        //}
+
         for (int i = 0; i < allEnemyFighters.Count; i++)
         {
             allEnemyFighters[i].MCharacter = mainCharacter;
@@ -59,8 +66,12 @@ public class BattleController : MonoBehaviour
             GameObject aux = Instantiate(startBattleEffectPrefab, transform.position, startBattleEffectPrefab.transform.rotation) as GameObject;
             startBattleEffect = aux.GetComponent<ParticleSystem>();
         }
-        startBattleEffect.transform.position = mainCharacter.transform.position;
-        startBattleEffect.Play();
+        if (allEnemyFighters.Count != 0)
+        {
+            StartBattleCamera(fighters[0].GetPos());
+            startBattleEffect.transform.position = mainCharacter.transform.position;
+            startBattleEffect.Play();
+        }
         StartCoroutine("CheckPlayerPos");
         byDialogue = true;
         triggeringBattle = false;

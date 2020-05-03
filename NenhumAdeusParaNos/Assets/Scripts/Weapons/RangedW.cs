@@ -27,12 +27,26 @@ public class RangedW : Weapon
         //GameObject bulletObj = Instantiate(rangedWConfig.bulletPref, transform.position, transform.rotation) as GameObject;
         //Bullet bullet = bulletObj.GetComponent<Bullet>();
         //bullet.InitialSet(rangedWConfig.defaultDamage, gameObject.layer);
-        if (animator != null) animator.SetInteger("Attacking", 3);
+        if (animator != null) animator.SetInteger("Attacking", 2);
         rangedWConfig.Attack(transform, gameObject.layer, attackMod);
 
         ammo--;
+        if (rangedWConfig.recoil > 0) myHolder.Knockback(rangedWConfig.recoil); 
         //Debug.Log(ammo);
         return rangedWConfig.defaultAttackSpeed;
+    }
+
+    public void BurstAttack(bool destroyGun = false)
+    {
+        StartCoroutine(Burst(destroyGun));
+    }
+    IEnumerator Burst(bool destroyGun = false)
+    {
+        for (int i = 0; i < rangedWConfig.maxAmmo; i++)
+        {
+            yield return new WaitForSeconds(Attack());
+        }
+        if (destroyGun) Destroy(gameObject);
     }
 
     public bool IsAuto()
@@ -68,7 +82,7 @@ public class RangedW : Weapon
     {
         Debug.Log("Reloading");
         reloading = true;
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(rangedWConfig.reloadTime);
         ammo = rangedWConfig.maxAmmo;
         reloading = false;
     }

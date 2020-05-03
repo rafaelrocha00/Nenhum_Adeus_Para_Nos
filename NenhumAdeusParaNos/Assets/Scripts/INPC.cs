@@ -50,8 +50,10 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
     public float dashDistance = 7.5f;
     public float chargeTime = 1.5f;
     public float damageImmuneTime = 5.0f;
+    public float dashDamage = 25.0f;
+    //float dashDamage = 0.0f;
     bool charging = false;
-    bool dashing;
+    bool dashing;// { get; private set; }
     bool damageImmune = false;
     int atkCounter = 0;
     public GameObject granadeToThrow;
@@ -329,6 +331,11 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
     //}
     protected override void ComfirmAttack()
     {
+        if (enemyType == EnemyType.Lustro && !rangedW && strongAtk)
+        {
+            MeleeW myMelee = (MeleeW)myWeapon;
+            myMelee.SetNormalAttack();
+        } 
         float cd = myWeapon.Attack(null, attackModifier);
         Invoke("AttackCooldown", cd);
         atkCounter += 1;
@@ -356,8 +363,9 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
                 if (!heavy)
                 {
                     Debug.Log("Dash");
-                    Vector3 desiredPos = (mCharacter.transform.position - transform.position).normalized * dashDistance + transform.position;
-                    StartCoroutine(MeleeDash(desiredPos));
+                    //Vector3 desiredPos = (mCharacter.transform.position - transform.position).normalized * dashDistance + transform.position;
+                    //StartCoroutine(Dash(desiredPos, true , true, dashDamage));
+                    CallDamagingDash(dashDamage, true);
                 }
                 else StartCoroutine("DamageImmune");
             }
@@ -386,14 +394,43 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
         yield return new WaitForSeconds(damageImmuneTime);
         damageImmune = false;
     }
-    IEnumerator MeleeDash(Vector3 dir)
+
+    public void CallDamagingDash(float dmg, bool charge = false)
     {
-        Stun(dashTime + chargeTime);
-        yield return new WaitForSeconds(chargeTime); //Charging dash;
+        Vector3 desiredPos = (mCharacter.transform.position - transform.position).normalized * dashDistance + transform.position;
+        StartCoroutine(Dash(desiredPos, charge, true, dmg));
+    }
+    public IEnumerator Dash(Vector3 dir, bool charge = false, bool doDamage = false, float damage = 0.0f)
+    {
+        if (charge)
+        {
+            Stun(dashTime + chargeTime);
+            yield return new WaitForSeconds(chargeTime); //Charging dash;
+        }
 
         dashing = true;
+        //dashDamage = damage;
         Vector3 originPos = transform.position;
         float distance = (dir - transform.position).magnitude;
+
+        if (doDamage)
+        {
+            RaycastHit[] hits = hits = Physics.RaycastAll(transform.up * 1.5f + transform.position, dir - (transform.up * 1.5f + transform.position), distance + 0.25f);
+            Vector3 from = transform.up * 1.5f + transform.position;
+            Vector3 to = dir;
+            foreach (var hit in hits)
+            {
+                Debug.Log(hit.collider.name);
+                try
+                {
+                    if (!hit.collider.gameObject.layer.Equals(this.gameObject.layer))
+                    {
+                        hit.collider.GetComponent<BattleUnit>().ReceiveDamage(damage);
+                    }
+                }
+                catch { }
+            }
+        }
         //anim.SetBool("Dashing", true);
         float timer = 0.0f;
         do
@@ -405,6 +442,12 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
         dashing = false;
         //anim.SetBool("Dashing", false);
     }
+    //Vector3 from = Vector3.zero;
+    //Vector3 to = Vector3.zero;
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawLine(from, to);
+    //}
 
     public void SetWaitingForAnswer()
     {
@@ -687,10 +730,30 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
         base.Die();
     }
 
+    public override Transform GetItemSpawnTransf()
+    {
+        return myWeapon.transform;
+    }
     //public override Vector3 GetPos()
     //{
     //    return transform.position;
     //}
+
+    public override void Knockback(float dis)
+    {
+        if (canReceiveKnockback && inBattle)
+        {
+            Vector3 desiredPos = -transform.forward * dis + transform.position;
+            StartCoroutine(Dash(desiredPos));
+            canReceiveKnockback = false;
+            Invoke("ResetReceiveKnockback", 0.1f);
+
+        }
+    }
+    void ResetReceiveKnockback()
+    {
+        canReceiveKnockback = true;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
