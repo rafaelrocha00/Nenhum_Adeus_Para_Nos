@@ -93,7 +93,10 @@ public class DialogueController : MonoBehaviour
         failResults[0] = Resources.Load<Dialogue>("DialogueBattleResults/FailCombination1");
         failResults[1] = Resources.Load<Dialogue>("DialogueBattleResults/FailCombination2");
 
-
+        SetCam();
+    }
+    public void SetCam()
+    {
         mainCam = GameManager.gameManager.MainCamera.GetComponent<Camera>();
     }
 
@@ -257,6 +260,7 @@ public class DialogueController : MonoBehaviour
     {
         if (!secondary)
         {
+            Debug.Log("Abrindo");
             try
             {
                 dialoguePopUp.transform.position = mainCam.WorldToScreenPoint(transf.position);
@@ -266,6 +270,7 @@ public class DialogueController : MonoBehaviour
             {
                 GameObject aux = Instantiate(dialoguePref, GameManager.gameManager.MainHud.transform, false) as GameObject;
                 dialoguePopUp = aux.GetComponent<DialoguePopUp>();
+                if (mainCam == null) SetCam();
                 dialoguePopUp.transform.position = mainCam.WorldToScreenPoint(transf.position);
             }
             dialoguePopUp.InitialSet(NextString);

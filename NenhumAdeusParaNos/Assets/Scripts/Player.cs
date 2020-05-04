@@ -990,9 +990,19 @@ public class Player : MonoBehaviour, BattleUnit
                 }
                 GameManager.gameManager.dialogueController.StartDialogue(actualDialogueBattle, transform);                
             }
-            catch
+            //catch
+            //{
+            //    Debug.Log("Dialogo nulo ou Sem inimigos perto");
+            //}
+
+            //try
+            //{
+
+            //}
+            catch (System.Exception)
             {
-                Debug.Log("Dialogo nulo ou Sem inimigos perto");
+
+                throw;
             }
             //GameManager.gameManager.dialogueController.OpenDialoguePopUp(transform, null);
             //if (!aimLocked) FindNearestEnemy();
