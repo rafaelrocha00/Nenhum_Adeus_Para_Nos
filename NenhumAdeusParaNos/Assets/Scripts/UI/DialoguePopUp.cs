@@ -11,6 +11,7 @@ public class DialoguePopUp : MonoBehaviour
     public Text dialogueText;
     public Image speakerImage;
     public Button thisButton;
+    float fixedY = 0;
     //Vector3 fixedDistance;
 
     public Image timerBar;
@@ -36,6 +37,8 @@ public class DialoguePopUp : MonoBehaviour
     public void SetTransform(Transform atTransform)
     {
         attachedTransform = atTransform;
+        //transform.position = mainCam.WorldToScreenPoint(attachedTransform.position);
+        fixedY = attachedTransform.position.y;
         //float xDis;
         //float yDis;
         //float zDis;
@@ -49,7 +52,7 @@ public class DialoguePopUp : MonoBehaviour
 
     private void Update()
     {
-        transform.position = mainCam.WorldToScreenPoint(attachedTransform.position);// + fixedDistance;   
+        transform.position = mainCam.WorldToScreenPoint(new Vector3(attachedTransform.position.x, fixedY, attachedTransform.position.z));// + fixedDistance;   
     }
 
     public void SetText(string tex)

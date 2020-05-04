@@ -500,9 +500,9 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
                     GameManager.gameManager.dialogueController.ContinueBattleDialogue();
                 }
                 Debug.Log("Respondendo dialogo");
-                int random = Random.Range(0, 2);
+                //int random = Random.Range(0, 2);
                 //Dialogue answer = GameManager.gameManager.npcAnswers.GetFailAnswer(thisPersonality, playerDialogue.approachType, random);
-                Dialogue answer = GameManager.gameManager.dialogueController.GetAnswer((int)enemyType, (int)thisPersonality, (int)playerDialogue.approachType, random);
+                Dialogue answer = GameManager.gameManager.dialogueController.GetAnswer((int)enemyType, (int)thisPersonality, (int)playerDialogue.approachType, receivedAp.Count - 1);
                 answer.MyNPC = this;
                 StartCoroutine(DelayStartDialogue(answer));
             }

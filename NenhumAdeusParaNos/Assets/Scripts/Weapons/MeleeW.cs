@@ -9,7 +9,7 @@ public class MeleeW : Weapon
     //public float strongAtkDamage = 40.0f;
     //public float strongAtkCD = 1.0f;
     float actualAtkspeed;
-    int atkType = 1;
+    int atkType = 2;
     bool specialAtkEnabled = true;
 
     float selectedDamage;
@@ -39,7 +39,7 @@ public class MeleeW : Weapon
     {
         selectedDamage = meleeConfig.defaultDamage;
         actualAtkspeed = meleeConfig.defaultAttackSpeed;
-        atkType = 1;
+        atkType = 2;
     }
 
     public override float Attack(Animator animator = null, float attackMod = 1)

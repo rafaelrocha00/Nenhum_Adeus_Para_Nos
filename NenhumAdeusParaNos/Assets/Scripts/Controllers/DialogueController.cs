@@ -37,8 +37,8 @@ public class DialogueController : MonoBehaviour
     //public List<DialogueBattle>[][] approaches = new List<DialogueBattle>[4][];//Array de Approaches o primeirod Index define o tipo de inimigo, o segundo o tipo de abordagem, e dentro da lista deles estão os diálogos para serem sorteados.
     public DialogueBattle[] playerApproaches = new DialogueBattle[3];
 
-    public List<Dialogue>[][][] npcAnswers = new List<Dialogue>[2][][];//Array das respostas dos inimigos, Uma lista de opções de respotas pra cada tipo de abordagem para cada personalidade para cada tipo de inimigo
-    Dialogue failResult;
+    public List<DialogueOptions>[][][] npcAnswers = new List<DialogueOptions>[2][][];//Array das respostas dos inimigos, Uma lista de opções de respotas pra cada tipo de abordagem para cada personalidade para cada tipo de inimigo
+    Dialogue[] failResults = new Dialogue[2];
     public DialogueBattleResult[][][] battleResults = new DialogueBattleResult[2][][]; //Array de resultados de batalha, primeiro Index define o tipo de inimigo, o segundo a personalidade e o terceiro o resultado;
     //Sprite dps
     public Color[] dialogueColors = new Color[5];
@@ -64,16 +64,16 @@ public class DialogueController : MonoBehaviour
 
         for (int i = 0; i < npcAnswers.Length; i++)
         {
-            npcAnswers[i] = new List<Dialogue>[2][];
+            npcAnswers[i] = new List<DialogueOptions>[2][];
             for (int j = 0; j < npcAnswers[i].Length; j++)
             {
-                npcAnswers[i][j] = new List<Dialogue>[3];
+                npcAnswers[i][j] = new List<DialogueOptions>[3];
                 for (int k = 0; k < npcAnswers[i][j].Length; k++)
                 {
-                    npcAnswers[i][j][k] = new List<Dialogue>();
+                    npcAnswers[i][j][k] = new List<DialogueOptions>();
                     for (int l = 0; l < 3; l++)
                     {
-                        Dialogue dialogueAux = Resources.Load<Dialogue>("NPCAnswers/EnemyT" + (i + 1) + "/Personality" + (j + 1) + "/ApproachT" + (k + 1) + "/Dialogue" + (l + 1));
+                        DialogueOptions dialogueAux = Resources.Load<DialogueOptions>("NPCAnswers/EnemyT" + (i + 1) + "/Personality" + (j + 1) + "/ApproachT" + (k + 1) + "/Dialogues" + (l + 1));
                         if (dialogueAux != null)
                         {
                             npcAnswers[i][j][k].Add(dialogueAux);
@@ -90,7 +90,8 @@ public class DialogueController : MonoBehaviour
                 battleResults[i][j] = Resources.LoadAll<DialogueBattleResult>("DialogueBattleResults/EnemyT" + (i + 1) + "/Personality" + (j + 1));
             }
         }
-        failResult = Resources.Load<Dialogue>("DialogueBattleResults/FailCombination");
+        failResults[0] = Resources.Load<Dialogue>("DialogueBattleResults/FailCombination1");
+        failResults[1] = Resources.Load<Dialogue>("DialogueBattleResults/FailCombination2");
 
 
         mainCam = GameManager.gameManager.MainCamera.GetComponent<Camera>();
@@ -120,11 +121,11 @@ public class DialogueController : MonoBehaviour
     /// <returns></returns>
     public Dialogue GetAnswer(int enType, int personality, int apType, int idx)
     {
-        return npcAnswers[enType][personality][apType][idx];
+        return npcAnswers[enType][personality][apType][idx].GetRandomDialogue();
     }
     public Dialogue GetBattleResult(int enType, int personality, DialogueBattle.ApproachType[] comb, INPC npc, Player p)
     {
-        Dialogue aux = failResult;
+        Dialogue aux = failResults[personality];
 
         try
         {
@@ -133,7 +134,7 @@ public class DialogueController : MonoBehaviour
                 if (battleResults[enType][personality][i].apCombination.SequenceEqual(comb))
                 {
                     battleResults[enType][personality][i].StartEffects(npc, p);
-                    if (battleResults[enType][personality][i].BattleResult())
+                    if (battleResults[enType][personality][i].GetResult())
                         aux = battleResults[enType][personality][i];
                 }
                 //Debug.Log(comb[0] + " | " + comb[1] + " | " + comb[2]);

@@ -27,7 +27,7 @@ public class CharacterStats
         {
             Player aux = (Player)myBattleUnit;
             if (aux.Dashing) return true;
-            else if (aux.Defending)
+            else if (aux.Defending && !aux.IsShiledBroken())
             {
                 damage -= damage * aux.Defense_Strength / 100;
                 aux.UpdateDefense(-(damage * aux.Defense_Strength / 100));

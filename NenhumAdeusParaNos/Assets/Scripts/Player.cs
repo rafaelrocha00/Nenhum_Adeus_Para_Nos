@@ -12,6 +12,7 @@ public class Player : MonoBehaviour, BattleUnit
 
     public Animator animator;
     public GameObject staminaBar;
+    public ShieldShaderControl shieldControl;
 
     [HideInInspector] Companion myCompanion;
     public Companion MyCompanion { get { return myCompanion; } set { myCompanion = value; } }
@@ -394,6 +395,8 @@ public class Player : MonoBehaviour, BattleUnit
                     animator.SetBool("Defending", true);
                     if (!slowMoving) StartCoroutine(Slowdown(defaultSlow));
                     GameManager.gameManager.MainHud.ShowHideDefenseBar();
+                    shieldControl.gameObject.SetActive(true);
+                    UpdateDefense(0);
                 }
             }
             if (Input.GetMouseButtonUp(1))
@@ -703,6 +706,7 @@ public class Player : MonoBehaviour, BattleUnit
         animator.SetBool("Defending", false);
         CancelSlow();
         GameManager.gameManager.MainHud.ShowHideDefenseBar();
+        if (defense_life > 0) shieldControl.gameObject.SetActive(false);
     }
 
     void CheckLook_WalkDir(Vector3 moveDir, float xmov, float zmov)
@@ -804,11 +808,15 @@ public class Player : MonoBehaviour, BattleUnit
             }
             attackCD = myWeapon.Attack(animator);            
             Invoke("AttackCooldown", attackCD);
-            Invoke("ResetAnim", 0.2f);
+            //Invoke("ResetAnim", /*0.2f*/attackCD);
+
+            StopCoroutine("ResetAnim");
+            StartCoroutine(ResetAnim(0.55f));
         }
     }
-    void ResetAnim()
+    IEnumerator ResetAnim(float t)
     {
+        yield return new WaitForSeconds(t);
         animator.SetInteger("Attacking", 0);
     }
 
@@ -1163,6 +1171,17 @@ public class Player : MonoBehaviour, BattleUnit
     {
         defense_life += value;
         defense_life = Mathf.Clamp(defense_life, 0, defense_maxLife);
+        if (IsShiledBroken())
+        {
+            CancelDefense();
+            if (shieldControl.gameObject.activeSelf) shieldControl.StartCoroutine("BreakAnim");
+        }
+        if (shieldControl.gameObject.activeSelf) shieldControl.SetShieldValue(defense_life / defense_maxLife);
         GameManager.gameManager.MainHud.UpdateDefense(defense_life / defense_maxLife);
+    }
+    public bool IsShiledBroken()
+    {
+        if (defense_life > 0) return false;
+        else return true;
     }
 }

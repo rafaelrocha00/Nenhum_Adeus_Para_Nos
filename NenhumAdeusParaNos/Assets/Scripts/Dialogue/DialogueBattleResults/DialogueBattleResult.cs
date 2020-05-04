@@ -16,6 +16,8 @@ public class DialogueBattleResult : Dialogue
 
     bool startedEffects;
 
+    Battle_Effect.BattleEffect chosenEffect;
+
     public override string NextString()
     {
         if (actualID < allStrings.Length - 1)
@@ -51,8 +53,9 @@ public class DialogueBattleResult : Dialogue
         startedEffects = false;
     }
 
-    public bool BattleResult()
+    public bool GetResult()
     {
+        Debug.Log("Efeito");
         bool aux = true;
         if (life_staminaCond) if (percCond <= life_staminaRequiredPerc) aux = false;
 
@@ -65,7 +68,7 @@ public class DialogueBattleResult : Dialogue
 
                 if (random < chancePercentages[i])
                 {
-                    posEffects[i].Effect();
+                    chosenEffect = posEffects[i];
                     return true;
                 }
             }
@@ -74,8 +77,8 @@ public class DialogueBattleResult : Dialogue
         return false;
     }
 
-    //void BattleResult()
-    //{
-    //    chosenEffect.Effect();
-    //}
+    void BattleResult()
+    {
+        chosenEffect.Effect();
+    }
 }

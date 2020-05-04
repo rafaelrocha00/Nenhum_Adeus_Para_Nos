@@ -27,7 +27,7 @@ public class RangedW : Weapon
         //GameObject bulletObj = Instantiate(rangedWConfig.bulletPref, transform.position, transform.rotation) as GameObject;
         //Bullet bullet = bulletObj.GetComponent<Bullet>();
         //bullet.InitialSet(rangedWConfig.defaultDamage, gameObject.layer);
-        if (animator != null) animator.SetInteger("Attacking", 2);
+        if (animator != null) animator.SetInteger("Attacking", 1);
         rangedWConfig.Attack(transform, gameObject.layer, attackMod);
 
         ammo--;
