@@ -973,7 +973,7 @@ public class Player : MonoBehaviour, BattleUnit
                 //DialogueBattle actualDialogueBattle = GameManager.gameManager.MainHud.GetDialogueFromSlot(idx);
                 if (!aimLocked) FindNearestEnemy();
                 int random = Random.Range(0, 2);
-                DialogueBattle actualDialogueBattle = GameManager.gameManager.dialogueController.GetDialogueBattle((int)targetedEnemy.enemyType, equippedDialogueType, random);                
+                DialogueBattle actualDialogueBattle = GameManager.gameManager.dialogueController.GetDialogueBattle(equippedDialogueType/*(int)targetedEnemy.enemyType, equippedDialogueType, random*/);                
                 actualDialogueBattle.MainCharacter = this;
                 actualDialogueBattle.TagetedNPC = targetedEnemy;
 
@@ -988,7 +988,7 @@ public class Player : MonoBehaviour, BattleUnit
                     GameManager.gameManager.dialogueController.EndDialogue();
                     Debug.Log("EndingDialogue");
                 }
-                GameManager.gameManager.dialogueController.StartDialogue(actualDialogueBattle, transform);                
+                if (targetedEnemy != null) GameManager.gameManager.dialogueController.StartDialogue(actualDialogueBattle, transform);                
             }
             //catch
             //{
@@ -1013,11 +1013,14 @@ public class Player : MonoBehaviour, BattleUnit
         }
         else if (GameManager.gameManager.dialogueController.WaitingForAnswer)
         {
-            if (GameManager.gameManager.dialogueController.ActiveMainDialogue) GameManager.gameManager.dialogueController.EndDialogue();
-            GameManager.gameManager.MainHud.WaitingForAnswer(false);
-            DialogueBattle actualDialogueBattle = GameManager.gameManager.dialogueController.GetDialogueBattle((int)targetedEnemy.enemyType, equippedDialogueType, 0);
+            //if (GameManager.gameManager.dialogueController.ActiveMainDialogue) GameManager.gameManager.dialogueController.EndDialogue();
+            //GameManager.gameManager.MainHud.WaitingForAnswer(false);
+            DialogueBattle actualDialogueBattle = GameManager.gameManager.dialogueController.GetDialogueBattle(/*(int)targetedEnemy.enemyType, */equippedDialogueType/*, 0*/);
+            actualDialogueBattle.TagetedNPC = GameManager.gameManager.dialogueController.ActualDialogue.MyNPC;
             actualDialogueBattle.MainCharacter = this;
-            actualDialogueBattle.TagetedNPC = targetedEnemy;
+            GameManager.gameManager.dialogueController.EndDialogue();            
+            //actualDialogueBattle.TagetedNPC = targetedEnemy;            
+
             GameManager.gameManager.dialogueController.StartDialogue(actualDialogueBattle, transform);
         }
     }

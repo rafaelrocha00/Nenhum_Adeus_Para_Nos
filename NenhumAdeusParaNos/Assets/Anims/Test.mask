@@ -6,8 +6,8 @@ AvatarMask:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EdUpperBody
-  m_Mask: 00000000010000000100000000000000000000000100000001000000010000000100000000000000000000000100000001000000
+  m_Name: Test
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
   m_Elements:
   - m_Path: 
     m_Weight: 1
@@ -84,49 +84,49 @@ AvatarMask:
   - m_Path: Armature/root/handIK.r/hand.r/thumb1.r/thumb2.r/thumb2.r_end
     m_Weight: 1
   - m_Path: Armature/root/heelIK.l
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/root/heelIK.l/foot.l
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/root/heelIK.l/foot.l/toe.l
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/root/heelIK.l/foot.l/toe.l/toe.l_end
     m_Weight: 1
   - m_Path: Armature/root/heelIK.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/root/heelIK.r/foot.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/root/heelIK.r/foot.r/toe.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/root/heelIK.r/foot.r/toe.r/toe.r_end
     m_Weight: 1
   - m_Path: Armature/root/kneeIK.l
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/root/kneeIK.l/kneeIK.l_end
     m_Weight: 1
   - m_Path: Armature/root/kneeIK.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/root/kneeIK.r/kneeIK.r_end
     m_Weight: 1
   - m_Path: Armature/root/pelvis
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/root/pelvis/hip.l
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/root/pelvis/hip.l/legstretcher.l
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/root/pelvis/hip.l/legstretcher.l/legstretcher.l_end
     m_Weight: 1
   - m_Path: Armature/root/pelvis/hip.l/shin.l
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/root/pelvis/hip.l/shin.l/shin.l_end
     m_Weight: 1
   - m_Path: Armature/root/pelvis/hip.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/root/pelvis/hip.r/legstretcher.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/root/pelvis/hip.r/legstretcher.r/legstretcher.r_end
     m_Weight: 1
   - m_Path: Armature/root/pelvis/hip.r/shin.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/root/pelvis/hip.r/shin.r/shin.r_end
     m_Weight: 1
   - m_Path: Armature/root/pelvis/spine1

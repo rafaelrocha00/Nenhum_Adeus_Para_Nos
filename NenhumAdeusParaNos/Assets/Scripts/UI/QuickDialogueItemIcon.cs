@@ -60,10 +60,24 @@ public class QuickDialogueItemIcon : MonoBehaviour
         myImage = GetComponent<Image>();
     }
 
-    public void SetIcon(Color color)
+    public void PlaySpriteAnim()
     {
-        myImage.color = color;
+        //myImage.color = color;
+        try
+        {
+            GetComponent<SpriteAnimator>().Play();
+        }
+        catch { }
     }
+    public void StopSpriteAnim()
+    {
+        try
+        {
+            GetComponent<SpriteAnimator>().Stop();
+        }
+        catch { }
+    }
+
     public void SetSprite(Sprite sprite)
     {
         myImage.sprite = sprite;        

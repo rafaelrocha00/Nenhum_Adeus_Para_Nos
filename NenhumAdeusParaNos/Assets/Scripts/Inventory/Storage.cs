@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class Storage : Interactives
 {
-    GameObject storageMenu;
+    public string depositName = "";
 
+    GameObject storageMenu;
+   
     public GameObject storagePref;
     GridManager myGrid;
     ItemGenerator itemGenerator;
@@ -126,6 +128,11 @@ public class Storage : Interactives
         }
     }
 
+    public int CheckQuestItems(string itemName)
+    {
+        return myGrid.CheckItemQuant(itemName);
+    }
+
     public override void OnExit()
     {
         base.OnExit();
@@ -134,6 +141,14 @@ public class Storage : Interactives
 
     public void OpenCloseStorage(bool value)
     {
-        if (storageMenu != null) storageMenu.SetActive(value);
+        if (storageMenu != null)
+        {
+            if (!value && storageMenu.activeSelf)
+            {
+                GameManager.gameManager.questController.CheckQuests(this);
+            }
+
+            storageMenu.SetActive(value);
+        }
     }
 }

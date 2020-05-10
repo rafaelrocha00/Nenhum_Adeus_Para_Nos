@@ -19,7 +19,8 @@ public class DialogueController : MonoBehaviour
     bool waitingForAnswerBattle;
     INPC dialoguingNPC;
 
-    Dialogue actualDialogue;
+    [HideInInspector] Dialogue actualDialogue;
+    public Dialogue ActualDialogue { get { return actualDialogue; } }
     Dialogue secondaryDialogue;
 
     DialogueWithChoice lastDialogueWithChoice;
@@ -41,7 +42,8 @@ public class DialogueController : MonoBehaviour
     Dialogue[] failResults = new Dialogue[2];
     public DialogueBattleResult[][][] battleResults = new DialogueBattleResult[2][][]; //Array de resultados de batalha, primeiro Index define o tipo de inimigo, o segundo a personalidade e o terceiro o resultado;
     //Sprite dps
-    public Color[] dialogueColors = new Color[5];
+    //public Color[] dialogueColors = new Color[5];
+    //public GameObject[] dialogueExpressions = new GameObject[3];
     
     private void Start()
     {
@@ -102,14 +104,14 @@ public class DialogueController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && activeMainDialogue && !(actualDialogue is DialogueBattle) && !waitingForAnswerBattle)
+        if (Input.GetKeyDown(KeyCode.E) && activeMainDialogue && !(actualDialogue is DialogueBattle) && !waitingForAnswerBattle && !waitingForAnswer)
         {
             Debug.Log("NextString");
             NextString();
         }
     }
 
-    public DialogueBattle GetDialogueBattle(int enType, int apType, int idx)
+    public DialogueBattle GetDialogueBattle(/*int enType,*/ int apType/*, int idx*/)
     {
         //return approaches[enType][apType][idx];
         return playerApproaches[apType];
@@ -167,6 +169,7 @@ public class DialogueController : MonoBehaviour
         {
             if (actualDialogue.GetPlayerNPCDistance() > 100)
             {
+                //StopCoroutine("NextStringCountdown");
                 EndDialogue();
                 yield break;
             }
@@ -193,7 +196,16 @@ public class DialogueController : MonoBehaviour
             waitingForAnswer = false;
             //GameManager.gameManager.MainHud.WaitingForAnswer(false);
         }
-        catch { Debug.Log("Não é de opção"); }
+        //catch { Debug.Log("Não é de opção"); }
+        //try
+        //{
+
+        //}
+        catch (System.Exception)
+        {
+
+            throw;
+        }
     }
 
     public void NextString()
@@ -222,6 +234,7 @@ public class DialogueController : MonoBehaviour
             actualDialogue.ResetDialogue();
             writing = false;
             CloseDialoguePopUp();
+            waitingForAnswer = false;
             //Debug.Log("Encerrando dialogo");            
             //StopCoroutine("NextStringCountdown");
             //StopCoroutine("ResetCooldown");
@@ -249,9 +262,9 @@ public class DialogueController : MonoBehaviour
             {
                 //GameManager.gameManager.MainHud.OpenDialogueOptTab(aux);
                 aux.MyNPC.SetWaitingForAnswer();
-                dialoguePopUp.StartTimer(10);
+                dialoguePopUp.StartTimer(12);
                 waitingForAnswer = true;
-                GameManager.gameManager.MainHud.WaitingForAnswer(true);
+                //GameManager.gameManager.MainHud.WaitingForAnswer(true);
             }
         }        
     }
@@ -395,14 +408,19 @@ public class DialogueController : MonoBehaviour
         List<INPC> enemies = new List<INPC>();
         for (int i = 0; i < colliders.Length; i++)
         {
-            try
+            if (!colliders[i].isTrigger)
             {
-                if (!colliders[i].isTrigger)
-                {
-                    enemies.Add(colliders[i].GetComponent<INPC>());
-                }
+                INPC npc = colliders[i].GetComponent<INPC>();
+                if (npc != null) enemies.Add(npc);
             }
-            catch { Debug.Log("Não é NPC"); }
+            //try
+            //{
+            //    if (!colliders[i].isTrigger)
+            //    {
+            //        enemies.Add(colliders[i].GetComponent<INPC>());
+            //    }
+            //}
+            //catch { Debug.Log("Não é NPC"); }
         }
         return enemies.ToArray();
     }

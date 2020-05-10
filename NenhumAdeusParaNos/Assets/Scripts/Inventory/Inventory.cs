@@ -22,15 +22,16 @@ public class Inventory : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            string itemName = names[Random.Range(0, names.Count)];
-            Debug.Log("Trying remove item: " + itemName);
-            InvenSlot itemSlot = myGrid.FindItem(itemName);
-            myGrid.RemoveItem(itemName);
-            if (itemSlot != null)
-            {
-                Debug.Log("Item found and destroyed");
-            }
-            else Debug.Log("Item not found");
+            //string itemName = names[Random.Range(0, names.Count)];
+            //Debug.Log("Trying remove item: " + itemName);
+            //InvenSlot itemSlot = myGrid.FindItem(itemName);
+            //myGrid.RemoveItem(itemName);
+            //if (itemSlot != null)
+            //{
+            //    Debug.Log("Item found and destroyed");
+            //}
+            //else Debug.Log("Item not found");
+            //Debug.Log(myGrid.CheckItemQuant("Shield"));
         }
     }
 

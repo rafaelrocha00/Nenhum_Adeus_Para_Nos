@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc463801709822f4f800d752c0f6bff8, type: 3}
+  m_Name: TestDe
+  m_EditorClassIdentifier: 
+  qName: TestDe
+  description: 
+  moneyReward: 0
+  quest_itemRewards: []
+  depositName: Deposito Shield
+  itemsToDelivery:
+  - {fileID: 11400000, guid: 11cc2420c23b8214e905a83cf7b358ee, type: 2}
+  - {fileID: 11400000, guid: 7cc9274fc019cac4a983216144fff847, type: 2}
+  itemsQuant: 0200000001000000

@@ -137,6 +137,30 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
+    public int CheckItemQuant(string itemName)
+    {
+        int aux = 0;
+        Item item = null;
+        for (int i = 0; i < xSize; i++)
+        {
+            for (int j = 0; j < ySize; j++)
+            {
+                if (invenGrid[i, j].ThisItemButton != null && invenGrid[i, j].ThisItemButton.Item.itemName.Equals(itemName))
+                {
+                    item = invenGrid[i, j].ThisItemButton.Item;
+                    aux++;
+                }
+            }
+        }
+        try
+        {
+            aux /= item.slotSize.x * item.slotSize.y;
+        }
+        catch { Debug.Log("Item not found"); }
+
+        return aux;
+    }
+
     public void CheckIfItemWasAdded()
     {
         GameManager.gameManager.inventoryController.Inventory.ItemRemovedOrAdded();

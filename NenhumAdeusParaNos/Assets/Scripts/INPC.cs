@@ -6,8 +6,14 @@ using UnityEngine.UI;
 
 public class INPC : NPC/*Interactives*//*, BattleUnit*/
 {
+    [SerializeField] string npcName = "Name";
+    [SerializeField] string areaName = "Area Name";
+    public string Name { get { return npcName; } }
+    public string AreaName { get { return areaName; } }
+
     public enum Personalities { Tsundere, Yandere }
-    public enum EnemyType { Lustro, Normal }
+    public enum EnemyType { Lustro, Normal, None }
+    public enum Faction { Communist, Non_Communist, None }
 
     //[HideInInspector] CharacterStats charStats;
     //public CharacterStats CharStats { get { return charStats; } }
@@ -18,6 +24,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
     //[SerializeField] Behavior behavior;
     public Personalities thisPersonality;// { get { return behavior; } set { behavior = value; } }
     public EnemyType enemyType;
+    public Faction faction;
     public bool hasOtherNPCTalk;
     public INPC theOtherNPC;
 
@@ -26,6 +33,9 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
 
     [SerializeField] bool waitingForAnswer = false;
 
+    [SerializeField] bool myQuestAccepeted = false;
+    public bool MyQuestAccepted { set { myQuestAccepeted = value; } }
+    public DialogueWithChoice questDialogue;
     public Dialogue dialogueWithOtherNPC;
     public DialogueOptions[] myDialogues = new DialogueOptions[3];   
     //public Dialogue[] answerDialogues = new Dialogue[3];
@@ -452,14 +462,17 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
     public void SetWaitingForAnswer()
     {
         waitingForAnswer = true;
-        Invoke("CancelDialogue", 12);
+        StopCoroutine("CancelDialogue");
+        StartCoroutine("CancelDialogue");
         //GameManager.gameManager.dialogueController.WaitForAnswerTimer(10)
     }
-    void CancelDialogue()
+    IEnumerator CancelDialogue()
     {
+        yield return new WaitForSeconds(12);
         if (waitingForAnswer)
         {
             waitingForAnswer = false;
+            Debug.Log("Cancelando resposta");
             GameManager.gameManager.dialogueController.EndDialogue();
         }
     }
@@ -727,6 +740,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
     {
         GameManager.gameManager.dialogueController.EndDialogue();
         GameManager.gameManager.battleController.FindAndRemove(name);
+        GameManager.gameManager.questController.CheckQuests(this);
         base.Die();
     }
 
@@ -760,7 +774,14 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
         if (other.tag.Equals("player"))
         {
             //Se tem quest, inicia uma conversa com o player, sobre a quest
-            if (hasOtherNPCTalk)
+            if (questDialogue != null && !myQuestAccepeted)
+            {
+                //Não abrir quando quest já completa
+                questDialogue.MyNPC = this;
+                questDialogue.MainCharacter = GameManager.gameManager.battleController.MainCharacter;
+                GameManager.gameManager.dialogueController.StartDialogue(questDialogue, transform);
+            }
+            else if (hasOtherNPCTalk)
             {
                 GameManager.gameManager.dialogueController.StartDialogue(dialogueWithOtherNPC, transform, true);
             }

@@ -64,12 +64,11 @@ public class MainHud : MonoBehaviour
     #endregion
 
     #region Batalha   
-    public GameObject equipableDialoguesTab;
+    //public GameObject equipableDialoguesTab;
 
     //public QuickDialogueItemIcon[] battleDialoguesSlots = new QuickDialogueItemIcon[2];
-    //QuickDialogueItemIcon[] equipablesBattleDialogues;
-
-    public QuickDialogueItemIcon equippedDialogueB;
+    QuickDialogueItemIcon[] equipableBattleDialogues = new QuickDialogueItemIcon[3];
+    QuickDialogueItemIcon equippedDialogueB;
 
     public GameObject quickDialogueTab;
 
@@ -80,13 +79,26 @@ public class MainHud : MonoBehaviour
 
     public void EquipDialogue(int idx)
     {
+        if (equippedDialogueB != null)
+        {
+            equippedDialogueB.StopSpriteAnim();
+            SetObjSize(equippedDialogueB.gameObject, -15);
+        }
+        equippedDialogueB = equipableBattleDialogues[idx];
+        equippedDialogueB.PlaySpriteAnim();
+        SetObjSize(equippedDialogueB.gameObject, 15);
         //Muda somente a cor/sprite do ícone do diálogo.
-        /*if (GameManager.gameManager.battleController.ActiveBattle)*/ equippedDialogueB.SetIcon(GameManager.gameManager.dialogueController.dialogueColors[idx]);
+        /*if (GameManager.gameManager.battleController.ActiveBattle)*/
     }
 
     public void IconCooldown(float value)
     {
-        equippedDialogueB.Cooldown(value);
+        //equippedDialogueB.Cooldown(value);
+
+        foreach (QuickDialogueItemIcon qd in equipableBattleDialogues)
+        {
+            qd.Cooldown(value);
+        }
     }
 
     public void UseDialogue(/*int idx*/)
@@ -99,6 +111,9 @@ public class MainHud : MonoBehaviour
     private void Start()
     {
         GameManager.gameManager.MainHud = this;
+
+        equipableBattleDialogues = quickDialogueTab.GetComponentsInChildren<QuickDialogueItemIcon>();
+        EquipDialogue(0);
     }
 
     private void Update()
@@ -119,10 +134,10 @@ public class MainHud : MonoBehaviour
 
     }
 
-    public void WaitingForAnswer(bool value)
-    {
-        equippedDialogueB.GetComponent<Animator>().SetBool("WaitingAnswer", value);
-    }
+    //public void WaitingForAnswer(bool value)
+    //{
+    //    equippedDialogueB.GetComponent<Animator>().SetBool("WaitingAnswer", value);
+    //}
 
     public void UpdateStamina(float staminaValue)
     {
@@ -180,6 +195,18 @@ public class MainHud : MonoBehaviour
     public void GameOver()
     {
         gameOverScreen.SetActive(true);
+    }
+
+    void SetObjSize(GameObject obj, float ammount)
+    {
+        try
+        {
+            Debug.Log("Alow");
+            RectTransform rect = obj.GetComponent<RectTransform>();
+            rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, rect.sizeDelta.x + ammount);
+            rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, rect.sizeDelta.y + ammount);
+        }
+        catch { Debug.Log("Não tem RectTransform"); }
     }
 
     void DestroyChilds(Transform transform)
