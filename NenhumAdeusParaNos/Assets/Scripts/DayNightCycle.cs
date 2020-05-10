@@ -46,7 +46,7 @@ public class DayNightCycle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdatePostProcess(Time.time * 2f);
+        //UpdatePostProcess(Time.time * 2f);
     }
     
     public void UpdatePostProcess(float time)
