@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public InventoryController inventoryController;
     [HideInInspector] public ObjectPlacer objectPlacer;
     [HideInInspector] public QuestController questController;
+    [HideInInspector] public CalendarController calendarController;
     //[HideInInspector] public NPCAnswers npcAnswers;
 
     [HideInInspector] MainHud mainHud;
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour
         inventoryController = GetComponent<InventoryController>();
         objectPlacer = GetComponent<ObjectPlacer>();
         questController = GetComponent<QuestController>();
+        calendarController = GetComponent<CalendarController>();
         //npcAnswers = GetComponent<NPCAnswers>();
 
         personalities[0] = DereDereP;
@@ -57,11 +59,14 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKey(KeyCode.LeftControl))
         {
-            battleController.ActiveBattle = false;
-            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
-            dialogueController.SetCam();
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                battleController.ActiveBattle = false;
+                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+                dialogueController.SetCam();
+            }
         }
     }
 }

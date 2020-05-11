@@ -7,7 +7,7 @@ public class Storage : Interactives
 {
     public string depositName = "";
 
-    GameObject storageMenu;
+    public GameObject storageMenu;
    
     public GameObject storagePref;
     GridManager myGrid;
@@ -52,6 +52,7 @@ public class Storage : Interactives
         StartCoroutine("GenItems");
 
         generatedMenu = true;
+        GameManager.gameManager.MainHud.ActualStorage = this;
     }
 
     IEnumerator GenItems()
@@ -136,7 +137,7 @@ public class Storage : Interactives
     public override void OnExit()
     {
         base.OnExit();
-        OpenCloseStorage( false);
+        OpenCloseStorage(false);
     }
 
     public void OpenCloseStorage(bool value)
@@ -146,6 +147,10 @@ public class Storage : Interactives
             if (!value && storageMenu.activeSelf)
             {
                 GameManager.gameManager.questController.CheckQuests(this);
+            }
+            else if (value)
+            {
+                GameManager.gameManager.MainHud.ActualStorage = this;
             }
 
             storageMenu.SetActive(value);

@@ -15,8 +15,15 @@ MonoBehaviour:
   qName: TestKi
   description: quest_description
   moneyReward: 0
+  mustReturn: 1
+  limitDay: -1
+  completingQuestDialogue: {fileID: 11400000, guid: ecf494b51589c8645bff828d7bfa2668,
+    type: 2}
   quest_itemRewards: []
+  completed: 0
+  accepted: 0
+  waitingReturnToNPC: 0
   enemyType: 2
   faction: 0
-  areaName: Fazenda Norte
-  quantToKill: 2
+  areaName: Fazenda Noroeste
+  quantToKill: 3

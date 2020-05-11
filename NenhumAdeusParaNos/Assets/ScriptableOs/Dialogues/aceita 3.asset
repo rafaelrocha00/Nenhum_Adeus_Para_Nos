@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36a43251252284c45a1765f66ea1824d, type: 3}
-  m_Name: NormalPotion
+  m_Script: {fileID: 11500000, guid: 2cc231529148de24ca6aeda3695e168a, type: 3}
+  m_Name: aceita 3
   m_EditorClassIdentifier: 
-  itemName: "Po\xE7\xE3o"
-  itemSprite: {fileID: 21300000, guid: a8fa6803018dd4b4db3f8b48895a34ca, type: 3}
-  slotSize: {x: 1, y: 1}
-  animTime: 1.8
-  instantUse: 0
-  healingStrenght: 40
+  allStrings:
+  - "Eu sei que por dentro voc\xEA quer fazer isso, ent\xE3o vai l\xE1 :)"
+  mcStrings: 
+  quest: {fileID: 11400000, guid: 0fc1ac41f43736e4b9eef6c8a992dafb, type: 2}
+  accepting: 1

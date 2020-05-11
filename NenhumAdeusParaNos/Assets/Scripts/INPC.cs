@@ -33,9 +33,9 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
 
     [SerializeField] bool waitingForAnswer = false;
 
-    [SerializeField] bool myQuestAccepeted = false;
-    public bool MyQuestAccepted { set { myQuestAccepeted = value; } }
-    public DialogueWithChoice questDialogue;
+    //[SerializeField] bool myQuestAccepeted = false;
+    //public bool MyQuestAccepted { set { myQuestAccepeted = value; } }
+    public DialogueWithChoice[] questDialogues;
     public Dialogue dialogueWithOtherNPC;
     public DialogueOptions[] myDialogues = new DialogueOptions[3];   
     //public Dialogue[] answerDialogues = new Dialogue[3];
@@ -484,6 +484,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
     public void ReceiveBattleDialogue(DialogueBattle playerDialogue)
     {
         Debug.Log("Dialogo Recebido");
+
         if (waitingForAnswer)
         {
             //Debug.Log("ALOALOALO");
@@ -559,6 +560,20 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
         }
         else
         {
+            if (questDialogues.Length > 0)// && !myQuestAccepeted)
+            {
+                for (int i = 0; i < questDialogues.Length; i++)
+                {
+                    DialogueQuestTrigger dqt = questDialogues[i].SearchQuestDialogue();
+                    if (dqt.quest.WaitingReturnToNPC && !dqt.quest.Completed)
+                    {
+                        dqt.quest.completingQuestDialogue.MainCharacter = GameManager.gameManager.battleController.MainCharacter;
+                        dqt.quest.completingQuestDialogue.MyNPC = this;
+                        StartCoroutine(DelayStartDialogue(dqt.quest.completingQuestDialogue));
+                        return;
+                    }
+                }
+            }           
             //Dialogue aux = myDialogues[(int)playerDialogue.approachType].GetRandomDialogue();
             //int auxID = 0;
 
@@ -685,6 +700,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
                 }
                 catch { }
                 GameManager.gameManager.battleController.AddFighter(this);
+                GameManager.gameManager.dialogueController.EndDialogue();
                 inBattle = true;
                 Debug.Log("NPC entrou na batalha");
                 lifeBar.transform.parent.gameObject.SetActive(true);
@@ -707,7 +723,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
         if (CanFight()) MoveNavMesh(startPos);
         inBattle = false;
         navMesh.speed = defaultSpeed;
-        //Invoke("ActiveInteractionCollider", 3.0f);
+        Invoke("ActiveInteractionCollider", 3.0f);
         lifeBar.transform.parent.gameObject.SetActive(false);
         attackModifier = 1.0f;
     }
@@ -771,15 +787,30 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag.Equals("player"))
+        if (other.tag.Equals("player") && !GameManager.gameManager.battleController.ActiveBattle)
         {
             //Se tem quest, inicia uma conversa com o player, sobre a quest
-            if (questDialogue != null && !myQuestAccepeted)
+            if (questDialogues.Length > 0)// && !myQuestAccepeted)
             {
+                Debug.Log("Olhando quests");
                 //Não abrir quando quest já completa
-                questDialogue.MyNPC = this;
-                questDialogue.MainCharacter = GameManager.gameManager.battleController.MainCharacter;
-                GameManager.gameManager.dialogueController.StartDialogue(questDialogue, transform);
+                for (int i = 0; i < questDialogues.Length; i++)
+                {                    
+                    DialogueQuestTrigger dqt = questDialogues[i].SearchQuestDialogue();
+                    Debug.Log(dqt.quest.Accepted);
+                    Debug.Log(dqt.quest.Completed);
+                    if (!dqt.quest.Accepted)
+                    {
+                        questDialogues[i].MyNPC = this;
+                        questDialogues[i].MainCharacter = GameManager.gameManager.battleController.MainCharacter;
+                        GameManager.gameManager.dialogueController.StartDialogue(questDialogues[i], transform);
+                        //BeginQuestDialogue(questDialogues[i]);
+                    }
+                }
+
+                //questDialogue.MyNPC = this;
+                //questDialogue.MainCharacter = GameManager.gameManager.battleController.MainCharacter;
+                //GameManager.gameManager.dialogueController.StartDialogue(questDialogue, transform);
             }
             else if (hasOtherNPCTalk)
             {

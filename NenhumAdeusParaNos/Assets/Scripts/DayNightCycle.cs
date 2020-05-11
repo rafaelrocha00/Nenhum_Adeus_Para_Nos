@@ -44,13 +44,14 @@ public class DayNightCycle : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        //UpdatePostProcess(Time.time * 2f);
-    }
+    //void Update()
+    //{
+    //    //UpdatePostProcess(Time.timeSinceLevelLoad * 0.5f);
+    //}
     
     public void UpdatePostProcess(float time)
     {
+        //Debug.Log(time);
         var lift = Vector4.Lerp(nightLift, dayLift, dayNightCurve.Evaluate(time / 24f));
         var gamma = Vector4.Lerp(nightGamma, dayGamma, dayNightCurve.Evaluate(time / 24f));
         var gain = Vector4.Lerp(nightGain, dayGain, dayNightCurve.Evaluate(time / 24f));

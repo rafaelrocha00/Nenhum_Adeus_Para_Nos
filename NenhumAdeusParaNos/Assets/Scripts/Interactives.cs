@@ -27,6 +27,7 @@ public abstract class Interactives : MonoBehaviour
         {
             Player player = other.GetComponent<Player>();
             player.Interacting = false;
+            player.CanInteract = false;
             Debug.Log(player.Interacting);
             OnExit();
         }

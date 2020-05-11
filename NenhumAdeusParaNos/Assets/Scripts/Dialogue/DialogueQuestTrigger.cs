@@ -6,6 +6,7 @@ using UnityEngine;
 public class DialogueQuestTrigger : Dialogue
 {
     public Quest quest;
+    public bool accepting = true;
 
     public override string NextString()
     {
@@ -20,8 +21,9 @@ public class DialogueQuestTrigger : Dialogue
             GameManager.gameManager.dialogueController.EndDialogue();
             myNPC.EndDialogue();
 
-            quest.AcceptQuest();
-            myNPC.MyQuestAccepted = true;
+            if (accepting) quest.AcceptQuest();
+            else quest.Complete();
+            //myNPC.MyQuestAccepted = true;
             ResetDialogue();
             return "";
         }

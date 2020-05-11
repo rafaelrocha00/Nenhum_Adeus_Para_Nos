@@ -8,6 +8,8 @@ public class MainHud : MonoBehaviour
     [HideInInspector] Player mainCharacter;
     public Player MainCharacter { get { return mainCharacter; } set { mainCharacter = value; } }
 
+    public GameObject pauseMenu;
+
     public GameObject gameOverScreen;
 
     public GameObject inventory;
@@ -33,6 +35,9 @@ public class MainHud : MonoBehaviour
     //public int[] battleDialogues = new int[5];
 
     public QuickDialogueItemIcon quickItemSlot;
+
+    [HideInInspector] Storage actualStorage = null;
+    public Storage ActualStorage { set { actualStorage = value; } }
 
     #region Opçoes_de_Dialogo
     public void OpenDialogueOptTab(DialogueWithChoice dialogue)
@@ -132,6 +137,14 @@ public class MainHud : MonoBehaviour
             OpenCloseInventory(!inventory.activeSelf);
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (actualStorage != null && actualStorage.storageMenu.activeSelf) actualStorage.OpenCloseStorage(false);
+            else if (inventory.activeSelf) OpenCloseInventory(false);
+            else if (pauseMenu.activeSelf) OpenClosePauseMenu(false);
+            else OpenClosePauseMenu(true);
+        }
+
     }
 
     //public void WaitingForAnswer(bool value)
@@ -188,13 +201,26 @@ public class MainHud : MonoBehaviour
 
     public void OpenCloseInventory(bool value)
     {
+        OpenClosePauseMenu(false);
         inventory.SetActive(value);
         ShowHideQuickItemSlot(!value);
+    }
+
+    public void OpenClosePauseMenu(bool value)
+    {
+        pauseMenu.SetActive(value);
+        GameManager.gameManager.timeController.PauseResume(value);
     }
 
     public void GameOver()
     {
         gameOverScreen.SetActive(true);
+    }
+
+    public void BackToMenu()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        GameManager.gameManager.timeController.PauseResume(false);
     }
 
     void SetObjSize(GameObject obj, float ammount)

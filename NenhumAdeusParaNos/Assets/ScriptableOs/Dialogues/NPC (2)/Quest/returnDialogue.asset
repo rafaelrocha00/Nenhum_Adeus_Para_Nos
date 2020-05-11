@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cc231529148de24ca6aeda3695e168a, type: 3}
-  m_Name: accept
+  m_Name: returnDialogue
   m_EditorClassIdentifier: 
   allStrings:
-  - "Vejo que est\xE1 interessado"
-  - "Pode colocar 2 morfinas no ba\xFA atr\xE1s dessa casa aqui?"
+  - "Ent\xE3o voc\xEA conseguiu, obrigado...         "
+  - "Se voc\xEA est\xE1 esperando por uma recompensa, eu nunca disse que ia te dar
+    uma.   "
+  - Agora pode ir.
   mcStrings: 
   quest: {fileID: 11400000, guid: 70df112af7294ed47b4263df6ab61a07, type: 2}
-  accepting: 1
+  accepting: 0

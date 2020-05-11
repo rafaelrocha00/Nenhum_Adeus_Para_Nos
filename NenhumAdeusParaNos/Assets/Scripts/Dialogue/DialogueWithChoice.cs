@@ -37,4 +37,16 @@ public class DialogueWithChoice : Dialogue
         }
         else return "";
     }
+
+    public DialogueQuestTrigger SearchQuestDialogue()
+    {
+        for (int i = 0; i < dialogueChoices.Length; i++)
+        {
+            if (dialogueChoices[i] is DialogueQuestTrigger)
+            {
+                return (DialogueQuestTrigger)dialogueChoices[i];
+            }
+        }
+        return null;
+    }
 }

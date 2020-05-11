@@ -4,20 +4,25 @@ using UnityEngine;
 
 public abstract class Quest : ScriptableObject
 {
+    //contador no player ou controlador q indica quantas quest o jogador deixou de cumprir - diminui recompensa   
+
     [SerializeField] string qName = "quest_name";
     [SerializeField] string description = "quest_description";
     [SerializeField] int moneyReward = 0;
     [SerializeField] protected bool mustReturn = false;
+    [SerializeField] int limitDay = -1;
     public string Name { get { return qName; } }
     public string Description { get { return description; } }
     public int MoneyReward { get { return moneyReward; } }
     public bool MustReturn { get { return mustReturn; } }
+    public DialogueQuestTrigger completingQuestDialogue;
+    public int LimitDay { get { return limitDay; } }
 
     public Item[] quest_itemRewards;
 
-    [HideInInspector] protected bool completed = false;
-    [HideInInspector] protected bool accepted = false;
-    [HideInInspector] protected bool waitingReturnToNPC = false;
+    [SerializeField] protected bool completed = false;
+    [SerializeField] protected bool accepted = false;
+    [SerializeField] protected bool waitingReturnToNPC = false;
     public bool Completed { get { return completed; } }
     public bool Accepted { get { return accepted; } }
     public bool WaitingReturnToNPC { get { return waitingReturnToNPC; } }
@@ -41,5 +46,19 @@ public abstract class Quest : ScriptableObject
     {
         if (!mustReturn) Complete();
         else waitingReturnToNPC = true;
+    }
+
+    private void OnDisable()
+    {
+        accepted = false;
+        completed = false;
+        waitingReturnToNPC = false;
+    }
+
+    private void OnEnable()
+    {
+        accepted = false;
+        completed = false;
+        waitingReturnToNPC = false;
     }
 }
