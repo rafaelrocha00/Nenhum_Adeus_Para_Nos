@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public ObjectPlacer objectPlacer;
     [HideInInspector] public QuestController questController;
     [HideInInspector] public CalendarController calendarController;
+    [HideInInspector] public CompanyController companyController;
     //[HideInInspector] public NPCAnswers npcAnswers;
 
     [HideInInspector] MainHud mainHud;
@@ -22,10 +23,10 @@ public class GameManager : MonoBehaviour
     //[HideInInspector] Player mainCharacter;
     //public Player MainCharacter { get { return mainCharacter; } set { mainCharacter = value; } }
 
-    public float[] DereDereP = new float[5];
-    public float[] KuudereP = new float[5];
-    public float[] TsundereP = new float[5];
-    public float[] YandereP = new float[5];
+    //public float[] DereDereP = new float[5];
+    //public float[] KuudereP = new float[5];
+    //public float[] TsundereP = new float[5];
+    //public float[] YandereP = new float[5];
 
     public float[][] personalities = new float[4][];
 
@@ -49,12 +50,13 @@ public class GameManager : MonoBehaviour
         objectPlacer = GetComponent<ObjectPlacer>();
         questController = GetComponent<QuestController>();
         calendarController = GetComponent<CalendarController>();
+        companyController = GetComponent<CompanyController>();
         //npcAnswers = GetComponent<NPCAnswers>();
 
-        personalities[0] = DereDereP;
-        personalities[1] = KuudereP;
-        personalities[2] = TsundereP;
-        personalities[3] = YandereP;
+        //personalities[0] = DereDereP;
+        //personalities[1] = KuudereP;
+        //personalities[2] = TsundereP;
+        //personalities[3] = YandereP;
     }
 
     private void Update()

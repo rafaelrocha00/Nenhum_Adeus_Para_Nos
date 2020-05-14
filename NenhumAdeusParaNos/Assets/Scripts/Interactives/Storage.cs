@@ -6,11 +6,16 @@ using UnityEngine.UI;
 public class Storage : Interactives
 {
     public string depositName = "";
+    public int page_number = 1;
 
     public GameObject storageMenu;
+    public GameObject[] pages;
+    int actualPage = 0;
+    GameObject prevPageB;
+    GameObject nextPageB;
    
     public GameObject storagePref;
-    GridManager myGrid;
+    GridManager[] myGrids;
     ItemGenerator itemGenerator;
     public int storageXSize;
     public int storageYSize;
@@ -32,25 +37,45 @@ public class Storage : Interactives
 
     void GenerateSlots()
     {
+        myGrids = new GridManager[page_number];
+        pages = new GameObject[page_number];
+
         GameObject aux = Instantiate(storagePref, GameManager.gameManager.MainHud.itemStorages, false) as GameObject;
         storageMenu = aux;
+        storageMenu.transform.position = new Vector3(storageMenu.transform.position.x, storageMenu.transform.position.y - storageYSize * 20);
         itemGenerator = aux.GetComponent<ItemGenerator>();
         RectTransform auxRect = aux.GetComponent<RectTransform>();
-        myGrid = aux.GetComponentInChildren<GridManager>();
-        myGrid.xSize = storageXSize;
-        myGrid.ySize = storageYSize;
+        myGrids[0] = aux.GetComponentInChildren<GridManager>();
+        myGrids[0].xSize = storageXSize;
+        myGrids[0].ySize = storageYSize;
         for (int i = -1; i < 2; i++)
         {
-            if (i > -1) auxRect = aux.transform.GetChild(i).GetComponent<RectTransform>();
+            if (i > -1) auxRect = aux.transform.GetChild(0).GetChild(i).GetComponent<RectTransform>();
 
             auxRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, auxRect.sizeDelta.x * storageXSize);
             auxRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, auxRect.sizeDelta.y * storageYSize);
         }
 
-        myGrid.Generate();
-        //StartCoroutine("Mark");
-        StartCoroutine("GenItems");
+        //myGrids[0].Generate();
+        
+        pages[0] = aux.transform.GetChild(0).gameObject;
+        for (int i = 1; i < page_number; i++)
+        {
+            pages[i] = Instantiate(aux.transform.GetChild(0).gameObject, aux.transform, false) as GameObject;
+            myGrids[i] = pages[i].GetComponentInChildren<GridManager>();
+            myGrids[i].Generate();
+            //pages[i].SetActive(false);
+        }
+        myGrids[0].Generate();
 
+        prevPageB = aux.transform.Find("PrevPage").gameObject;
+        nextPageB = aux.transform.Find("NextPage").gameObject;
+        prevPageB.GetComponent<Button>().onClick.AddListener(PreviousPage);
+        nextPageB.GetComponent<Button>().onClick.AddListener(NextPage);
+
+        //ResetPages();
+
+        StartCoroutine("GenItems");
         generatedMenu = true;
         GameManager.gameManager.MainHud.ActualStorage = this;
     }
@@ -62,6 +87,7 @@ public class Storage : Interactives
         {
             TryAlocateItem(items[i]);
         }
+        ResetPages();
     }
 
     void TryAlocateItem(Item item)
@@ -113,17 +139,26 @@ public class Storage : Interactives
         //    if (itemWasPlaced) break;
         //}
         ItemButton auxIB = itemGenerator.GenItem(item);
-        if (!myGrid.TryAlocateItem(auxIB)) Destroy(auxIB.gameObject);
+        for (int i = 0; i < myGrids.Length; i++)
+        {
+            //if (!myGrids[i].TryAlocateItem(auxIB))
+            //{
+            //    Destroy(auxIB.gameObject);
+            //}
+            if (myGrids[i].TryAlocateItem(auxIB)) return;
+        }
+
+        Destroy(auxIB.gameObject);
     }
 
     IEnumerator Mark()
     {
         //bool itemWasPlaced = false;
-        for (int i = 0; i < myGrid.invenGrid.GetLength(0); i++)
+        for (int i = 0; i < myGrids[actualPage].invenGrid.GetLength(0); i++)
         {
-            for (int j = 0; j < myGrid.invenGrid.GetLength(1); j++)
+            for (int j = 0; j < myGrids[actualPage].invenGrid.GetLength(1); j++)
             {
-                myGrid.invenGrid[i, j].Select();
+                myGrids[actualPage].invenGrid[i, j].Select();
                 yield return new WaitForSeconds(1);
             }
         }
@@ -131,13 +166,44 @@ public class Storage : Interactives
 
     public int CheckQuestItems(string itemName)
     {
-        return myGrid.CheckItemQuant(itemName);
+        return myGrids[actualPage].CheckItemQuant(itemName);
     }
 
     public override void OnExit()
     {
         base.OnExit();
         OpenCloseStorage(false);
+    }
+
+    public void NextPage()
+    {
+        actualPage++;
+        if (page_number - 1 == actualPage) nextPageB.SetActive(false);
+        prevPageB.SetActive(true);
+
+        pages[actualPage - 1].SetActive(false);
+        pages[actualPage].SetActive(true);
+    }
+    public void PreviousPage()
+    {
+        actualPage--;
+        if (actualPage == 0) prevPageB.SetActive(false);
+        nextPageB.SetActive(true);
+
+        pages[actualPage + 1].SetActive(false);
+        pages[actualPage].SetActive(true);
+    }
+    void ResetPages()
+    {
+        actualPage = 0;
+        prevPageB.SetActive(false);
+        if (page_number < 2) nextPageB.SetActive(false);
+
+        for (int i = 0; i < page_number; i++)
+        {
+            pages[i].SetActive(false);
+        }
+        pages[0].SetActive(true);
     }
 
     public void OpenCloseStorage(bool value)
@@ -147,6 +213,7 @@ public class Storage : Interactives
             if (!value && storageMenu.activeSelf)
             {
                 GameManager.gameManager.questController.CheckQuests(this);
+                ResetPages();
             }
             else if (value)
             {

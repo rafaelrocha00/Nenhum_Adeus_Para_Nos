@@ -28,7 +28,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
     public bool hasOtherNPCTalk;
     public INPC theOtherNPC;
 
-    Personality personality;
+    //Personality personality;
     //NavMeshAgent navMesh;
 
     [SerializeField] bool waitingForAnswer = false;
@@ -103,19 +103,19 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
     //    }
 
     //    navMesh.speed = defaultSpeed;
+    ////}
+    //protected override void Initialize()
+    //{
+    //    //personality = new Personality();
+    //    //SetPersonalityPercentages();
     //}
-    protected override void Initialize()
-    {
-        personality = new Personality();
-        SetPersonalityPercentages();
-    }
-    void SetPersonalityPercentages()
-    {
-        for (int i = 0; i < 5; i++)
-        {
-            personality.SetPercentage(i, GameManager.gameManager.personalities[(int)thisPersonality][i]);
-        }
-    }
+    //void SetPersonalityPercentages()
+    //{
+    //    for (int i = 0; i < 5; i++)
+    //    {
+    //        personality.SetPercentage(i, GameManager.gameManager.personalities[(int)thisPersonality][i]);
+    //    }
+    //}
 
     //public override void Interact(Player player)
     //{
@@ -493,7 +493,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
         }
         else if (inBattle)
         {            
-            float answerChance = personality.CalculatePercentage(playerDialogue.approachType);
+            //float answerChance = personality.CalculatePercentage(playerDialogue.approachType);
             float aux = Random.Range(0, 100);
 
             receivedAp.Add(playerDialogue.approachType);

@@ -66,7 +66,10 @@ public abstract class NPC : MonoBehaviour, BattleUnit
         navMesh.speed = defaultSpeed;
         Initialize();
     }
-    protected abstract void Initialize();
+    protected virtual void Initialize()
+    {
+
+    }
 
     private void Update()
     {

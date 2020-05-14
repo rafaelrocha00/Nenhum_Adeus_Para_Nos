@@ -15,7 +15,12 @@ public class CamMove : MonoBehaviour
 
     Vector3 targetPos;
     public Transform playerTransform;
-    bool targetingPlayer = true;
+    [HideInInspector] bool targetingPlayer = true;
+    public bool TargetingPlayer { set { targetingPlayer = value; } }
+    bool inBattle = false;
+
+    [HideInInspector] Quaternion defaultRotation;
+    public Quaternion DefaultRotation { get { return defaultRotation; } }
 
     //float centralizedTime;
 
@@ -27,6 +32,7 @@ public class CamMove : MonoBehaviour
     private void Start()
     {
         distanceToTarget = defaultDistance;
+        defaultRotation = transform.rotation;
 
         //centralizedTime = GameManager.gameManager.battleController.WaitTime;
     }
@@ -34,16 +40,20 @@ public class CamMove : MonoBehaviour
     private void LateUpdate()
     {
         if (targetingPlayer) transform.position = Vector3.Slerp(transform.position, playerTransform.position + distanceToTarget, Time.deltaTime * cameraSmooth);
-        else transform.position = Vector3.Slerp(transform.position, targetPos + distanceToTarget, Time.deltaTime * cameraSmooth);
+        else if (inBattle) transform.position = Vector3.Slerp(transform.position, targetPos + distanceToTarget, Time.deltaTime * cameraSmooth);
 
-        float xDistance = Mathf.Abs(transform.position.x - playerTransform.position.x);
-        if (xDistance < 11.5) SetToWalkDown();
-        else if (xDistance > 22.5) SetDefaultDistance();
+        if (targetingPlayer || inBattle)
+        {
+            float xDistance = Mathf.Abs(transform.position.x - playerTransform.position.x);
+            if (xDistance < 11.5) SetToWalkDown();
+            else if (xDistance > 22.5) SetDefaultDistance();
+        }
     }
 
     public void StartBattle(Vector3 newTarget)
     {
         targetingPlayer = false;
+        inBattle = true;
         targetPos = newTarget;
         distanceToTarget = distanceInBattle;
         //StartCoroutine("ResetTarget");
@@ -59,6 +69,7 @@ public class CamMove : MonoBehaviour
     {
         SetDefaultDistance();
         targetingPlayer = true;
+        inBattle = false;
     }
 
     public void SetToWalkDown()
@@ -70,6 +81,41 @@ public class CamMove : MonoBehaviour
     {
         if (!GameManager.gameManager.battleController.ActiveBattle) distanceToTarget = defaultDistance;
         else distanceToTarget = distanceInBattle;
+    }
+
+    public void LerpLoc(Vector3 loc, float tMult)
+    {
+        StartCoroutine(LerpLocation(loc, tMult));
+    }
+    public void LerpRot(Quaternion rot, float tMult)
+    {
+        StartCoroutine(LerpRotation(rot, tMult));
+    }
+
+    IEnumerator LerpLocation(Vector3 loc, float tMult)
+    {
+        Vector3 oriPos = transform.position;
+        float t = 0.0f;
+
+        while (!transform.position.Equals(loc))
+        {
+            transform.position = Vector3.Lerp(oriPos, loc, t);
+            yield return new WaitForEndOfFrame();
+            t += Time.deltaTime * tMult;
+        }
+    }
+
+    IEnumerator LerpRotation(Quaternion rot, float tMult)
+    {
+        Quaternion oriRot = transform.rotation;
+        float t = 0.0f;
+
+        while (t < 1)
+        {
+            transform.rotation = Quaternion.Lerp(oriRot, rot, t);
+            yield return new WaitForEndOfFrame();
+            t += Time.deltaTime * tMult;
+        }
     }
     //IEnumerator ResetTarget()
     //{

@@ -32,7 +32,7 @@ public class GridManager : MonoBehaviour
                 invenGrid[x, y].Coordinates = new Vector2Int(x, y);
                 invenGrid[x, y].MyGridManager = this;
                 newSlot.name = "slot[" + x + "," + y + "]";
-                Debug.Log(newSlot.GetComponent<InvenSlot>().transform.position);
+                //Debug.Log(newSlot.GetComponent<InvenSlot>().transform.position);
             }
         }
     }
@@ -41,12 +41,13 @@ public class GridManager : MonoBehaviour
     {
         //bool itemWasPlaced = false;
         //for (int i = 0; i < invenGrid.GetLength(0); i++)
+        Debug.Log(invenGrid == null);
         for (int i = invenGrid.GetLength(1) - 1; i >= 0; i--)
         {
             //for (int j = 0; j < invenGrid.GetLength(1); j++)
             for (int j = 0; j < invenGrid.GetLength(0); j++)
             {
-                Debug.Log(invenGrid[j, i].transform.position);
+                //Debug.Log(invenGrid[j, i].transform.position);
                 if (invenGrid[j, i].IsEmpty())
                 {
                     if (itemB.Item.slotSize == Vector2.one)
