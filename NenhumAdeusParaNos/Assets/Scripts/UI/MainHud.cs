@@ -227,7 +227,7 @@ public class MainHud : MonoBehaviour
     {
         try
         {
-            Debug.Log("Alow");
+            //Debug.Log("Alow");
             RectTransform rect = obj.GetComponent<RectTransform>();
             rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, rect.sizeDelta.x + ammount);
             rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, rect.sizeDelta.y + ammount);

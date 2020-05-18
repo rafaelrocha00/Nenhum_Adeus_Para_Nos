@@ -6,10 +6,12 @@ using UnityEngine;
 public class DeliveryQuest : Quest
 {
     [SerializeField] string depositName = "";
-    public string DepositName { get { return depositName; } }
+    public string DepositName { get { return depositName; } set { depositName = value; } }
 
     public Item[] itemsToDelivery;
     public int[] itemsQuant;
+
+    public GameObject toInstantiate;
 
     public override void CheckComplete<T>(T thing)
     {
@@ -27,5 +29,10 @@ public class DeliveryQuest : Quest
             }            
         }
         catch { Debug.Log("Not a storage"); }
+    }
+
+    public override void InstantiateObjs(ObjectInstancer oi)
+    {
+        oi.SpawnChest(depositName, toInstantiate);
     }
 }

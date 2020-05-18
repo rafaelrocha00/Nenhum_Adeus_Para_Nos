@@ -11,6 +11,9 @@ public class CompanyController : MonoBehaviour
 
     Resource[] resources = new Resource[4];
 
+    public Queue<Quest> quests_onPC = new Queue<Quest>();
+    public Queue<Item> itemsToAlocate = new Queue<Item>();
+
     private void Start()
     {
         for (int i = 0; i < resources.Length; i++)
@@ -23,7 +26,12 @@ public class CompanyController : MonoBehaviour
 
     public void AddResource(ResourceType type, int quant)
     {
+        if (type == ResourceType.None) return;
         resources[(int)type].quant += quant;
+    }
+    public int GetResourceQuant(int id)
+    {
+        return resources[id].quant;
     }
 }
 

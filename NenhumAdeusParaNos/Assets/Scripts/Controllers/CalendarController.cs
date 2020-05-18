@@ -19,11 +19,12 @@ public class CalendarController : MonoBehaviour
     float timer = 0.0f;
 
     //1 minuto jogo = 3,75 segundos reais
+    public float timeScale = 3.75f;
 
     private void Update()
     {
         timer += Time.deltaTime;
-        if (timer >= 3.75f)
+        if (timer >= timeScale)
         {
             timer = 0.0f;
             UpdateMin();
@@ -35,8 +36,15 @@ public class CalendarController : MonoBehaviour
         hour++;
         if (hour == 24)
         {
-            UpdateDay();
             hour = 0;
+            UpdateDay();          
+        }
+        if ((hour == 6 && mins == 0) || (hour == 18 && mins == 0))
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                GameManager.gameManager.questGenerator.GenQuest();
+            }
         }
     }
 
@@ -45,8 +53,8 @@ public class CalendarController : MonoBehaviour
         mins++;
         if (mins == 60)
         {
-            UpdateHour();
             mins = 0;
+            UpdateHour();
         }
 
         DayNightCycle.Instance.UpdatePostProcess(hour + mins / 60);
@@ -55,11 +63,12 @@ public class CalendarController : MonoBehaviour
 
     void UpdateDay()
     {
+        GameManager.gameManager.questController.CancelQuestsOnLimit();
         actualDay++;
         if (actualDay == 7)
         {
             actualWeek++;
             actualDay = 0;
-        }
+        }        
     }
 }

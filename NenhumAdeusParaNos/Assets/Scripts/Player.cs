@@ -191,6 +191,7 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (Physics.Raycast(ray, out hit, 1000, aimLayermask))
         {
+            //Debug.Log("Colisor: " + hit.collider.name);
             if (!aimLocked) battleAim = new Vector3(hit.point.x, transform.position.y, hit.point.z);
             if (aimingThrowable || placingItem) transform.LookAt(battleAim);
             //Debug.Log(lookPos);
@@ -988,7 +989,7 @@ public class Player : MonoBehaviour, BattleUnit
                     GameManager.gameManager.dialogueController.EndDialogue();
                     Debug.Log("EndingDialogue");
                 }
-                if (targetedEnemy != null) GameManager.gameManager.dialogueController.StartDialogue(actualDialogueBattle, transform);                
+                if (targetedEnemy != null) GameManager.gameManager.dialogueController.StartDialogue(actualDialogueBattle, transform, null);                
             }
             //catch
             //{
@@ -1021,7 +1022,7 @@ public class Player : MonoBehaviour, BattleUnit
             GameManager.gameManager.dialogueController.EndDialogue();            
             //actualDialogueBattle.TagetedNPC = targetedEnemy;            
 
-            GameManager.gameManager.dialogueController.StartDialogue(actualDialogueBattle, transform);
+            GameManager.gameManager.dialogueController.StartDialogue(actualDialogueBattle, transform, null);
         }
     }
     void DialogueCooldown()

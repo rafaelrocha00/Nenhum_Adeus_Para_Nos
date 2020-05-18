@@ -13,6 +13,8 @@ public class Inventory : MonoBehaviour
     [HideInInspector] float money = 0.00f;
     public float Money { get { return money; } set { money = value; } }
 
+    public ItemGenerator iGen;
+
     private void Start()
     {
         GameManager.gameManager.inventoryController.Inventory = this;
@@ -38,6 +40,16 @@ public class Inventory : MonoBehaviour
     public InvenSlot FindItem(string itemName)
     {
         return myGrid.FindItem(itemName);
+    }
+
+    public void AddItem(Item i)
+    {        
+        ItemButton newItem = iGen.GenItem(i);
+        if (!myGrid.TryAlocateItem(newItem))
+        {
+            Destroy(newItem.gameObject);
+            GameManager.gameManager.companyController.itemsToAlocate.Enqueue(i);
+        }
     }
 
     public void RemoveItem(string itemName)

@@ -5,14 +5,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Quest", menuName = "Quests/Kill Quest")]
 public class KillQuest : Quest
 {
-    public INPC.EnemyType enemyType;
-    public INPC.Faction faction;
+    public INPC.EnemyType enemyType = INPC.EnemyType.None;
+    public INPC.Faction faction = INPC.Faction.None;
 
     [SerializeField] string areaName = "";
     [SerializeField] int quantToKill = 1;
-    public string AreaName { get { return areaName; } }
-    public int QuantToKill { get { return quantToKill; } }
+    public string AreaName { get { return areaName; } set { areaName = value; } }
+    public int QuantToKill { get { return quantToKill; } set { quantToKill = value; } }
 
+    [HideInInspector] public GameObject[] toInstantiate;
     int quantKilled = 0;
 
     public override void CheckComplete<T>(T thing)
@@ -33,5 +34,10 @@ public class KillQuest : Quest
     private void OnDisable()
     {
         quantKilled = 0;
+    }
+
+    public override void InstantiateObjs(ObjectInstancer oi)
+    {
+        oi.SpawnEnemyGroup(areaName, toInstantiate);
     }
 }

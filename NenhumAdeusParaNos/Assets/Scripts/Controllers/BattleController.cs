@@ -69,7 +69,7 @@ public class BattleController : MonoBehaviour
         if (allEnemyFighters.Count != 0)
         {
             StartBattleCamera(fighters[0].GetPos());
-            startBattleEffect.transform.position = mainCharacter.transform.position;
+            startBattleEffect.transform.position = mainCharacter.transform.position + Vector3.up;
             startBattleEffect.Play();
         }
         StartCoroutine("CheckPlayerPos");

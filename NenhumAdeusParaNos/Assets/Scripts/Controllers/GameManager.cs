@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public InventoryController inventoryController;
     [HideInInspector] public ObjectPlacer objectPlacer;
     [HideInInspector] public QuestController questController;
+    [HideInInspector] public QuestGenerator questGenerator;
     [HideInInspector] public CalendarController calendarController;
     [HideInInspector] public CompanyController companyController;
     //[HideInInspector] public NPCAnswers npcAnswers;
@@ -49,6 +50,7 @@ public class GameManager : MonoBehaviour
         inventoryController = GetComponent<InventoryController>();
         objectPlacer = GetComponent<ObjectPlacer>();
         questController = GetComponent<QuestController>();
+        questGenerator = GetComponent<QuestGenerator>();
         calendarController = GetComponent<CalendarController>();
         companyController = GetComponent<CompanyController>();
         //npcAnswers = GetComponent<NPCAnswers>();

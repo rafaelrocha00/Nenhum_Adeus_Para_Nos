@@ -14,6 +14,8 @@ public class DialoguePopUp : MonoBehaviour
     float fixedY = 0;
     //Vector3 fixedDistance;
 
+    public PlayerDialogueEx playerD;
+
     public Image timerBar;
 
     private void Awake()
@@ -59,15 +61,29 @@ public class DialoguePopUp : MonoBehaviour
     {
         dialogueText.text = tex;
     }
-    public void InitialSet(UnityEngine.Events.UnityAction act, Sprite sp = null)
+    public void InitialSet(Sprite sp = null, bool player = false, int aType = 0)
     {
-        thisButton.onClick.AddListener(act);
+        //playerD.gameObject.SetActive(false);
+        //thisButton.onClick.AddListener(act);
         speakerImage.sprite = sp;
+        if (player)
+        {
+            playerD.gameObject.SetActive(true);
+            transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(-75, 0);
+            SpriteAnimator sa = playerD.GetComponent<SpriteAnimator>();
+            sa.SetSprites(playerD.SpritePack(aType));
+            sa.Play(true);
+        }
+        else
+        {
+            playerD.gameObject.SetActive(false);
+            transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(0, 0);
+        }
     }
-    public void RemoveOnClick()
-    {
-        thisButton.onClick.RemoveAllListeners();
-    }
+    //public void RemoveOnClick()
+    //{
+    //    thisButton.onClick.RemoveAllListeners();
+    //}
 
     public void StartTimer(float t)
     {

@@ -7,6 +7,7 @@ public class Storage : Interactives
 {
     public string depositName = "";
     public int page_number = 1;
+    public bool main = false;
 
     public GameObject storageMenu;
     public GameObject[] pages;
@@ -88,6 +89,15 @@ public class Storage : Interactives
             TryAlocateItem(items[i]);
         }
         ResetPages();
+
+        if (main)
+        {
+            int qSize = GameManager.gameManager.companyController.itemsToAlocate.Count;
+            for (int i = 0; i < qSize; i++)
+            {
+                TryAlocateItem(GameManager.gameManager.companyController.itemsToAlocate.Dequeue());
+            }
+        }
     }
 
     void TryAlocateItem(Item item)

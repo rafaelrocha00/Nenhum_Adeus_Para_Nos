@@ -13,10 +13,15 @@ MonoBehaviour:
   m_Name: TesteKi
   m_EditorClassIdentifier: 
   qName: TestKi
+  id: 0
   description: quest_description
   moneyReward: 0
+  resourceReward: 0
+  contractor: contractor_
   mustReturn: 1
   limitDay: -1
+  generated: 0
+  resourceT: 4
   completingQuestDialogue: {fileID: 11400000, guid: ecf494b51589c8645bff828d7bfa2668,
     type: 2}
   quest_itemRewards: []
@@ -27,3 +32,4 @@ MonoBehaviour:
   faction: 0
   areaName: Fazenda Noroeste
   quantToKill: 3
+  toInstantiate: []

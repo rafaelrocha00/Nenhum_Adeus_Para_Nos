@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 6506660029207911038}
   - component: {fileID: 6506660029207911033}
   - component: {fileID: 6662222126399441537}
+  - component: {fileID: 2584423260984262956}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -57,7 +58,9 @@ MonoBehaviour:
   inventoryController: {fileID: 0}
   objectPlacer: {fileID: 0}
   questController: {fileID: 0}
+  questGenerator: {fileID: 0}
   calendarController: {fileID: 0}
+  companyController: {fileID: 0}
 --- !u!114 &6506660029207911040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,8 +79,8 @@ MonoBehaviour:
   writingSpeed: 0.05
   playerApproaches:
   - {fileID: 11400000, guid: 4de02e9aca0409d46858f07db6c2a4ff, type: 2}
-  - {fileID: 11400000, guid: 5c81c4afe5cf7a14d8f8813706f3db9a, type: 2}
   - {fileID: 11400000, guid: ad4ca3930fed45940b85b9227ae1a487, type: 2}
+  - {fileID: 11400000, guid: 5c81c4afe5cf7a14d8f8813706f3db9a, type: 2}
 --- !u!114 &6506660029207911043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,6 +165,7 @@ MonoBehaviour:
   actualDay: 0
   hour: 6
   mins: 0
+  timeScale: 3.75
 --- !u!114 &6662222126399441537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,3 +178,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f73073367c69f44ab054663d1931737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  money: 0
+--- !u!114 &2584423260984262956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6506660029207911032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8867152d3698ebd4a96b842094f5fe7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jobsChances: 000000000000000000000000
+  contractorNames:
+  - Oscar
+  - Bravo
+  - Foxtrot
+  - Papa
+  - Lima
+  locationNames:
+  - Sul da fazenda
+  - Ilha do farol
+  - Ilha da fazenda
+  - Praia
+  - Peninsula do farol
+  possibleTargetNames:
+  - Alfa
+  - Delta
+  - Zulu
+  - Yankee
+  - Charlie
+  enemy_all:
+  - {fileID: 3094530766736164508, guid: ad6963b812f90014b929f45fe9c9a538, type: 3}
+  - {fileID: 374210205966909796, guid: 227e3deafa0dbe74da60ec55fb29e99c, type: 3}
+  - {fileID: 7851673977910357447, guid: 97c1124172b858641a372881c2ea78d5, type: 3}
+  - {fileID: 8237239707500488701, guid: 2eadb204fa9c5d74fa30259d2eb1a4b1, type: 3}
+  - {fileID: 8891925094031573741, guid: 1831b2f1d87513c4dae26dc062fec6bf, type: 3}
+  - {fileID: 2982613457446845094, guid: 11ab8aa66a99e0d45a2bdecd00e3a5d1, type: 3}
+  - {fileID: 5394349990916310802, guid: cd46258b817fd6648b719bb3d8b1b02e, type: 3}
+  - {fileID: 8690204405111790994, guid: 062b283e6686b554798a08a356d38c31, type: 3}
+  itemsToDel:
+  - {fileID: 11400000, guid: 65d5fc61379df45489d1246d1c1a4270, type: 2}
+  - {fileID: 11400000, guid: 8df6723d1bf2cfe4997821817d9f9d5b, type: 2}
+  - {fileID: 11400000, guid: 2c4b998c79853cd4f82e623d9c22b9fa, type: 2}
+  - {fileID: 11400000, guid: 467f8b58e99bd854180ea634789624f6, type: 2}
+  - {fileID: 11400000, guid: 5bdf7fda6f7e5394d997850503fdf300, type: 2}
+  storageNames:
+  - Parquinho ao nordeste
+  - Peninsula do farol
+  - Praia do farol
+  - Casa das aboboras
+  - Feira na fazenda
+  chests:
+  - {fileID: 5902380043707863810, guid: 8bd74c1e99cb9b8499a33a1661ea46f2, type: 3}
+  objectsToRepair:
+  - Ponte sul fazenda
+  - Ponte para o Farol
+  - Cercas ao norte
+  - "Port\xE3o armaz\xE9m"
+  - Carro ao leste

@@ -13,17 +13,28 @@ MonoBehaviour:
   m_Name: TestDe
   m_EditorClassIdentifier: 
   qName: TestDe
+  id: 1
   description: 
   moneyReward: 0
+  resourceReward: 0
+  contractor: contractor_
   mustReturn: 1
   limitDay: -1
+  generated: 0
+  resourceT: 4
   completingQuestDialogue: {fileID: 11400000, guid: 239af15f1377c1c49b16e276a1165813,
     type: 2}
-  quest_itemRewards: []
+  quest_itemRewards:
+  - {fileID: 11400000, guid: 7cc9274fc019cac4a983216144fff847, type: 2}
+  - {fileID: 11400000, guid: 7e1429813e8faff4d8258f1000457ced, type: 2}
+  - {fileID: 11400000, guid: e5ce2c748bf44d4418abd6660cda0e01, type: 2}
+  quest_itemRQuants: 01000000030000000f000000
   completed: 0
   accepted: 0
+  cancelled: 0
   waitingReturnToNPC: 0
   depositName: Deposito Morfina
   itemsToDelivery:
   - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
   itemsQuant: 02000000
+  toInstantiate: {fileID: 0}

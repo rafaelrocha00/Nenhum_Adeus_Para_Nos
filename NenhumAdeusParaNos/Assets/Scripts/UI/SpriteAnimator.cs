@@ -31,24 +31,25 @@ public class SpriteAnimator : MonoBehaviour
         image.sprite = sprites[0];
     }
 
-    public void Play()
+    public void Play(bool infinity = false)
     {
-        StartCoroutine("Animate");
+        StartCoroutine(Animate(infinity, 2));
     }
     public void Stop()
     {
         StopAllCoroutines();
     }
 
-    IEnumerator Animate()
+    IEnumerator Animate(bool infinity, int cycles = -1)
     {
-        while (true)
+        while (infinity || cycles > 0)
         {
             for (int i = 0; i < sprites.Length; i++)
             {
                 image.sprite = sprites[i];
                 yield return new WaitForSeconds(animTime);
-            }            
+            }
+            cycles--;
         }
     }
 }

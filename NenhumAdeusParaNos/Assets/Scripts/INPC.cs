@@ -8,8 +8,9 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
 {
     [SerializeField] string npcName = "Name";
     [SerializeField] string areaName = "Area Name";
-    public string Name { get { return npcName; } }
-    public string AreaName { get { return areaName; } }
+    public string Name { get { return npcName; } set { npcName = value; } }
+    public string AreaName { get { return areaName; } set { areaName = value; } }
+    public Sprite[] expressions = new Sprite[3];
 
     public enum Personalities { Tsundere, Yandere }
     public enum EnemyType { Lustro, Normal, None }
@@ -488,7 +489,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
         if (waitingForAnswer)
         {
             //Debug.Log("ALOALOALO");
-            GameManager.gameManager.dialogueController.ChooseOption((int)playerDialogue.approachType);
+            GameManager.gameManager.dialogueController.ChooseOption((int)playerDialogue.approachType, expressions[2]);
             waitingForAnswer = false;
         }
         else if (inBattle)
@@ -518,7 +519,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
                 //Dialogue answer = GameManager.gameManager.npcAnswers.GetFailAnswer(thisPersonality, playerDialogue.approachType, random);
                 Dialogue answer = GameManager.gameManager.dialogueController.GetAnswer((int)enemyType, (int)thisPersonality, (int)playerDialogue.approachType, receivedAp.Count - 1);
                 answer.MyNPC = this;
-                StartCoroutine(DelayStartDialogue(answer));
+                StartCoroutine(DelayStartDialogue(answer, (int)playerDialogue.approachType));
             }
             else if (receivedAp.Count == 3)
             {
@@ -533,7 +534,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
                 //    DialogueBattleResult auxBR = (DialogueBattleResult)auxDialogue;
                 //    auxBR.StartEffects();
                 //}
-                StartCoroutine(DelayStartDialogue(auxDialogue));                
+                StartCoroutine(DelayStartDialogue(auxDialogue, (int)playerDialogue.approachType));                
             }
 
             //if (aux <= answerChance)
@@ -631,10 +632,10 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
         //Dialogue answer = GameManager.gameManager.dialogueController.GetAnswer((int)enemyType, (int)thisPersonality, (int)playerDialogue.approachType, 2);
         //GameManager.gameManager.dialogueController.StartDialogue(answer, transform);
     }
-    IEnumerator DelayStartDialogue(Dialogue failDialogue)
+    IEnumerator DelayStartDialogue(Dialogue failDialogue, int ex = 2)
     {
         yield return new WaitForEndOfFrame();
-        GameManager.gameManager.dialogueController.StartDialogue(failDialogue, transform);
+        GameManager.gameManager.dialogueController.StartDialogue(failDialogue, transform, expressions[ex]);
     }
 
     void Flee()
@@ -803,7 +804,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
                     {
                         questDialogues[i].MyNPC = this;
                         questDialogues[i].MainCharacter = GameManager.gameManager.battleController.MainCharacter;
-                        GameManager.gameManager.dialogueController.StartDialogue(questDialogues[i], transform);
+                        GameManager.gameManager.dialogueController.StartDialogue(questDialogues[i], transform, expressions[2]);
                         //BeginQuestDialogue(questDialogues[i]);
                     }
                 }
@@ -814,7 +815,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
             }
             else if (hasOtherNPCTalk)
             {
-                GameManager.gameManager.dialogueController.StartDialogue(dialogueWithOtherNPC, transform, true);
+                //GameManager.gameManager.dialogueController.StartDialogue(dialogueWithOtherNPC, transform, true);
             }
         }
     }

@@ -9,7 +9,7 @@ public class DialogueController : MonoBehaviour
     //Text dialogueText;
     //GameObject dialoguePopUp;
     DialoguePopUp dialoguePopUp;
-    DialoguePopUp dialoguePopUpSecond;
+    //DialoguePopUp dialoguePopUpSecond;
     //Button popUPB;
 
     Camera mainCam;
@@ -27,12 +27,12 @@ public class DialogueController : MonoBehaviour
 
     [HideInInspector] bool activeMainDialogue = false;
     public bool ActiveMainDialogue { get { return activeMainDialogue; } }
-    bool writing = false;
+    //bool writing = false;
 
     [HideInInspector] bool waitingForAnswer = false;
     public bool WaitingForAnswer { get { return waitingForAnswer; } }
 
-    public float writingSpeed = 0.05f;
+    //public float writingSpeed = 0.05f;
     float writingTime = 0.0f;
 
     //public List<DialogueBattle>[][] approaches = new List<DialogueBattle>[4][];//Array de Approaches o primeirod Index define o tipo de inimigo, o segundo o tipo de abordagem, e dentro da lista deles estão os diálogos para serem sorteados.
@@ -102,14 +102,14 @@ public class DialogueController : MonoBehaviour
         mainCam = GameManager.gameManager.MainCamera.GetComponent<Camera>();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E) && activeMainDialogue && !(actualDialogue is DialogueBattle) && !waitingForAnswerBattle && !waitingForAnswer)
-        {
-            Debug.Log("NextString");
-            NextString();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.E) && activeMainDialogue && !(actualDialogue is DialogueBattle) && !waitingForAnswerBattle && !waitingForAnswer)
+    //    {
+    //        Debug.Log("NextString");
+    //        NextString();
+    //    }
+    //}
 
     public DialogueBattle GetDialogueBattle(/*int enType,*/ int apType/*, int idx*/)
     {
@@ -154,11 +154,19 @@ public class DialogueController : MonoBehaviour
         return aux;
     }
 
-    public void StartDialogue(Dialogue newDialogue, Transform transf/*, INPC npc = null*/, bool secondary = false)
+    public void StartDialogue(Dialogue newDialogue, Transform transf, Sprite sp/*, INPC npc = null*/)
     {
         if (newDialogue is DialogueWithChoice) lastDialogueWithChoice = (DialogueWithChoice)newDialogue;
         activeMainDialogue = true;
-        OpenDialoguePopUp(transf/*, npc*/, secondary);
+        int id = 0;
+        bool isPlayer = (newDialogue is DialogueBattle);        
+        if (isPlayer)
+        {
+            DialogueBattle db = (DialogueBattle)newDialogue;
+            id = (int)db.approachType;
+        }
+
+        OpenDialoguePopUp(transf/*, npc*/, sp, isPlayer, id);
         actualDialogue = newDialogue;
         NextString();
         StartCoroutine("CheckPlayerDistance");
@@ -184,16 +192,17 @@ public class DialogueController : MonoBehaviour
         NextString();
         //Debug.Log("Mudando dialogo");
     }
-    public void ChooseOption(int index)
+    public void ChooseOption(int index, Sprite sp)
     {
         try
         {
+            Debug.Log("ChoosingDialogue");
             Dialogue newDialogue = lastDialogueWithChoice.dialogueChoices[index];
             newDialogue.MyNPC = lastDialogueWithChoice.MyNPC;
             newDialogue.MainCharacter = lastDialogueWithChoice.MainCharacter;
-            StopCoroutine("NextStringCountdown");
-            StartDialogue(newDialogue, lastDialogueWithChoice.MyNPC.transform);
+            //StopCoroutine("NextStringCountdown");
             waitingForAnswer = false;
+            StartDialogue(newDialogue, lastDialogueWithChoice.MyNPC.transform, sp);            
             //GameManager.gameManager.MainHud.WaitingForAnswer(false);
         }
         //catch { Debug.Log("Não é de opção"); }
@@ -213,26 +222,30 @@ public class DialogueController : MonoBehaviour
         if (!GameManager.gameManager.MainHud.ActiveOptionsToChoose)
         {
             //Bug no dialogo combate
-            //Debug.Log("NextString");
+            Debug.Log("NextString");
             //Debug.Log(writing);
-            if (!writing) UpdateText(actualDialogue.NextString());
-            else
-            {
-                CheckForDialogueOptions();
-                writing = false;
-            }
-
+            //if (!writing) UpdateText(actualDialogue.NextString());
+            //else
+            //{
+            //    CheckForDialogueOptions();
+            //    writing = false;
+            //}
+            CheckForDialogueOptions();
+            StopCoroutine("NextStringCountdown");
+            UpdateText(actualDialogue.NextString());
             //Debug.Log("Deu nextstring");
-            if (activeMainDialogue && ((GameManager.gameManager.battleController.ActiveBattle && !waitingForAnswerBattle) || (actualDialogue is DialogueBattle) || (actualDialogue is DialogueBattleResult))) StartCoroutine("NextStringCountdown");
+            if (activeMainDialogue && !waitingForAnswer && ((actualDialogue is DialogueBattle) || !waitingForAnswerBattle))
+                StartCoroutine("NextStringCountdown");
         }
     }
     public void EndDialogue()
     {
         if (activeMainDialogue)
         {
+            Debug.Log("Ending");
             activeMainDialogue = false;
             actualDialogue.ResetDialogue();
-            writing = false;
+            //writing = false;
             CloseDialoguePopUp();
             waitingForAnswer = false;
             //Debug.Log("Encerrando dialogo");            
@@ -244,11 +257,13 @@ public class DialogueController : MonoBehaviour
 
     //Quando implementar texto escrito aos poucos, este método tem q retornar o tempo q levou pra ser escrito o texto
     public void UpdateText(string dialogueString)
-    {       
+    {
+        Debug.Log(dialogueString);
         if (!dialogueString.Equals(""))
         {
-            writingTime = dialogueString.Length * writingSpeed + 1.5f;
-            StartCoroutine(WriteString(dialogueString));
+            writingTime = dialogueString.Length * 0.1f;
+            //StartCoroutine(WriteString(dialogueString));
+            dialoguePopUp.SetText(dialogueString);
         }
         //dialogueText.text = dialogueString;
     }
@@ -258,21 +273,21 @@ public class DialogueController : MonoBehaviour
         if (actualDialogue is DialogueWithChoice)
         {
             DialogueWithChoice aux = (DialogueWithChoice)actualDialogue;
-            if (aux.LastString)
-            {
+            //if (aux.LastString)
+            //{
                 //GameManager.gameManager.MainHud.OpenDialogueOptTab(aux);
                 aux.MyNPC.SetWaitingForAnswer();
                 dialoguePopUp.StartTimer(12);
                 waitingForAnswer = true;
                 //GameManager.gameManager.MainHud.WaitingForAnswer(true);
-            }
+            //}
         }        
     }
 
-    public void OpenDialoguePopUp(Transform transf/*, INPC npc = null*/, bool secondary = false)
+    public void OpenDialoguePopUp(Transform transf/*, INPC npc = null*/,Sprite sp, bool isPlayer, int id)
     {
-        if (!secondary)
-        {
+        //if (!secondary)
+        //{
             Debug.Log("Abrindo");
             try
             {
@@ -286,23 +301,23 @@ public class DialogueController : MonoBehaviour
                 if (mainCam == null) SetCam();
                 dialoguePopUp.transform.position = mainCam.WorldToScreenPoint(transf.position);
             }
-            dialoguePopUp.InitialSet(NextString);
-        }
-        else
-        {
-            try
-            {
-                dialoguePopUpSecond.transform.position = mainCam.WorldToScreenPoint(transf.position);
-                dialoguePopUpSecond.gameObject.SetActive(true);
-            }
-            catch
-            {
-                GameObject aux = Instantiate(dialoguePref, GameManager.gameManager.MainHud.transform, false) as GameObject;
-                dialoguePopUpSecond = aux.GetComponent<DialoguePopUp>();
-                dialoguePopUpSecond.transform.position = mainCam.WorldToScreenPoint(transf.position);
-            }
-            dialoguePopUpSecond.InitialSet(null);
-        }
+            dialoguePopUp.InitialSet(sp, isPlayer, id);
+        //}
+        //else
+        //{
+        //    try
+        //    {
+        //        dialoguePopUpSecond.transform.position = mainCam.WorldToScreenPoint(transf.position);
+        //        dialoguePopUpSecond.gameObject.SetActive(true);
+        //    }
+        //    catch
+        //    {
+        //        GameObject aux = Instantiate(dialoguePref, GameManager.gameManager.MainHud.transform, false) as GameObject;
+        //        dialoguePopUpSecond = aux.GetComponent<DialoguePopUp>();
+        //        dialoguePopUpSecond.transform.position = mainCam.WorldToScreenPoint(transf.position);
+        //    }
+        //    dialoguePopUpSecond.InitialSet(sp);
+        //}
         //Mudar posição;
         //if (npc != null) popUPB.onClick.AddListener(npc.NextString);
         //popUPB.onClick.AddListener(NextString);        
@@ -313,12 +328,12 @@ public class DialogueController : MonoBehaviour
         if (dialoguePopUp != null)
         {
             dialoguePopUp.gameObject.SetActive(false);
-            dialoguePopUp.RemoveOnClick();
+            //dialoguePopUp.RemoveOnClick();
         }
-        if (dialoguePopUpSecond)
-        {
-            dialoguePopUpSecond.gameObject.SetActive(false);
-        }
+        //if (dialoguePopUpSecond)
+        //{
+        //    dialoguePopUpSecond.gameObject.SetActive(false);
+        //}
         //if (popUPB != null) popUPB.onClick.RemoveAllListeners();
     }
 
@@ -338,31 +353,32 @@ public class DialogueController : MonoBehaviour
     {
         Debug.Log("Countdown");
         yield return new WaitForSeconds(writingTime);
+        Debug.Log("Dps do tempo de " + writingTime);
         writingTime = 0;
         if (activeMainDialogue) NextString();
     }
 
-    IEnumerator WriteString(string dialogueString)
-    {
-        writing = true;
-        string allText = "";
+    //IEnumerator WriteString(string dialogueString)
+    //{
+    //    writing = true;
+    //    string allText = "";
 
-        for (int i = 0; i < dialogueString.Length; i++)
-        {
-            allText += dialogueString[i].ToString();
-            //dialogueText.text = allText;
-            dialoguePopUp.SetText(allText);
-            if (!writing)
-            {
-                //dialogueText.text = dialogueString;
-                dialoguePopUp.SetText(dialogueString);
-                yield break;
-            }
-            yield return new WaitForSeconds(writingSpeed);
-        }
-        CheckForDialogueOptions();
-        writing = false;
-    }
+    //    for (int i = 0; i < dialogueString.Length; i++)
+    //    {
+    //        allText += dialogueString[i].ToString();
+    //        //dialogueText.text = allText;
+    //        dialoguePopUp.SetText(allText);
+    //        if (!writing)
+    //        {
+    //            //dialogueText.text = dialogueString;
+    //            dialoguePopUp.SetText(dialogueString);
+    //            yield break;
+    //        }
+    //        yield return new WaitForSeconds(writingSpeed);
+    //    }
+    //    CheckForDialogueOptions();
+    //    writing = false;
+    //}
 
     public bool PlayerCanAnswer()
     {
