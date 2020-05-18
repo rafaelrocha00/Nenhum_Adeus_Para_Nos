@@ -87,34 +87,38 @@ public abstract class NPC : MonoBehaviour, BattleUnit
 
         if (isRanged)
         {
-            if ((inBattleTarget.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
+            if (!rangedW.rangedWConfig.stopToShoot || (rangedW.rangedWConfig.stopToShoot && !attacking))
             {
-                Vector3 desiredPos = -(inBattleTarget.position - transform.position) + transform.position;
-                MoveNavMesh(desiredPos);
-                if (!moveSpeedChanged) navMesh.speed = rangedKiteSpeed;
-            }
-            else if ((inBattleTarget.position - transform.position).sqrMagnitude >= rangedW.GetMaxRange() * rangedW.GetMaxRange())
-            {
-                Vector3 toPlayerVec = inBattleTarget.position - transform.position;
-                Vector3 desiredPos = toPlayerVec.normalized * (toPlayerVec.magnitude - rangedW.GetMaxRange() * 0.2f) + transform.position;
-                if (!moveSpeedChanged) navMesh.speed = defaultSpeed;
-                MoveNavMesh(desiredPos);
-            }
-            else
-            {
-                navMesh.isStopped = true;
-                //parar animação de andar
-            }
-
-            if (Physics.Raycast(ray, out hit))
-            {
-                //Debug.Log(hit.collider.name);
-                if (hit.collider.CompareTag("player") || hit.collider.CompareTag("barrier") || /*Vector3.Distance*/(hit.transform.position - transform.position).sqrMagnitude >= /*Vector3.Distance*/(inBattleTarget.position - transform.position).sqrMagnitude)
+                if ((inBattleTarget.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
                 {
-                    TryAttack();
+                    Vector3 desiredPos = -(inBattleTarget.position - transform.position) + transform.position;
+                    MoveNavMesh(desiredPos);
+                    if (!moveSpeedChanged) navMesh.speed = rangedKiteSpeed;
                 }
+                else if ((inBattleTarget.position - transform.position).sqrMagnitude >= rangedW.GetMaxRange() * rangedW.GetMaxRange())
+                {
+                    Vector3 toPlayerVec = inBattleTarget.position - transform.position;
+                    Vector3 desiredPos = toPlayerVec.normalized * (toPlayerVec.magnitude - rangedW.GetMaxRange() * 0.2f) + transform.position;
+                    if (!moveSpeedChanged) navMesh.speed = defaultSpeed;
+                    MoveNavMesh(desiredPos);
+                }
+                else
+                {
+                    navMesh.isStopped = true;
+                    //parar animação de andar
+                }
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    //Debug.Log(hit.collider.name);
+                    if (hit.collider.CompareTag("player") || hit.collider.CompareTag("barrier") || /*Vector3.Distance*/(hit.transform.position - transform.position).sqrMagnitude >= /*Vector3.Distance*/(inBattleTarget.position - transform.position).sqrMagnitude)
+                    {
+                        TryAttack();
+                    }
+                }
+                else TryAttack();
             }
-            else TryAttack();
+            else navMesh.isStopped = true;
         }
         else
         {

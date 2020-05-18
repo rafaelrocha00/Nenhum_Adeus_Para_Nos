@@ -7,7 +7,7 @@ public class MainMenu : MonoBehaviour
 {
     public void NewGame()
     {
-        SceneManager.LoadScene("Fazenda");
+        SceneManager.LoadScene(1);
     }
 
     public void Quit()

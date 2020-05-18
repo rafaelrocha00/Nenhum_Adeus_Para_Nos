@@ -39,6 +39,8 @@ public class MainHud : MonoBehaviour
     [HideInInspector] Storage actualStorage = null;
     public Storage ActualStorage { set { actualStorage = value; } }
 
+    public Text date;
+
     #region Opçoes_de_Dialogo
     public void OpenDialogueOptTab(DialogueWithChoice dialogue)
     {
@@ -210,6 +212,11 @@ public class MainHud : MonoBehaviour
     {
         pauseMenu.SetActive(value);
         GameManager.gameManager.timeController.PauseResume(value);
+    }
+
+    public void UpdateDate(string day, int hour, int min)
+    {
+        date.text = day + " | " + hour.ToString("00") + ":" + min.ToString("00");
     }
 
     public void GameOver()

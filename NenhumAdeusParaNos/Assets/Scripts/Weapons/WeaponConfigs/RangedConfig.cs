@@ -9,6 +9,7 @@ public class RangedConfig : WeaponConfig
     public float maxRange;
     public float delayToShoot = 0.1f;
 
+    public bool stopToShoot = false;
     public bool auto;
     public int maxAmmo;
     public float reloadTime = 2.0f;

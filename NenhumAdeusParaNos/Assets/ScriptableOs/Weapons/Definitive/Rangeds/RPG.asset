@@ -19,7 +19,9 @@ MonoBehaviour:
   bulletPref: {fileID: 2981152892159439313, guid: 75bb4ef37a408b44fbeeb3d2eda76327,
     type: 3}
   maxRange: 15
-  delayToShoot: 0.1
+  delayToShoot: 0.4
+  stopToShoot: 1
   auto: 0
   maxAmmo: 1
   reloadTime: 3
+  recoil: 0

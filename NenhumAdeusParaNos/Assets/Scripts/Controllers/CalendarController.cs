@@ -59,6 +59,7 @@ public class CalendarController : MonoBehaviour
 
         DayNightCycle.Instance.UpdatePostProcess(hour + mins / 60);
         Debug.Log(hour + " / " + mins);
+        GameManager.gameManager.MainHud.UpdateDate(daysOfWeek[actualDay], hour, mins);
     }
 
     void UpdateDay()

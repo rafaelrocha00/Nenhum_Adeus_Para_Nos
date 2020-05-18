@@ -14,6 +14,7 @@ public class ExplosionGranade : Granade
 
     protected override void GranadeEffect()
     {
+        if (effect != null) Instantiate(effect, transform.position, Quaternion.identity);
         if (!onPlayer)
         {
             INPC[] enemies = GameManager.gameManager.dialogueController.GetNearbyNPCs(transform.position, areaOfEffect);
