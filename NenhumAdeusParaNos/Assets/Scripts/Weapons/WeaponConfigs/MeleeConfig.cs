@@ -8,6 +8,8 @@ public class MeleeConfig : WeaponConfig
     //public float strongAttackDamage;
     //public float strongAttackCD;
     //public float strongAttackAnimTime = 1.5f;
+    public bool stopToAtk = false;
+    public bool multAtk = false;
 
     public MeleeSpecial special;
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CalendarController : MonoBehaviour
 {
@@ -31,6 +32,26 @@ public class CalendarController : MonoBehaviour
         }              
     }
 
+    public void PassTime(int mins, int hours, int days)
+    {
+        for (int i = 0; i < mins; i++)
+        {
+            UpdateMin();
+        }
+        for (int i = 0; i < hours; i++)
+        {
+            UpdateHour();
+        }
+        for (int i = 0; i < days; i++)
+        {
+            UpdateDay();
+        }
+
+        DayNightCycle.Instance.UpdatePostProcess(hour + mins / 60);
+        Debug.Log(hour + " / " + mins);
+        UpdateHudH();
+    }
+
     void UpdateHour()
     {
         hour++;
@@ -39,7 +60,7 @@ public class CalendarController : MonoBehaviour
             hour = 0;
             UpdateDay();          
         }
-        if ((hour == 6 && mins == 0) || (hour == 18 && mins == 0))
+        if ((hour == 6) || (hour == 18))
         {
             for (int i = 0; i < 3; i++)
             {
@@ -59,7 +80,7 @@ public class CalendarController : MonoBehaviour
 
         DayNightCycle.Instance.UpdatePostProcess(hour + mins / 60);
         Debug.Log(hour + " / " + mins);
-        GameManager.gameManager.MainHud.UpdateDate(daysOfWeek[actualDay], hour, mins);
+        UpdateHudH();
     }
 
     void UpdateDay()
@@ -71,5 +92,10 @@ public class CalendarController : MonoBehaviour
             actualWeek++;
             actualDay = 0;
         }        
+    }
+
+    public void UpdateHudH()
+    {
+        GameManager.gameManager.MainHud.UpdateDate(daysOfWeek[actualDay], hour, mins);
     }
 }

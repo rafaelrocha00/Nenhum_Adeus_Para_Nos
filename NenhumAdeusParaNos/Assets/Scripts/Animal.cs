@@ -88,9 +88,9 @@ public class Animal : MonoBehaviour
     }
 
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawWireSphere(transform.position, RaioDeVisao);
-        Gizmos.DrawLine(transform.position, direcaoFinal + transform.position);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawWireSphere(transform.position, RaioDeVisao);
+    //    Gizmos.DrawLine(transform.position, direcaoFinal + transform.position);
+    //}
 }

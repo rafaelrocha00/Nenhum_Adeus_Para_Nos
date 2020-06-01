@@ -8,7 +8,7 @@ public abstract class Granade : MonoBehaviour
     //public Transform origin;
     bool collided;
 
-    public float areaOfEffect = 5.0f;
+    public float areaOfEffect = 7.5f;
     public GameObject effect;
 
     public bool onPlayer = false;
@@ -31,6 +31,8 @@ public abstract class Granade : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        UnlockAll();
+        StopCoroutine("ThrowCurve");
         if (!collided)
         {
             OnLand();
@@ -43,7 +45,22 @@ public abstract class Granade : MonoBehaviour
 
     public void ApplyForce(Vector3 force)
     {
-        rb.AddForce(force, ForceMode.Impulse);
+        StartCoroutine(ThrowCurve(force));
+        //rb.AddForce(force, ForceMode.Impulse);
+        //rb.
+        //rb.velocity = force;
+        //rb.AddForce(force * 25, ForceMode.Acceleration);
+    }
+    IEnumerator ThrowCurve(Vector3 dest)
+    {
+        Vector3 oriPos = transform.position;
+        float timer = 0.0f;
+        while (timer < 1)
+        {
+            transform.position = LauchTragectory.Hermite(oriPos, dest, timer);
+            timer += Time.deltaTime * 1.5f;
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     public void Lock()
@@ -52,11 +69,16 @@ public abstract class Granade : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezeAll;
         GetComponent<Collider>().enabled = false;
     }
-    public void Unlock()
+    public void UnlockCol()
+    {
+        //rb.useGravity = true;
+        //rb.constraints = RigidbodyConstraints.None;
+        GetComponent<Collider>().enabled = true;
+    }
+    public void UnlockAll()
     {
         rb.useGravity = true;
         rb.constraints = RigidbodyConstraints.None;
-        GetComponent<Collider>().enabled = true;
     }
 
     //protected INPC[] GetEnemies()

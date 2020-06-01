@@ -17,7 +17,7 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        GameManager.gameManager.inventoryController.Inventory = this;
+        GameManager.gameManager.inventoryController.Inventory = this;     
     }
 
     private void Update()
@@ -51,10 +51,22 @@ public class Inventory : MonoBehaviour
             GameManager.gameManager.companyController.itemsToAlocate.Enqueue(i);
         }
     }
+    public void AddItemByCoord(Item i, Vector2Int[,] coords)
+    {
+        ItemButton newItem = iGen.GenItem(i);
+        myGrid.AlocateByCoord(coords, newItem);
+    }
 
     public void RemoveItem(string itemName)
     {
         myGrid.RemoveItem(itemName);
+    }
+
+    public void SaveItems()
+    {
+        ItemButton[] allItems = myGrid.itemHolder.GetComponentsInChildren<ItemButton>();
+
+        GameManager.gameManager.itemsSaver.SetInventoryItemCoords(allItems);
     }
 
     public void ItemRemovedOrAdded()

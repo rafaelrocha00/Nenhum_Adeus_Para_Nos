@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2641741948507385786}
   - component: {fileID: 2641741948507385784}
   m_Layer: 14
-  m_Name: TestGranade
+  m_Name: PullGranade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110,7 +110,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a82d737356c7ad84d951e42015b90fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  areaOfEffect: 5
+  areaOfEffect: 7.5
+  effect: {fileID: 0}
+  onPlayer: 0
   pullForce: 5
   stunTime: 2
 --- !u!65 &2641741948507385784

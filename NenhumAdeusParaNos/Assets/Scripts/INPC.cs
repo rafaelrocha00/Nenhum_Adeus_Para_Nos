@@ -172,7 +172,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
     protected override void Movement()
     {
         float actualVelocity = navMesh.velocity.magnitude / navMesh.speed;
-        if (isRanged) anim.SetFloat("Vel", actualVelocity);
+        if (anim != null) anim.SetFloat("Vel", actualVelocity);
         if (inBattle && !stunned && !charging)
         {
             //Ray ray = new Ray(transform.position, mCharacter.transform.position - transform.position);
@@ -342,15 +342,23 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
     //}
     protected override void ComfirmAttack()
     {
+        float cd = 0.1f;
         if (enemyType == EnemyType.Lustro && !rangedW && strongAtk)
         {
             MeleeW myMelee = (MeleeW)myWeapon;
             myMelee.SetNormalAttack();
         } 
-        float cd = myWeapon.Attack(null, attackModifier);
-        Invoke("AttackCooldown", cd);
         atkCounter += 1;
-        if (atkCounter == 3) SpecialAttack();
+        if (enemyType == EnemyType.Lustro)
+        {
+            if (atkCounter == 3) SpecialAttack();
+            else
+            {
+                cd = myWeapon.Attack(null, attackModifier);
+            }
+        }
+        else cd = myWeapon.Attack(null, attackModifier);
+        Invoke("AttackCooldown", cd);
     }
 
     //void AttackCooldown()
@@ -386,15 +394,19 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
 
     IEnumerator ThrowGranade()
     {
+        if (anim != null)
+        {
+            anim.SetInteger("AtkType", 3);
+            Invoke("ResetCharge", chargeTime + 0.5f);
+        }
         charging = true;
         yield return new WaitForSeconds(chargeTime);
         if (granadeInstPoint == null) granadeInstPoint = transform;
-        Vector3 dir = (mCharacter.transform.position - transform.position) * 1.5f + Vector3.up * 10;
+        Vector3 dir = mCharacter.transform.position;// - transform.position) * 1.5f + Vector3.up * 10;
         GameObject auxGo = Instantiate(granadeToThrow, granadeInstPoint.position, granadeInstPoint.rotation) as GameObject;
         Granade aux = auxGo.GetComponent<Granade>();
         aux.onPlayer = true;
         aux.ApplyForce(dir);
-        charging = false;
     }
     IEnumerator DamageImmune()
     {
@@ -404,6 +416,11 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
         damageImmune = true;
         yield return new WaitForSeconds(damageImmuneTime);
         damageImmune = false;
+    }
+    void ResetCharge()
+    {
+        charging = false;
+        anim.SetInteger("AtkType", 0);
     }
 
     public void CallDamagingDash(float dmg, bool charge = false)
@@ -757,6 +774,8 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
     {
         GameManager.gameManager.dialogueController.EndDialogue();
         GameManager.gameManager.battleController.FindAndRemove(name);
+        EndBattle();
+        navMesh.isStopped = true;
         GameManager.gameManager.questController.CheckQuests(this);
         base.Die();
     }

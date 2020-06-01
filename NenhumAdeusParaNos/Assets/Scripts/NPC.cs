@@ -22,6 +22,7 @@ public abstract class NPC : MonoBehaviour, BattleUnit
     protected bool attacking = false;
     public Weapon myWeapon;
     protected RangedW rangedW;
+    protected MeleeW meleeW;
     protected bool strongAtk = false;
     protected bool isRanged = false;
     protected bool ignoreBarrier = false;
@@ -44,7 +45,7 @@ public abstract class NPC : MonoBehaviour, BattleUnit
         charStats = new CharacterStats(this);
         navMesh = GetComponent<NavMeshAgent>();
 
-        if (anim == null) anim = GetComponentInChildren<Animator>();
+        //if (anim == null) anim = GetComponentInChildren<Animator>();
 
         if (myWeapon == null) myWeapon = GetComponentInChildren<Weapon>();
 
@@ -55,6 +56,7 @@ public abstract class NPC : MonoBehaviour, BattleUnit
                 isRanged = true;
                 rangedW = (RangedW)myWeapon;
             }
+            else meleeW = (MeleeW)myWeapon;
             //else
             //{
             //    MeleeW m = (MeleeW)myWeapon;
@@ -122,20 +124,24 @@ public abstract class NPC : MonoBehaviour, BattleUnit
         }
         else
         {
-            Vector3 toPlayerVec = inBattleTarget.position - transform.position;
-            Vector3 desiredPos = toPlayerVec.normalized * (toPlayerVec.magnitude - myWeapon.GetRange() * 0.6f) + transform.position;
-            MoveNavMesh(desiredPos);
-            if ((inBattleTarget.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
+            if (!meleeW.meleeConfig.stopToAtk || (meleeW.meleeConfig.stopToAtk && !attacking))
             {
-                TryAttack();
-            }
-            else if (!ignoreBarrier && Physics.Raycast(ray, out hit))
-            {
-                if (hit.collider.CompareTag("barrier") && (hit.transform.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
+                Vector3 toPlayerVec = inBattleTarget.position - transform.position;
+                Vector3 desiredPos = toPlayerVec.normalized * (toPlayerVec.magnitude - myWeapon.GetRange() * 0.6f) + transform.position;
+                MoveNavMesh(desiredPos);
+                if ((inBattleTarget.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
                 {
                     TryAttack();
                 }
+                else if (!ignoreBarrier && Physics.Raycast(ray, out hit))
+                {
+                    if (hit.collider.CompareTag("barrier") && (hit.transform.position - transform.position).sqrMagnitude <= myWeapon.GetRange() * myWeapon.GetRange())
+                    {
+                        TryAttack();
+                    }
+                }
             }
+            else navMesh.isStopped = true;
         }
     }
 
@@ -162,9 +168,9 @@ public abstract class NPC : MonoBehaviour, BattleUnit
                 //animação de reload
                 canAtk = false;
             }
-            int randomType = Random.Range(0, 2);
-            if (randomType == 1) strongAtk = false;
-            else strongAtk = true;
+            //int randomType = Random.Range(0, 2);
+            //if (randomType == 1) strongAtk = false;
+            //else strongAtk = true;
             if (canAtk) Attack();
             timer = 0.0f;
         }
@@ -174,7 +180,11 @@ public abstract class NPC : MonoBehaviour, BattleUnit
     {
         if (!attacking)
         {
-            if (isRanged && anim != null) anim.SetInteger("AtkType", 1);
+            if (anim != null)
+            {
+                if (isRanged) anim.SetInteger("AtkType", 1);
+                else anim.SetInteger("AtkType", 2);
+            }            
             //Debug.Log("Atacando");
             attacking = true;
             //float attackCD;
@@ -212,7 +222,7 @@ public abstract class NPC : MonoBehaviour, BattleUnit
     protected void AttackCooldown()
     {
         attacking = false;
-        if (isRanged && anim != null) anim.SetInteger("AtkType", 0);
+        if (anim != null) anim.SetInteger("AtkType", 0);
     }
 
     public virtual bool CanFight()
@@ -222,7 +232,12 @@ public abstract class NPC : MonoBehaviour, BattleUnit
 
     public virtual void Die()
     {
-        Destroy(this.gameObject);
+        if (anim != null)
+        {
+            anim.SetInteger("AtkType", 0);
+            anim.SetBool("Died", true);
+        }
+        Destroy(this.gameObject, 3f);
     }
 
     public virtual void EndBattle()
@@ -242,9 +257,19 @@ public abstract class NPC : MonoBehaviour, BattleUnit
 
     public virtual bool ReceiveDamage(float damage)
     {
+        float acLife = charStats.Life;
         charStats.ReceiveDamage(damage);
         if (lifeBar != null) lifeBar.fillAmount = charStats.LifePercentage();
+        if (acLife != charStats.Life && anim != null)
+        {
+            anim.SetBool("Damaging", true);
+            Invoke("ResetHit", 0.1f);
+        }
         return false;
+    }
+    void ResetHit()
+    {
+        anim.SetBool("Damaging", false);
     }
 
     public virtual Transform GetItemSpawnTransf()

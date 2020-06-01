@@ -917,10 +917,10 @@ public class Player : MonoBehaviour, BattleUnit
     void ThrowItem()
     {
         granadeObj.transform.SetParent(null);
-        Vector3 force = (launchTrajectory.GetComponent<LauchTragectory>().MousePos - transform.position) + Vector3.up * 10;
+        Vector3 force = launchTrajectory.GetComponent<LauchTragectory>().MousePos;// - transform.position + Vector3.up * 10;//10
         launchTrajectory.SetActive(false);
         Granade aux = granadeObj.GetComponent<Granade>();
-        aux.Unlock();
+        aux.UnlockCol();
         itemToThrow.Throw(force, aux);
         GameManager.gameManager.inventoryController.Inventory.quickItemSlot.ConfirmUse();
         animator.SetBool("ThrowedItem", false);
@@ -1097,14 +1097,20 @@ public class Player : MonoBehaviour, BattleUnit
         if (defending)
         {
             animator.SetBool("DefendedAttack", true);
-            Invoke("BackToDefending", 0.1f);
+            Invoke("BackToIdle", 0.1f);
+        }
+        else
+        {
+            //animator.SetBool("Damaging", true);
+            Invoke("BackToIdle", 0.1f);
         }
         UpdateLife();
         return aux;
     }
-    void BackToDefending()
+    void BackToIdle()
     {
         animator.SetBool("DefendedAttack", false);
+        //animator.SetBool("Damaging", false);
     }
 
     public void Die()

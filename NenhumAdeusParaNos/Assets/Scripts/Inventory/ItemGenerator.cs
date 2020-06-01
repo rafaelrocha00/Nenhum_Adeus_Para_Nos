@@ -17,7 +17,7 @@ public class ItemGenerator : MonoBehaviour
         {
             Item itemAux = items[Random.Range(0, items.Count)];
 
-            GenItem(itemAux);
+            GameManager.gameManager.inventoryController.Inventory.AddItem(itemAux);
             //GameObject newItemObj = Instantiate(itemPref, transform, false) as GameObject;
             //newItemObj.transform.position = this.transform.position;
             //RectTransform newItemRect = newItemObj.GetComponent<RectTransform>();

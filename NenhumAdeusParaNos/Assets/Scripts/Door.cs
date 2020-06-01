@@ -11,6 +11,9 @@ public class Door : MonoBehaviour
     {
         if (other.CompareTag("player"))
         {
+            GameManager.gameManager.inventoryController.Inventory.SaveItems();
+            GameManager.gameManager.itemsSaver.BlockChestGen();
+
             SceneManager.LoadScene(sceneName);
         }
     }

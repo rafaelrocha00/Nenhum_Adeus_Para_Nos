@@ -18,5 +18,6 @@ public class ThrowableItem : QuickUseItem
     {
         //Arremessar
         generatedG.ApplyForce(force);
+        //generatedG.GetComponent<Rigidbody>().velocity *= 5;
     }
 }

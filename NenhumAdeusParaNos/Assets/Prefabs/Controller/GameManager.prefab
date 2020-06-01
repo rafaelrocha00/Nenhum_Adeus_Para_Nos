@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 6506660029207911033}
   - component: {fileID: 6662222126399441537}
   - component: {fileID: 2584423260984262956}
+  - component: {fileID: 562699946591280102}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -61,6 +62,7 @@ MonoBehaviour:
   questGenerator: {fileID: 0}
   calendarController: {fileID: 0}
   companyController: {fileID: 0}
+  itemsSaver: {fileID: 0}
 --- !u!114 &6506660029207911040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,14 +212,11 @@ MonoBehaviour:
   - Yankee
   - Charlie
   enemy_all:
-  - {fileID: 3094530766736164508, guid: ad6963b812f90014b929f45fe9c9a538, type: 3}
+  - {fileID: 2206121925282134042, guid: 0811ea1c8b960e641a58bbae0f51a243, type: 3}
   - {fileID: 3179029023762706875, guid: 927fc72e2096bed4aba1af2ebea4bb19, type: 3}
-  - {fileID: 7851673977910357447, guid: 97c1124172b858641a372881c2ea78d5, type: 3}
-  - {fileID: 8237239707500488701, guid: 2eadb204fa9c5d74fa30259d2eb1a4b1, type: 3}
+  - {fileID: 6549936749520996292, guid: 5817dff09d50d834fabc06da58eebb3b, type: 3}
   - {fileID: 8891925094031573741, guid: 1831b2f1d87513c4dae26dc062fec6bf, type: 3}
   - {fileID: 2982613457446845094, guid: 11ab8aa66a99e0d45a2bdecd00e3a5d1, type: 3}
-  - {fileID: 5394349990916310802, guid: cd46258b817fd6648b719bb3d8b1b02e, type: 3}
-  - {fileID: 8690204405111790994, guid: 062b283e6686b554798a08a356d38c31, type: 3}
   itemsToDel:
   - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
   - {fileID: 11400000, guid: 7e1429813e8faff4d8258f1000457ced, type: 2}
@@ -238,3 +237,16 @@ MonoBehaviour:
   - Cercas ao norte
   - "Port\xE3o armaz\xE9m"
   - Carro ao leste
+--- !u!114 &562699946591280102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6506660029207911032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55ad47913956b92488571bbe7853d042, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chestGeneratedItems: 0

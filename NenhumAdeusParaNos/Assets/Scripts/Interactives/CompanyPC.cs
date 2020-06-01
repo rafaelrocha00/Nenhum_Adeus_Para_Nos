@@ -14,6 +14,8 @@ public class CompanyPC : Interactives
     bool generated = false;
     bool enqueuedQuests = false;
 
+    public GameObject questMarker;
+
     #region Pc UI
     #region Jobs
     public Transform questList_tab;
@@ -76,7 +78,8 @@ public class CompanyPC : Interactives
     {
         questDesc_window.SetActive(false);
         QuestButton next = null;
-        if (quest_list.Count > 1) next = NextQuest();       
+        if (quest_list.Count > 1) next = NextQuest();
+        else Enable_DisableQM(false);
 
         quest_list.Remove(actualQuestB);
         actualQuestB.CancelQuest();
@@ -104,6 +107,11 @@ public class CompanyPC : Interactives
 
     //public Quest[] testquest;
 
+    private void Start()
+    {
+        Invoke("CheckQuests", 0.05f);
+    }
+
     private void Update()
     {
         //if (Input.GetKeyDown(KeyCode.O))
@@ -113,6 +121,12 @@ public class CompanyPC : Interactives
         //        AddQuest(testquest[i]);
         //    }
         //}
+    }
+
+    void CheckQuests()
+    {
+        if (GameManager.gameManager.questGenerator.quest_queue.Count > 0 || GameManager.gameManager.companyController.quests_onPC.Count > 0)
+            Enable_DisableQM(true);
     }
 
     public override void Interact(Player player)
@@ -141,6 +155,11 @@ public class CompanyPC : Interactives
         cam.LerpRot(cam.DefaultRotation, 1.0f);
         pcScreen.SetActive(false);
         pcLight.SetActive(false);
+    }
+
+    public void Enable_DisableQM(bool value)
+    {
+        questMarker.SetActive(value);
     }
 
     public void GenerateJobs()

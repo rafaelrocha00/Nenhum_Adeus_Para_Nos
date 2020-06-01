@@ -35,6 +35,13 @@ public class GridManager : MonoBehaviour
                 //Debug.Log(newSlot.GetComponent<InvenSlot>().transform.position);
             }
         }
+
+        if (generateOnStart) Invoke("LoadInvenItems", 0.05f);
+    }
+    void LoadInvenItems()
+    {
+        if (!GameManager.gameManager.itemsSaver.SavedInven()) GameManager.gameManager.inventoryController.Inventory.iGen.GenRandomItem();
+        GameManager.gameManager.itemsSaver.SetInventoryItems();
     }
 
     public bool TryAlocateItem(ItemButton itemB)
@@ -112,6 +119,27 @@ public class GridManager : MonoBehaviour
         itemButton.transform.SetParent(itemHolder);
         if (itemButton.OriginDropSlot != null) itemButton.OriginDropSlot = null;
         Debug.Log("Alocating");
+    }
+
+    public void AlocateByCoord(Vector2Int[,] coords, ItemButton itemB)
+    {
+        if (itemB.Item.slotSize == Vector2Int.one)
+        {
+            invenGrid[coords[0, 0].x, coords[0, 0].y].DropItem(itemB);
+        }
+        else
+        {
+            InvenSlot[,] slots = new InvenSlot[itemB.Item.slotSize.x, itemB.Item.slotSize.y];
+            for (int x = 0; x < itemB.Item.slotSize.x; x++)
+            {
+                for (int y = 0; y < itemB.Item.slotSize.y; y++)
+                {
+                    slots[x, y] = invenGrid[coords[x, y].x, coords[x, y].y];
+                }
+            }
+
+            AlocateBigItem(itemB, slots);
+        }
     }
 
     public void RemoveItem(string itemName)

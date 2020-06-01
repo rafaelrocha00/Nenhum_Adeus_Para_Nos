@@ -197,7 +197,7 @@ public class QuestGenerator : MonoBehaviour
             {
                 rand = Random.Range(1, 11);
 
-                kq.enemyType = (INPC.EnemyType)Random.Range(0, 2);
+                kq.enemyType = 0;//(INPC.EnemyType)Random.Range(0, 2);
                 if (kq.enemyType == INPC.EnemyType.Lustro)
                 {
                     etype = "Lustros";

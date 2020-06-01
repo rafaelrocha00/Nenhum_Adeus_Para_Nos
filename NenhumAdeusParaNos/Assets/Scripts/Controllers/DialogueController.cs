@@ -126,11 +126,12 @@ public class DialogueController : MonoBehaviour
     /// <returns></returns>
     public Dialogue GetAnswer(int enType, int personality, int apType, int idx)
     {
-        return npcAnswers[enType][personality][apType][idx].GetRandomDialogue();
+        return npcAnswers[0][personality][apType][idx].GetRandomDialogue();
     }
     public Dialogue GetBattleResult(int enType, int personality, DialogueBattle.ApproachType[] comb, INPC npc, Player p)
     {
         Dialogue aux = failResults[personality];
+        enType = 0;
 
         try
         {

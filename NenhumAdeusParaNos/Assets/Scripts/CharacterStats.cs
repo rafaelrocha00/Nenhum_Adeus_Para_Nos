@@ -12,7 +12,7 @@ public class CharacterStats
     [SerializeField] float maxLife = 100;
     public float MaxLife { get { return maxLife; } set { maxLife = value; } }
     [SerializeField] float life;
-    public float Life { get { return Life; } set { Life = value; } }
+    public float Life { get { return life; } set { life = value; } }
 
     public CharacterStats(BattleUnit bu)
     {

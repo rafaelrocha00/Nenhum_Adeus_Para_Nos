@@ -137,6 +137,7 @@ public class InvenSlot : DropSlot//, IPointerEnterHandler, IPointerExitHandler
         SetFull();
         itemButton.SetSlot(auxMatrix);
         ThisItemButton = itemButton;
+        Debug.Log("SettingItemPos");
         itemButton.transform.position = transform.position;
         itemButton.transform.SetParent(myGridManager.itemHolder);
     }

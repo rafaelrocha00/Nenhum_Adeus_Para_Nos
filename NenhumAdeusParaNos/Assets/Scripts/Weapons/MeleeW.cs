@@ -61,7 +61,7 @@ public class MeleeW : Weapon
         Debug.Log("Atacando");
         sCollider.enabled = true;
         selectedDamage *= attackMod;
-        anim.SetInteger("AttackType", atkType);
+        if (anim != null) anim.SetInteger("AttackType", atkType);
         if (animator != null) animator.SetInteger("Attacking", atkType);
         //attackDelay = actualAtkspeed;
         Invoke("StopAnim", actualAtkspeed - 0.1f);
@@ -82,7 +82,7 @@ public class MeleeW : Weapon
 
     void StopAnim()
     {
-        anim.SetInteger("AttackType", 0);
+        if (anim != null) anim.SetInteger("AttackType", 0);
         sCollider.enabled = false;
         SetNormalAttack();
     }
@@ -100,7 +100,8 @@ public class MeleeW : Weapon
                 other.GetComponent<BattleUnit>().ReceiveDamage(selectedDamage);
                 if (atkType >= 3)meleeConfig.special.OnContactEffect(other.GetComponent<BattleUnit>());
                 hitted = true;
-                Invoke("ResetHit", meleeConfig.defaultAttackSpeed);
+                if (!meleeConfig.multAtk) Invoke("ResetHit", meleeConfig.defaultAttackSpeed);
+                else Invoke("ResetHit", 0.1f);
                 //}
             }
             catch

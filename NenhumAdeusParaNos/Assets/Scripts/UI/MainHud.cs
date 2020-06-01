@@ -41,6 +41,12 @@ public class MainHud : MonoBehaviour
 
     public Text date;
 
+    public Image fadeScr;
+
+    public GameObject itemDesc_obj;
+    public Text itemDesc_name;
+    public Text itemDesc_description;
+
     #region Opçoes_de_Dialogo
     public void OpenDialogueOptTab(DialogueWithChoice dialogue)
     {
@@ -115,21 +121,89 @@ public class MainHud : MonoBehaviour
 
     #endregion
 
+    #region Notes
+    public GameObject notesMenu;
+    public Transform allNotes;
+    Text[] notesTxtAreas;    
+    public GameObject nextPageB;
+    public GameObject prevPageB;
+    public int maxCharPerPage = 300;
+    int acPage = 0;
+
+    bool gotTexts = false;
+
+    public void OpenCloseNotesMenu(bool value = true)
+    {
+        if (value) notesMenu.SetActive(!notesMenu.activeSelf);
+        else notesMenu.SetActive(false);
+        if (!gotTexts && notesMenu.activeSelf)
+        {
+            notesTxtAreas = allNotes.GetComponentsInChildren<Text>(true);
+            gotTexts = true;
+        }        
+    }
+
+    public void AddNote(string n)
+    {
+        int page = 0;
+        for (int i = 0; i < notesTxtAreas.Length; i++)
+        {
+            if (notesTxtAreas[i].text.Length + n.Length < maxCharPerPage - 10)
+            {
+                page = i;
+                break;
+            }
+        }
+        notesTxtAreas[page].text += "- " + n + "\n\n";
+    }
+
+    public void NextPage()
+    {
+        Debug.Log("Prox");
+        acPage++;
+        if (acPage == 9) nextPageB.SetActive(false);
+        else if (acPage > 0) prevPageB.SetActive(true);
+        UpdatePage();
+    }
+    public void PrevPage()
+    {
+        acPage--;
+        if (acPage == 0) prevPageB.SetActive(false);
+        else if (acPage < 9) nextPageB.SetActive(true);
+        UpdatePage();
+    }
+    void UpdatePage()
+    {
+        for (int i = 0; i < notesTxtAreas.Length; i++)
+        {
+            Debug.Log(i);
+            notesTxtAreas[i].gameObject.SetActive(false);
+        }
+        Debug.Log(acPage);
+        notesTxtAreas[acPage].gameObject.SetActive(true);
+    }
+    #endregion
+
     private void Start()
     {
         GameManager.gameManager.MainHud = this;
 
         equipableBattleDialogues = quickDialogueTab.GetComponentsInChildren<QuickDialogueItemIcon>();
         EquipDialogue(0);
+
+        GameManager.gameManager.calendarController.UpdateHudH();
     }
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.F))
-        //{
-        //    if (!GameManager.gameManager.battleController.ActiveBattle)
-        //        OpenCloseQuickMenu();
-        //}
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            //if (!GameManager.gameManager.battleController.ActiveBattle)
+            //OpenCloseQuickMenu();
+            //OpenCloesNotesMenu(!notesMenu.activeSelf);
+
+            //AddNote("ASDSDSADASDASDSADSADSADSA DSAD ASD SA DSA DAS DAS.");
+        }
         //if (Input.GetKeyDown(KeyCode.Q))
         //{
         //    OpenCloseDiaryMenu();
@@ -141,7 +215,8 @@ public class MainHud : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (actualStorage != null && actualStorage.storageMenu.activeSelf) actualStorage.OpenCloseStorage(false);
+            if (notesMenu.activeSelf) OpenCloseNotesMenu(false);
+            else if (actualStorage != null && actualStorage.storageMenu.activeSelf) actualStorage.OpenCloseStorage(false);
             else if (inventory.activeSelf) OpenCloseInventory(false);
             else if (pauseMenu.activeSelf) OpenClosePauseMenu(false);
             else OpenClosePauseMenu(true);
@@ -219,6 +294,37 @@ public class MainHud : MonoBehaviour
         date.text = day + " | " + hour.ToString("00") + ":" + min.ToString("00");
     }
 
+    public void FadeInOut()
+    {
+        StartCoroutine("FadeIn");
+    }
+    IEnumerator FadeIn()
+    {
+        fadeScr.gameObject.SetActive(true);
+
+        float timer = 0.0f;
+        while (timer <= 1)
+        {
+            fadeScr.color = Color.Lerp(new Color(0, 0, 0, 0), Color.black, timer);
+            yield return new WaitForEndOfFrame();
+            timer += Time.deltaTime;
+        }
+        StartCoroutine(FadeOut(2));
+    }
+    IEnumerator FadeOut(float t)
+    {
+        yield return new WaitForSeconds(t);
+        float timer = 0.0f;
+        while (timer <= 1)
+        {
+            fadeScr.color = Color.Lerp(Color.black, new Color(0, 0, 0, 0), timer);
+            yield return new WaitForEndOfFrame();
+            timer += Time.deltaTime;
+        }
+
+        fadeScr.gameObject.SetActive(false);
+    }
+
     public void GameOver()
     {
         gameOverScreen.SetActive(true);
@@ -228,6 +334,18 @@ public class MainHud : MonoBehaviour
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
         GameManager.gameManager.timeController.PauseResume(false);
+    }
+
+    public void ShowItemDesc(Item i, Vector3 pos)
+    {
+        itemDesc_obj.SetActive(true);
+        itemDesc_obj.transform.position = pos;
+        itemDesc_name.text = i.itemName;
+        itemDesc_description.text = i.description;
+    }
+    public void HideItemDesc()
+    {
+        itemDesc_obj.SetActive(false);
     }
 
     void SetObjSize(GameObject obj, float ammount)

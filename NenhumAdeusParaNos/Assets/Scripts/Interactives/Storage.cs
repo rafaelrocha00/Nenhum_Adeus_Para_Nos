@@ -76,18 +76,27 @@ public class Storage : Interactives
 
         //ResetPages();
 
-        StartCoroutine("GenItems");
+        StartCoroutine("GenItems");;
         generatedMenu = true;
         GameManager.gameManager.MainHud.ActualStorage = this;
+    }
+
+    void LoadItems()
+    {
+        GameManager.gameManager.itemsSaver.SetChestItems(this);
     }
 
     IEnumerator GenItems()
     {
         yield return new WaitForEndOfFrame();
-        for (int i = 0; i < items.Count; i++)
+        if (!GameManager.gameManager.itemsSaver.FindChest(depositName))
         {
-            TryAlocateItem(items[i]);
+            for (int i = 0; i < items.Count; i++)
+            {
+                TryAlocateItem(items[i]);
+            }
         }
+        else LoadItems();
         ResetPages();
 
         if (main)
@@ -102,52 +111,6 @@ public class Storage : Interactives
 
     void TryAlocateItem(Item item)
     {
-        //bool itemWasPlaced = false;
-        //for (int i = 0; i < myGrid.invenGrid.GetLength(0); i++)
-        //{
-        //    for (int j = 0; j < myGrid.invenGrid.GetLength(1); j++)
-        //    {
-        //        Debug.Log(myGrid.invenGrid[i, j].transform.position);
-        //        if (myGrid.invenGrid[i, j].IsEmpty())
-        //        {
-        //            if (item.slotSize == Vector2.one)
-        //            {
-        //                ItemButton auxIB = itemGenerator.GenItem(item);
-        //                myGrid.invenGrid[i, j].DropItem(auxIB);
-        //                itemWasPlaced = true;
-        //            }
-        //            else
-        //            {
-        //                int xSize = item.slotSize.x;
-        //                int ySize = item.slotSize.y;
-        //                InvenSlot[,] itemSlots = new InvenSlot[xSize, ySize];
-        //                bool canAlocateItem = true;
-        //                for (int x = 0; x < xSize; x++)
-        //                {
-        //                    for (int y = 0; y < ySize; y++)
-        //                    {
-        //                        try
-        //                        {
-        //                            if (myGrid.invenGrid[i + x, j + y].IsEmpty()) itemSlots[x, y] = myGrid.invenGrid[i + x, j + y];
-        //                            else canAlocateItem = false;
-        //                        }
-        //                        catch { canAlocateItem = false; }
-        //                        if (!canAlocateItem) break;    
-        //                    }
-        //                    if (!canAlocateItem) break;
-        //                }
-        //                if (canAlocateItem)
-        //                {
-        //                    ItemButton auxIB = itemGenerator.GenItem(item);
-        //                    myGrid.AlocateBigItem(auxIB, itemSlots);
-        //                    itemWasPlaced = true;
-        //                }
-        //            }
-        //            if (itemWasPlaced) break;
-        //        }
-        //    }
-        //    if (itemWasPlaced) break;
-        //}
         ItemButton auxIB = itemGenerator.GenItem(item);
         for (int i = 0; i < myGrids.Length; i++)
         {
@@ -159,6 +122,22 @@ public class Storage : Interactives
         }
 
         Destroy(auxIB.gameObject);
+    }
+
+    public void AddItemByCoord(Item i, Vector2Int[,] coords, int page)
+    {
+        ItemButton newItem = itemGenerator.GenItem(i);
+        myGrids[page].AlocateByCoord(coords, newItem);
+    }
+
+    ItemButton[][] GetItemsByPage()
+    {
+        ItemButton[][] allItems = new ItemButton[page_number][];
+        for (int i = 0; i < page_number; i++)
+        {
+            allItems[i] = myGrids[i].itemHolder.GetComponentsInChildren<ItemButton>(true);
+        }
+        return allItems;
     }
 
     IEnumerator Mark()
@@ -223,6 +202,7 @@ public class Storage : Interactives
             if (!value && storageMenu.activeSelf)
             {
                 GameManager.gameManager.questController.CheckQuests(this);
+                GameManager.gameManager.itemsSaver.SetChestsItemCoords(GetItemsByPage(), depositName);
                 ResetPages();
             }
             else if (value)

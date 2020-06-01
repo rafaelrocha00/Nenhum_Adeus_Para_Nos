@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public QuestGenerator questGenerator;
     [HideInInspector] public CalendarController calendarController;
     [HideInInspector] public CompanyController companyController;
+    [HideInInspector] public ItemsSaver itemsSaver;
     //[HideInInspector] public NPCAnswers npcAnswers;
 
     [HideInInspector] MainHud mainHud;
@@ -53,6 +54,7 @@ public class GameManager : MonoBehaviour
         questGenerator = GetComponent<QuestGenerator>();
         calendarController = GetComponent<CalendarController>();
         companyController = GetComponent<CompanyController>();
+        itemsSaver = GetComponent<ItemsSaver>();
         //npcAnswers = GetComponent<NPCAnswers>();
 
         //personalities[0] = DereDereP;

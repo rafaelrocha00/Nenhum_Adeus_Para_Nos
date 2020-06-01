@@ -1,13 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class ItemButton : MonoBehaviour
+public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [HideInInspector] Item item;
+    [HideInInspector] int page;
     public Item Item { get { return item; } set { item = value; } }
+    public int Page { get { return page; } set { page = value; } }
 
     public InvenSlot[,] myInvenSlots = null;
+    public Vector2Int[,] myCoords = null;
 
     [HideInInspector] InvenSlot[,] originSlots;
     public InvenSlot[,] OriginSlots { get { return originSlots; } }
@@ -30,12 +34,14 @@ public class ItemButton : MonoBehaviour
         //else myInvenSlots = new InvenSlot[item.slotSize.x, item.slotSize.y];
 
         myInvenSlots = new InvenSlot[item.slotSize.x, item.slotSize.y];
+        myCoords = new Vector2Int[item.slotSize.x, item.slotSize.y];
 
         for (int i = 0; i < myInvenSlots.GetLength(0); i++)
         {
             for (int j = 0; j < myInvenSlots.GetLength(1); j++)
             {
                 myInvenSlots[i, j] = slot[i, j];
+                myCoords[i, j] = slot[i, j].Coordinates;
             }
         }
     }
@@ -71,5 +77,31 @@ public class ItemButton : MonoBehaviour
         if (item is QuickUseItem) GameManager.gameManager.inventoryController.Inventory.ItemRemovedOrAdded();
         ClearSlots();
         Destroy(gameObject);
+    }
+
+    public void ShowDesc()
+    {
+        GameManager.gameManager.MainHud.ShowItemDesc(item, transform.position);
+    }
+    public void HideDesc()
+    {
+        GameManager.gameManager.MainHud.HideItemDesc();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Invoke("ShowDesc", 0.3f);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        CancelInvoke();
+        HideDesc();
+    }
+
+    private void OnDisable()
+    {
+        CancelInvoke();
+        HideDesc();
     }
 }

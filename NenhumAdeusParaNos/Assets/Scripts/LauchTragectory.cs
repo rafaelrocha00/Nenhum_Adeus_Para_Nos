@@ -65,7 +65,7 @@ public class LauchTragectory : MonoBehaviour
             float t = (float)i / reso;
             // arcArray[i] = CalculateArcPoint(t, maxDistance);
 
-            Vector3 hermite = Hermite(transform, mousePos, t);
+            Vector3 hermite = Hermite(transform.position, mousePos, t);
 
             arcArray[i] = hermite;
         }
@@ -81,9 +81,9 @@ public class LauchTragectory : MonoBehaviour
     //    return transform.localToWorldMatrix * new Vector4(x, y, 0, 1);
     //}
 
-    Vector3 Hermite(Transform ori, Vector3 dest, float time)
+    public static Vector3 Hermite(Vector3 ori, Vector3 dest, float time)
     {
-        return (2.0f * Mathf.Pow(time, 3) - 3.0f * Mathf.Pow(time, 2) + 1.0f) * ori.position + (-2.0f * Mathf.Pow(time, 3) + 3.0f * Mathf.Pow(time, 2)) * dest +
-                (Mathf.Pow(time, 3) - 2.0f * Mathf.Pow(time, 2) + time) * (ori.up * 4 + ori.right) * 4 + (Mathf.Pow(time, 3) - Mathf.Pow(time, 2)) * (-ori.up * 2 + ori.right) * 5;
+        return (2.0f * Mathf.Pow(time, 3) - 3.0f * Mathf.Pow(time, 2) + 1.0f) * ori + (-2.0f * Mathf.Pow(time, 3) + 3.0f * Mathf.Pow(time, 2)) * dest +
+                (Mathf.Pow(time, 3) - 2.0f * Mathf.Pow(time, 2) + time) * (Vector3.up * 4 + Vector3.right) * 4 + (Mathf.Pow(time, 3) - Mathf.Pow(time, 2)) * (-Vector3.up * 2 + Vector3.right) * 5;
     }
 }
