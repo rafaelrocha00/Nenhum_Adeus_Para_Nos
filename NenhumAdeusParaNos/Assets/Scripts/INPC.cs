@@ -13,8 +13,8 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
     public Sprite[] expressions = new Sprite[3];
 
     public enum Personalities { Tsundere, Yandere }
-    public enum EnemyType { Lustro, Normal, None }
-    public enum Faction { Communist, Non_Communist, None }
+    public enum EnemyType { Lustro, Citzen, Capitalist, Communist, None }
+    //public enum Faction { Communist, Non_Communist, None }
 
     //[HideInInspector] CharacterStats charStats;
     //public CharacterStats CharStats { get { return charStats; } }
@@ -25,7 +25,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
     //[SerializeField] Behavior behavior;
     public Personalities thisPersonality;// { get { return behavior; } set { behavior = value; } }
     public EnemyType enemyType;
-    public Faction faction;
+    //public Faction faction;
     public bool hasOtherNPCTalk;
     public INPC theOtherNPC;
 
@@ -503,14 +503,15 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
     {
         Debug.Log("Dialogo Recebido");
 
-        if (waitingForAnswer)
+        if (!inBattle && waitingForAnswer)
         {
             //Debug.Log("ALOALOALO");
-            GameManager.gameManager.dialogueController.ChooseOption((int)playerDialogue.approachType, expressions[2]);
+            GameManager.gameManager.dialogueController.ChooseOption((int)playerDialogue.approachType, expressions[1]);
             waitingForAnswer = false;
         }
         else if (inBattle)
-        {            
+        {
+            StopCoroutine("CancelDialogue");
             //float answerChance = personality.CalculatePercentage(playerDialogue.approachType);
             float aux = Random.Range(0, 100);
 
@@ -649,7 +650,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
         //Dialogue answer = GameManager.gameManager.dialogueController.GetAnswer((int)enemyType, (int)thisPersonality, (int)playerDialogue.approachType, 2);
         //GameManager.gameManager.dialogueController.StartDialogue(answer, transform);
     }
-    IEnumerator DelayStartDialogue(Dialogue failDialogue, int ex = 2)
+    IEnumerator DelayStartDialogue(Dialogue failDialogue, int ex = 1)
     {
         yield return new WaitForEndOfFrame();
         GameManager.gameManager.dialogueController.StartDialogue(failDialogue, transform, expressions[ex]);
@@ -704,7 +705,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
 
     public override void StartBattle(bool byDialogue = true)
     {
-        if (!inBattle)
+        if (!inBattle && CanFight())
         {
             startPos = transform.position;
             //OnExit();

@@ -6,7 +6,7 @@ using UnityEngine;
 public class KillQuest : Quest
 {
     public INPC.EnemyType enemyType = INPC.EnemyType.None;
-    public INPC.Faction faction = INPC.Faction.None;
+    //public INPC.Faction faction = INPC.Faction.None;
 
     [SerializeField] string areaName = "";
     [SerializeField] int quantToKill = 1;
@@ -21,7 +21,12 @@ public class KillQuest : Quest
         try
         {
             INPC npc = thing as INPC;
-            if (npc.AreaName.Equals(areaName) && (npc.enemyType == enemyType || enemyType == INPC.EnemyType.None) && (npc.faction == faction || faction == INPC.Faction.None))
+            //if (npc.AreaName.Equals(areaName) && (npc.enemyType == enemyType || enemyType == INPC.EnemyType.None) && (npc.faction == faction || faction == INPC.Faction.None))
+            //{
+            //    quantKilled++;
+            //    if (quantKilled == quantToKill) TryComplete();
+            //}
+            if (npc.AreaName.Equals(areaName) && npc.enemyType == enemyType)
             {
                 quantKilled++;
                 if (quantKilled == quantToKill) TryComplete();

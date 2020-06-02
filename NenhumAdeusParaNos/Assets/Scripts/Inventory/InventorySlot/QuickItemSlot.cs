@@ -35,6 +35,7 @@ public class QuickItemSlot : DropSlot
                 image.sprite = itemButton.GetComponent<Image>().sprite;
                 GameManager.gameManager.MainHud.quickItemSlot.SetSprite(itemButton.GetComponent<Image>().sprite);
                 hasInInventory = true;
+                if (itemButton.Item is Notes) GameManager.gameManager.questController.mainNotes = (Notes)itemButton.Item;
                 Invoke("CheckItemInventory", 0.01f);
                 if (!itemButton.OriginSlots[0, 0].MyGridManager.generateOnStart) return true;
                 else return false;

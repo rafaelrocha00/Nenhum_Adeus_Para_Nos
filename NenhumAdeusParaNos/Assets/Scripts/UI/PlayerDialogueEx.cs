@@ -14,9 +14,9 @@ public class PlayerDialogueEx : MonoBehaviour
         {
             case 0:
                 return sprites_love;
-            case 2:
-                return sprites_normal;
             case 1:
+                return sprites_normal;
+            case 2:
                 return sprites_angry;
             default:
                 return null;

@@ -38,9 +38,9 @@ public class DialogueController : MonoBehaviour
     //public List<DialogueBattle>[][] approaches = new List<DialogueBattle>[4][];//Array de Approaches o primeirod Index define o tipo de inimigo, o segundo o tipo de abordagem, e dentro da lista deles estão os diálogos para serem sorteados.
     public DialogueBattle[] playerApproaches = new DialogueBattle[3];
 
-    public List<DialogueOptions>[][][] npcAnswers = new List<DialogueOptions>[2][][];//Array das respostas dos inimigos, Uma lista de opções de respotas pra cada tipo de abordagem para cada personalidade para cada tipo de inimigo
-    Dialogue[] failResults = new Dialogue[2];
-    public DialogueBattleResult[][][] battleResults = new DialogueBattleResult[2][][]; //Array de resultados de batalha, primeiro Index define o tipo de inimigo, o segundo a personalidade e o terceiro o resultado;
+    public List<DialogueOptions>[][][] npcAnswers = new List<DialogueOptions>[4][][];//Array das respostas dos inimigos, Uma lista de opções de respotas pra cada tipo de abordagem para cada personalidade para cada tipo de inimigo
+    Dialogue[] failResults = new Dialogue[4];
+    public DialogueBattleResult[][][] battleResults = new DialogueBattleResult[4][][]; //Array de resultados de batalha, primeiro Index define o tipo de inimigo, o segundo a personalidade e o terceiro o resultado;
     //Sprite dps
     //public Color[] dialogueColors = new Color[5];
     //public GameObject[] dialogueExpressions = new GameObject[3];
@@ -92,8 +92,14 @@ public class DialogueController : MonoBehaviour
                 battleResults[i][j] = Resources.LoadAll<DialogueBattleResult>("DialogueBattleResults/EnemyT" + (i + 1) + "/Personality" + (j + 1));
             }
         }
-        failResults[0] = Resources.Load<Dialogue>("DialogueBattleResults/FailCombination1");
-        failResults[1] = Resources.Load<Dialogue>("DialogueBattleResults/FailCombination2");
+        //failResults[0] = Resources.Load<Dialogue>("DialogueBattleResults/FailCombination1");
+        //failResults[1] = Resources.Load<Dialogue>("DialogueBattleResults/FailCombination2");
+        //failResults[2] = Resources.Load<Dialogue>("DialogueBattleResults/FailCombination3");
+        //failResults[3] = Resources.Load<Dialogue>("DialogueBattleResults/FailCombination4");
+        for (int i = 0; i < failResults.Length; i++)
+        {
+            failResults[i] = Resources.Load<Dialogue>("DialogueBattleResults/FailCombination" + (i + 1));
+        }
 
         SetCam();
     }
@@ -126,22 +132,27 @@ public class DialogueController : MonoBehaviour
     /// <returns></returns>
     public Dialogue GetAnswer(int enType, int personality, int apType, int idx)
     {
-        return npcAnswers[0][personality][apType][idx].GetRandomDialogue();
+        return npcAnswers[enType][personality][apType][idx].GetRandomDialogue();
     }
     public Dialogue GetBattleResult(int enType, int personality, DialogueBattle.ApproachType[] comb, INPC npc, Player p)
     {
         Dialogue aux = failResults[personality];
-        enType = 0;
+        //enType = 0;
 
         try
         {
             for (int i = 0; i < battleResults[enType][personality].Length; i++)
             {
+
                 if (battleResults[enType][personality][i].apCombination.SequenceEqual(comb))
                 {
                     battleResults[enType][personality][i].StartEffects(npc, p);
                     if (battleResults[enType][personality][i].GetResult())
+                    {
                         aux = battleResults[enType][personality][i];
+                        //print("Achou um resultado aí");
+                        //print(battleResults[enType][personality][i].allStrings[0]);
+                    }
                 }
                 //Debug.Log(comb[0] + " | " + comb[1] + " | " + comb[2]);
                 //Debug.Log(battleResults[enType][personality][i].apCombination[0] + " | " + battleResults[enType][personality][i].apCombination[1] + " | " + battleResults[enType][personality][i].apCombination[2]);

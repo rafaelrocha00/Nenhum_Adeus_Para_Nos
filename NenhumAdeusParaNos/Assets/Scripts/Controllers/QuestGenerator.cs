@@ -17,7 +17,7 @@ public class QuestGenerator : MonoBehaviour
     List<GameObject> enemy_communist = new List<GameObject>();
     List<GameObject> enemy_capitalist = new List<GameObject>();
     List<GameObject> enemy_lustrous = new List<GameObject>();
-    List<GameObject> enemy_normal = new List<GameObject>();
+    List<GameObject> enemy_citzen = new List<GameObject>();
     public GameObject[] enemy_all;
     #endregion
 
@@ -43,12 +43,12 @@ public class QuestGenerator : MonoBehaviour
         for (int i = 0; i < enemy_all.Length; i++)
         {
             INPC.EnemyType et = enemy_all[i].GetComponent<INPC>().enemyType;
-            INPC.Faction fac = enemy_all[i].GetComponent<INPC>().faction;
+            //INPC.Faction fac = enemy_all[i].GetComponent<INPC>().faction;
             if (et == INPC.EnemyType.Lustro) enemy_lustrous.Add(enemy_all[i]);
-            else if (et == INPC.EnemyType.Normal) enemy_normal.Add(enemy_all[i]);
-            else if (fac == INPC.Faction.Communist) enemy_communist.Add(enemy_all[i]);
+            else if (et == INPC.EnemyType.Citzen) enemy_citzen.Add(enemy_all[i]);
+            else if (et == INPC.EnemyType.Communist) enemy_communist.Add(enemy_all[i]);
             else enemy_capitalist.Add(enemy_all[i]);
-            Debug.Log(et + " | " + fac);
+            //Debug.Log(et);
         }
 
         if (firstGen)
@@ -172,45 +172,57 @@ public class QuestGenerator : MonoBehaviour
             KillQuest kq = (KillQuest)newQuest;
 
             kq.AreaName = locationNames[Random.Range(0, locationNames.Count)];
-            rand = Random.Range(0, 2);
+            //rand = Random.Range(0, 2);
             string etype = "";
             List<GameObject> toInst = new List<GameObject>();
-            if (rand == 0)
-            {
-                rand = Random.Range(1, 11);                
+            //if (rand == 0)
+            //{
+            //    rand = Random.Range(1, 11);                
 
-                kq.faction = (INPC.Faction)Random.Range(0, 2);
-                if (kq.faction == INPC.Faction.Communist)
-                {
-                    etype = "Comunistas";
-                    for (int i = 0; i < rand; i++)
-                        toInst.Add(enemy_communist[Random.Range(0, enemy_communist.Count)]);
-                }
-                else
-                {
-                    etype = "Capitalistas";
-                    for (int i = 0; i < rand; i++)
-                        toInst.Add(enemy_capitalist[Random.Range(0, enemy_capitalist.Count)]);
-                }
-            }
-            else
-            {
-                rand = Random.Range(1, 11);
+            //    kq.faction = (INPC.Faction)Random.Range(0, 2);
+            //    if (kq.faction == INPC.Faction.Communist)
+            //    {
+            //        etype = "Comunistas";
+            //        for (int i = 0; i < rand; i++)
+            //            toInst.Add(enemy_communist[Random.Range(0, enemy_communist.Count)]);
+            //    }
+            //    else
+            //    {
+            //        etype = "Capitalistas";
+            //        for (int i = 0; i < rand; i++)
+            //            toInst.Add(enemy_capitalist[Random.Range(0, enemy_capitalist.Count)]);
+            //    }
+            //}
+            //else
+            //{
+            rand = Random.Range(1, 11);
 
-                kq.enemyType = 0;//(INPC.EnemyType)Random.Range(0, 2);
-                if (kq.enemyType == INPC.EnemyType.Lustro)
-                {
-                    etype = "Lustros";
-                    for (int i = 0; i < rand; i++)
-                        toInst.Add(enemy_lustrous[Random.Range(0, enemy_lustrous.Count)]);
-                }
-                else
-                {
-                    etype = "Cidadãos";
-                    for (int i = 0; i < rand; i++)
-                        toInst.Add(enemy_normal[Random.Range(0, enemy_normal.Count)]);
-                }
+            kq.enemyType = (INPC.EnemyType)Random.Range(0, 4);
+            if (kq.enemyType == INPC.EnemyType.Lustro)
+            {
+                etype = "Lustros";
+                for (int i = 0; i < rand; i++)
+                    toInst.Add(enemy_lustrous[Random.Range(0, enemy_lustrous.Count)]);
             }
+            //else if (kq.enemyType == INPC.EnemyType.Citzen)
+            //{
+            //    etype = "Cidadãos";
+            //    for (int i = 0; i < rand; i++)
+            //        toInst.Add(enemy_citzen[Random.Range(0, enemy_citzen.Count)]);
+            //}
+            else if (kq.enemyType == INPC.EnemyType.Communist)
+            {
+                etype = "Comunistas";
+                for (int i = 0; i < rand; i++)
+                    toInst.Add(enemy_communist[Random.Range(0, enemy_communist.Count)]);
+            }
+            else if (kq.enemyType == INPC.EnemyType.Capitalist)
+            {
+                etype = "Capitalistas";
+                for (int i = 0; i < rand; i++)
+                    toInst.Add(enemy_capitalist[Random.Range(0, enemy_capitalist.Count)]);
+            }
+            //}
             kq.MoneyReward = 100 * rand;
             kq.ResourceReward = 10 * rand;
             kq.QuantToKill = rand;

@@ -80,8 +80,8 @@ MonoBehaviour:
   answerTime: 10
   playerApproaches:
   - {fileID: 11400000, guid: 4de02e9aca0409d46858f07db6c2a4ff, type: 2}
-  - {fileID: 11400000, guid: ad4ca3930fed45940b85b9227ae1a487, type: 2}
   - {fileID: 11400000, guid: 5c81c4afe5cf7a14d8f8813706f3db9a, type: 2}
+  - {fileID: 11400000, guid: ad4ca3930fed45940b85b9227ae1a487, type: 2}
 --- !u!114 &6506660029207911043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeQuests: []
   completedQuests: []
+  mainNotes: {fileID: 0}
 --- !u!114 &6506660029207911033
 MonoBehaviour:
   m_ObjectHideFlags: 0

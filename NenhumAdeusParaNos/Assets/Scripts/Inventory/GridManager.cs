@@ -166,6 +166,21 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
+    public Item[] GetItemInstances(string itemName)
+    {
+        List<Item> itemsFound = new List<Item>();
+        for (int i = 0; i < xSize; i++)
+        {
+            for (int j = 0; j < ySize; j++)
+            {
+                if (invenGrid[i, j].ThisItemButton != null && invenGrid[i, j].ThisItemButton.Item.itemName.Equals(itemName))
+                    itemsFound.Add(invenGrid[i, j].ThisItemButton.Item);
+            }
+        }
+
+        return itemsFound.ToArray();
+    }
+
     public int CheckItemQuant(string itemName)
     {
         int aux = 0;

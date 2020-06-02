@@ -42,6 +42,11 @@ public class Inventory : MonoBehaviour
         return myGrid.FindItem(itemName);
     }
 
+    public Item[] GetItemInstances(string itemName)
+    {
+        return myGrid.GetItemInstances(itemName);
+    }
+
     public void AddItem(Item i)
     {        
         ItemButton newItem = iGen.GenItem(i);

@@ -143,18 +143,13 @@ public class MainHud : MonoBehaviour
         }        
     }
 
-    public void AddNote(string n)
+    public void WriteNotes(string[] notes)
     {
-        int page = 0;
-        for (int i = 0; i < notesTxtAreas.Length; i++)
+        for (int i = 0; i < 10; i++)
         {
-            if (notesTxtAreas[i].text.Length + n.Length < maxCharPerPage - 10)
-            {
-                page = i;
-                break;
-            }
+            if (notes[i].Equals("")) return;
+            notesTxtAreas[i].text = notes[i];
         }
-        notesTxtAreas[page].text += "- " + n + "\n\n";
     }
 
     public void NextPage()

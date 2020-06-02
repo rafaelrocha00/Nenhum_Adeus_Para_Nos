@@ -177,7 +177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.9245283, g: 0.13519046, b: 0.13519046, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -402,11 +402,10 @@ MonoBehaviour:
   areaName: Fazenda Norte
   expressions:
   - {fileID: 21300000, guid: 34c564bd4430b3e45b5d684bcc90dab5, type: 3}
-  - {fileID: 21300000, guid: e8c2415d507aa9e43898137af0e94dfc, type: 3}
   - {fileID: 21300000, guid: 6a000658735108d46a3363ebee60e3fe, type: 3}
+  - {fileID: 21300000, guid: e8c2415d507aa9e43898137af0e94dfc, type: 3}
   thisPersonality: 0
-  enemyType: 2
-  faction: 0
+  enemyType: 3
   hasOtherNPCTalk: 0
   theOtherNPC: {fileID: 0}
   waitingForAnswer: 0
@@ -414,8 +413,8 @@ MonoBehaviour:
   dialogueWithOtherNPC: {fileID: 0}
   myDialogues:
   - {fileID: 11400000, guid: 9d35aee0c2dc4d544b26be106b1ba1dc, type: 2}
-  - {fileID: 11400000, guid: 6e612f82348da484b84cc11b39535d8b, type: 2}
   - {fileID: 11400000, guid: 9ade35c76476a9341bc8858295c1de4a, type: 2}
+  - {fileID: 11400000, guid: 6e612f82348da484b84cc11b39535d8b, type: 2}
   hostile: 1
   heavy: 0
   dashTime: 0.2
@@ -507,7 +506,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

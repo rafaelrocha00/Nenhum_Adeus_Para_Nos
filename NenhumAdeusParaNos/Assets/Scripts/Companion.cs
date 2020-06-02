@@ -58,6 +58,7 @@ public class Companion : NPC
     public override void EndBattle()
     {
         inBattle = false;
+        inBattleTarget = null;
         lifeBar.transform.parent.gameObject.SetActive(false);
     }
     public override bool ReceiveDamage(float damage)

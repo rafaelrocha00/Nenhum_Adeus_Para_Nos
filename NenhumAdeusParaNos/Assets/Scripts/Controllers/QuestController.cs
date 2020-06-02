@@ -7,6 +7,8 @@ public class QuestController : MonoBehaviour
     public List<Quest> activeQuests = new List<Quest>();
     public List<Quest> completedQuests = new List<Quest>();
 
+    public Notes mainNotes;
+
     public void AcceptQuest(Quest q)
     {
         activeQuests.Add(q);
