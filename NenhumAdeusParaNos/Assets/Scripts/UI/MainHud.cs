@@ -35,6 +35,7 @@ public class MainHud : MonoBehaviour
     //public int[] battleDialogues = new int[5];
 
     public QuickDialogueItemIcon quickItemSlot;
+    public DashIcon dashIcon;
 
     [HideInInspector] Storage actualStorage = null;
     public Storage ActualStorage { set { actualStorage = value; } }

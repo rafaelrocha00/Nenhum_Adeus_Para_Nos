@@ -26,19 +26,23 @@ public class Player : MonoBehaviour, BattleUnit
     public float dashSpeed = 25.0f;
     public float dashTime = 0.75f;
     public float dashDistance = 7.5f;
+    public int dashMaxQuant = 2;
+    public float dashCooldown = 2.5f;
+    int dashQuant = 2;
+    bool dashInCooldown = false;
     //float dashDamage = 0.0f;
     //bool dashingDoingDamage = false;
     //public float dashCooldown = 2.0f;
     //bool dashInCooldown = false;
 
-    public float maxStamina = 100.0f;
+    //public float maxStamina = 100.0f;
     //public float stamina_runDecay = 25f;//TIRAR
-    public float stamina_dashCost = 25f;
-    public float stamina_defendingDecay = 10.0f;
-    public float stamina_regen = 15f;
-    bool stoppedStaminaRegen = false;
-    bool canRegenStamina = true;
-    float stamina;
+    //public float stamina_dashCost = 25f;
+    //public float stamina_defendingDecay = 10.0f;
+    //public float stamina_regen = 15f;
+    //bool stoppedStaminaRegen = false;
+    //bool canRegenStamina = true;
+    //float stamina;
 
     [SerializeField] float defense_strength = 75.0f;//Porcentagem da diminuição de dano;
     public float Defense_Strength { get { return defense_strength; } }    
@@ -137,7 +141,8 @@ public class Player : MonoBehaviour, BattleUnit
 
         moveSpeed = defaultSpeed;
         //acceleratedSpeed = moveSpeed * 1.75f;
-        stamina = maxStamina;
+        //stamina = maxStamina;
+        dashQuant = dashMaxQuant;
         defense_life = defense_maxLife;
 
         if (myWeapon == null) myWeapon = GetComponentInChildren<Weapon>();
@@ -170,10 +175,10 @@ public class Player : MonoBehaviour, BattleUnit
 
     void Update()
     {
-        if (canRegenStamina && stamina < maxStamina)
-        {
-            UpdateStamina(stamina_regen * Time.deltaTime);
-        }
+        //if (canRegenStamina && stamina < maxStamina)
+        //{
+        //    UpdateStamina(stamina_regen * Time.deltaTime);
+        //}
 
         //TIRAR
         //if (Input.GetButtonDown("Fire3"))
@@ -392,7 +397,7 @@ public class Player : MonoBehaviour, BattleUnit
                 if (!autoShooting)
                 {
                     defending = true;
-                    stamina_regen /= 2;
+                    //stamina_regen /= 2;
                     animator.SetBool("Defending", true);
                     if (!slowMoving) StartCoroutine(Slowdown(defaultSlow));
                     GameManager.gameManager.MainHud.ShowHideDefenseBar();
@@ -553,24 +558,30 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (stamina >= stamina_dashCost/* && !dashInCooldown*/)
-            {
-                //RaycastHit hit;
-                Vector3 targetPos = GetDashDest();
-                //if (Physics.Raycast(/*new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z)*/transform.up * 0.2f + transform.position, heading, out hit, /*7.5f*/dashDistance, dashMask))
-                //{
+            //if (stamina >= stamina_dashCost/* && !dashInCooldown*/)
+            //{
+            //    //RaycastHit hit;
+            //    Vector3 targetPos = GetDashDest();
+            //    //if (Physics.Raycast(/*new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z)*/transform.up * 0.2f + transform.position, heading, out hit, /*7.5f*/dashDistance, dashMask))
+            //    //{
                     
-                //    targetPos = (hit.collider.bounds.ClosestPoint(transform.position) - transform.position) * 0.8f + transform.position;
-                //}            
-                //else targetPos = heading * /*7.5f*/dashDistance + transform.position;
-                //Cooldown do dash
-                //StartCoroutine("DashCooldown");
-                CancelStaminaRegen(false);
-                UpdateStamina(-stamina_dashCost);
-                //StartCoroutine(Dash(heading));
+            //    //    targetPos = (hit.collider.bounds.ClosestPoint(transform.position) - transform.position) * 0.8f + transform.position;
+            //    //}            
+            //    //else targetPos = heading * /*7.5f*/dashDistance + transform.position;
+            //    //Cooldown do dash
+            //    //StartCoroutine("DashCooldown");
+            //    CancelStaminaRegen(false);
+            //    UpdateStamina(-stamina_dashCost);
+            //    //StartCoroutine(Dash(heading));
+            //    StartCoroutine(Dash(targetPos));
+            //    StartCoroutine("StartStaminaRegen");
+            //}
+            if (dashQuant > 0)
+            {
+                Vector3 targetPos = GetDashDest();
                 StartCoroutine(Dash(targetPos));
-                StartCoroutine("StartStaminaRegen");
-            }            
+                UpdateDashQuant(-1);
+            }
         }
         //cam.Move(transform.position);        
     }
@@ -702,8 +713,8 @@ public class Player : MonoBehaviour, BattleUnit
     {
         defending = false;
         //StartCoroutine("StartStaminaRegen");
-        stamina_regen *= 2;
-        stoppedStaminaRegen = false;
+        //stamina_regen *= 2;
+        //stoppedStaminaRegen = false;
         animator.SetBool("Defending", false);
         CancelSlow();
         GameManager.gameManager.MainHud.ShowHideDefenseBar();
@@ -1143,24 +1154,39 @@ public class Player : MonoBehaviour, BattleUnit
         canReceiveKnockback = true;
     }
 
-    IEnumerator StartStaminaRegen()
-    {
-        yield return new WaitForSeconds(1.5f);
-        canRegenStamina = true;
-    }
+    //IEnumerator StartStaminaRegen()
+    //{
+    //    yield return new WaitForSeconds(1.5f);
+    //    canRegenStamina = true;
+    //}
 
-    void CancelStaminaRegen(bool continuousAction)
+    //void CancelStaminaRegen(bool continuousAction)
+    //{
+    //    canRegenStamina = false;
+    //    if (continuousAction)
+    //    {            
+    //        if (!stoppedStaminaRegen)
+    //        {
+    //            StopCoroutine("StartStaminaRegen");
+    //            stoppedStaminaRegen = true;
+    //        }
+    //    }
+    //    else StopCoroutine("StartStaminaRegen");
+    //}
+    void StartDashCooldown()
     {
-        canRegenStamina = false;
-        if (continuousAction)
+        if (dashQuant < dashMaxQuant && !dashInCooldown)
         {            
-            if (!stoppedStaminaRegen)
-            {
-                StopCoroutine("StartStaminaRegen");
-                stoppedStaminaRegen = true;
-            }
+            StartCoroutine("DashCooldown");
         }
-        else StopCoroutine("StartStaminaRegen");
+    }
+    IEnumerator DashCooldown()
+    {
+        dashInCooldown = true;
+        GameManager.gameManager.MainHud.dashIcon.Cooldown(dashCooldown);
+        yield return new WaitForSeconds(dashCooldown);
+        dashInCooldown = false;
+        UpdateDashQuant(1);        
     }
 
     public void Heal(float value)
@@ -1176,12 +1202,22 @@ public class Player : MonoBehaviour, BattleUnit
         if (!isWeaponHide) HideShowWeapon();
     }
 
-    void UpdateStamina(float value)
+    //void UpdateStamina(float value)
+    //{
+    //    stamina += value;
+    //    stamina = Mathf.Clamp(stamina, 0, maxStamina);
+    //    //GameManager.gameManager.MainHud.UpdateStamina(stamina / maxStamina);
+    //    staminaBar.transform.localScale = new Vector3(stamina / maxStamina, stamina / maxStamina, 1);
+    //}
+
+    void UpdateDashQuant(int value)
     {
-        stamina += value;
-        stamina = Mathf.Clamp(stamina, 0, maxStamina);
+        dashQuant += value;
+        dashQuant = Mathf.Clamp(dashQuant, 0, dashMaxQuant);
         //GameManager.gameManager.MainHud.UpdateStamina(stamina / maxStamina);
-        staminaBar.transform.localScale = new Vector3(stamina / maxStamina, stamina / maxStamina, 1);
+        //staminaBar.transform.localScale = new Vector3(stamina / maxStamina, stamina / maxStamina, 1);
+        GameManager.gameManager.MainHud.dashIcon.SetQuant(dashQuant);
+        StartDashCooldown();
     }
     void UpdateLife()
     {
