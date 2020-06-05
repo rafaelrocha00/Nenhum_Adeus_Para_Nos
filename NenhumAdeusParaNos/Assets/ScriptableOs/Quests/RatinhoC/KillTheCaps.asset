@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81acb72c32e50fd429674a04f1567cc4, type: 3}
+  m_Name: KillTheCaps
+  m_EditorClassIdentifier: 
+  qName: "Elimine os Capitalistas Pr\xF3ximos"
+  id: 0
+  description: quest_description
+  moneyReward: 1000
+  resourceReward: 0
+  contractor: contractor_
+  mustReturn: 1
+  limitDay: -1
+  generated: 0
+  resourceT: 4
+  completingQuestDialogue: {fileID: 11400000, guid: cc2a11a5635d27e4482ababaf4732460,
+    type: 2}
+  quest_itemRewards: []
+  quest_itemRQuants: 
+  completed: 0
+  accepted: 0
+  cancelled: 0
+  waitingReturnToNPC: 0
+  acceptText: "Aquele rato era suspeito mas prometeu uma boa grana, posso fazer esse
+    trabalho, se n\xE3o me engano eles est\xE3o por perto"
+  completeText: "At\xE9 que n\xE3o foi uma recompensa ruim."
+  enemyType: 2
+  areaName: Direita da Casa
+  quantToKill: 2
+  toInstantiate: []

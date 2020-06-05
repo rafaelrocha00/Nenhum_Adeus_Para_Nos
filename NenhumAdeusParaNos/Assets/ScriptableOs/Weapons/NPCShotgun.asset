@@ -25,5 +25,10 @@ MonoBehaviour:
   maxAmmo: 10
   reloadTime: 2
   recoil: 0
+  clip_shoots:
+  - {fileID: 8300000, guid: 264df01553cfa8f449a6b9187a0ba988, type: 3}
+  - {fileID: 8300000, guid: 6f924d684ccb606488f5d4530d6e467a, type: 3}
+  - {fileID: 8300000, guid: f5c94d8fe6a781242b2392ccb8500752, type: 3}
+  clip_reload: {fileID: 8300000, guid: 01c149064cab3544f92e60c08c702e74, type: 3}
   shootAngle: 6
   shootQuant: 4

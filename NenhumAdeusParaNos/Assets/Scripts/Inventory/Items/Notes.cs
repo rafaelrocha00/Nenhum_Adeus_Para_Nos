@@ -34,6 +34,11 @@ public class Notes : QuickUseItem
         }
         texts[page] += "- " + n + "\n\n";
 
-        WriteText();
+        //WriteText();
+    }
+
+    private void OnDisable()
+    {
+        texts = new string[10];
     }
 }

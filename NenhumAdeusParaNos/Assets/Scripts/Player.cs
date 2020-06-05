@@ -120,11 +120,21 @@ public class Player : MonoBehaviour, BattleUnit
     [HideInInspector] Interactives interactingObj;
     public Interactives InteractingObj { get { return interactingObj; } set { interactingObj = value; } }
 
+    #region Audio Clips
+    public AudioClip clip_hit;
+    public AudioClip clip_heal;
+    public AudioClip clip_dash;
+    public AudioClip clip_shieldHit;
+    public AudioClip clip_shieldBreak;
+    #endregion
+
     bool inBattle;
     LayerMask aimLayermask = 1 << 0;
     LayerMask dashMask;
 
     bool canReceiveKnockback = true;
+
+    bool playedShieldBreakeSong = false;
 
     private void Start()
     {
@@ -218,7 +228,7 @@ public class Player : MonoBehaviour, BattleUnit
             if (moving) StopMoving();
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetMouseButtonDown(1))//GetKeyDown(KeyCode.C))
         {
             //Debug.Log("Item rápido");
             if (!aimingThrowable && !placingItem) UseEquippedItem();
@@ -392,7 +402,7 @@ public class Player : MonoBehaviour, BattleUnit
             //    UseDialogue(1);
             //}
 
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetKeyDown(KeyCode.LeftShift))//GetMouseButtonDown(1))
             {
                 if (!autoShooting)
                 {
@@ -668,9 +678,10 @@ public class Player : MonoBehaviour, BattleUnit
                         hit.collider.GetComponent<BattleUnit>().ReceiveDamage(damage);
                     }
                 }
-                catch {  }
+                catch { }
             }
         }
+        else GameManager.gameManager.audioController.PlayEffect(clip_dash);
 
         animator.SetBool("Dashing", true);
         float timer = 0.0f;
@@ -1090,6 +1101,7 @@ public class Player : MonoBehaviour, BattleUnit
         }
         defense_life = defense_maxLife;
         UpdateDefense(0);
+        playedShieldBreakeSong = false;
     }
 
     public bool CanFight()
@@ -1107,12 +1119,14 @@ public class Player : MonoBehaviour, BattleUnit
         bool aux = charStats.ReceiveDamage(damage);
         if (defending)
         {
+            GameManager.gameManager.audioController.PlayEffect(clip_shieldHit);
             animator.SetBool("DefendedAttack", true);
             Invoke("BackToIdle", 0.1f);
         }
         else
         {
-            //animator.SetBool("Damaging", true);
+            GameManager.gameManager.audioController.PlayEffect(clip_hit);
+            animator.SetBool("Damaging", true);
             Invoke("BackToIdle", 0.1f);
         }
         UpdateLife();
@@ -1191,6 +1205,7 @@ public class Player : MonoBehaviour, BattleUnit
 
     public void Heal(float value)
     {
+        GameManager.gameManager.audioController.PlayEffect(clip_heal);
         charStats.UpdateLife(value);        
         UpdateLife();
         HideShowWeapon();
@@ -1229,8 +1244,10 @@ public class Player : MonoBehaviour, BattleUnit
         defense_life = Mathf.Clamp(defense_life, 0, defense_maxLife);
         if (IsShiledBroken())
         {
-            CancelDefense();
+            CancelDefense();            
             if (shieldControl.gameObject.activeSelf) shieldControl.StartCoroutine("BreakAnim");
+            if (!playedShieldBreakeSong) GameManager.gameManager.audioController.PlayEffect(clip_shieldBreak);
+            playedShieldBreakeSong = true;
         }
         if (shieldControl.gameObject.activeSelf) shieldControl.SetShieldValue(defense_life / defense_maxLife);
         GameManager.gameManager.MainHud.UpdateDefense(defense_life / defense_maxLife);

@@ -86,6 +86,10 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
     Vector3 startPos;
     //LayerMask layermask = 1 << 10;
 
+    #region Audio Clips
+    public AudioClip clip_death;
+    #endregion
+
     //private void Start()
     //{
     //    personality = new Personality();
@@ -778,6 +782,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
         EndBattle();
         navMesh.isStopped = true;
         GameManager.gameManager.questController.CheckQuests(this);
+        GameManager.gameManager.audioController.PlayEffect(clip_death);
         base.Die();
     }
 
@@ -824,7 +829,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
                     {
                         questDialogues[i].MyNPC = this;
                         questDialogues[i].MainCharacter = GameManager.gameManager.battleController.MainCharacter;
-                        GameManager.gameManager.dialogueController.StartDialogue(questDialogues[i], transform, expressions[2]);
+                        GameManager.gameManager.dialogueController.StartDialogue(questDialogues[i], transform, expressions[1]);
                         //BeginQuestDialogue(questDialogues[i]);
                     }
                 }

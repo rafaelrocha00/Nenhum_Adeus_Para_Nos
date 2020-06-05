@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cc231529148de24ca6aeda3695e168a, type: 3}
+  m_Name: quest_DialogueA
+  m_EditorClassIdentifier: 
+  allStrings:
+  - "S\xE3o uns caps a\xED, eles t\xE3o bem ali em cima t\xE1 vendo?"
+  - "Eu n\xE3o suporto eles, se livra deles pra mim."
+  mcStrings: 
+  quest: {fileID: 11400000, guid: d98ec6d51fee6074bbe00573fd80bc93, type: 2}
+  accepting: 1

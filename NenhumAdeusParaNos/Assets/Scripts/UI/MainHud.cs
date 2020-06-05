@@ -204,7 +204,7 @@ public class MainHud : MonoBehaviour
         //{
         //    OpenCloseDiaryMenu();
         //}
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             OpenCloseInventory(!inventory.activeSelf);
         }

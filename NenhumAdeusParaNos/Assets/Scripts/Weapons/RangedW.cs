@@ -29,6 +29,7 @@ public class RangedW : Weapon
         //bullet.InitialSet(rangedWConfig.defaultDamage, gameObject.layer);
         if (animator != null) animator.SetInteger("Attacking", 1);
         rangedWConfig.Attack(transform, gameObject.layer, attackMod);
+        if (rangedWConfig.clip_shoots.Length > 0) GameManager.gameManager.audioController.PlayEffect(rangedWConfig.clip_shoots[Random.Range(0, rangedWConfig.clip_shoots.Length)]);
 
         ammo--;
         if (rangedWConfig.recoil > 0) myHolder.Knockback(rangedWConfig.recoil); 
@@ -82,6 +83,7 @@ public class RangedW : Weapon
     {
         Debug.Log("Reloading");
         reloading = true;
+        GameManager.gameManager.audioController.PlayEffect(rangedWConfig.clip_reload);
         yield return new WaitForSeconds(rangedWConfig.reloadTime);
         ammo = rangedWConfig.maxAmmo;
         reloading = false;

@@ -2,12 +2,47 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//public struct NoteContent
+//{
+//    public int id;
+//    public string[] content;
+//}
+
 public class QuestController : MonoBehaviour
 {
     public List<Quest> activeQuests = new List<Quest>();
     public List<Quest> completedQuests = new List<Quest>();
 
     public Notes mainNotes;
+    //public NoteContent[] notesContent = new NoteContent[5];
+
+    //public void SaveNotes(Notes[] notes)
+    //{
+    //    for (int i = 0; i < notes.Length; i++)
+    //    {
+    //        notesContent[i].id = int.Parse(notes[i].itemName.Split('#')[1]);
+    //        notesContent[i].content = notes[i].texts;
+    //    }
+    //}
+
+    public void AddNote(string txt)
+    {
+        try
+        {
+            mainNotes.AddNote(txt);
+        }
+        catch
+        {
+            try
+            {
+                InvenSlot ivSlot = GameManager.gameManager.inventoryController.Inventory.FindItem("Anotações #1");
+                Notes nt = (Notes)ivSlot.ThisItemButton.Item;
+                mainNotes = nt;
+                mainNotes.AddNote(txt);
+            }
+            catch { }
+        }
+    }
 
     public void AcceptQuest(Quest q)
     {
@@ -18,10 +53,6 @@ public class QuestController : MonoBehaviour
     {
         try
         {
-            //int aux = activeQuests.FindIndex(x => x.Name.Equals(q.Name));
-            //activeQuests.RemoveAt(aux);
-
-            //completedQuests.Add(q);
             activeQuests.RemoveAt(FindQuestIndex(q.ID));
             completedQuests.Add(q);
         }
@@ -36,8 +67,6 @@ public class QuestController : MonoBehaviour
     {
         try
         {
-            //int idx = FindQuestIndex(q.Name); 
-            //activeQuests[idx].Reset();
             activeQuests.RemoveAt(FindQuestIndex(q.ID));
         }
         catch (System.Exception)
@@ -52,7 +81,6 @@ public class QuestController : MonoBehaviour
         try
         {
             int aux = activeQuests.FindIndex(x => x.ID.Equals(_id));
-            //activeQuests.RemoveAt(aux);
             return aux;
         }
         catch { return -1; }
@@ -60,11 +88,6 @@ public class QuestController : MonoBehaviour
 
     public void CheckQuests<T>(T t)
     {
-        //foreach (Quest quest in activeQuests)
-        //{
-        //    quest.CheckComplete(t);
-        //}
-
         for (int i = 0; i < activeQuests.Count; i++)
         {
             activeQuests[i].CheckComplete(t);

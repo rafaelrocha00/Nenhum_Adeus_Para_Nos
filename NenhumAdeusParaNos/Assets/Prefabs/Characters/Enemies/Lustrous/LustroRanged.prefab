@@ -289,7 +289,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 89537223a2b0bae4583dcb78a50d9b67, type: 3}
   thisPersonality: 1
   enemyType: 0
-  faction: 2
   hasOtherNPCTalk: 0
   theOtherNPC: {fileID: 0}
   waitingForAnswer: 0
@@ -309,6 +308,7 @@ MonoBehaviour:
   granadeToThrow: {fileID: 2641741948507385781, guid: da5fd4389e9546947a04a560fe44a462,
     type: 3}
   granadeInstPoint: {fileID: 4479061903379953811}
+  clip_death: {fileID: 8300000, guid: 999bf18aa9722c745b853f4cf6d46270, type: 3}
 --- !u!195 &1711407826941162978
 NavMeshAgent:
   m_ObjectHideFlags: 0

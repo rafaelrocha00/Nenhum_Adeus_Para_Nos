@@ -23,6 +23,7 @@ public class DialogueWithChoice : Dialogue
         {
             actualID++;
             CheckMCStrings();
+            //if (actualID == allStrings.Length - 2) lastString = true;
             return allStrings[actualID];
         }
         else if (actualID < allStrings.Length - 1)

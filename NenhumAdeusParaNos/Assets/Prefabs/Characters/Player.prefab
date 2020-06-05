@@ -430,6 +430,11 @@ MonoBehaviour:
   dialogueCooldown: 1
   launchTrajectory: {fileID: 8794528357159715873}
   rightHand: {fileID: 5858504651538625744}
+  clip_hit: {fileID: 8300000, guid: 85bdac7d73ea4e64eb50bbfd5159aab6, type: 3}
+  clip_heal: {fileID: 8300000, guid: 57906ffbf0761c14cb0c5a0977a6480e, type: 3}
+  clip_dash: {fileID: 8300000, guid: 9d40a7940b785e84fb1335eceb3ac710, type: 3}
+  clip_shieldHit: {fileID: 8300000, guid: b9f88880be927ac49883b697880315eb, type: 3}
+  clip_shieldBreak: {fileID: 8300000, guid: 519afedd8382af14b949922bf4c30c4f, type: 3}
 --- !u!54 &8794528357842232906
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -455,7 +460,8 @@ AudioSource:
   m_GameObject: {fileID: 8794528357842232904}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 6934096642225731408, guid: 760150d211b628c41981441caca99620,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

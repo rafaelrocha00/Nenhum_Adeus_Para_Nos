@@ -62,7 +62,7 @@ public class CalendarController : MonoBehaviour
         }
         if ((hour == 6) || (hour == 18))
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 2; i++)
             {
                 GameManager.gameManager.questGenerator.GenQuest();
             }

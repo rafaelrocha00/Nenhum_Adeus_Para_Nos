@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager gameManager;
+    [HideInInspector] public AudioController audioController;
     [HideInInspector] public DialogueController dialogueController;
     [HideInInspector] public BattleController battleController;
     [HideInInspector] public TimeController timeController;
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
         }
 
         //mainHud = GameObject.Find("/MainHud").GetComponent<MainHud>();
+        audioController = GetComponent<AudioController>();
         dialogueController = GetComponent<DialogueController>();
         battleController = GetComponent<BattleController>();
         timeController = GetComponent<TimeController>();

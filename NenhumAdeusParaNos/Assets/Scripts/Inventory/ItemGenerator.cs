@@ -36,7 +36,7 @@ public class ItemGenerator : MonoBehaviour
         newItemRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, newItemRect.sizeDelta.x * item.slotSize.x);
         newItemRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, newItemRect.sizeDelta.y * item.slotSize.y);
         newItemObj.GetComponent<Image>().sprite = item.itemSprite;
-        newItemObj.GetComponent<ItemButton>().Item = Instantiate(item);
+        newItemObj.GetComponent<ItemButton>().Item = item;// Instantiate(item);
 
         return newItemObj.GetComponent<ItemButton>();
     }

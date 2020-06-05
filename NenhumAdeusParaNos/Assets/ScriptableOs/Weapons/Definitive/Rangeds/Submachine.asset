@@ -20,6 +20,13 @@ MonoBehaviour:
     type: 3}
   maxRange: 14
   delayToShoot: 0.1
+  stopToShoot: 0
   auto: 1
   maxAmmo: 30
   reloadTime: 3
+  recoil: 0
+  clip_shoots:
+  - {fileID: 8300000, guid: a1cb57334e0dd20469f59643c8b82756, type: 3}
+  - {fileID: 8300000, guid: 908be659a0b54694f8f0ac43b448b0dd, type: 3}
+  - {fileID: 8300000, guid: e8adccc94d0b93f4b9f64825880a6100, type: 3}
+  clip_reload: {fileID: 8300000, guid: 01c149064cab3544f92e60c08c702e74, type: 3}

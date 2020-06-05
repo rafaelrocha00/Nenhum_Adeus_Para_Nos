@@ -242,9 +242,10 @@ public class DialogueController : MonoBehaviour
             //    CheckForDialogueOptions();
             //    writing = false;
             //}
-            CheckForDialogueOptions();
+            //CheckForDialogueOptions();
             StopCoroutine("NextStringCountdown");
             UpdateText(actualDialogue.NextString());
+            CheckForDialogueOptions();        
             //Debug.Log("Deu nextstring");
             if (activeMainDialogue && !waitingForAnswer && ((actualDialogue is DialogueBattle) || !waitingForAnswerBattle))
                 StartCoroutine("NextStringCountdown");
@@ -285,14 +286,14 @@ public class DialogueController : MonoBehaviour
         if (actualDialogue is DialogueWithChoice)
         {
             DialogueWithChoice aux = (DialogueWithChoice)actualDialogue;
-            //if (aux.LastString)
-            //{
+            if (aux.LastString)
+            {
                 //GameManager.gameManager.MainHud.OpenDialogueOptTab(aux);
                 aux.MyNPC.SetWaitingForAnswer();
                 dialoguePopUp.StartTimer(12);
                 waitingForAnswer = true;
                 //GameManager.gameManager.MainHud.WaitingForAnswer(true);
-            //}
+            }
         }        
     }
 

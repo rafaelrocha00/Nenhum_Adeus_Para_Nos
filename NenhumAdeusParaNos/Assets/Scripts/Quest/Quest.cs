@@ -48,7 +48,7 @@ public abstract class Quest : ScriptableObject
         cancelled = false;
         accepted = true;
         GameManager.gameManager.questController.AcceptQuest(this);
-        if (!generated) GameManager.gameManager.questController.mainNotes.AddNote(acceptText);
+        if (!generated) GameManager.gameManager.questController.AddNote(acceptText);//mainNotes.AddNote(acceptText);
     }
 
     public void Complete()
@@ -60,7 +60,7 @@ public abstract class Quest : ScriptableObject
 
         if (!generated)
         {
-            GameManager.gameManager.questController.mainNotes.AddNote(completeText);
+            GameManager.gameManager.questController.AddNote(completeText);//mainNotes.AddNote(completeText);
             for (int i = 0; i < quest_itemRewards.Length; i++)
             {
                 for (int j = 0; j < quest_itemRQuants[i]; j++)

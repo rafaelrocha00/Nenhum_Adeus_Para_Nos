@@ -56,7 +56,7 @@ public class QuestGenerator : MonoBehaviour
             firstGen = false;
             GenKilQuest();
             GenDelQuest();
-            GenRepQuest();
+            //GenRepQuest();
         }
     }
 
@@ -157,7 +157,8 @@ public class QuestGenerator : MonoBehaviour
                 GenDelQuest();
                 return;
             }
-            GenRepQuest();
+            //GenRepQuest();
+            GenKilQuest();
         }
     }
 

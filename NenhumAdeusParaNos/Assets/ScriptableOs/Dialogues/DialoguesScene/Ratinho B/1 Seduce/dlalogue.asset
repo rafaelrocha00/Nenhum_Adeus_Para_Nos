@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4825ceb27fa0f34c9ae7d003d92d851, type: 3}
+  m_Name: dlalogue
+  m_EditorClassIdentifier: 
+  allStrings:
+  - "Se voc\xEA quer falar sobre o pagamento do meu irm\xE3o..."
+  - "Posso te fazer uma oferta, o qu\xEA acha? Com o dobro do pagamento."
+  mcStrings: 
+  dialogueChoices:
+  - {fileID: 11400000, guid: b5b958ca8a3d6d24bb4df7a7c4a6b792, type: 2}
+  - {fileID: 11400000, guid: 4fc5b6132ae2ae74ab43ef8bc9d8a596, type: 2}
+  - {fileID: 11400000, guid: dcd538fc51a0957478c456b3fc5f27b7, type: 2}
+  options: []

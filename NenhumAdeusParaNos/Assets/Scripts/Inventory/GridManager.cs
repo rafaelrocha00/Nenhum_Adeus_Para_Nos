@@ -173,7 +173,7 @@ public class GridManager : MonoBehaviour
         {
             for (int j = 0; j < ySize; j++)
             {
-                if (invenGrid[i, j].ThisItemButton != null && invenGrid[i, j].ThisItemButton.Item.itemName.Equals(itemName))
+                if (invenGrid[i, j].ThisItemButton != null && invenGrid[i, j].ThisItemButton.Item.itemName.Contains(itemName))
                     itemsFound.Add(invenGrid[i, j].ThisItemButton.Item);
             }
         }
