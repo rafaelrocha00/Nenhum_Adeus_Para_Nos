@@ -875,14 +875,14 @@ public class Player : MonoBehaviour, BattleUnit
             if (myWeapon is MeleeW)
             {
                 myWeapon = equippedRanged;
-                equippedRanged.gameObject.SetActive(true);
-                equippedMelee.gameObject.SetActive(false);
+                equippedRanged.EnableModel(true);//gameObject.SetActive(true);
+                equippedMelee.EnableModel(false);//gameObject.SetActive(false);
             }
             else
             {
                 myWeapon = equippedMelee;
-                equippedRanged.gameObject.SetActive(false);
-                equippedMelee.gameObject.SetActive(true);
+                equippedRanged.EnableModel(false);//gameObject.SetActive(false);
+                equippedMelee.EnableModel(true);//gameObject.SetActive(true);
             }
         }
     }
@@ -893,13 +893,13 @@ public class Player : MonoBehaviour, BattleUnit
         {
             if (!isWeaponHide)
             {
-                equippedMelee.gameObject.SetActive(false);
-                equippedRanged.gameObject.SetActive(false);
+                equippedMelee.EnableModel(true);//gameObject.SetActive(false);
+                equippedRanged.EnableModel(true);//gameObject.SetActive(false);
             }
             else
             {
-                if (myWeapon is MeleeW) equippedMelee.gameObject.SetActive(true);
-                else equippedRanged.gameObject.SetActive(true);
+                if (myWeapon is MeleeW) equippedMelee.EnableModel(true);//gameObject.SetActive(true);
+                else equippedRanged.EnableModel(true);//gameObject.SetActive(true);
             }
             isWeaponHide = !isWeaponHide;
         }
@@ -1135,13 +1135,14 @@ public class Player : MonoBehaviour, BattleUnit
     void BackToIdle()
     {
         animator.SetBool("DefendedAttack", false);
-        //animator.SetBool("Damaging", false);
+        animator.SetBool("Damaging", false);
     }
 
     public void Die()
     {
         GameManager.gameManager.dialogueController.EndDialogue();
         GameManager.gameManager.MainHud.GameOver();
+        animator.SetBool("Died", true);
     }
 
     public Vector3 GetPos()

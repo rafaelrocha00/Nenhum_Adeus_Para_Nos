@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b7c19e5b9017304ebf2e47227c6a5e4, type: 3}
+  m_Name: Result3
+  m_EditorClassIdentifier: 
+  allStrings:
+  - "V-vagabundo\u2026 Fala o que voc\xEA quer.      "
+  mcStrings: 
+  apCombination: 000000000000000000000000
+  posEffects:
+  - {fileID: 11400000, guid: dd7b65a788c260a498b038e1757dad9a, type: 2}
+  chancePercentages:
+  - 70
+  life_staminaCond: 0
+  life_staminaRequiredPerc: 0

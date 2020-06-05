@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: PlayerDefaultMelee
   m_EditorClassIdentifier: 
   weaponName: "Bast\xE3o El\xE9trico"
-  defaultDamage: 12
+  defaultDamage: 25
   defaultAttackSpeed: 0.5
   range: 0
+  stopToAtk: 0
+  multAtk: 0
   special: {fileID: 11400000, guid: e936d90b05ff3b34b844102f3564e19f, type: 2}

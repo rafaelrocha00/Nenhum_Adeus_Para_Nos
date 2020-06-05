@@ -9,6 +9,8 @@ public abstract class Weapon : MonoBehaviour
     [HideInInspector] protected WeaponConfig weaponConfig;
     public WeaponConfig WeaponConfig { get { return weaponConfig; } set { weaponConfig = value; } }
 
+    public GameObject weaponModel;
+
     //public float defaultDamage;
     //public float defaultAtkSpeed;
     //public float range;
@@ -20,5 +22,10 @@ public abstract class Weapon : MonoBehaviour
     public float GetRange()
     {
         return weaponConfig.range;
+    }
+
+    public void EnableModel(bool value)
+    {
+        if (weaponModel != null) weaponModel.SetActive(value);
     }
 }
