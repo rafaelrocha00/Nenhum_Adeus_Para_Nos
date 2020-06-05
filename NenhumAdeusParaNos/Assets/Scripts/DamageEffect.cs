@@ -43,5 +43,7 @@ public class DamageEffect : MonoBehaviour
         Graphics.Blit(src, dst, effectMaterial);
 
         audioSource.volume = density;
+        if (density > 0.6) audioSource.volume = density / 2;
+        else audioSource.volume = 0;
     }
 }

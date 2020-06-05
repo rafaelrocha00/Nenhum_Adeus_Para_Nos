@@ -410,12 +410,12 @@ public class Player : MonoBehaviour, BattleUnit
                     //stamina_regen /= 2;
                     animator.SetBool("Defending", true);
                     if (!slowMoving) StartCoroutine(Slowdown(defaultSlow));
-                    GameManager.gameManager.MainHud.ShowHideDefenseBar();
+                    //GameManager.gameManager.MainHud.ShowHideDefenseBar();
                     shieldControl.gameObject.SetActive(true);
                     UpdateDefense(0);
                 }
             }
-            if (Input.GetMouseButtonUp(1))
+            if (Input.GetKeyUp(KeyCode.LeftShift))
             {
                 if (defending) CancelDefense();
             }
@@ -728,7 +728,7 @@ public class Player : MonoBehaviour, BattleUnit
         //stoppedStaminaRegen = false;
         animator.SetBool("Defending", false);
         CancelSlow();
-        GameManager.gameManager.MainHud.ShowHideDefenseBar();
+        //GameManager.gameManager.MainHud.ShowHideDefenseBar();
         if (defense_life > 0) shieldControl.gameObject.SetActive(false);
     }
 
@@ -1236,7 +1236,9 @@ public class Player : MonoBehaviour, BattleUnit
     }
     void UpdateLife()
     {
-        GameManager.gameManager.MainHud.UpdateLife(charStats.LifePercentage());
+        //GameManager.gameManager.MainHud.UpdateLife(charStats.LifePercentage());
+        try { GameManager.gameManager.MainCamera.GetComponent<DamageEffect>().density = 1 - charStats.LifePercentage(); }
+        catch { }
     }
     public void UpdateDefense(float value)
     {
@@ -1250,7 +1252,7 @@ public class Player : MonoBehaviour, BattleUnit
             playedShieldBreakeSong = true;
         }
         if (shieldControl.gameObject.activeSelf) shieldControl.SetShieldValue(defense_life / defense_maxLife);
-        GameManager.gameManager.MainHud.UpdateDefense(defense_life / defense_maxLife);
+        //GameManager.gameManager.MainHud.UpdateDefense(defense_life / defense_maxLife);
     }
     public bool IsShiledBroken()
     {

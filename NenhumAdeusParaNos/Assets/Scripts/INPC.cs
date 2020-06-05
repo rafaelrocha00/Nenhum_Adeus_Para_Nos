@@ -506,11 +506,13 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
     public void ReceiveBattleDialogue(DialogueBattle playerDialogue)
     {
         Debug.Log("Dialogo Recebido");
-
+        Vector3 lookPos = new Vector3(playerDialogue.MainCharacter.transform.position.x, transform.position.y, playerDialogue.MainCharacter.transform.position.z);
         if (!inBattle && waitingForAnswer)
         {
             //Debug.Log("ALOALOALO");
             GameManager.gameManager.dialogueController.ChooseOption((int)playerDialogue.approachType, expressions[1]);
+            //Vector3 lookPos = new Vector3(playerDialogue.MainCharacter.transform.position.x, transform.position.y, playerDialogue.MainCharacter.transform.position.z);
+            transform.LookAt(lookPos);
             waitingForAnswer = false;
         }
         else if (inBattle)
@@ -583,6 +585,7 @@ public class INPC : NPC/*Interactives*//*, BattleUnit*/
         }
         else
         {
+            transform.LookAt(lookPos);
             if (questDialogues.Length > 0)// && !myQuestAccepeted)
             {
                 for (int i = 0; i < questDialogues.Length; i++)
