@@ -55,6 +55,9 @@ public class QuestController : MonoBehaviour
         {
             activeQuests.RemoveAt(FindQuestIndex(q.ID));
             completedQuests.Add(q);
+
+            //Enviar pro servidor o nome do player e a recompensa
+            if (q.generated) Client_UDP.Singleton.SendToServer("Jogador: " + GameManager.gameManager.PlayerName + " | Maior Recompensa: $" + q.MoneyReward.ToString("00") + "(s)");
         }
         catch (System.Exception)
         {

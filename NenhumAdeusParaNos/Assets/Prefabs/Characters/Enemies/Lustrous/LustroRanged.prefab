@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a14018e7f2c6c3458d2d183fff134f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponModel: {fileID: 0}
   rangedWConfig: {fileID: 11400000, guid: f0d194c883a1d0d489020c09c9bd4907, type: 2}
 --- !u!1 &2451270583671630251
 GameObject:
@@ -260,9 +261,9 @@ SphereCollider:
   m_GameObject: {fileID: 2982613457446845094}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 6.92
+  m_Radius: 2.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3818628545052251915
 MonoBehaviour:
@@ -276,6 +277,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde3a45690b66a64782b5e5353020fee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonToPressPref: {fileID: 6638989974725394705, guid: 1a98f6b0eb2747648aedcb7a647713cd,
+    type: 3}
+  popUPHigh: 3
   anim: {fileID: 6854813743264550262}
   lifeBar: {fileID: 8257513194562313289}
   myWeapon: {fileID: 0}
@@ -292,6 +296,7 @@ MonoBehaviour:
   hasOtherNPCTalk: 0
   theOtherNPC: {fileID: 0}
   waitingForAnswer: 0
+  dialogues: {fileID: 0}
   questDialogues: []
   dialogueWithOtherNPC: {fileID: 0}
   myDialogues:

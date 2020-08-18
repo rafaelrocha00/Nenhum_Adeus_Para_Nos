@@ -12,6 +12,7 @@ public class QuestGenerator : MonoBehaviour
 
     public List<string> contractorNames = new List<string>();
     #region KillQuests
+    public int maxEnemies = 10;
     public List<string> locationNames = new List<string>();
     public List<string> possibleTargetNames = new List<string>();
     List<GameObject> enemy_communist = new List<GameObject>();
@@ -22,6 +23,8 @@ public class QuestGenerator : MonoBehaviour
     #endregion
 
     #region DeliveryQuest
+    public int maxItensQuant = 10;
+    public int maxDifItens = 2;
     public List<Item> itemsToDel = new List<Item>();
     public List<string> storageNames = new List<string>();
     public GameObject[] chests;
@@ -196,7 +199,7 @@ public class QuestGenerator : MonoBehaviour
             //}
             //else
             //{
-            rand = Random.Range(1, 11);
+            rand = Random.Range(1, maxEnemies + 1);
 
             kq.enemyType = (INPC.EnemyType)Random.Range(0, 4);
             if (kq.enemyType == INPC.EnemyType.Lustro)
@@ -252,7 +255,7 @@ public class QuestGenerator : MonoBehaviour
     {
         Debug.Log("Gerando DELIVERY quest");
         DeliveryQuest newQuest = ScriptableObject.CreateInstance("DeliveryQuest") as DeliveryQuest;
-        int rand = Random.Range(1, 3);
+        int rand = Random.Range(1, maxDifItens + 1);
         newQuest.itemsToDelivery = new Item[rand];
         newQuest.itemsQuant = new int[rand];
         string itemsTD = "";
@@ -261,7 +264,7 @@ public class QuestGenerator : MonoBehaviour
         {
             if (rand > 1 && i == rand - 1) itemsTD += "& ";
             newQuest.itemsToDelivery[i] = itemsToDel[Random.Range(0, itemsToDel.Count)];
-            newQuest.itemsQuant[i] = Random.Range(1, 11);
+            newQuest.itemsQuant[i] = Random.Range(1, maxItensQuant + 1);
             itemsTD += newQuest.itemsToDelivery[i].itemName + " " + newQuest.itemsQuant[i] + "x ";
 
             reward += newQuest.itemsToDelivery[i].slotSize.x * newQuest.itemsToDelivery[i].slotSize.y * newQuest.itemsQuant[i];

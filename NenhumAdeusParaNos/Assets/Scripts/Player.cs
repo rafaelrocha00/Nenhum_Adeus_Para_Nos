@@ -50,6 +50,8 @@ public class Player : MonoBehaviour, BattleUnit
     public bool Defending { get { return defending; } }
     [SerializeField] float defense_maxLife = 40.0f;
     public float Defense_MaxLife { get { return defense_maxLife; } }
+    public float defense_parryGap = 0.1f;
+    float defense_parryTimer = 0;    
     float defense_life;
     //public float defense_slow = 40.0f;//Porcentagem da diminuição de velocidade;
 
@@ -117,8 +119,8 @@ public class Player : MonoBehaviour, BattleUnit
     public bool Interacting { get { return interacting; } set { interacting = value; } }
     [HideInInspector] bool canInteract = true;
     public bool CanInteract { get { return canInteract; } set { canInteract = value; } }
-    [HideInInspector] Interactives interactingObj;
-    public Interactives InteractingObj { get { return interactingObj; } set { interactingObj = value; } }
+    [HideInInspector] List<Interactives> interactingObjs = new List<Interactives>();
+    public List<Interactives> InteractingObjs { get { return interactingObjs; } set { interactingObjs = value; } }
 
     #region Audio Clips
     public AudioClip clip_hit;
@@ -341,10 +343,24 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (interactingObj != null && canInteract && CanFight() && !GameManager.gameManager.dialogueController.ActiveMainDialogue)
+            if (interactingObjs != null && interactingObjs.Count > 0 && canInteract && CanFight() && !GameManager.gameManager.dialogueController.ActiveMainDialogue)
             {
+                Debug.Log("Achando o npc mais na sua frente");
                 interacting = true;
-                interactingObj.Interact(this);
+                Interactives aux = interactingObjs[0];
+                for (int i = 0; i < interactingObjs.Count; i++)
+                {
+                    //Debug.Log("Dots: " + Vector3.Dot((interactingObjs[i].transform.position - this.transform.position).normalized, transform.forward) + " | " + Vector3.Dot((aux.transform.position - this.transform.position).normalized, transform.forward));
+                    if (Vector3.Dot((interactingObjs[i].transform.position - this.transform.position).normalized, transform.forward) >
+                        Vector3.Dot((aux.transform.position                - this.transform.position).normalized, transform.forward))
+                    {
+                        Debug.Log("atualizando o mais na frente");
+                        aux = interactingObjs[i];
+                    }
+                    Debug.Log(aux.name);
+                }
+
+                aux.Interact(this);
                 canInteract = false;
             }
         }
@@ -361,18 +377,21 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            equippedDialogueType = 0;
-            GameManager.gameManager.MainHud.EquipDialogue(0);
+            //equippedDialogueType = 0;
+            //GameManager.gameManager.MainHud.EquipDialogue(0);
+            GameManager.gameManager.dialogueController.ChooseOption(null, null, 0);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            equippedDialogueType = 1;
-            GameManager.gameManager.MainHud.EquipDialogue(1);
+            //equippedDialogueType = 1;
+            //GameManager.gameManager.MainHud.EquipDialogue(1);
+            GameManager.gameManager.dialogueController.ChooseOption(null, null, 1);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            equippedDialogueType = 2;
-            GameManager.gameManager.MainHud.EquipDialogue(2);
+            //equippedDialogueType = 2;
+            //GameManager.gameManager.MainHud.EquipDialogue(2);
+            GameManager.gameManager.dialogueController.ChooseOption(null, null, 2);
         }
         //else if (Input.GetKeyDown(KeyCode.Alpha4))
         //{
@@ -387,14 +406,14 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            UseDialogue();
+            //UseDialogue();
         }
 
         if (inBattle)
         {
             if (Input.GetMouseButtonDown(2))
             {
-                LockAim();
+                //LockAim();
             }
 
             //if (Input.GetKeyDown(KeyCode.V))
@@ -419,6 +438,7 @@ public class Player : MonoBehaviour, BattleUnit
             {
                 if (defending) CancelDefense();
             }
+            if (defending) defense_parryTimer += Time.deltaTime;
 
             //if (defending && stamina > 0)
             //{
@@ -730,6 +750,7 @@ public class Player : MonoBehaviour, BattleUnit
         CancelSlow();
         //GameManager.gameManager.MainHud.ShowHideDefenseBar();
         if (defense_life > 0) shieldControl.gameObject.SetActive(false);
+        defense_parryTimer = 0.0f;
     }
 
     void CheckLook_WalkDir(Vector3 moveDir, float xmov, float zmov)
@@ -1081,6 +1102,7 @@ public class Player : MonoBehaviour, BattleUnit
     }
     void CombatSet()
     {
+        InteractingObjs.Clear();
         animator.SetLayerWeight(1, 0);
         inBattle = true;
         if (myCompanion != null) myCompanion.StartBattle();
@@ -1119,9 +1141,16 @@ public class Player : MonoBehaviour, BattleUnit
         bool aux = charStats.ReceiveDamage(damage);
         if (defending)
         {
-            GameManager.gameManager.audioController.PlayEffect(clip_shieldHit);
-            animator.SetBool("DefendedAttack", true);
-            Invoke("BackToIdle", 0.1f);
+            if (defense_parryTimer <= defense_parryGap)
+            {
+                Parry();
+            }
+            else
+            {
+                GameManager.gameManager.audioController.PlayEffect(clip_shieldHit);
+                animator.SetBool("DefendedAttack", true);
+                Invoke("BackToIdle", 0.1f);
+            }
         }
         else
         {
@@ -1136,6 +1165,12 @@ public class Player : MonoBehaviour, BattleUnit
     {
         animator.SetBool("DefendedAttack", false);
         animator.SetBool("Damaging", false);
+    }
+
+    void Parry()
+    {
+        //animações bla bla bla
+        Debug.Log("Parry");
     }
 
     public void Die()

@@ -10,17 +10,21 @@ public class DialogueOption : MonoBehaviour
     Dialogue myDialogue;
     INPC actualNPC;
 
-
     private void Start()
     {
         optionText = GetComponent<Text>();
     }
 
-    public void SetOption(string text, Dialogue dialogue, INPC theNPC, Player player)
+    public void SetOption(string text, int id, Dialogue dialogue, INPC theNPC, Player player)
     {
         optionText = GetComponent<Text>();
 
-        optionText.text = text;
+        if (!text.Equals(""))
+        {
+            optionText.text = (id + 1).ToString() + ". " + text;
+            GetComponent<Button>().enabled = true;
+        }
+        else GetComponent<Button>().enabled = false;
         myDialogue = dialogue;
         actualNPC = theNPC;
 
@@ -28,11 +32,15 @@ public class DialogueOption : MonoBehaviour
         dialogue.MainCharacter = player;
     }
 
+    public void CleanText()
+    {
+        optionText.text = "";
+    }
+
     public void Choose()
     {
         //actualNPC.ChangeDialogue(myDialogue);
         //actualNPC.NextString();
-        GameManager.gameManager.MainHud.CloseDialogueOptTab();
-        GameManager.gameManager.dialogueController.ChangeDialogue(myDialogue);        
+        GameManager.gameManager.dialogueController.ChooseOption(myDialogue, myDialogue.MyNPC.expressions[1]);          
     }
 }

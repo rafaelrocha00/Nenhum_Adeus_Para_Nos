@@ -315,6 +315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bd36a80ecd4f094da93b8565a473ab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponModel: {fileID: 0}
   meleeConfig: {fileID: 11400000, guid: 41430faab6a3d504e825f38d0a0d7929, type: 2}
   anim: {fileID: 0}
   sCollider: {fileID: 6019805319482680276}
@@ -379,7 +380,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 6.52
+  m_Radius: 2.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2129376979539924005
 MonoBehaviour:
@@ -393,6 +394,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde3a45690b66a64782b5e5353020fee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonToPressPref: {fileID: 6638989974725394705, guid: 1a98f6b0eb2747648aedcb7a647713cd,
+    type: 3}
+  popUPHigh: 3
   anim: {fileID: 6519655210772065340}
   lifeBar: {fileID: 1313677962489035489}
   myWeapon: {fileID: 2358577263071711676}
@@ -409,6 +413,7 @@ MonoBehaviour:
   hasOtherNPCTalk: 0
   theOtherNPC: {fileID: 0}
   waitingForAnswer: 0
+  dialogues: {fileID: 0}
   questDialogues: []
   dialogueWithOtherNPC: {fileID: 0}
   myDialogues:
@@ -424,6 +429,7 @@ MonoBehaviour:
   dashDamage: 25
   granadeToThrow: {fileID: 0}
   granadeInstPoint: {fileID: 0}
+  clip_death: {fileID: 0}
 --- !u!195 &5702758178265480378
 NavMeshAgent:
   m_ObjectHideFlags: 0

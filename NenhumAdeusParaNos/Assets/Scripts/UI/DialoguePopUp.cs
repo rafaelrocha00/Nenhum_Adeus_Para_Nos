@@ -18,6 +18,9 @@ public class DialoguePopUp : MonoBehaviour
 
     public Image timerBar;
 
+    public GameObject dialogueOptionsTab;
+    public DialogueOption[] dialogueOptions;
+
     private void Awake()
     {
         attachedTransform = transform;
@@ -100,5 +103,22 @@ public class DialoguePopUp : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         timerBar.transform.parent.gameObject.SetActive(false);
+    }
+
+    public void OpenChoicesTab(DialogueWithChoice d)
+    {
+        dialogueOptionsTab.SetActive(true);
+        for (int i = 0; i < d.options.Length; i++)
+        {
+            dialogueOptions[i].SetOption(d.options[i], i, d.dialogueChoices[i], d.MyNPC, d.MainCharacter);
+        }
+    }
+    public void CloseChoicesTab()
+    {
+        dialogueOptionsTab.SetActive(false);
+        for (int i = 0; i < dialogueOptions.Length; i++)
+        {
+            dialogueOptions[i].CleanText();
+        }
     }
 }

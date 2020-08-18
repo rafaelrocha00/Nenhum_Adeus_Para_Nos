@@ -158,9 +158,9 @@ public class Storage : Interactives
         return myGrids[actualPage].CheckItemQuant(itemName);
     }
 
-    public override void OnExit()
+    public override void OnExit(Player p)
     {
-        base.OnExit();
+        base.OnExit(p);
         OpenCloseStorage(false);
     }
 

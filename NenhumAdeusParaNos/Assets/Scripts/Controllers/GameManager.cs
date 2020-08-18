@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
 
     public float[][] personalities = new float[4][];
 
+    public string PlayerName = "guest";
+
     private void Awake()
     {
         if (gameManager != null && gameManager != this)
@@ -76,5 +78,7 @@ public class GameManager : MonoBehaviour
                 dialogueController.SetCam();
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.O)) Client_UDP.Singleton.SendToServer("Jogador: " + PlayerName + " | Maior Recompensa: 500,68(s)");
     }
 }

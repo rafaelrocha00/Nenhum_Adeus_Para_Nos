@@ -31,12 +31,20 @@ public class DialogueWithChoice : Dialogue
             //myNPC.EndDialogue();
             actualID++;
             CheckMCStrings();
-            //GameManager.gameManager.MainHud.OpenDialogueOptTab(this);
+            GameManager.gameManager.dialogueController.OpenDialogueOptTab(this);
             lastString = true;
-            return allStrings[actualID];
+            int i = actualID;
+            ResetDialogue();
+            return allStrings[i];
             //return "";
         }
         else return "";
+    }
+
+    public bool HasThisIndex(int id)
+    {
+        if (options[id].Equals("")) return false;
+        else return true;
     }
 
     public DialogueQuestTrigger SearchQuestDialogue()

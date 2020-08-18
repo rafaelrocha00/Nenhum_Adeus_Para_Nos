@@ -105,7 +105,8 @@ public class DialogueController : MonoBehaviour
     }
     public void SetCam()
     {
-        mainCam = GameManager.gameManager.MainCamera.GetComponent<Camera>();
+        try { mainCam = GameManager.gameManager.MainCamera.GetComponent<Camera>(); }
+        catch { }
     }
 
     //private void Update()
@@ -204,17 +205,26 @@ public class DialogueController : MonoBehaviour
         NextString();
         //Debug.Log("Mudando dialogo");
     }
-    public void ChooseOption(int index, Sprite sp)
+    public void ChooseOption(Dialogue d, Sprite sp, int index = -1)
     {
         try
         {
             Debug.Log("ChoosingDialogue");
-            Dialogue newDialogue = lastDialogueWithChoice.dialogueChoices[index];
-            newDialogue.MyNPC = lastDialogueWithChoice.MyNPC;
-            newDialogue.MainCharacter = lastDialogueWithChoice.MainCharacter;
+            Dialogue newD = d;
+            if (index > -1)
+            {                
+                DialogueWithChoice dwc = (DialogueWithChoice)actualDialogue;
+                if (!dwc.HasThisIndex(index)) return;
+                newD = dwc.dialogueChoices[index];
+                sp = dwc.MyNPC.expressions[1];
+            }
+            CloseDialogueOptTab();
+            //Dialogue newDialogue = lastDialogueWithChoice.dialogueChoices[index];
+            //newDialogue.MyNPC = lastDialogueWithChoice.MyNPC;
+            //newDialogue.MainCharacter = lastDialogueWithChoice.MainCharacter;
             //StopCoroutine("NextStringCountdown");
             waitingForAnswer = false;
-            StartDialogue(newDialogue, lastDialogueWithChoice.MyNPC.transform, sp);            
+            StartDialogue(/*newDialogue*/newD, lastDialogueWithChoice.MyNPC.transform, sp);            
             //GameManager.gameManager.MainHud.WaitingForAnswer(false);
         }
         //catch { Debug.Log("Não é de opção"); }
@@ -225,7 +235,7 @@ public class DialogueController : MonoBehaviour
         catch (System.Exception)
         {
 
-            throw;
+            Debug.Log("Não pode escolher");
         }
     }
 
@@ -245,7 +255,7 @@ public class DialogueController : MonoBehaviour
             //CheckForDialogueOptions();
             StopCoroutine("NextStringCountdown");
             UpdateText(actualDialogue.NextString());
-            CheckForDialogueOptions();        
+            //CheckForDialogueOptions();        
             //Debug.Log("Deu nextstring");
             if (activeMainDialogue && !waitingForAnswer && ((actualDialogue is DialogueBattle) || !waitingForAnswerBattle))
                 StartCoroutine("NextStringCountdown");
@@ -278,7 +288,18 @@ public class DialogueController : MonoBehaviour
             //StartCoroutine(WriteString(dialogueString));
             dialoguePopUp.SetText(dialogueString);
         }
+        else EndDialogue();
         //dialogueText.text = dialogueString;
+    }
+
+    public void OpenDialogueOptTab(DialogueWithChoice d)
+    {
+        dialoguePopUp.OpenChoicesTab(d);
+        waitingForAnswer = true;
+    }
+    public void CloseDialogueOptTab()
+    {
+        dialoguePopUp.CloseChoicesTab();
     }
 
     void CheckForDialogueOptions()

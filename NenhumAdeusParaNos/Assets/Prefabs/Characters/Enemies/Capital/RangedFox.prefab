@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a14018e7f2c6c3458d2d183fff134f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponModel: {fileID: 0}
   rangedWConfig: {fileID: 11400000, guid: 59712a1302265bc4b91041e66c15949f, type: 2}
 --- !u!1 &2845950286873223862
 GameObject:
@@ -241,9 +242,9 @@ SphereCollider:
   m_GameObject: {fileID: 3179029023762706875}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 6.92
+  m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3567993575966956566
 MonoBehaviour:
@@ -257,6 +258,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde3a45690b66a64782b5e5353020fee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonToPressPref: {fileID: 6638989974725394705, guid: 1a98f6b0eb2747648aedcb7a647713cd,
+    type: 3}
+  popUPHigh: 4
   anim: {fileID: 7558995131082767392}
   lifeBar: {fileID: 8638719574170113876}
   myWeapon: {fileID: 3748087364147568333}
@@ -270,10 +274,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 0a71d962e9cbec847a26a3921e38913c, type: 3}
   thisPersonality: 0
   enemyType: 2
-  faction: 1
   hasOtherNPCTalk: 0
   theOtherNPC: {fileID: 0}
   waitingForAnswer: 0
+  dialogues: {fileID: 0}
   questDialogues: []
   dialogueWithOtherNPC: {fileID: 0}
   myDialogues:
@@ -290,6 +294,7 @@ MonoBehaviour:
   granadeToThrow: {fileID: 2641741948507385781, guid: da5fd4389e9546947a04a560fe44a462,
     type: 3}
   granadeInstPoint: {fileID: 4274657388609483662}
+  clip_death: {fileID: 0}
 --- !u!195 &1349485008943185663
 NavMeshAgent:
   m_ObjectHideFlags: 0

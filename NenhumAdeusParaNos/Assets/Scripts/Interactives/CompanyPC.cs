@@ -16,6 +16,9 @@ public class CompanyPC : Interactives
 
     public GameObject questMarker;
 
+    public Transform rewardsArea;
+    public GameObject rewardRankP;
+
     #region Pc UI
     #region Jobs
     public Transform questList_tab;
@@ -145,11 +148,13 @@ public class CompanyPC : Interactives
         SetResource();
 
         GenerateJobs();
+
+        SetRanking();
     }
 
-    public void ExitPC()
+    public void ExitPC(Player p)
     {
-        base.OnExit();
+        base.OnExit(p);
 
         cam.TargetingPlayer = true;
         cam.LerpRot(cam.DefaultRotation, 1.0f);
@@ -210,6 +215,36 @@ public class CompanyPC : Interactives
                 GameManager.gameManager.companyController.quests_onPC.Enqueue(quest_list[i].Quest);
             }
             enqueuedQuests = true;
+        }
+    }
+
+    public void SetRanking()
+    {
+        string msg = Client_UDP.Singleton.SendToServer("load(ls)");
+
+        if (msg.Contains("(sc)"))
+        {
+            //try
+            //{
+            //}
+            //catch { }
+            for (int i = 0; i < rewardsArea.childCount; i++)
+            {
+                Destroy(rewardsArea.GetChild(i).gameObject);
+            }
+
+            string allScores = msg.Split(')')[1];
+            allScores = allScores.Replace("\n", "*");
+            print(allScores);
+
+            string[] scores = allScores.Split('*');
+
+            for (int i = 0; i < scores.Length - 1; i++)
+            {
+                print(scores[i]);
+                GameObject go = Instantiate(rewardRankP, rewardsArea, false) as GameObject;
+                go.GetComponent<Text>().text = scores[i];
+            }
         }
     }
 }

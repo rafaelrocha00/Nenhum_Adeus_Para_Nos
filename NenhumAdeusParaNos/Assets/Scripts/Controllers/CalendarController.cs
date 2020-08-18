@@ -28,7 +28,7 @@ public class CalendarController : MonoBehaviour
         if (timer >= timeScale)
         {
             timer = 0.0f;
-            UpdateMin();
+            if (SceneManager.GetActiveScene().buildIndex > 1) UpdateMin();
         }              
     }
 

@@ -49,22 +49,22 @@ public class MainHud : MonoBehaviour
     public Text itemDesc_description;
 
     #region Opçoes_de_Dialogo
-    public void OpenDialogueOptTab(DialogueWithChoice dialogue)
-    {
-        if (GameManager.gameManager.battleController.ActiveBattle)
-            GameManager.gameManager.timeController.StartSlowdown();
+    //public void OpenDialogueOptTab(DialogueWithChoice dialogue)
+    //{
+    //    if (GameManager.gameManager.battleController.ActiveBattle)
+    //        GameManager.gameManager.timeController.StartSlowdown();
 
-        activeOptionsToChoose = true;
-        dialogueOptionsTab.SetActive(true);
-        for (int i = 0; i < dialogue.options.Length; i++)
-        {
-            GameObject newOptionObj = Instantiate(dialogueOptionPref, dialogueOptionsTab.transform, false) as GameObject;
-            DialogueOption newOption = newOptionObj.GetComponent<DialogueOption>();
+    //    activeOptionsToChoose = true;
+    //    dialogueOptionsTab.SetActive(true);
+    //    for (int i = 0; i < dialogue.options.Length; i++)
+    //    {
+    //        GameObject newOptionObj = Instantiate(dialogueOptionPref, dialogueOptionsTab.transform, false) as GameObject;
+    //        DialogueOption newOption = newOptionObj.GetComponent<DialogueOption>();
 
-            newOption.SetOption(dialogue.options[i], dialogue.dialogueChoices[i], dialogue.MyNPC, dialogue.MainCharacter);
-            //Delegar escolhas
-        }
-    }
+    //        //newOption.SetOption(dialogue.options[i], dialogue.dialogueChoices[i], dialogue.MyNPC, dialogue.MainCharacter);
+    //        //Delegar escolhas
+    //    }
+    //}
 
     public void CloseDialogueOptTab()
     {
