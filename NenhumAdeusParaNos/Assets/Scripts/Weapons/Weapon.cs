@@ -11,6 +11,9 @@ public abstract class Weapon : MonoBehaviour
 
     public GameObject weaponModel;
 
+    [SerializeField] bool equipped = false;
+    public bool isEquipped { get { return equipped; } set { equipped = value; } }
+
     //public float defaultDamage;
     //public float defaultAtkSpeed;
     //public float range;

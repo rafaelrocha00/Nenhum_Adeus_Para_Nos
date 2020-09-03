@@ -45,9 +45,11 @@ public class CamMove : MonoBehaviour
         if (targetingPlayer || inBattle)
         {
             float xDistance = Mathf.Abs(transform.position.x - playerTransform.position.x);
-            if (xDistance < 11.5) SetToWalkDown();
-            else if (xDistance > 22.5) SetDefaultDistance();
+            //if (xDistance < 15.5) SetToWalkDown();
+            //else if (xDistance > 26.5) SetDefaultDistance();
         }
+
+        CameraMouseControl();
     }
 
     public void StartBattle(Vector3 newTarget)
@@ -72,15 +74,56 @@ public class CamMove : MonoBehaviour
         inBattle = false;
     }
 
-    public void SetToWalkDown()
+    public void CameraMouseControl()
     {
-        if (!GameManager.gameManager.battleController.ActiveBattle) distanceToTarget.x = defaultDistance.x * 1.8f;
-        else distanceToTarget.x = distanceInBattle.x * 1.8f;
+        if (Input.mousePosition.x >= Screen.width * 0.9f)
+        {
+            SetCameraToRight(true);
+        }
+        else if (Input.mousePosition.x <= Screen.width * 0.1f)
+        {
+            SetCameraToRight(false);
+        }
+        else SetDefaultZDist();
+
+        if (Input.mousePosition.y >= Screen.height * 0.9f)
+        {
+            SetCameraToUp(true);
+        }
+        else if (Input.mousePosition.y <= Screen.height * 0.1f)
+        {
+            SetCameraToUp(false);
+        }
+        else SetDefaultXDist();
     }
+
+    public void SetCameraToUp(bool v)
+    {
+        //if (!GameManager.gameManager.battleController.ActiveBattle) distanceToTarget.x = defaultDistance.x * 1.6f;
+        //else distanceToTarget.x = distanceInBattle.x * 1.6f;
+        if (v) distanceToTarget.x = defaultDistance.x *  0.6f;
+        else   distanceToTarget.x = defaultDistance.x *  1.5f;
+    }
+    public void SetCameraToRight(bool v)
+    {
+        if (v) distanceToTarget.z = defaultDistance.z - 7.5f;
+        else   distanceToTarget.z = defaultDistance.z + 7.5f;
+    }
+
     public void SetDefaultDistance()
     {
         if (!GameManager.gameManager.battleController.ActiveBattle) distanceToTarget = defaultDistance;
         else distanceToTarget = distanceInBattle;
+    }
+    void SetDefaultXDist()
+    {
+        if (!GameManager.gameManager.battleController.ActiveBattle) distanceToTarget.x = defaultDistance.x;
+        else distanceToTarget.x = distanceInBattle.x;
+    }
+    void SetDefaultZDist()
+    {
+        if (!GameManager.gameManager.battleController.ActiveBattle) distanceToTarget.z = defaultDistance.z;
+        else distanceToTarget.z = distanceInBattle.z;
     }
 
     public void LerpLoc(Vector3 loc, float tMult)

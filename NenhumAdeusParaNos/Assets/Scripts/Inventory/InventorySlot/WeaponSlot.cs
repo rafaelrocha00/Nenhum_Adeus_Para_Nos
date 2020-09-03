@@ -8,7 +8,8 @@ public class WeaponSlot : DropSlot
     [HideInInspector] Player mainCharacter;
     public Player MainCharacter { get { if (mainCharacter == null) mainCharacter = GameManager.gameManager.battleController.MainCharacter; return mainCharacter; } set { mainCharacter = value; } }
 
-    public bool isRanged = false;
+    //public bool isRanged = false;
+    public int slotID;
     WeaponItem weaponItem;
     //ItemButton thisItemButton;
 
@@ -17,8 +18,8 @@ public class WeaponSlot : DropSlot
         if (itemButton.Item is WeaponItem)
         {
             weaponItem = (WeaponItem)itemButton.Item;
-            if ((weaponItem.thisWeapon is RangedConfig && isRanged) || (weaponItem.thisWeapon is MeleeConfig && !isRanged))
-            {
+            //if ((weaponItem.thisWeapon is RangedConfig && isRanged) || (weaponItem.thisWeapon is MeleeConfig && !isRanged))
+            //{
                 if (thisItemB != null)
                 {
                     thisItemB.OriginDropSlot = null;
@@ -30,10 +31,10 @@ public class WeaponSlot : DropSlot
                 thisItemB = itemButton;
                 itemButton.transform.position = this.transform.position;
                 itemButton.ClearOrigin();
-                MainCharacter.EquipWeapon(weaponItem.thisWeapon);
+                MainCharacter.EquipWeapon(weaponItem.thisWeapon, slotID);
                 return true;
-            }
-            else return false;
+            //}
+            //else return false;
         }
         else return false;
     }
@@ -41,18 +42,7 @@ public class WeaponSlot : DropSlot
     public override void OnRemove()
     {
         base.OnRemove();
-        MainCharacter.EquipOriginalWeapon(isRanged);
+        MainCharacter.EquipOriginalWeapon(slotID);
         thisItemB = null;
     }
-
-    //public override void OnPointerEnter(PointerEventData eventData)
-    //{
-    //    base.OnPointerEnter(eventData);
-    //}
-
-    //public override void OnPointerExit(PointerEventData eventData)
-    //{
-    //    base.OnPointerExit(eventData);
-    //    if (GameManager.gameManager.inventoryController.Dragging) MainCharacter.EquipOriginalWeapon(isRanged);
-    //}
 }

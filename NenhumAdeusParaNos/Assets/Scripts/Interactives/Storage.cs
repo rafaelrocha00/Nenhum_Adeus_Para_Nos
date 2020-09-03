@@ -56,8 +56,6 @@ public class Storage : Interactives
             auxRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, auxRect.sizeDelta.x * storageXSize);
             auxRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, auxRect.sizeDelta.y * storageYSize);
         }
-
-        //myGrids[0].Generate();
         
         pages[0] = aux.transform.GetChild(0).gameObject;
         for (int i = 1; i < page_number; i++)
@@ -65,7 +63,6 @@ public class Storage : Interactives
             pages[i] = Instantiate(aux.transform.GetChild(0).gameObject, aux.transform, false) as GameObject;
             myGrids[i] = pages[i].GetComponentInChildren<GridManager>();
             myGrids[i].Generate();
-            //pages[i].SetActive(false);
         }
         myGrids[0].Generate();
 
@@ -73,8 +70,6 @@ public class Storage : Interactives
         nextPageB = aux.transform.Find("NextPage").gameObject;
         prevPageB.GetComponent<Button>().onClick.AddListener(PreviousPage);
         nextPageB.GetComponent<Button>().onClick.AddListener(NextPage);
-
-        //ResetPages();
 
         StartCoroutine("GenItems");;
         generatedMenu = true;
@@ -114,10 +109,6 @@ public class Storage : Interactives
         ItemButton auxIB = itemGenerator.GenItem(item);
         for (int i = 0; i < myGrids.Length; i++)
         {
-            //if (!myGrids[i].TryAlocateItem(auxIB))
-            //{
-            //    Destroy(auxIB.gameObject);
-            //}
             if (myGrids[i].TryAlocateItem(auxIB)) return;
         }
 

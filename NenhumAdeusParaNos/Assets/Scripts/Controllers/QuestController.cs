@@ -14,16 +14,6 @@ public class QuestController : MonoBehaviour
     public List<Quest> completedQuests = new List<Quest>();
 
     public Notes mainNotes;
-    //public NoteContent[] notesContent = new NoteContent[5];
-
-    //public void SaveNotes(Notes[] notes)
-    //{
-    //    for (int i = 0; i < notes.Length; i++)
-    //    {
-    //        notesContent[i].id = int.Parse(notes[i].itemName.Split('#')[1]);
-    //        notesContent[i].content = notes[i].texts;
-    //    }
-    //}
 
     public void AddNote(string txt)
     {

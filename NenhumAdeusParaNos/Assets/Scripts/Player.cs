@@ -5,8 +5,6 @@ using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour, BattleUnit
 {
-    //public DialogueBattle[] battleDialogues = new DialogueBattle[5];
-
     [HideInInspector] CharacterStats charStats;
     public CharacterStats CharStats { get { return charStats; } }
 
@@ -30,19 +28,6 @@ public class Player : MonoBehaviour, BattleUnit
     public float dashCooldown = 2.5f;
     int dashQuant = 2;
     bool dashInCooldown = false;
-    //float dashDamage = 0.0f;
-    //bool dashingDoingDamage = false;
-    //public float dashCooldown = 2.0f;
-    //bool dashInCooldown = false;
-
-    //public float maxStamina = 100.0f;
-    //public float stamina_runDecay = 25f;//TIRAR
-    //public float stamina_dashCost = 25f;
-    //public float stamina_defendingDecay = 10.0f;
-    //public float stamina_regen = 15f;
-    //bool stoppedStaminaRegen = false;
-    //bool canRegenStamina = true;
-    //float stamina;
 
     [SerializeField] float defense_strength = 75.0f;//Porcentagem da diminuição de dano;
     public float Defense_Strength { get { return defense_strength; } }    
@@ -53,12 +38,19 @@ public class Player : MonoBehaviour, BattleUnit
     public float defense_parryGap = 0.1f;
     float defense_parryTimer = 0;    
     float defense_life;
-    //public float defense_slow = 40.0f;//Porcentagem da diminuição de velocidade;
 
-    public MeleeW equippedMelee;
-    public RangedW equippedRanged;
-    RangedConfig originalRconfig;
-    MeleeConfig originalMconfig;
+    //public MeleeW equippedMelee;
+    //public RangedW equippedRanged;
+    Weapon[] weapons = new Weapon[4];
+    public MeleeW weapon_melee;
+    public MeleeW weapon_extraMelee;
+    public RangedW weapon_ranged;   
+    public RangedW weapon_extraRanged;
+    public MeleeConfig weaponConfig_default;
+    //bool usingFirstWeapon = true;
+    //int weaponComb = 0;/////////////////////////0 = 1 melee e 1 ranged | 1 = 2 melees | 2 = 2 rangeds | 3 = 1 melee e 1 ranged invertidos
+    //RangedConfig originalRconfig;
+    //MeleeConfig originalMconfig;
     bool autoShooting = false;
     bool shooting = false;
 
@@ -83,10 +75,6 @@ public class Player : MonoBehaviour, BattleUnit
     public float strongAtkHoldTime = 0.7f;
     float strongAtkTimer = 0.0f;
     bool releasedAtk = false;
-    //public float defaultAttackCD = 0.5f;
-    //public float strongAttackCD = 1.0f;
-    //float attackCD;
-    //int strongAtk = 1;
     bool strongAtk = false;
 
     Vector3 battleAim = new Vector3(0, 0, 0);
@@ -100,8 +88,6 @@ public class Player : MonoBehaviour, BattleUnit
     bool attacking = false;
 
     public float dialogueCooldown = 10.0f;
-    bool dialogueInCooldown = false;
-    int equippedDialogueType = 0;
 
     CamMove cam;
 
@@ -144,39 +130,38 @@ public class Player : MonoBehaviour, BattleUnit
         aux[0] = "Default";
         aux[1] = "Walls";
         dashMask = LayerMask.GetMask(aux);
-        //for (int i = 0; i < battleDialogues.Length; i++)
-        //{
-        //    if (battleDialogues[i] != null) battleDialogues[i].MainCharacter = this;
-        //}
 
         charStats = new CharacterStats(this);
 
         moveSpeed = defaultSpeed;
-        //acceleratedSpeed = moveSpeed * 1.75f;
-        //stamina = maxStamina;
+
         dashQuant = dashMaxQuant;
         defense_life = defense_maxLife;
 
         if (myWeapon == null) myWeapon = GetComponentInChildren<Weapon>();
 
-        originalMconfig = equippedMelee.meleeConfig;
-        originalRconfig = equippedRanged.rangedWConfig;
+        weaponConfig_default = weapon_melee.meleeConfig;
+        //originalRconfig = equippedRanged.rangedWConfig;
 
-        equippedMelee.myHolder = this;
-        //if (myWeapon is MeleeW)
-        //{
-        //    MeleeW m = (MeleeW)myWeapon;
-        //    m.myHolder = this;
-        //}
-        equippedRanged.myHolder = this;
-        //myWeapon.myHolder = this;
+        //equippedMelee.myHolder = this;
+        //equippedRanged.myHolder = this;
+        weapons[0] = weapon_melee; weapon_melee.isEquipped = true;
+        weapons[1] = weapon_extraMelee;
+        weapons[2] = weapon_ranged; weapon_ranged.isEquipped = true;
+        weapons[3] = weapon_extraRanged;
+        //weapon_melee.myHolder = this;
+        //weapon_extraMelee.myHolder = this;
+        //weapon_ranged.myHolder = this;
+        //weapon_extraRanged.myHolder = this;
+        for (int i = 0; i < 4; i++)
+            weapons[i].myHolder = this;
 
         forward = Camera.main.transform.forward;
         cam = Camera.main.GetComponent<CamMove>();
         forward.y = 0;
         forward = Vector3.Normalize(forward);
         right = Quaternion.Euler(new Vector3(0, 90, 0)) * forward;
-        //GameManager.gameManager.MainHud.MainCharacter = this;        
+    
         StartCoroutine("GetMainHUD");
     }
     IEnumerator GetMainHUD()
@@ -187,22 +172,6 @@ public class Player : MonoBehaviour, BattleUnit
 
     void Update()
     {
-        //if (canRegenStamina && stamina < maxStamina)
-        //{
-        //    UpdateStamina(stamina_regen * Time.deltaTime);
-        //}
-
-        //TIRAR
-        //if (Input.GetButtonDown("Fire3"))
-        //{
-        //    RunSwitch(true);           
-        //}
-        //if (Input.GetButtonUp("Fire3"))
-        //{
-        //    RunSwitch(false);
-        //}
-        //TIRAR
-
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
@@ -226,11 +195,10 @@ public class Player : MonoBehaviour, BattleUnit
         {
             if (!running) moveSpeed = defaultSpeed;
             moveTime = 0.0f;
-            //moving = false;
             if (moving) StopMoving();
         }
 
-        if (Input.GetMouseButtonDown(1))//GetKeyDown(KeyCode.C))
+        if (Input.GetMouseButtonDown(2))//GetKeyDown(KeyCode.C))
         {
             //Debug.Log("Item rápido");
             if (!aimingThrowable && !placingItem) UseEquippedItem();
@@ -240,11 +208,16 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (Input.mouseScrollDelta.y > 0)
         {
-            SwitchWeapon();
+            //SwitchWeapon();
+            GameManager.gameManager.inventoryController.Inventory.ChangeQuickItem(true);
         }
-        if (Input.mouseScrollDelta.y < 0)
+        else if (Input.mouseScrollDelta.y < 0)
         {
-            //Trocar item
+            GameManager.gameManager.inventoryController.Inventory.ChangeQuickItem(false);
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            SwitchWeapon();
         }
 
         if (Input.GetKeyDown(KeyCode.LeftControl))
@@ -350,7 +323,6 @@ public class Player : MonoBehaviour, BattleUnit
                 Interactives aux = interactingObjs[0];
                 for (int i = 0; i < interactingObjs.Count; i++)
                 {
-                    //Debug.Log("Dots: " + Vector3.Dot((interactingObjs[i].transform.position - this.transform.position).normalized, transform.forward) + " | " + Vector3.Dot((aux.transform.position - this.transform.position).normalized, transform.forward));
                     if (Vector3.Dot((interactingObjs[i].transform.position - this.transform.position).normalized, transform.forward) >
                         Vector3.Dot((aux.transform.position                - this.transform.position).normalized, transform.forward))
                     {
@@ -377,36 +349,15 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            //equippedDialogueType = 0;
-            //GameManager.gameManager.MainHud.EquipDialogue(0);
             GameManager.gameManager.dialogueController.ChooseOption(null, null, 0);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            //equippedDialogueType = 1;
-            //GameManager.gameManager.MainHud.EquipDialogue(1);
             GameManager.gameManager.dialogueController.ChooseOption(null, null, 1);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            //equippedDialogueType = 2;
-            //GameManager.gameManager.MainHud.EquipDialogue(2);
             GameManager.gameManager.dialogueController.ChooseOption(null, null, 2);
-        }
-        //else if (Input.GetKeyDown(KeyCode.Alpha4))
-        //{
-        //    equippedDialogueType = 3;
-        //    GameManager.gameManager.MainHud.EquipDialogue(3);
-        //}
-        //else if (Input.GetKeyDown(KeyCode.Alpha5))
-        //{
-        //    equippedDialogueType = 4;
-        //    GameManager.gameManager.MainHud.EquipDialogue(4);
-        //}
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            //UseDialogue();
         }
 
         if (inBattle)
@@ -415,11 +366,6 @@ public class Player : MonoBehaviour, BattleUnit
             {
                 //LockAim();
             }
-
-            //if (Input.GetKeyDown(KeyCode.V))
-            //{
-            //    UseDialogue(1);
-            //}
 
             if (Input.GetKeyDown(KeyCode.LeftShift))//GetMouseButtonDown(1))
             {
@@ -439,14 +385,6 @@ public class Player : MonoBehaviour, BattleUnit
                 if (defending) CancelDefense();
             }
             if (defending) defense_parryTimer += Time.deltaTime;
-
-            //if (defending && stamina > 0)
-            //{
-            //    CancelStaminaRegen(true);
-            //    UpdateStamina(-stamina_defendingDecay * Time.deltaTime);
-            //    //moveSpeed = defaultSpeed - defaultSpeed * defense_slow / 100;
-            //    if (stamina == 0) CancelDefense();
-            //}
         }
     }
 
@@ -477,15 +415,12 @@ public class Player : MonoBehaviour, BattleUnit
                 yield break;
             }
         } while (autoShooting);
-        //slowMoving = false;
         CancelSlow();
     }
 
     void RunSwitch(bool value)
     {
-        //TROCAR DE ANDAR PARA CORRENDO SOMENTE QUANDO ENTRAR EM BATALHA
-        //CORRER NÃO GASTA STAMINA
-        if (value/* && stamina > 0*/)
+        if (value)
         {
             running = value;
             acceleratedSpeed = moveSpeed;
@@ -495,12 +430,10 @@ public class Player : MonoBehaviour, BattleUnit
         {
             running = value;
             moveSpeed = acceleratedSpeed;
-            //StartCoroutine("StartStaminaRegen");
-            //stoppedStaminaRegen = false;
         }
     }
 
-    void Move(/*Ray ray*/)
+    void Move()
     {
         moving = true;
         moveTime += Time.deltaTime;
@@ -508,39 +441,11 @@ public class Player : MonoBehaviour, BattleUnit
         else if (!running && moveSpeed < maxSpeed && !slowMoving) moveSpeed = maxSpeed;
         moveSpeed = Mathf.Clamp(moveSpeed, 0, runningSpeed);
 
-        //TIRAR
-        //if (running && stamina > 0 && !defending)
-        //{
-        //    //canRegenStamina = false;
-        //    //if (!stoppedStaminaRegen)
-        //    //{
-        //    //    StopCoroutine("StartStaminaRegen");
-        //    //    stoppedStaminaRegen = true;
-        //    //}
-        //    CancelStaminaRegen(true);
-        //    moveSpeed = Mathf.Clamp(moveSpeed, 0, runningSpeed);
-        //    UpdateStamina(-stamina_runDecay * Time.deltaTime);
-        //    if (stamina == 0) RunSwitch(false);
-        //}
-        //TIRAR
-
-        //else if (defending)
-        //{
-        //    moveSpeed = defaultSpeed - defaultSpeed * defense_slow / 100;
-        //}
-        //if (!defending && slowMoving)
-        //{
-        //    if (running) moveSpeed = runningSpeed - runningSpeed * defaultSlow / 100;
-        //    else moveSpeed = defaultSpeed*2 - defaultSpeed*2 * defaultSlow / 100;
-        //}
-
         float xMov = Input.GetAxis("Horizontal");
         float zMov = Input.GetAxis("Vertical");
 
         Vector3 rightMov = right * xMov;
         Vector3 upMov = forward * zMov;
-        //if (upMov.x < 0 && rightMov == Vector3.zero) GameManager.gameManager.MainCamera.SetToWalkDown();
-        //else GameManager.gameManager.MainCamera.SetDefaultDistance();
 
         heading = Vector3.Normalize(rightMov + upMov);
         Vector3 newDirection = Vector3.RotateTowards(transform.forward, heading, rotateSpeed * Time.deltaTime, 0);
@@ -550,21 +455,7 @@ public class Player : MonoBehaviour, BattleUnit
         if (Physics.Raycast(transform.up * 0.2f + transform.position, heading, out hit, 0.5f, dashMask)) movingTowardWall = 0;
 
         transform.position += heading * moveSpeed * Time.deltaTime * movingTowardWall;
-        //if (!inBattle) transform.rotation = Quaternion.LookRotation(newDirection);
-        //else
-        //{
-        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //RaycastHit hit;
-        //Vector3 lookPos;
 
-        //if (!aimLocked)
-        //{
-        //    //if (Physics.Raycast(ray, out hit, 1000, layermask))
-        //    //{
-        //    //    battleAim = new Vector3(hit.point.x, transform.position.y, hit.point.z);
-        //    //    Debug.Log(lookPos);
-        //    //}
-        //}
         if (aimLocked)
         {
             if (targetedEnemy != null)
@@ -576,52 +467,18 @@ public class Player : MonoBehaviour, BattleUnit
 
         CheckLook_WalkDir(heading, xMov, zMov);
 
-
-        //float velX = heading.x * moveSpeed / runningSpeed;
-        //float velY = heading.z * moveSpeed / runningSpeed;
-        ////Debug.Log(velX + " | " + velY);
-        //animator.SetFloat("VelX", velX);
-        //animator.SetFloat("VelY", velY);
-
-        if (!aimingThrowable && !placingItem) transform.LookAt(battleAim);        
-        //}
+        if (!aimingThrowable && !placingItem) transform.LookAt(battleAim);
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //if (stamina >= stamina_dashCost/* && !dashInCooldown*/)
-            //{
-            //    //RaycastHit hit;
-            //    Vector3 targetPos = GetDashDest();
-            //    //if (Physics.Raycast(/*new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z)*/transform.up * 0.2f + transform.position, heading, out hit, /*7.5f*/dashDistance, dashMask))
-            //    //{
-                    
-            //    //    targetPos = (hit.collider.bounds.ClosestPoint(transform.position) - transform.position) * 0.8f + transform.position;
-            //    //}            
-            //    //else targetPos = heading * /*7.5f*/dashDistance + transform.position;
-            //    //Cooldown do dash
-            //    //StartCoroutine("DashCooldown");
-            //    CancelStaminaRegen(false);
-            //    UpdateStamina(-stamina_dashCost);
-            //    //StartCoroutine(Dash(heading));
-            //    StartCoroutine(Dash(targetPos));
-            //    StartCoroutine("StartStaminaRegen");
-            //}
             if (dashQuant > 0)
             {
                 Vector3 targetPos = GetDashDest();
                 StartCoroutine(Dash(targetPos));
                 UpdateDashQuant(-1);
             }
-        }
-        //cam.Move(transform.position);        
+        }  
     }
-
-    //Vector3 targetPos = Vector3.zero;
-
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.DrawLine(new Vector3(transform.position.x, transform.position.y + 0.1f, transform.position.z), targetPos);
-    //}
 
     void StopMoving()
     {
@@ -661,7 +518,7 @@ public class Player : MonoBehaviour, BattleUnit
         else dir = -transform.forward;
         float dist = (dis > 0) ? dis : dashDistance;
 
-        if (Physics.Raycast(/*new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z)*/transform.up * 0.2f + transform.position, dir, out hit, /*7.5f*/dist, dashMask))
+        if (Physics.Raycast(transform.up * 0.2f + transform.position, dir, out hit, dist, dashMask))
         {
 
             targetPos = (hit.collider.bounds.ClosestPoint(transform.position) - transform.position) * 0.8f + transform.position;
@@ -678,8 +535,6 @@ public class Player : MonoBehaviour, BattleUnit
     IEnumerator Dash(Vector3 dir, bool doDamage = false, float damage = 0.0f, float dis = 0.0f)
     {
         dashing = true;
-        //dashDamage = damage;
-        //dashingDoingDamage = doDamage;
         Vector3 originPos = transform.position;
         float distance = (dir - transform.position).magnitude;
         float maxDis = (dis > 0) ? dis : dashDistance;
@@ -717,38 +572,12 @@ public class Player : MonoBehaviour, BattleUnit
         //dashingDoingDamage = false;
         animator.SetBool("Dashing", false);
     }
-    //Vector3 from = Vector3.zero;
-    //Vector3 to = Vector3.zero;
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.DrawLine(from, to);
-    //}
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        //try
-        //{
-        //    if (dashingDoingDamage) collision.collider.GetComponent<INPC>().ReceiveDamage(dashDamage);
-        //}
-        //catch { }
-    }
-
-    //IEnumerator DashCooldown()
-    //{
-    //    dashInCooldown = true;
-    //    yield return new WaitForSeconds(dashCooldown);
-    //    dashInCooldown = false;
-    //}
 
     void CancelDefense()
     {
         defending = false;
-        //StartCoroutine("StartStaminaRegen");
-        //stamina_regen *= 2;
-        //stoppedStaminaRegen = false;
         animator.SetBool("Defending", false);
         CancelSlow();
-        //GameManager.gameManager.MainHud.ShowHideDefenseBar();
         if (defense_life > 0) shieldControl.gameObject.SetActive(false);
         defense_parryTimer = 0.0f;
     }
@@ -762,13 +591,11 @@ public class Player : MonoBehaviour, BattleUnit
         if (auxDot > 0.5f)
         {
             dirZ = 1;
-            //Andando e olhando para mesma direção
-            /*if (!autoShooting && !shooting && slowMoving)*/ CancelSlow(); //slowMoving = false;
+            CancelSlow();
         }
         else if (auxDot > -0.5f)
         {
-            //dirZ = 0;           
-            /*if (!autoShooting && !shooting && slowMoving)*/ CancelSlow();//slowMoving = false;
+            CancelSlow();//slowMoving = false;
             float auxDotRight = Vector3.Dot(transform.right, moveDir);
             if (auxDotRight > 0)
             {
@@ -871,39 +698,90 @@ public class Player : MonoBehaviour, BattleUnit
     }
 
     //////////////////////////////////////////////
-    public void EquipWeapon(WeaponConfig wconfig)
+    public void EquipWeapon(WeaponConfig wconfig, int id)
     {
         Debug.Log("EquippingWeapon");
-        if (wconfig is MeleeConfig)
+        //if (wconfig is MeleeConfig)
+        //{
+        //    equippedMelee.Equip(wconfig);
+        //}
+        //else
+        //{
+        //    equippedRanged.Equip(wconfig);
+        //}
+
+        if (id == 0)
         {
-            equippedMelee.Equip(wconfig);
+            if (wconfig is MeleeConfig)
+            {
+                weapon_melee.Equip(wconfig);
+            }
+            else
+            {
+                weapon_extraRanged.Equip(wconfig);
+            }
+            weapon_melee.isEquipped       =  (wconfig is MeleeConfig);
+            weapon_extraRanged.isEquipped = !(wconfig is MeleeConfig);
         }
         else
         {
-            equippedRanged.Equip(wconfig);
+            if (wconfig is RangedConfig)
+            {
+                weapon_ranged.Equip(wconfig);
+            }
+            else
+            {
+                weapon_extraMelee.Equip(wconfig);
+            }
+            weapon_ranged.isEquipped     =  (wconfig is RangedConfig);
+            weapon_extraMelee.isEquipped = !(wconfig is RangedConfig);
+        }
+        if (!myWeapon.isEquipped) SwitchMainWeapon();
+    }
+    void SwitchMainWeapon()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (weapons[i].isEquipped)
+            {
+                if (!isWeaponHide)
+                {
+                    myWeapon.EnableModel(false);
+                    weapons[i].EnableModel(true);
+                }
+                myWeapon = weapons[i];
+            }
         }
     }
-    public void EquipOriginalWeapon(bool isRanged)
+
+    public void EquipOriginalWeapon(int slotID)
     {
-        if (isRanged) equippedRanged.Equip(originalRconfig);
-        else equippedMelee.Equip(originalMconfig);
+        //if (isRanged) equippedRanged.Equip(originalRconfig);
+        //else equippedMelee.Equip(originalMconfig);
+
+        //if (slotID == 0) weapon_melee.Equip(weaponConfig_default);
+        //else weapon_melee.Equip(weaponConfig_default);
+        EquipWeapon(weaponConfig_default, slotID);
     }
 
     void SwitchWeapon()
     {
         if (!isWeaponHide)
         {
-            if (myWeapon is MeleeW)
+            myWeapon.EnableModel(false);
+            for (int i = 0; i < 4; i++)
             {
-                myWeapon = equippedRanged;
-                equippedRanged.EnableModel(true);//gameObject.SetActive(true);
-                equippedMelee.EnableModel(false);//gameObject.SetActive(false);
-            }
-            else
-            {
-                myWeapon = equippedMelee;
-                equippedRanged.EnableModel(false);//gameObject.SetActive(false);
-                equippedMelee.EnableModel(true);//gameObject.SetActive(true);
+                if (weapons[i].isEquipped)
+                {
+                    if (!weapons[i].WeaponConfig.weaponName.Equals(myWeapon.WeaponConfig.weaponName))
+                    {
+                        //Debug.Log(weapons[i].WeaponConfig.weaponName + " | " + myWeapon.WeaponConfig.weaponName);
+                        //Debug.Log(weapons[i].WeaponConfig.weaponName.Equals(myWeapon.WeaponConfig.weaponName));
+                        myWeapon = weapons[i];
+                        myWeapon.EnableModel(true);
+                        return;
+                    }
+                }
             }
         }
     }
@@ -912,23 +790,14 @@ public class Player : MonoBehaviour, BattleUnit
     {
         if (!animator.GetBool("Healing"))
         {
-            if (!isWeaponHide)
-            {
-                equippedMelee.EnableModel(true);//gameObject.SetActive(false);
-                equippedRanged.EnableModel(true);//gameObject.SetActive(false);
-            }
-            else
-            {
-                if (myWeapon is MeleeW) equippedMelee.EnableModel(true);//gameObject.SetActive(true);
-                else equippedRanged.EnableModel(true);//gameObject.SetActive(true);
-            }
+            myWeapon.EnableModel(isWeaponHide);
             isWeaponHide = !isWeaponHide;
         }
     }
 
     public void UseEquippedItem()
     {
-        GameManager.gameManager.inventoryController.Inventory.quickItemSlot.UseItemEffect();
+        GameManager.gameManager.inventoryController.Inventory.selectedItemSlot.UseItemEffect();
     }
 
     //Uso de item Arremessavel
@@ -965,7 +834,7 @@ public class Player : MonoBehaviour, BattleUnit
         Granade aux = granadeObj.GetComponent<Granade>();
         aux.UnlockCol();
         itemToThrow.Throw(force, aux);
-        GameManager.gameManager.inventoryController.Inventory.quickItemSlot.ConfirmUse();
+        GameManager.gameManager.inventoryController.Inventory.selectedItemSlot.ConfirmUse();
         animator.SetBool("ThrowedItem", false);
         HideShowWeapon();
     }
@@ -992,7 +861,7 @@ public class Player : MonoBehaviour, BattleUnit
     {
         //itemToPlace.Place()
         GameManager.gameManager.objectPlacer.ComfirmPlace(itemToPlace);
-        GameManager.gameManager.inventoryController.Inventory.quickItemSlot.ConfirmUse();
+        GameManager.gameManager.inventoryController.Inventory.selectedItemSlot.ConfirmUse();
         CancelPlaceItem();
     }
     public void CancelPlaceItem()
@@ -1003,101 +872,17 @@ public class Player : MonoBehaviour, BattleUnit
     }
     #endregion
 
-    public void UseDialogue(/*int idx*/)
-    {
-        //Debug.Log("Tentando usar dialogo");
-        Debug.Log(GameManager.gameManager.dialogueController.ActiveMainDialogue);
-        Debug.Log(dialogueInCooldown);
-        if ((!GameManager.gameManager.dialogueController.ActiveMainDialogue || GameManager.gameManager.dialogueController.PlayerCanAnswer()) /*&& !GameManager.gameManager.MainHud.IsQuickMenuActive*/ && !dialogueInCooldown)
-        {
-            //Debug.Log("Tentando usar dialogo em batalha");
-            try
-            {
-                //battleDialoguing = true;
-                //DialogueBattle actualDialogueBattle = GameManager.gameManager.MainHud.GetDialogueFromSlot(idx);
-                if (!aimLocked) FindNearestEnemy();
-                int random = Random.Range(0, 2);
-                DialogueBattle actualDialogueBattle = GameManager.gameManager.dialogueController.GetDialogueBattle(equippedDialogueType/*(int)targetedEnemy.enemyType, equippedDialogueType, random*/);                
-                actualDialogueBattle.MainCharacter = this;
-                actualDialogueBattle.TagetedNPC = targetedEnemy;
-
-                if (GameManager.gameManager.battleController.ActiveBattle)
-                {
-                    dialogueInCooldown = true;
-                    GameManager.gameManager.MainHud.IconCooldown(dialogueCooldown);
-                    Invoke("DialogueCooldown", dialogueCooldown);
-                }
-                if (GameManager.gameManager.dialogueController.ActiveMainDialogue)
-                {
-                    GameManager.gameManager.dialogueController.EndDialogue();
-                    Debug.Log("EndingDialogue");
-                }
-                if (targetedEnemy != null) GameManager.gameManager.dialogueController.StartDialogue(actualDialogueBattle, transform, null);                
-            }
-            //catch
-            //{
-            //    Debug.Log("Dialogo nulo ou Sem inimigos perto");
-            //}
-
-            //try
-            //{
-
-            //}
-            catch (System.Exception)
-            {
-
-                throw;
-            }
-            //GameManager.gameManager.dialogueController.OpenDialoguePopUp(transform, null);
-            //if (!aimLocked) FindNearestEnemy();
-            //battleDialogues[0].TagetedNPC = targetedEnemy;
-            //GameManager.gameManager.dialogueController.StartDialogue(battleDialogues[0], transform);
-            //GameManager.gameManager.dialogueController.UpdateText(battleDialogues[0].NextString());
-            //Invoke("BattleDialogueCooldown", 10);
-        }
-        else if (GameManager.gameManager.dialogueController.WaitingForAnswer)
-        {
-            //if (GameManager.gameManager.dialogueController.ActiveMainDialogue) GameManager.gameManager.dialogueController.EndDialogue();
-            //GameManager.gameManager.MainHud.WaitingForAnswer(false);
-            DialogueBattle actualDialogueBattle = GameManager.gameManager.dialogueController.GetDialogueBattle(/*(int)targetedEnemy.enemyType, */equippedDialogueType/*, 0*/);
-            actualDialogueBattle.TagetedNPC = GameManager.gameManager.dialogueController.ActualDialogue.MyNPC;
-            actualDialogueBattle.MainCharacter = this;
-            GameManager.gameManager.dialogueController.EndDialogue();            
-            //actualDialogueBattle.TagetedNPC = targetedEnemy;            
-
-            GameManager.gameManager.dialogueController.StartDialogue(actualDialogueBattle, transform, null);
-        }
-    }
-    void DialogueCooldown()
-    {
-        dialogueInCooldown = false;
-    }
-
-    //void BattleDialogueCooldown()
-    //{
-    //     = false;
-    //}
-
     public void StartBattle(bool byDialogue = true)
     {
-        //if (!byDialogue && !GameManager.gameManager.battleController.EnoughNPCs()) return;
         if (byDialogue)
         {
             interacting = false;
-            //animator.SetLayerWeight(1, 0);
-            //inBattle = true;            
-            //RunSwitch(true);
-            //animator.SetBool("InBattle", true);
             CombatSet();
         }
         GameManager.gameManager.battleController.MainCharacter = this;        
     }
     public void DelayStartBattle()
     {
-        //animator.SetLayerWeight(1, 0);
-        //inBattle = true;
-        //RunSwitch(true);
-        //animator.SetBool("InBattle", true);
         CombatSet();
     }
     void CombatSet()
@@ -1204,25 +989,6 @@ public class Player : MonoBehaviour, BattleUnit
         canReceiveKnockback = true;
     }
 
-    //IEnumerator StartStaminaRegen()
-    //{
-    //    yield return new WaitForSeconds(1.5f);
-    //    canRegenStamina = true;
-    //}
-
-    //void CancelStaminaRegen(bool continuousAction)
-    //{
-    //    canRegenStamina = false;
-    //    if (continuousAction)
-    //    {            
-    //        if (!stoppedStaminaRegen)
-    //        {
-    //            StopCoroutine("StartStaminaRegen");
-    //            stoppedStaminaRegen = true;
-    //        }
-    //    }
-    //    else StopCoroutine("StartStaminaRegen");
-    //}
     void StartDashCooldown()
     {
         if (dashQuant < dashMaxQuant && !dashInCooldown)
@@ -1253,26 +1019,15 @@ public class Player : MonoBehaviour, BattleUnit
         if (!isWeaponHide) HideShowWeapon();
     }
 
-    //void UpdateStamina(float value)
-    //{
-    //    stamina += value;
-    //    stamina = Mathf.Clamp(stamina, 0, maxStamina);
-    //    //GameManager.gameManager.MainHud.UpdateStamina(stamina / maxStamina);
-    //    staminaBar.transform.localScale = new Vector3(stamina / maxStamina, stamina / maxStamina, 1);
-    //}
-
     void UpdateDashQuant(int value)
     {
         dashQuant += value;
         dashQuant = Mathf.Clamp(dashQuant, 0, dashMaxQuant);
-        //GameManager.gameManager.MainHud.UpdateStamina(stamina / maxStamina);
-        //staminaBar.transform.localScale = new Vector3(stamina / maxStamina, stamina / maxStamina, 1);
         GameManager.gameManager.MainHud.dashIcon.SetQuant(dashQuant);
         StartDashCooldown();
     }
     void UpdateLife()
     {
-        //GameManager.gameManager.MainHud.UpdateLife(charStats.LifePercentage());
         try { GameManager.gameManager.MainCamera.GetComponent<DamageEffect>().density = 1 - charStats.LifePercentage(); }
         catch { }
     }
@@ -1288,7 +1043,6 @@ public class Player : MonoBehaviour, BattleUnit
             playedShieldBreakeSong = true;
         }
         if (shieldControl.gameObject.activeSelf) shieldControl.SetShieldValue(defense_life / defense_maxLife);
-        //GameManager.gameManager.MainHud.UpdateDefense(defense_life / defense_maxLife);
     }
     public bool IsShiledBroken()
     {

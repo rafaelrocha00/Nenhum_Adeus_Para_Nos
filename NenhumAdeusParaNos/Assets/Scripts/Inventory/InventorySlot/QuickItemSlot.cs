@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class QuickItemSlot : DropSlot
 {
+    public int id = 0;
+
     QuickUseItem quickItem;
     Image image;
 
@@ -33,7 +35,7 @@ public class QuickItemSlot : DropSlot
                 quickItem = (QuickUseItem)itemButton.Item;
                 thisItemB = itemButton;
                 image.sprite = itemButton.GetComponent<Image>().sprite;
-                GameManager.gameManager.MainHud.quickItemSlot.SetSprite(itemButton.GetComponent<Image>().sprite);
+                GameManager.gameManager.MainHud.SetQuickItemSprite(id, itemButton.GetComponent<Image>().sprite);//quickItemSlots[id].SetSprite(itemButton.GetComponent<Image>().sprite);//////////////////////////////////
                 hasInInventory = true;
                 if (itemButton.Item is Notes) GameManager.gameManager.questController.mainNotes = (Notes)itemButton.Item;
                 Invoke("CheckItemInventory", 0.01f);
@@ -67,7 +69,8 @@ public class QuickItemSlot : DropSlot
                 image.color = auxColor;
                 hasInInventory = true;
             }
-            GameManager.gameManager.MainHud.quickItemSlot.SetColor(auxColor);
+            //GameManager.gameManager.MainHud.quickItemSlots[0].SetColor(auxColor);
+            GameManager.gameManager.MainHud.SetQuickItemColor(id, auxColor);
         }
     }
 
@@ -81,7 +84,8 @@ public class QuickItemSlot : DropSlot
                 inCooldown = true;
                 Invoke("ResetCooldown", quickItem.AnimTime);
                 Invoke("ApplyItemEffect", quickItem.AnimTime - 0.1f);
-                GameManager.gameManager.MainHud.quickItemSlot.Cooldown(quickItem.AnimTime);
+                //GameManager.gameManager.MainHud.quickItemSlots[0].Cooldown(quickItem.AnimTime);
+                GameManager.gameManager.MainHud.QuickItemCooldown(id, quickItem.AnimTime);
                 GameManager.gameManager.battleController.MainCharacter.HealAnim();
             }
             else

@@ -42,8 +42,6 @@ public class ObjectPlacer : MonoBehaviour
     public void ComfirmPlace(PlaceableItem pI)
     {
         Debug.Log("Placing");
-        //GameObject aux = Instantiate(objectToPlace, auxObj.transform.position, auxObj.transform.rotation) as GameObject;
-        //Destroy(aux, 5);
         pI.Place(auxObj.transform.position, auxObj.transform.rotation);
         CancelPlacing();
     }

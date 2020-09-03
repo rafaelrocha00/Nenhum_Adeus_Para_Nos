@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class CompanyPC : Interactives
 {
     public Transform camT;
-    //bool interacted = false;
     CamMove cam;
     public GameObject pcScreen;
     public GameObject pcLight;
@@ -46,7 +45,6 @@ public class CompanyPC : Interactives
         if (!quest.Accepted)
         {
             quest.AcceptQuest();
-            //GameManager.gameManager.questGenerator.quest_nonAccepteds.Remove(quest);
         }
 
         questDesc_name.text = quest.Name;

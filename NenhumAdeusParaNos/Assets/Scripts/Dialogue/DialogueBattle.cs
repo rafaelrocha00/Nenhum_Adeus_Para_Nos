@@ -25,7 +25,6 @@ public class DialogueBattle : Dialogue
             //Mandar para o inimigo/alvo atual o dialogo para ser respondido            
             //mainCharacter.BattleDialoguing = false;
             ResetDialogue();
-            targetedNPC.ReceiveBattleDialogue(this);
             return "";
         }
     }

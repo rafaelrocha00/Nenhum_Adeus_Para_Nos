@@ -16,20 +16,11 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public CalendarController calendarController;
     [HideInInspector] public CompanyController companyController;
     [HideInInspector] public ItemsSaver itemsSaver;
-    //[HideInInspector] public NPCAnswers npcAnswers;
 
     [HideInInspector] MainHud mainHud;
     public MainHud MainHud { get { return mainHud; } set { mainHud = value; } }
     [HideInInspector] CamMove mainCamera;
     public CamMove MainCamera { get { if (mainCamera == null) { mainCamera = Camera.main.GetComponent<CamMove>(); return mainCamera; } else return mainCamera; } }
-
-    //[HideInInspector] Player mainCharacter;
-    //public Player MainCharacter { get { return mainCharacter; } set { mainCharacter = value; } }
-
-    //public float[] DereDereP = new float[5];
-    //public float[] KuudereP = new float[5];
-    //public float[] TsundereP = new float[5];
-    //public float[] YandereP = new float[5];
 
     public float[][] personalities = new float[4][];
 
@@ -59,12 +50,6 @@ public class GameManager : MonoBehaviour
         calendarController = GetComponent<CalendarController>();
         companyController = GetComponent<CompanyController>();
         itemsSaver = GetComponent<ItemsSaver>();
-        //npcAnswers = GetComponent<NPCAnswers>();
-
-        //personalities[0] = DereDereP;
-        //personalities[1] = KuudereP;
-        //personalities[2] = TsundereP;
-        //personalities[3] = YandereP;
     }
 
     private void Update()

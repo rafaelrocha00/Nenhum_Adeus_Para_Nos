@@ -33,9 +33,12 @@ public class MainHud : MonoBehaviour
     public Image lifeBar;
     public Image defenseBar;
     //public int[] battleDialogues = new int[5];
-
-    public QuickDialogueItemIcon quickItemSlot;
+    public GameObject quickItemsTab;
+    public QuickDialogueItemIcon[] quickItemSlots = new QuickDialogueItemIcon[3];
     public DashIcon dashIcon;
+
+    public GameObject inBattle_DialogueTab;
+    public Image inBattle_edIcon, inBattle_enemyIcon;
 
     [HideInInspector] Storage actualStorage = null;
     public Storage ActualStorage { set { actualStorage = value; } }
@@ -75,51 +78,6 @@ public class MainHud : MonoBehaviour
         DestroyChilds(dialogueOptionsTab.transform);
         dialogueOptionsTab.SetActive(false);       
     }
-    #endregion
-
-    #region Batalha   
-    //public GameObject equipableDialoguesTab;
-
-    //public QuickDialogueItemIcon[] battleDialoguesSlots = new QuickDialogueItemIcon[2];
-    QuickDialogueItemIcon[] equipableBattleDialogues = new QuickDialogueItemIcon[3];
-    QuickDialogueItemIcon equippedDialogueB;
-
-    public GameObject quickDialogueTab;
-
-    public void OpenCloseQuickDialogueTab()
-    {
-        quickDialogueTab.SetActive(!quickDialogueTab.activeSelf);
-    }
-
-    public void EquipDialogue(int idx)
-    {
-        if (equippedDialogueB != null)
-        {
-            equippedDialogueB.StopSpriteAnim();
-            SetObjSize(equippedDialogueB.gameObject, -15);
-        }
-        equippedDialogueB = equipableBattleDialogues[idx];
-        equippedDialogueB.PlaySpriteAnim();
-        SetObjSize(equippedDialogueB.gameObject, 15);
-        //Muda somente a cor/sprite do ícone do diálogo.
-        /*if (GameManager.gameManager.battleController.ActiveBattle)*/
-    }
-
-    public void IconCooldown(float value)
-    {
-        //equippedDialogueB.Cooldown(value);
-
-        foreach (QuickDialogueItemIcon qd in equipableBattleDialogues)
-        {
-            qd.Cooldown(value);
-        }
-    }
-
-    public void UseDialogue(/*int idx*/)
-    {
-        mainCharacter.UseDialogue(/*idx*/);
-    }
-
     #endregion
 
     #region Notes
@@ -184,9 +142,6 @@ public class MainHud : MonoBehaviour
     {
         GameManager.gameManager.MainHud = this;
 
-        equipableBattleDialogues = quickDialogueTab.GetComponentsInChildren<QuickDialogueItemIcon>();
-        EquipDialogue(0);
-
         GameManager.gameManager.calendarController.UpdateHudH();
     }
 
@@ -246,7 +201,8 @@ public class MainHud : MonoBehaviour
 
     public void ShowHideQuickItemSlot(bool value)
     {
-        quickItemSlot.transform.parent.gameObject.SetActive(value);
+        //quickItemSlot.transform.parent.gameObject.SetActive(value);
+        quickItemsTab.SetActive(value);
     }
 
     public void OpenCloseDestroyItem(bool value)
@@ -288,6 +244,39 @@ public class MainHud : MonoBehaviour
     public void UpdateDate(string day, int hour, int min)
     {
         date.text = day + " | " + hour.ToString("00") + ":" + min.ToString("00");
+    }
+
+    public void OpenDialogueTab(Sprite eSprite)
+    {
+        inBattle_DialogueTab.SetActive(true);
+        inBattle_enemyIcon.sprite = eSprite;
+    }
+    public void CloseDialogueTab()
+    {
+        inBattle_DialogueTab.SetActive(false);
+    }
+
+    public void SetQuickItemSprite(int id, Sprite sp)
+    {
+        quickItemSlots[id].SetSprite(sp);
+    }
+    public void SetQuickItemColor(int id, Color color)
+    {
+        quickItemSlots[id].SetColor(color);
+    }
+    public void QuickItemCooldown(int id, float cd)
+    {
+        quickItemSlots[id].Cooldown(cd);
+    }
+    public void ChangeSelectedItem(int id)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            quickItemSlots[i].transform.parent.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 15);
+            quickItemSlots[i].transform.parent.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 15);
+        }
+        quickItemSlots[id].transform.parent.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 30);
+        quickItemSlots[id].transform.parent.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 30);
     }
 
     public void FadeInOut()

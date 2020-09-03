@@ -57,11 +57,6 @@ public abstract class NPC : Interactives, BattleUnit
                 rangedW = (RangedW)myWeapon;
             }
             else meleeW = (MeleeW)myWeapon;
-            //else
-            //{
-            //    MeleeW m = (MeleeW)myWeapon;
-            //    m.myHolder = this;
-            //}
             myWeapon.myHolder = this;
         }
 
@@ -166,9 +161,7 @@ public abstract class NPC : Interactives, BattleUnit
                 //animação de reload
                 canAtk = false;
             }
-            //int randomType = Random.Range(0, 2);
-            //if (randomType == 1) strongAtk = false;
-            //else strongAtk = true;
+
             if (canAtk) Attack();
             timer = 0.0f;
         }
@@ -185,16 +178,9 @@ public abstract class NPC : Interactives, BattleUnit
             }            
             //Debug.Log("Atacando");
             attacking = true;
-            //float attackCD;
-            //if (strongAtk && myWeapon is MeleeW)
-            //{
-            //    MeleeW myMelee = (MeleeW)myWeapon;
-            //    myMelee.SetStrongAttack();
-            //}
+
             if (!isRanged)
             {
-                //attackCD = myWeapon.Attack(null, attackModifier);
-                //Invoke("AttackCooldown", attackCD);
                 if (strongAtk)
                 {
                     MeleeW myMelee = (MeleeW)myWeapon;
@@ -210,8 +196,6 @@ public abstract class NPC : Interactives, BattleUnit
     }
     protected void DelayedAttack()
     {
-        //float cd = myWeapon.Attack(null, attackModifier);
-        //Invoke("AttackCooldown", cd);
         ComfirmAttack();
     }
 

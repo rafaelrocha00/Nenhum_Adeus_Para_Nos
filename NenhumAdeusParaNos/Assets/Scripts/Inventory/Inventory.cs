@@ -6,7 +6,9 @@ public class Inventory : MonoBehaviour
 {
     public GridManager myGrid;
 
-    public QuickItemSlot quickItemSlot;
+    int selectedItemID = 0;
+    public QuickItemSlot selectedItemSlot;
+    public QuickItemSlot[] quickItems = new QuickItemSlot[3];
 
     public List<string> names = new List<string>();
 
@@ -17,7 +19,8 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        GameManager.gameManager.inventoryController.Inventory = this;     
+        GameManager.gameManager.inventoryController.Inventory = this;
+        selectedItemSlot = quickItems[selectedItemID];
     }
 
     private void Update()
@@ -74,6 +77,34 @@ public class Inventory : MonoBehaviour
         GameManager.gameManager.itemsSaver.SetInventoryItemCoords(allItems);
     }
 
+    public void ChangeQuickItem(bool next)
+    {
+        if (next) NextItemID();
+        else  PreviousItemID();
+
+        Debug.Log("ID: " + selectedItemID);
+        selectedItemSlot = quickItems[selectedItemID];
+        GameManager.gameManager.MainHud.ChangeSelectedItem(selectedItemID);
+    }
+    void NextItemID()
+    {
+        if (selectedItemID == 2)
+        {
+            selectedItemID = 0;
+            return;
+        }
+        selectedItemID++;
+    }
+    void PreviousItemID()
+    {       
+        if (selectedItemID == 0)
+        {
+            selectedItemID = 2;
+            return;
+        }
+        selectedItemID--;
+    }
+
     public void ItemRemovedOrAdded()
     {
         StartCoroutine("CheckItemInInventory");
@@ -81,6 +112,10 @@ public class Inventory : MonoBehaviour
     IEnumerator CheckItemInInventory()
     {
         yield return new WaitForEndOfFrame();
-        quickItemSlot.CheckItemInventory();
+        //quickItemSlot.CheckItemInventory();
+        for (int i = 0; i < 3; i++)
+        {
+            quickItems[i].CheckItemInventory();
+        }
     }
 }

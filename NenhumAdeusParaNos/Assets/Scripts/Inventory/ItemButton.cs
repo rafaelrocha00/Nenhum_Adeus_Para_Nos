@@ -72,7 +72,7 @@ public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         if (originSlots == null && originDropSlot != null)
         {
             WeaponSlot aux = (WeaponSlot)originDropSlot;
-            GameManager.gameManager.battleController.MainCharacter.EquipOriginalWeapon(aux.isRanged);
+            GameManager.gameManager.battleController.MainCharacter.EquipOriginalWeapon(aux.slotID);
         }
         if (item is QuickUseItem) GameManager.gameManager.inventoryController.Inventory.ItemRemovedOrAdded();
         ClearSlots();
