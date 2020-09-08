@@ -96,46 +96,46 @@ public class DialogueController : MonoBehaviour
     {
         return npcAnswers[enType][personality][apType][idx].GetRandomDialogue();
     }
-    public Dialogue GetBattleResult(int enType, int personality, DialogueBattle.ApproachType[] comb, INPC npc, Player p)
-    {
-        Dialogue aux = failResults[personality];
+    //public Dialogue GetBattleResult(int enType, int personality, DialogueBattle.ApproachType[] comb, INPC npc, Player p)
+    //{
+    //    Dialogue aux = failResults[personality];
 
-        try
-        {
-            for (int i = 0; i < battleResults[enType][personality].Length; i++)
-            {
+    //    try
+    //    {
+    //        for (int i = 0; i < battleResults[enType][personality].Length; i++)
+    //        {
 
-                if (battleResults[enType][personality][i].apCombination.SequenceEqual(comb))
-                {
-                    battleResults[enType][personality][i].StartEffects(npc, p);
-                    if (battleResults[enType][personality][i].GetResult())
-                    {
-                        aux = battleResults[enType][personality][i];
-                    }
-                }
-            }
-        }
-        catch (System.Exception)
-        {
-            throw;
-        }
+    //            if (battleResults[enType][personality][i].apCombination.SequenceEqual(comb))
+    //            {
+    //                battleResults[enType][personality][i].StartEffects(npc, p);
+    //                if (battleResults[enType][personality][i].GetResult())
+    //                {
+    //                    aux = battleResults[enType][personality][i];
+    //                }
+    //            }
+    //        }
+    //    }
+    //    catch (System.Exception)
+    //    {
+    //        throw;
+    //    }
 
-        return aux;
-    }
+    //    return aux;
+    //}
 
     public void StartDialogue(Dialogue newDialogue, Transform transf, Sprite sp/*, INPC npc = null*/)
     {
         if (newDialogue is DialogueWithChoice) lastDialogueWithChoice = (DialogueWithChoice)newDialogue;
         activeMainDialogue = true;
         int id = 0;
-        bool isPlayer = (newDialogue is DialogueBattle);        
-        if (isPlayer)
-        {
-            DialogueBattle db = (DialogueBattle)newDialogue;
-            id = (int)db.approachType;
-        }
+        //bool isPlayer = (newDialogue is DialogueBattle);        
+        //if (isPlayer)
+        //{
+        //    DialogueBattle db = (DialogueBattle)newDialogue;
+        //    id = (int)db.approachType;
+        //}
 
-        OpenDialoguePopUp(transf/*, npc*/, sp, isPlayer, id);
+        OpenDialoguePopUp(transf/*, npc*/, sp,/* isPlayer,*/ id);
         actualDialogue = newDialogue;
         NextString();
         StartCoroutine("CheckPlayerDistance");
@@ -224,7 +224,7 @@ public class DialogueController : MonoBehaviour
         dialoguePopUp.CloseChoicesTab();
     }
 
-    public void OpenDialoguePopUp(Transform transf/*, INPC npc = null*/,Sprite sp, bool isPlayer, int id)
+    public void OpenDialoguePopUp(Transform transf/*, INPC npc = null*/,Sprite sp, /*bool isPlayer,*/ int id)
     {
         //Debug.Log("Abrindo");
         try
@@ -239,7 +239,7 @@ public class DialogueController : MonoBehaviour
             if (mainCam == null) SetCam();
             dialoguePopUp.transform.position = mainCam.WorldToScreenPoint(transf.position);
         }
-        dialoguePopUp.InitialSet(sp, isPlayer, id);
+        dialoguePopUp.InitialSet(sp, /*isPlayer,*/ id);
 
     }
 

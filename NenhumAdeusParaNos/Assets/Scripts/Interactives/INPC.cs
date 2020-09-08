@@ -17,14 +17,15 @@ public class INPC : NPC
 
     public Personalities thisPersonality;
     public EnemyType enemyType;
-    public bool hasOtherNPCTalk;
-    public INPC theOtherNPC;
+    //public bool hasOtherNPCTalk;
+    //public INPC theOtherNPC;
 
     public DialogueOptions dialogues;
+    public DialogueOptions dialogues_battle;
 
     public DialogueWithChoice[] questDialogues;
-    public Dialogue dialogueWithOtherNPC;
-    public DialogueOptions[] myDialogues = new DialogueOptions[3];   
+    //public Dialogue dialogueWithOtherNPC;
+    //public DialogueOptions[] myDialogues = new DialogueOptions[3];   
 
     public bool hostile = false;
     public bool heavy = false;
@@ -76,12 +77,16 @@ public class INPC : NPC
         else if (dialogues != null && dialogues.dialogueOp.Length > 0)
         {
             //OnExit(player);
+            Dialogue dialogue;
             if (inBattle)
             {
+                if (thisPersonality == Personalities.Tsundere && charStats.LifePercentage() > 0.5f) return;
+                else if (thisPersonality == Personalities.Yandere && (charStats.LifePercentage() < 0.3f || charStats.LifePercentage() > 0.7f)) return;
                 GameManager.gameManager.battleController.DisableNPCInteractions();
                 GameManager.gameManager.MainHud.OpenDialogueTab(expressions[1]);
+                dialogue = dialogues_battle.GetRandomDialogue();
             }
-            Dialogue dialogue = dialogues.GetRandomDialogue();
+            else dialogue = dialogues.GetRandomDialogue();
             dialogue.MyNPC = this;
             dialogue.MainCharacter = player;
             GameManager.gameManager.dialogueController.StartDialogue(dialogue, transform, expressions[1]);
@@ -391,10 +396,10 @@ public class INPC : NPC
                     DefaultInteraction(other);
                 }
             }
-            else if (hasOtherNPCTalk)
-            {
-                //GameManager.gameManager.dialogueController.StartDialogue(dialogueWithOtherNPC, transform, true);
-            }
+            //else if (hasOtherNPCTalk)
+            //{
+            //    GameManager.gameManager.dialogueController.StartDialogue(dialogueWithOtherNPC, transform, true);
+            //}
             else
             {
                 DefaultInteraction(other);

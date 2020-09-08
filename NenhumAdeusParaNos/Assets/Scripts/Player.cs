@@ -124,8 +124,12 @@ public class Player : MonoBehaviour, BattleUnit
 
     bool playedShieldBreakeSong = false;
 
+    CharacterController cc;
+
     private void Start()
     {
+        cc = GetComponent<CharacterController>();
+
         string[] aux = new string[2];
         aux[0] = "Default";
         aux[1] = "Walls";
@@ -174,6 +178,12 @@ public class Player : MonoBehaviour, BattleUnit
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
+
+        if (!cc.isGrounded)
+        {
+            Vector3 downForce = new Vector3(0, -9.81f, 0) * Time.deltaTime;
+            cc.Move(downForce);
+        }
 
         if (Physics.Raycast(ray, out hit, 1000, aimLayermask))
         {
@@ -455,6 +465,7 @@ public class Player : MonoBehaviour, BattleUnit
         if (Physics.Raycast(transform.up * 0.2f + transform.position, heading, out hit, 0.5f, dashMask)) movingTowardWall = 0;
 
         transform.position += heading * moveSpeed * Time.deltaTime * movingTowardWall;
+        cc.Move(heading * moveSpeed * Time.deltaTime);
 
         if (aimLocked)
         {

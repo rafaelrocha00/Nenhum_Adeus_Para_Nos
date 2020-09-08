@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Dialogue Battle Result", menuName = "Dialogue/Dialogue Battle Result")]
 public class DialogueBattleResult : Dialogue
 {
-    public DialogueBattle.ApproachType[] apCombination = new DialogueBattle.ApproachType[3];
+    //public DialogueBattle.ApproachType[] apCombination = new DialogueBattle.ApproachType[3];
     public Battle_Effect.BattleEffect[] posEffects;
     public float[] chancePercentages;//Considerando as maiores porcentages no final e as menores no inicio
     public bool life_staminaCond;

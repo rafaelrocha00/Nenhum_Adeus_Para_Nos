@@ -64,24 +64,24 @@ public class DialoguePopUp : MonoBehaviour
     {
         dialogueText.text = tex;
     }
-    public void InitialSet(Sprite sp = null, bool player = false, int aType = 0)
+    public void InitialSet(Sprite sp = null, /*bool player = false,*/ int aType = 0)
     {
         //playerD.gameObject.SetActive(false);
         //thisButton.onClick.AddListener(act);
         speakerImage.sprite = sp;
-        if (player)
-        {
-            playerD.gameObject.SetActive(true);
-            transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(-75, 0);
-            SpriteAnimator sa = playerD.GetComponent<SpriteAnimator>();
-            sa.SetSprites(playerD.SpritePack(aType));
-            sa.Play(true);
-        }
-        else
-        {
-            playerD.gameObject.SetActive(false);
-            transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(0, 0);
-        }
+        //if (player)
+        //{
+        //    playerD.gameObject.SetActive(true);
+        //    transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(-75, 0);
+        //    SpriteAnimator sa = playerD.GetComponent<SpriteAnimator>();
+        //    sa.SetSprites(playerD.SpritePack(aType));
+        //    sa.Play(true);
+        //}
+        //else
+        //{
+        //    playerD.gameObject.SetActive(false);
+        //    transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(0, 0);
+        //}
     }
     //public void RemoveOnClick()
     //{
