@@ -17,7 +17,8 @@ public class Bed : Interactives
 
     void PassTime()
     {
-        GameManager.gameManager.calendarController.PassTime(0, 8, 0);
+        //GameManager.gameManager.calendarController.PassTime(0, 8, 0);
+        GameManager.gameManager.calendarController.PassTime(480);
     }
 
     void ActivePlayer()

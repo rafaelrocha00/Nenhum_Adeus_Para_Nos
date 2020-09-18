@@ -22,6 +22,8 @@ public class CamMove : MonoBehaviour
     [HideInInspector] Quaternion defaultRotation;
     public Quaternion DefaultRotation { get { return defaultRotation; } }
 
+    //float timeInTopBorders = 0.0f;
+    //float timeInRigBorders = 0.0f;
     //float centralizedTime;
 
     //public void Move(Vector3 pLocation)
@@ -78,20 +80,28 @@ public class CamMove : MonoBehaviour
     {
         if (Input.mousePosition.x >= Screen.width * 0.9f)
         {
+            //timeInTopBorders += Time.deltaTime;
+            //if (timeInTopBorders >= 1.0f) 
             SetCameraToRight(true);
         }
         else if (Input.mousePosition.x <= Screen.width * 0.1f)
         {
+            //timeInTopBorders += Time.deltaTime;
+            //if (timeInTopBorders >= 1.0f) 
             SetCameraToRight(false);
         }
         else SetDefaultZDist();
 
         if (Input.mousePosition.y >= Screen.height * 0.9f)
         {
+            //timeInRigBorders += Time.deltaTime;
+            //if (timeInRigBorders >= 1.0f) 
             SetCameraToUp(true);
         }
         else if (Input.mousePosition.y <= Screen.height * 0.1f)
         {
+            //timeInRigBorders += Time.deltaTime;
+            //if (timeInRigBorders >= 1.0f) 
             SetCameraToUp(false);
         }
         else SetDefaultXDist();
@@ -101,13 +111,13 @@ public class CamMove : MonoBehaviour
     {
         //if (!GameManager.gameManager.battleController.ActiveBattle) distanceToTarget.x = defaultDistance.x * 1.6f;
         //else distanceToTarget.x = distanceInBattle.x * 1.6f;
-        if (v) distanceToTarget.x = defaultDistance.x *  0.6f;
-        else   distanceToTarget.x = defaultDistance.x *  1.5f;
+        if (v) distanceToTarget.x = defaultDistance.x *  0.7f;
+        else   distanceToTarget.x = defaultDistance.x *  1.4f;
     }
     public void SetCameraToRight(bool v)
     {
-        if (v) distanceToTarget.z = defaultDistance.z - 7.5f;
-        else   distanceToTarget.z = defaultDistance.z + 7.5f;
+        if (v) distanceToTarget.z = defaultDistance.z - 5f;
+        else   distanceToTarget.z = defaultDistance.z + 5f;
     }
 
     public void SetDefaultDistance()
@@ -119,11 +129,15 @@ public class CamMove : MonoBehaviour
     {
         if (!GameManager.gameManager.battleController.ActiveBattle) distanceToTarget.x = defaultDistance.x;
         else distanceToTarget.x = distanceInBattle.x;
+
+        //timeInRigBorders = 0.0f;
     }
     void SetDefaultZDist()
     {
         if (!GameManager.gameManager.battleController.ActiveBattle) distanceToTarget.z = defaultDistance.z;
         else distanceToTarget.z = distanceInBattle.z;
+
+        //timeInTopBorders = 0.0f;
     }
 
     public void LerpLoc(Vector3 loc, float tMult)

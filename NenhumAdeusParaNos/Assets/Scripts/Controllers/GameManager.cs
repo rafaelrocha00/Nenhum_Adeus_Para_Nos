@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public QuestGenerator questGenerator;
     [HideInInspector] public CalendarController calendarController;
     [HideInInspector] public CompanyController companyController;
+    [HideInInspector] public RepairController repairController;
     [HideInInspector] public ItemsSaver itemsSaver;
 
     [HideInInspector] MainHud mainHud;
@@ -49,7 +51,10 @@ public class GameManager : MonoBehaviour
         questGenerator = GetComponent<QuestGenerator>();
         calendarController = GetComponent<CalendarController>();
         companyController = GetComponent<CompanyController>();
+        repairController = GetComponent<RepairController>();
         itemsSaver = GetComponent<ItemsSaver>();
+
+        GameManager.gameManager.repairController.OnLoadScene();
     }
 
     private void Update()
@@ -59,11 +64,11 @@ public class GameManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.R))
             {
                 battleController.ActiveBattle = false;
-                UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
                 dialogueController.SetCam();
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.O)) Client_UDP.Singleton.SendToServer("Jogador: " + PlayerName + " | Maior Recompensa: 500,68(s)");
+        //if (Input.GetKeyDown(KeyCode.O)) Client_UDP.Singleton.SendToServer("Jogador: " + PlayerName + " | Maior Recompensa: 500,68(s)");
     }
 }

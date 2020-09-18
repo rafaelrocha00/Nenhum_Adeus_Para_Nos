@@ -147,7 +147,12 @@ public class CompanyPC : Interactives
 
         GenerateJobs();
 
-        SetRanking();
+        //SetRanking();
+    }
+
+    public void Exit()
+    {
+        ExitPC(GameManager.gameManager.battleController.MainCharacter);
     }
 
     public void ExitPC(Player p)
@@ -216,33 +221,33 @@ public class CompanyPC : Interactives
         }
     }
 
-    public void SetRanking()
-    {
-        string msg = Client_UDP.Singleton.SendToServer("load(ls)");
+    //public void SetRanking()
+    //{
+    //    //string msg = Client_UDP.Singleton.SendToServer("load(ls)");
 
-        if (msg.Contains("(sc)"))
-        {
-            //try
-            //{
-            //}
-            //catch { }
-            for (int i = 0; i < rewardsArea.childCount; i++)
-            {
-                Destroy(rewardsArea.GetChild(i).gameObject);
-            }
+    //    if (msg.Contains("(sc)"))
+    //    {
+    //        //try
+    //        //{
+    //        //}
+    //        //catch { }
+    //        for (int i = 0; i < rewardsArea.childCount; i++)
+    //        {
+    //            Destroy(rewardsArea.GetChild(i).gameObject);
+    //        }
 
-            string allScores = msg.Split(')')[1];
-            allScores = allScores.Replace("\n", "*");
-            print(allScores);
+    //        string allScores = msg.Split(')')[1];
+    //        allScores = allScores.Replace("\n", "*");
+    //        print(allScores);
 
-            string[] scores = allScores.Split('*');
+    //        string[] scores = allScores.Split('*');
 
-            for (int i = 0; i < scores.Length - 1; i++)
-            {
-                print(scores[i]);
-                GameObject go = Instantiate(rewardRankP, rewardsArea, false) as GameObject;
-                go.GetComponent<Text>().text = scores[i];
-            }
-        }
-    }
+    //        for (int i = 0; i < scores.Length - 1; i++)
+    //        {
+    //            print(scores[i]);
+    //            GameObject go = Instantiate(rewardRankP, rewardsArea, false) as GameObject;
+    //            go.GetComponent<Text>().text = scores[i];
+    //        }
+    //    }
+    //}
 }

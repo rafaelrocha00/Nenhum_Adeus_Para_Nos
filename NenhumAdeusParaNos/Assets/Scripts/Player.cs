@@ -216,12 +216,12 @@ public class Player : MonoBehaviour, BattleUnit
             else if (placingItem) CancelPlaceItem();
         }
 
-        if (Input.mouseScrollDelta.y > 0)
+        if (Input.mouseScrollDelta.y < 0)
         {
             //SwitchWeapon();
             GameManager.gameManager.inventoryController.Inventory.ChangeQuickItem(true);
         }
-        else if (Input.mouseScrollDelta.y < 0)
+        else if (Input.mouseScrollDelta.y > 0)
         {
             GameManager.gameManager.inventoryController.Inventory.ChangeQuickItem(false);
         }

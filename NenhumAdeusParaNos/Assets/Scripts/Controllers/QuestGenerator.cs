@@ -90,7 +90,7 @@ public class QuestGenerator : MonoBehaviour
             }
         }
 
-        Debug.Log(jobsChances[0] + " | " + jobsChances[1] + " | " + jobsChances[2]);
+        //Debug.Log(jobsChances[0] + " | " + jobsChances[1] + " | " + jobsChances[2]);
     }
     public void DecreaseChance(int idx)
     {

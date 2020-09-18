@@ -91,7 +91,7 @@ public class QuestController : MonoBehaviour
     {
         for (int i = 0; i < activeQuests.Count; i++)
         {
-            if (activeQuests[i].generated && activeQuests[i].LimitDay == GameManager.gameManager.calendarController.ActualDay)
+            if (activeQuests[i].generated && activeQuests[i].LimitDay == GameManager.gameManager.calendarController.DateInfo.day)
                 activeQuests[i].Cancel();
         }
     }

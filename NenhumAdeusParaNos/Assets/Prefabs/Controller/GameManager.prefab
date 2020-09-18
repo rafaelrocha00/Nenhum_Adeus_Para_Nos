@@ -533,6 +533,7 @@ GameObject:
   - component: {fileID: 6662222126399441537}
   - component: {fileID: 2584423260984262956}
   - component: {fileID: 562699946591280102}
+  - component: {fileID: 7615176732869231259}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -578,6 +579,7 @@ MonoBehaviour:
   questGenerator: {fileID: 0}
   calendarController: {fileID: 0}
   companyController: {fileID: 0}
+  repairController: {fileID: 0}
   itemsSaver: {fileID: 0}
   PlayerName: guest
 --- !u!114 &6258150706636257314
@@ -610,10 +612,6 @@ MonoBehaviour:
   dialoguePref: {fileID: 4359621061146307511, guid: 1e0ae1c102b58f04785ded89bb767800,
     type: 3}
   answerTime: 10
-  playerApproaches:
-  - {fileID: 11400000, guid: 4de02e9aca0409d46858f07db6c2a4ff, type: 2}
-  - {fileID: 11400000, guid: 5c81c4afe5cf7a14d8f8813706f3db9a, type: 2}
-  - {fileID: 11400000, guid: ad4ca3930fed45940b85b9227ae1a487, type: 2}
 --- !u!114 &6506660029207911043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -695,10 +693,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35486172caf626b4e8fd444dbef50e92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actualWeek: 1
-  actualDay: 0
-  hour: 6
-  mins: 0
   timeScale: 3.75
 --- !u!114 &6662222126399441537
 MonoBehaviour:
@@ -778,6 +772,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chestGeneratedItems: 0
+--- !u!114 &7615176732869231259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6506660029207911032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c1ba1eb1df017841b18357a64da284e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeRepairs: []
 --- !u!1 &6745858012484666349
 GameObject:
   m_ObjectHideFlags: 0
