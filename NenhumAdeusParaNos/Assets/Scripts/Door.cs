@@ -5,16 +5,30 @@ using UnityEngine.SceneManagement;
 
 public class Door : MonoBehaviour
 {
+    public bool sameScene;
+    public InteriorQuickTravel iQuickTravel;
+
     public string sceneName;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("player"))
         {
-            GameManager.gameManager.inventoryController.Inventory.SaveItems();
-            GameManager.gameManager.itemsSaver.BlockChestGen();
+            if (!sameScene)
+            {
+                GameManager.gameManager.inventoryController.Inventory.SaveItems();
+                GameManager.gameManager.itemsSaver.BlockChestGen();
 
-            SceneManager.LoadScene(sceneName);
+                SceneManager.LoadScene(sceneName);
+            }
+            else
+            {
+                if (other.GetComponent<Player>() != null)
+                {
+                    try { iQuickTravel.Navigate(other.GetComponent<Player>()); }
+                    catch { }
+                }
+            }
         }
     }
 }

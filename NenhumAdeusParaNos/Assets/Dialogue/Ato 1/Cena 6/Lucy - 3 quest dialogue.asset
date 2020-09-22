@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cc231529148de24ca6aeda3695e168a, type: 3}
+  m_Name: Lucy - 3 quest dialogue
+  m_EditorClassIdentifier: 
+  allStrings:
+  - "Voc\xEA pode pedir desculpas para o Benjo quando for na fazenda dele? Aproveita
+    e leva um pouco da sopa.\r\n"
+  - "Pode deixar. Eu j\xE1 tenho que ir l\xE1, falando nisso."
+  - "As chaves est\xE3o no seu bolso. V\xEA se n\xE3o esquece de novo.\r\n"
+  - "Eu j\xE1 ia perguntar. Obrigado, meu bem.\r"
+  mcStrings: 0100000003000000
+  quest: {fileID: 11400000, guid: cde0adf1b77d9194e838f884d20d51d4, type: 2}
+  accepting: 1

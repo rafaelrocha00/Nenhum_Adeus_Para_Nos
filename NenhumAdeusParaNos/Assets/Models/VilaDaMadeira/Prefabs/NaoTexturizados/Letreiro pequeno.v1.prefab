@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4682966407672927188}
   - component: {fileID: 4442303632215484898}
   - component: {fileID: 7969879263210525979}
+  - component: {fileID: 3049685560307213891}
   m_Layer: 0
   m_Name: Letreiro pequeno.v1
   m_TagString: Untagged
@@ -25,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8549631967647785415}
-  m_LocalRotation: {x: -0, y: -0.7071065, z: -0, w: 0.7071071}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 40.91, y: -5.869, z: 5.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -79,3 +80,16 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &3049685560307213891
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8549631967647785415}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.0929098, y: 1.9516804, z: 0.50485337}
+  m_Center: {x: 0.0066371528, y: 0.93524325, z: 0.057567485}

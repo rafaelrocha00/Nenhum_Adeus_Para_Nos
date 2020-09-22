@@ -18,7 +18,7 @@ public class DialogueOptions : ScriptableObject
 
     public Dialogue GetRandomDialogue()
     {
-        if (dialogueOp != null && dialogueOp.Length > 0)
+        if (dialogueOp != null && dialogueOp.Length >= 0)
         {
             if (curretDialogue < 0)
             {

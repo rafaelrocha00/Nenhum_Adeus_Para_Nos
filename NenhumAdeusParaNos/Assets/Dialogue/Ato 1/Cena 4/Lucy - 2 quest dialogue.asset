@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cc231529148de24ca6aeda3695e168a, type: 3}
+  m_Name: Lucy - 2 quest dialogue
+  m_EditorClassIdentifier: 
+  allStrings:
+  - "Isso \xE9 sopa de carne? T\xE1 com um cheiro bom.\r\nMas o seu \xE9 melhor.\r"
+  - "Ainda bem que as crian\xE7as n\xE3o est\xE3o aqui."
+  - "Mas sim, sobrou de ontem. Ainda tem muito, d\xE1 at\xE9 para dividir com o senhor
+    Benjo."
+  - "E voc\xEA t\xE1 precisando de um banho. V\xEA se arruma os canos."
+  - "Eles estragaram da \xFAltima vez que o Bewoy usou o chuveiro.\r\n"
+  - 'De novo? Eu vou ter que trocar o chuveiro, desse jeito.
+
+'
+  mcStrings: 0000000005000000
+  quest: {fileID: 11400000, guid: 353e3390724607d4c99d64c93caf8d00, type: 2}
+  accepting: 1

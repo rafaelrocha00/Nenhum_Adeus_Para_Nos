@@ -26,7 +26,7 @@ public class AudioController : MonoBehaviour
         source_music.Play();
     }
 
-    public void PlayEffect(AudioClip clip, bool loop = false, float timeToStop = 0)
+    public void PlayEffect(AudioClip clip, bool loop = false, float timeToStop = 0, bool randomPitch = false)
     {
         if (clip == null) return;
 
@@ -36,7 +36,10 @@ public class AudioController : MonoBehaviour
             {
                 source_effects[i].clip = clip;
                 source_effects[i].loop = loop;
-                source_effects[i].Play();
+                if (randomPitch) source_effects[i].pitch = Random.Range(0.85f, 1.15f);
+                else source_effects[i].pitch = 1;
+
+                source_effects[i].Play();                
 
                 if (loop) StartCoroutine(StopEffect(i, timeToStop));
                 break;

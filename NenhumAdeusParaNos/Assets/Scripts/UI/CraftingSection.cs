@@ -29,6 +29,8 @@ public class CraftingSection : MonoBehaviour
     public Color c_repair_enabled;
     public Color c_repair_disabled;
 
+    public AudioClip clip_craft;
+
     private void Start()
     {
         MaterialSlot ms = materialSlotTab.GetComponentInChildren<MaterialSlot>();
@@ -118,7 +120,8 @@ public class CraftingSection : MonoBehaviour
                 }
             }
             RemoveMaterialSlot();
-            brokenObject.FinishRepair(totalBonusTime);            
+            brokenObject.FinishRepair(totalBonusTime);
+            GameManager.gameManager.audioController.PlayEffect(clip_craft);
             Debug.Log(totalBonusTime);
         }
     }

@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fabced99eb604648b986f82b3c23590, type: 3}
+  m_Name: Lucy - 1 quest
+  m_EditorClassIdentifier: 
+  qName: Acordar a familia
+  id: 0
+  description: quest_description
+  moneyReward: 0
+  resourceReward: 0
+  contractor: contractor_
+  mustReturn: 0
+  limitDay: -1
+  generated: 0
+  resourceT: 4
+  completingQuestDialogue: {fileID: 11400000, guid: a1b1470c85525d24c8654d9ec55dd210,
+    type: 2}
+  quest_itemRewards: []
+  quest_itemRQuants: 
+  completed: 0
+  accepted: 0
+  cancelled: 0
+  waitingReturnToNPC: 0
+  acceptText: Aceitou
+  completeText: Completou
+  unlockDialogue: 1
+  dialogueOptions: {fileID: 11400000, guid: a7f4e301705faa64e900ef6419d89c70, type: 2}
+  npcsToTalk:
+  - Vampirinha
+  - Emo
+  - Bebado
+  talked: 000000

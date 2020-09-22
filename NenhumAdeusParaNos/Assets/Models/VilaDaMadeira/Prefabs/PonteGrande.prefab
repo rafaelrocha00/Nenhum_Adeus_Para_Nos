@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7617416339557783633}
   - component: {fileID: 1507994981969044071}
   - component: {fileID: 5175181437185154718}
+  - component: {fileID: 8217276103559840527}
   m_Layer: 0
   m_Name: PonteGrande
   m_TagString: Untagged
@@ -25,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6912222877908462146}
-  m_LocalRotation: {x: -0.5000011, y: -0.49999905, z: -0.49999923, w: 0.5000008}
+  m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: -62.57244, y: 7.47, z: -12.82}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children: []
@@ -79,3 +80,16 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &8217276103559840527
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6912222877908462146}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.033352006, y: 0.16435754, z: 0.0031408076}
+  m_Center: {x: 0.009081529, y: -0.03439468, z: 0.00017738933}

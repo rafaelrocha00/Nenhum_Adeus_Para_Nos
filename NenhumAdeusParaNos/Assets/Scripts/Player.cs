@@ -109,12 +109,14 @@ public class Player : MonoBehaviour, BattleUnit
     public List<Interactives> InteractingObjs { get { return interactingObjs; } set { interactingObjs = value; } }
 
     #region Audio Clips
+    public AudioClip clip_walkGrass;
     public AudioClip clip_hit;
     public AudioClip clip_heal;
     public AudioClip clip_dash;
     public AudioClip clip_shieldHit;
     public AudioClip clip_shieldBreak;
     #endregion
+    public float walkSFXInterval = 0.5f;
 
     [HideInInspector] bool battleUnlocked = false;
     public bool BattleUnlocked { get { return battleUnlocked; } set { battleUnlocked = value; } }
@@ -170,7 +172,8 @@ public class Player : MonoBehaviour, BattleUnit
         right = Quaternion.Euler(new Vector3(0, 90, 0)) * forward;
 
         if (!battleUnlocked) HideShowWeapon();
-    
+        StartCoroutine(WalkSFX());
+
         StartCoroutine("GetMainHUD");
     }
     IEnumerator GetMainHUD()
@@ -183,6 +186,7 @@ public class Player : MonoBehaviour, BattleUnit
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
+        //Debug.Log(moving);
 
         if (!cc.isGrounded)
         {
@@ -450,7 +454,12 @@ public class Player : MonoBehaviour, BattleUnit
 
     void Move()
     {
-        moving = true;
+        //if (!moving)
+        //{
+        //    //StopCoroutine("WalkSFX");
+        //    StartCoroutine(WalkSFX());
+        //}
+        moving = true;        
         moveTime += Time.deltaTime;
         if (moveTime < accelerationTime) moveSpeed += acceleration * Time.deltaTime;
         else if (!running && moveSpeed < maxSpeed && !slowMoving) moveSpeed = maxSpeed;
@@ -494,6 +503,15 @@ public class Player : MonoBehaviour, BattleUnit
                 UpdateDashQuant(-1);
             }
         }  
+    }
+    IEnumerator WalkSFX()
+    {
+        yield return new WaitForEndOfFrame();
+        while (true)
+        {           
+            if (moving) GameManager.gameManager.audioController.PlayEffect(clip_walkGrass, false, 0, true);
+            yield return new WaitForSeconds(walkSFXInterval);
+        }
     }
 
     void StopMoving()
