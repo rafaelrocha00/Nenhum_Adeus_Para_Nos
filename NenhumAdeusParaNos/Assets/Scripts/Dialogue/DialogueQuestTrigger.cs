@@ -25,6 +25,7 @@ public class DialogueQuestTrigger : Dialogue
             else quest.Complete();
             //myNPC.MyQuestAccepted = true;
             ResetDialogue();
+            CheckQuest();
             return "";
         }
     }

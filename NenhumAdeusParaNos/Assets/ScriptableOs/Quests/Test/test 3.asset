@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fabced99eb604648b986f82b3c23590, type: 3}
+  m_Name: test 3
+  m_EditorClassIdentifier: 
+  qName: "Dialoga l\xE1"
+  id: 0
+  description: quest_description
+  moneyReward: 0
+  resourceReward: 0
+  contractor: contractor_
+  mustReturn: 1
+  limitDay: -1
+  generated: 0
+  resourceT: 4
+  completingQuestDialogue: {fileID: 11400000, guid: aab0cc12824e66b4a95d88019bc169a8,
+    type: 2}
+  quest_itemRewards: []
+  quest_itemRQuants: 
+  completed: 1
+  accepted: 1
+  cancelled: 0
+  waitingReturnToNPC: 1
+  acceptText: Aceitou
+  completeText: Completou
+  unlockDialogue: 1
+  dialogueOptions: {fileID: 11400000, guid: 1f2c7d60da3475b4eaf91b18077f3f67, type: 2}
+  npcsToTalk:
+  - Joaozinho
+  - Pedrinho
+  talked: 0101

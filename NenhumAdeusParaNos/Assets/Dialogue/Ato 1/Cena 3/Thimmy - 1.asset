@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4825ceb27fa0f34c9ae7d003d92d851, type: 3}
+  m_Name: Thimmy - 1
+  m_EditorClassIdentifier: 
+  allStrings:
+  - "Acorda, voc\xEA n\xE3o queria ir pra casa do seu amigo hoje cedo?\r\n"
+  - "T\xE1 cedo. M\xE9 d\xE1 uns cinco minutos.\r\n"
+  mcStrings: 00000000
+  dialogueChoices:
+  - {fileID: 11400000, guid: bff0ae36612f9ec4db6eb39be156bb4e, type: 2}
+  - {fileID: 11400000, guid: 38b22d22ba743124db2d6edf9d981000, type: 2}
+  options:
+  - Levanta.
+  - "Realmente est\xE1 cedo."

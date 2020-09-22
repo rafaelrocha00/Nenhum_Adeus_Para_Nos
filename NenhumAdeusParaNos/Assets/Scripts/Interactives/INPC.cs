@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class INPC : NPC
 {
-    [SerializeField] string npcName = "Name";
+    //[SerializeField] string npcName = "Name";
     [SerializeField] string areaName = "Area Name";
-    public string Name { get { return npcName; } set { npcName = value; } }
+    //public string Name { get { return npcName; } set { npcName = value; } }
     public string AreaName { get { return areaName; } set { areaName = value; } }
     public Sprite[] expressions = new Sprite[3];
 
@@ -19,14 +19,16 @@ public class INPC : NPC
     public EnemyType enemyType;
     //public bool hasOtherNPCTalk;
     //public INPC theOtherNPC;
-
+    [Header("----------- Diálogos e Quests -----------")]
     public DialogueOptions dialogues;
     public DialogueOptions dialogues_battle;
 
     public DialogueWithChoice[] questDialogues;
+    public DialogueQuestTrigger[] directQuestDialogue;
     //public Dialogue dialogueWithOtherNPC;
     //public DialogueOptions[] myDialogues = new DialogueOptions[3];   
 
+    [Header("--------------- Comabte ---------------")]
     public bool hostile = false;
     public bool heavy = false;
 
@@ -58,39 +60,79 @@ public class INPC : NPC
         mCharacter = player;
         DesactiveBtp();
         if (GameManager.gameManager.dialogueController.ActiveMainDialogue) return;
-
-        if (!inBattle && questDialogues.Length > 0)// && !myQuestAccepeted)
+        
+        if (!inBattle && (questDialogues.Length > 0 || directQuestDialogue.Length > 0))// && !myQuestAccepeted)
         {
             for (int i = 0; i < questDialogues.Length; i++)
             {
                 DialogueQuestTrigger dqt = questDialogues[i].SearchQuestDialogue();
                 if (dqt.quest.WaitingReturnToNPC && !dqt.quest.Completed)
                 {
-                    dqt.quest.completingQuestDialogue.MainCharacter = GameManager.gameManager.battleController.MainCharacter;
-                    dqt.quest.completingQuestDialogue.MyNPC = this;
-                    //StartCoroutine(DelayStartDialogue(dqt.quest.completingQuestDialogue));
-                    GameManager.gameManager.dialogueController.StartDialogue(dqt.quest.completingQuestDialogue, this.transform, expressions[1]);
+                    //dqt.quest.completingQuestDialogue.MainCharacter = GameManager.gameManager.battleController.MainCharacter;
+                    //dqt.quest.completingQuestDialogue.MyNPC = this;
+                    ////StartCoroutine(DelayStartDialogue(dqt.quest.completingQuestDialogue));
+                    //GameManager.gameManager.dialogueController.StartDialogue(dqt.quest.completingQuestDialogue, this.transform, expressions[1]);
+                    StartDialogue(dqt.quest.completingQuestDialogue, player);
                     return;
                 }
             }
+            for (int i = 0; i < directQuestDialogue.Length; i++)
+            {
+                if (directQuestDialogue[i].quest.WaitingReturnToNPC && !directQuestDialogue[i].quest.Completed)
+                {
+                    //dqt.quest.completingQuestDialogue.MainCharacter = GameManager.gameManager.battleController.MainCharacter;
+                    //dqt.quest.completingQuestDialogue.MyNPC = this;
+                    ////StartCoroutine(DelayStartDialogue(dqt.quest.completingQuestDialogue));
+                    //GameManager.gameManager.dialogueController.StartDialogue(dqt.quest.completingQuestDialogue, this.transform, expressions[1]);
+                    StartDialogue(directQuestDialogue[i].quest.completingQuestDialogue, player);
+                    return;
+                }
+            }
+            DefaultDialogue(player);
         }
         else if (dialogues != null && dialogues.dialogueOp.Length > 0)
         {
+            DefaultDialogue(player);
             //OnExit(player);
-            Dialogue dialogue;
-            if (inBattle)
-            {
-                if (thisPersonality == Personalities.Tsundere && charStats.LifePercentage() > 0.5f) return;
-                else if (thisPersonality == Personalities.Yandere && (charStats.LifePercentage() < 0.3f || charStats.LifePercentage() > 0.7f)) return;
-                GameManager.gameManager.battleController.DisableNPCInteractions();
-                GameManager.gameManager.MainHud.OpenDialogueTab(expressions[1]);
-                dialogue = dialogues_battle.GetRandomDialogue();
-            }
-            else dialogue = dialogues.GetRandomDialogue();
-            dialogue.MyNPC = this;
-            dialogue.MainCharacter = player;
-            GameManager.gameManager.dialogueController.StartDialogue(dialogue, transform, expressions[1]);
-        }            
+            //Dialogue dialogue;
+            //if (inBattle)
+            //{
+            //    if (thisPersonality == Personalities.Tsundere && charStats.LifePercentage() > 0.5f) return;
+            //    else if (thisPersonality == Personalities.Yandere && (charStats.LifePercentage() < 0.3f || charStats.LifePercentage() > 0.7f)) return;
+            //    GameManager.gameManager.battleController.DisableNPCInteractions();
+            //    GameManager.gameManager.MainHud.OpenDialogueTab(expressions[1]);
+            //    dialogue = dialogues_battle.GetRandomDialogue();
+            //}
+            //else dialogue = dialogues.GetRandomDialogue();
+            //dialogue.MyNPC = this;
+            //dialogue.MainCharacter = player;
+            //GameManager.gameManager.dialogueController.StartDialogue(dialogue, transform, expressions[1]);
+        }
+        CheckQuest();
+    }
+    void DefaultDialogue(Player player)
+    {
+        Dialogue dialogue;
+        if (inBattle)
+        {
+            if (thisPersonality == Personalities.Tsundere && charStats.LifePercentage() > 0.5f) return;
+            else if (thisPersonality == Personalities.Yandere && (charStats.LifePercentage() < 0.3f || charStats.LifePercentage() > 0.7f)) return;
+            GameManager.gameManager.battleController.DisableNPCInteractions();
+            GameManager.gameManager.MainHud.OpenDialogueTab(expressions[1]);
+            dialogue = dialogues_battle.GetRandomDialogue();
+        }
+        else dialogue = dialogues.GetRandomDialogue();
+        //dialogue.MyNPC = this;
+        //dialogue.MainCharacter = player;
+        //GameManager.gameManager.dialogueController.StartDialogue(dialogue, transform, expressions[1]);
+        StartDialogue(dialogue, player);
+    }
+
+    void StartDialogue(Dialogue d, Player p)
+    {
+        d.MyNPC = this;
+        d.MainCharacter = p;
+        GameManager.gameManager.dialogueController.StartDialogue(d, transform, expressions[1]);
     }
 
     public void EndDialogue()
@@ -377,7 +419,26 @@ public class INPC : NPC
         {
             if (GameManager.gameManager.battleController.ActiveBattle || GameManager.gameManager.dialogueController.ActiveMainDialogue) return;
             //Se tem quest, inicia uma conversa com o player, sobre a quest
-            if (questDialogues.Length > 0)// && !myQuestAccepeted)
+            if (directQuestDialogue.Length > 0)
+            {
+                Debug.Log("Olhando quests diretas");
+                //Não abrir quando quest já completa
+                for (int i = 0; i < directQuestDialogue.Length; i++)
+                {
+                    Debug.Log(directQuestDialogue[i].quest.Accepted);
+                    Debug.Log(directQuestDialogue[i].quest.Completed);
+                    if (!directQuestDialogue[i].quest.Accepted)
+                    {
+                        //directQuestDialogue[i].MyNPC = this;
+                        //directQuestDialogue[i].MainCharacter = GameManager.gameManager.battleController.MainCharacter;
+                        //GameManager.gameManager.dialogueController.StartDialogue(directQuestDialogue[i], transform, expressions[1]);
+                        StartDialogue(directQuestDialogue[i], GameManager.gameManager.battleController.MainCharacter);
+                        return;
+                    }
+                    DefaultInteraction(other);
+                }
+            }
+            else if (questDialogues.Length > 0)// && !myQuestAccepeted)
             {
                 Debug.Log("Olhando quests");
                 //Não abrir quando quest já completa
@@ -388,9 +449,10 @@ public class INPC : NPC
                     Debug.Log(dqt.quest.Completed);
                     if (!dqt.quest.Accepted)
                     {
-                        questDialogues[i].MyNPC = this;
-                        questDialogues[i].MainCharacter = GameManager.gameManager.battleController.MainCharacter;
-                        GameManager.gameManager.dialogueController.StartDialogue(questDialogues[i], transform, expressions[1]);
+                        //questDialogues[i].MyNPC = this;
+                        //questDialogues[i].MainCharacter = GameManager.gameManager.battleController.MainCharacter;
+                        //GameManager.gameManager.dialogueController.StartDialogue(questDialogues[i], transform, expressions[1]);
+                        StartDialogue(questDialogues[i], GameManager.gameManager.battleController.MainCharacter);
                         return;
                     }
                     DefaultInteraction(other);

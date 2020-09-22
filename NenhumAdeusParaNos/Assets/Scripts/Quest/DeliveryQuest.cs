@@ -18,7 +18,7 @@ public class DeliveryQuest : Quest
         try
         {
             Storage sto = thing as Storage;
-            if (sto.depositName.Equals(depositName))
+            if (sto.Name.Equals(depositName))
             {
                 for (int i = 0; i < itemsToDelivery.Length; i++)
                 {

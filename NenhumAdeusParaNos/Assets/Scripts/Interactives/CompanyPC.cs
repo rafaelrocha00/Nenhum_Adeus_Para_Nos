@@ -146,6 +146,7 @@ public class CompanyPC : Interactives
         SetResource();
 
         GenerateJobs();
+        CheckQuest();
 
         //SetRanking();
     }

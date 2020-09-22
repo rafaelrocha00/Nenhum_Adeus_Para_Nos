@@ -116,6 +116,9 @@ public class Player : MonoBehaviour, BattleUnit
     public AudioClip clip_shieldBreak;
     #endregion
 
+    [HideInInspector] bool battleUnlocked = false;
+    public bool BattleUnlocked { get { return battleUnlocked; } set { battleUnlocked = value; } }
+
     bool inBattle;
     LayerMask aimLayermask = 1 << 0;
     LayerMask dashMask;
@@ -165,6 +168,8 @@ public class Player : MonoBehaviour, BattleUnit
         forward.y = 0;
         forward = Vector3.Normalize(forward);
         right = Quaternion.Euler(new Vector3(0, 90, 0)) * forward;
+
+        if (!battleUnlocked) HideShowWeapon();
     
         StartCoroutine("GetMainHUD");
     }
@@ -232,7 +237,7 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            HideShowWeapon();
+            if (battleUnlocked) HideShowWeapon();
         }
 
         if (!EventSystem.current.IsPointerOverGameObject() && !interacting)
@@ -341,9 +346,9 @@ public class Player : MonoBehaviour, BattleUnit
                     }
                     Debug.Log(aux.name);
                 }
-
-                aux.Interact(this);
+                
                 canInteract = false;
+                aux.Interact(this);
             }
         }
 
@@ -482,7 +487,7 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (dashQuant > 0)
+            if (dashQuant > 0 && battleUnlocked)
             {
                 Vector3 targetPos = GetDashDest();
                 StartCoroutine(Dash(targetPos));
@@ -885,6 +890,7 @@ public class Player : MonoBehaviour, BattleUnit
 
     public void StartBattle(bool byDialogue = true)
     {
+        if (!battleUnlocked) return;
         if (byDialogue)
         {
             interacting = false;
@@ -894,6 +900,7 @@ public class Player : MonoBehaviour, BattleUnit
     }
     public void DelayStartBattle()
     {
+        if (!battleUnlocked) return;
         CombatSet();
     }
     void CombatSet()

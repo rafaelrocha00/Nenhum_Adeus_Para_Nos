@@ -13,6 +13,7 @@ public class Bed : Interactives
         p.enabled = false;
         Invoke("PassTime", 1);
         Invoke("ActivePlayer", 3);
+        CheckQuest();
     }
 
     void PassTime()

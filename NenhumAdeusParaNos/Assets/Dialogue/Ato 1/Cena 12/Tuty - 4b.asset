@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4825ceb27fa0f34c9ae7d003d92d851, type: 3}
+  m_Name: Tuty - 4b
+  m_EditorClassIdentifier: 
+  allStrings:
+  - "Se voc\xEA falar para sua m\xE3e, eu n\xE3o te dou dinheiro, combinado?"
+  - "\xC9 brincadeira, n\xE9?"
+  mcStrings: 00000000
+  dialogueChoices:
+  - {fileID: 11400000, guid: 726f8f97edd922a4989793394d8ad14b, type: 2}
+  - {fileID: 11400000, guid: cef7b8f11be58cc49b1463fc60ccc5f5, type: 2}
+  options:
+  - "N\xE3o."
+  - Sim.

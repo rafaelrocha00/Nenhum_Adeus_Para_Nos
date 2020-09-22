@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class Interactives : MonoBehaviour
 {
+    [SerializeField] string myName = "";
+    public string Name { get { return myName; } set { myName = value; } }
     public GameObject buttonToPressPref;
     protected GameObject buttonPref;
 
@@ -43,6 +45,11 @@ public abstract class Interactives : MonoBehaviour
     }
 
     public abstract void Interact(Player player);
+
+    public void CheckQuest()
+    {
+        GameManager.gameManager.questController.CheckQuests(this);
+    }
 
     public virtual void OnExit(Player p)
     {

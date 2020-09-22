@@ -15,6 +15,8 @@ public class MainHud : MonoBehaviour
     public GameObject inventory;
     public Transform itemStorages;
 
+    public CraftingSection craftingSection;
+
     public GameObject quickMenu;
     [HideInInspector] bool isQuickMenuActive;
     public bool IsQuickMenuActive { get { return isQuickMenuActive; } }
@@ -230,9 +232,23 @@ public class MainHud : MonoBehaviour
 
     public void OpenCloseInventory(bool value)
     {
+        if (!value) CloseCraftSection();
         OpenClosePauseMenu(false);
         inventory.SetActive(value);
-        ShowHideQuickItemSlot(!value);
+        ShowHideQuickItemSlot(!value);       
+    }
+    public void OpenCraftSection(BrokenObject bo)
+    {
+        craftingSection.gameObject.SetActive(true);
+        craftingSection.SetBrokenObject(bo);
+    }
+    public void CloseCraftSection()
+    {
+        if (craftingSection.gameObject.activeSelf)
+        {
+            craftingSection.ReturnItems();
+            craftingSection.gameObject.SetActive(false);           
+        }
     }
 
     public void OpenClosePauseMenu(bool value)

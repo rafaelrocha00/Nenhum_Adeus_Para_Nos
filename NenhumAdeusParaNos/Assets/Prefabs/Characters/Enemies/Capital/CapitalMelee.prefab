@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponModel: {fileID: 0}
+  equipped: 0
   meleeConfig: {fileID: 11400000, guid: 676ea20485da59248b0e082eee44e7aa, type: 2}
   anim: {fileID: 0}
   sCollider: {fileID: 1725179913454492682}
@@ -202,6 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde3a45690b66a64782b5e5353020fee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myName: Melee Cap
   buttonToPressPref: {fileID: 6638989974725394705, guid: 1a98f6b0eb2747648aedcb7a647713cd,
     type: 3}
   popUPHigh: 4
@@ -210,7 +212,6 @@ MonoBehaviour:
   myWeapon: {fileID: 7260063668294807138}
   defaultSpeed: 7
   rangedKiteSpeed: 4
-  npcName: Cap Hipo
   areaName: Fazenda Norte
   expressions:
   - {fileID: 21300000, guid: e12b15e85a84b5245802e386ccf3c21c, type: 3}
@@ -218,16 +219,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 031ce349843f42241bb7ec431818389b, type: 3}
   thisPersonality: 0
   enemyType: 2
-  hasOtherNPCTalk: 0
-  theOtherNPC: {fileID: 0}
-  waitingForAnswer: 0
   dialogues: {fileID: 0}
+  dialogues_battle: {fileID: 0}
   questDialogues: []
-  dialogueWithOtherNPC: {fileID: 0}
-  myDialogues:
-  - {fileID: 11400000, guid: 9d35aee0c2dc4d544b26be106b1ba1dc, type: 2}
-  - {fileID: 11400000, guid: 9ade35c76476a9341bc8858295c1de4a, type: 2}
-  - {fileID: 11400000, guid: 6e612f82348da484b84cc11b39535d8b, type: 2}
   hostile: 1
   heavy: 0
   dashTime: 0.2

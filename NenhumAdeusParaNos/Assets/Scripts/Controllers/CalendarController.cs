@@ -20,12 +20,6 @@ public class CalendarController : MonoBehaviour
 
         public void UpdateMin(int v = 1)
         {
-            //mins++;
-            //if (mins == 60)
-            //{
-            //    mins = 0;
-            //    UpdateHour();
-            //}
             mins += v;
             if (mins >= 60)
             {
@@ -36,12 +30,6 @@ public class CalendarController : MonoBehaviour
         }
         public void UpdateHour(int v = 1)
         {
-            //hour++;
-            //if (hour == 24)
-            //{
-            //    hour = 0;
-            //    UpdateDay();
-            //}
             hour += v;
             if (hour >= 24)
             {
@@ -52,12 +40,6 @@ public class CalendarController : MonoBehaviour
         }
         public void UpdateDay(int v = 1)
         {
-            //day++;
-            //if (day == 7)
-            //{
-            //    week++;
-            //    day = 0;
-            //}
             day += v;
             if (day >= 7)
             {
@@ -68,8 +50,6 @@ public class CalendarController : MonoBehaviour
 
         public int CompareTo(Date date)
         {
-            //Debug.Log(ToString());
-            //Debug.Log(date.ToString());
             if (week < date.week) return -1;
             else if (week > date.week) return 1;
             else
@@ -99,15 +79,6 @@ public class CalendarController : MonoBehaviour
     [HideInInspector] string[] daysOfWeek = { "Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado" };
     public string[] DaysOfWeek { get { return daysOfWeek; } }
 
-    //[SerializeField] int actualWeek = 1;
-    //[SerializeField] int actualDay = 0;
-    //[SerializeField] int hour = 6;
-    //[SerializeField] int mins = 0;
-    //public int ActualWeek { get { return actualWeek; } }
-    //public int ActualDay { get { return actualDay; } }
-    //public int Hour { get { return hour; } }
-    //public float Mins { get { return mins; } }
-
     [SerializeField] Date date;
     public Date DateInfo { get { return date; } }
 
@@ -131,24 +102,12 @@ public class CalendarController : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.G)) UpdateMin(480);
-        if (Input.GetKeyDown(KeyCode.H)) UpdateMin(1000);
-        if (Input.GetKeyDown(KeyCode.J)) UpdateMin(1440);
+        //if (Input.GetKeyDown(KeyCode.H)) UpdateMin(1000);
+        //if (Input.GetKeyDown(KeyCode.J)) UpdateMin(1440);
     }
 
     public void PassTime(int mins/*, int hours, int days*/)
     {
-        //for (int i = 0; i < mins; i++)
-        //{
-        //    UpdateMin();
-        //}
-        //for (int i = 0; i < hours; i++)
-        //{
-        //    UpdateHour();
-        //}
-        //for (int i = 0; i < days; i++)
-        //{
-        //    UpdateDay();
-        //}
         UpdateMin(mins);
 
         DayNightCycle.Instance.UpdatePostProcess(date.hour + mins / 60);
@@ -158,12 +117,6 @@ public class CalendarController : MonoBehaviour
 
     void UpdateHour()
     {
-        //date.hour++;
-        //if (date.hour == 24)
-        //{
-        //    date.hour = 0;
-        //    UpdateDay();          
-        //}
         date.UpdateHour();
         if ((date.hour == 6) || (date.hour == 18))
         {
@@ -176,12 +129,6 @@ public class CalendarController : MonoBehaviour
 
     void UpdateMin(int v = 1)
     {
-        //date.mins++;
-        //if (date.mins == 60)
-        //{
-        //    date.mins = 0;
-        //    UpdateHour();
-        //}
         date.UpdateMin(v);
 
         DayNightCycle.Instance.UpdatePostProcess(date.hour + date.mins / 60);
@@ -193,13 +140,7 @@ public class CalendarController : MonoBehaviour
     void UpdateDay()
     {
         GameManager.gameManager.questController.CancelQuestsOnLimit();
-        date.UpdateDay();
-        //date.day++;
-        //if (date.day == 7)
-        //{
-        //    date.week++;
-        //    date.day = 0;
-        //}        
+        date.UpdateDay();       
     }
 
     public void UpdateHudH()

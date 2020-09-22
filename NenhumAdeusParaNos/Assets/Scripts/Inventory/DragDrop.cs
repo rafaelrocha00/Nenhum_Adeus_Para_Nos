@@ -43,77 +43,6 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         GameManager.gameManager.inventoryController.Dragging = false;
         //InvenSlot auxSlot = GameManager.gameManager.inventoryController.ActualInvenSlot;
 
-        //if (auxSlot != null && auxSlot.IsEmpty())
-        //{
-        //    if (itemButton.Item.slotSize == Vector2Int.one)
-        //    {
-        //        auxSlot.DropItem(itemButton);
-        //        ResetIcon();
-        //        return;
-        //    }
-        //    else
-        //    {
-        //        GridManager auxGrid = auxSlot.MyGridManager;
-        //        //IntVector2[,] itemSlotsCoord = new IntVector2[itemButton.Item.slotSize.x, itemButton.Item.slotSize.y];
-        //        InvenSlot[,] invenSlots = new InvenSlot[itemButton.Item.slotSize.x, itemButton.Item.slotSize.y];
-
-        //        int xOffset, yOffset;
-
-        //        if (itemButton.Item.slotSize.x == 1) xOffset = (auxSlot.GetQuadrantRed().x == 0) ? 0 : -1;
-        //        else
-        //        {
-        //            xOffset = (itemButton.Item.slotSize.x % 2 == 1 && auxSlot.GetQuadrantRed().x == 0) ? 1 : 0;
-        //            if (itemButton.Item.slotSize.x > 3) xOffset += itemButton.Item.slotSize.x / 2 - 1;
-        //        }
-
-        //        if (itemButton.Item.slotSize.y == 1) yOffset = (auxSlot.GetQuadrantRed().y == 0) ? 0 : -1;
-        //        else
-        //        {
-        //            yOffset = (itemButton.Item.slotSize.y % 2 == 1 && auxSlot.GetQuadrantRed().y == 0) ? 1 : 0;
-        //            if (itemButton.Item.slotSize.y > 3) yOffset += itemButton.Item.slotSize.y / 2 - 1;
-        //        }
-
-        //        int i = 0;
-        //        for (int x = auxSlot.Coordinates.x + auxSlot.GetQuadrantRed().x - xOffset; x < auxSlot.Coordinates.x + itemButton.Item.slotSize.x + auxSlot.GetQuadrantRed().x - xOffset; x++)
-        //        {
-        //            int j = 0;
-        //            for (int y = auxSlot.Coordinates.y + auxSlot.GetQuadrantRed().y - yOffset; y < auxSlot.Coordinates.y + itemButton.Item.slotSize.y + auxSlot.GetQuadrantRed().y - yOffset; y++)
-        //            {
-        //                Debug.Log(new Vector2Int(x, y));
-        //                try
-        //                {
-        //                    if (auxGrid.invenGrid[x, y].IsEmpty())
-        //                    {
-        //                        invenSlots[i, j] = auxGrid.invenGrid[x, y];
-        //                        Debug.Log("Adding " + new Vector2Int(x, y) + " in position " + i + " | " + j);
-        //                    }
-        //                    else
-        //                    {
-        //                        ResetPos();
-        //                        ResetIcon();
-        //                        return;
-        //                    }
-        //                }
-        //                catch
-        //                {
-        //                    ResetPos();
-        //                    ResetIcon();
-        //                    return;
-        //                }
-        //                j++;
-        //            }
-        //            i++;
-        //        }
-
-        //        //auxSlot.DropBigItem(itemButton, invenSlots);
-        //        auxGrid.AlocateBigItem(itemButton, invenSlots);
-        //        ResetIcon();
-        //    }
-        //}
-        ////else if (GameManager.gameManager.inventoryController.DeletingItem && auxSlot == null)
-        ////{
-        ////    itemButton.RemoveAndDestroy();
-        ////}
         if (GameManager.gameManager.inventoryController.ActualDropSlot != null)
         {
             if (!GameManager.gameManager.inventoryController.ActualDropSlot.OnDrop(itemButton))
@@ -131,10 +60,10 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         {
             ResetPos();
             ResetIcon();
-        }
+        }        
     }
 
-    void ResetPos()
+    public void ResetPos()
     {
         //GridManager auxGrid = GameManager.gameManager.inventoryController.ActualInvenSlot.MyGridManager;
         //GameManager.gameManager.inventoryController.ActualGridManager.AlocateBigItem(itemButton, itemButton.OriginSlots);
@@ -147,10 +76,16 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         {
             itemButton.OriginDropSlot.OnDrop(itemButton);
         }
+        else if (itemButton.WasInMaterialSlot)
+        {
+            GameManager.gameManager.MainHud.craftingSection.DropOnLastSlot(itemButton);
+            return;
+        }
+        else itemButton.WasInMaterialSlot = false;
 
         transform.position = originPos;
     }
-    void ResetIcon()
+    public void ResetIcon()
     {
         GameManager.gameManager.inventoryController.ItemDragged = null;
         image.raycastTarget = true;

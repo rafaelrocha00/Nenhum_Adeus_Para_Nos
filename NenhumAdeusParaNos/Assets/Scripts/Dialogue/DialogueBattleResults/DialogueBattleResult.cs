@@ -31,6 +31,7 @@ public class DialogueBattleResult : Dialogue
             GameManager.gameManager.dialogueController.EndDialogue();
             myNPC.EndDialogue();
             //ResetDialogue();
+            CheckQuest();
             BattleResult();
             return "";
         }

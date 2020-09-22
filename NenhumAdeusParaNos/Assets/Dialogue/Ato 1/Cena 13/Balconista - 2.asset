@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4825ceb27fa0f34c9ae7d003d92d851, type: 3}
+  m_Name: Balconista - 2
+  m_EditorClassIdentifier: 
+  allStrings:
+  - "Ol\xE1, Edward. J\xE1 sabia que voc\xEA ia voltar, ent\xE3o j\xE1 tinha at\xE9
+    separado.\r\n"
+  - "Nossa\u2026 obrigado.\r\n"
+  - "Bem, eu n\xE3o deveria ter aumentado os pre\xE7os. "
+  - "Ainda mais sabendo que sua filha precisa deste rem\xE9dio."
+  - "Pe\xE7o perd\xE3o."
+  mcStrings: 01000000
+  dialogueChoices:
+  - {fileID: 11400000, guid: 91ef4e8ba6decfc4b927e7aa311987ce, type: 2}
+  - {fileID: 11400000, guid: 70c997429accf7c4daedd2600b9207d8, type: 2}
+  options:
+  - "N\xE3o precisa se desculpar."
+  - Tudo bem.

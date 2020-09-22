@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RepairableObject : Interactives
 {
-    public string objectName;
+    //public string objectName;
 
     public GameObject state_broken;
     public GameObject state_repaired;
@@ -24,9 +24,9 @@ public class RepairableObject : Interactives
         CalendarController.Date d = GameManager.gameManager.calendarController.DateInfo;
         dateToBreak = new CalendarController.Date(d.week, d.day, d.hour, d.mins);//Tem q o ver o quando passou em outra cena
         dateToBreak.UpdateMin(baseLife);
-        if (GameManager.gameManager.repairController.TryAddRepair(objectName, dateToBreak))
+        if (GameManager.gameManager.repairController.TryAddRepair(Name, dateToBreak))
         {
-            if (GameManager.gameManager.repairController.FindRepair(objectName).CompareTo(GameManager.gameManager.calendarController.DateInfo) < 1)
+            if (GameManager.gameManager.repairController.FindRepair(Name).CompareTo(GameManager.gameManager.calendarController.DateInfo) < 1)
             Break();
         }
         GameManager.gameManager.repairController.AddActiveRepair(this);
@@ -35,8 +35,8 @@ public class RepairableObject : Interactives
     public override void Interact(Player player)
     {
         DesactiveBtp();
-        StartCoroutine(DetachAnimation());
-        OnExit(player);
+        StartCoroutine(DetachAnimation(false));
+        CheckQuest();
     }
 
     public void Repair(int bonusTime)
@@ -44,16 +44,19 @@ public class RepairableObject : Interactives
         CalendarController.Date d = GameManager.gameManager.calendarController.DateInfo;
         dateToBreak = new CalendarController.Date(d.week, d.day, d.hour, d.mins);
         dateToBreak.UpdateMin(baseLife + bonusTime);
-        GameManager.gameManager.repairController.RenewDate(objectName, dateToBreak);
+        GameManager.gameManager.repairController.RenewDate(Name, dateToBreak);
         GameManager.gameManager.repairController.AddActiveRepair(this);
-        Attach(true);
+        broken = false;
+        GameManager.gameManager.questController.CheckQuests(this);
+        StartCoroutine(DetachAnimation(true));
     }
 
-    IEnumerator DetachAnimation()
+    IEnumerator DetachAnimation(bool v)
     {
         //Efeito de particula;
         yield return new WaitForSeconds(1);
-        Attach(false);
+        Attach(v);
+        OnExit(GameManager.gameManager.battleController.MainCharacter);
     }
 
     void Break()
@@ -61,8 +64,15 @@ public class RepairableObject : Interactives
         Debug.Log("Broke");
         broken = true;
         EnableInteraction(true);
-        GameManager.gameManager.repairController.RemoveRepair(objectName);
+        GameManager.gameManager.repairController.RemoveRepair(Name);
+        if (!AlreadyHasQuest()) GameManager.gameManager.questGenerator.GenRepQuest(Name);
         //Mudar estado de textura/modelo.
+    }
+
+    bool AlreadyHasQuest()
+    {
+        Debug.Log("Vendo se tem a quest já");
+        return GameManager.gameManager.questGenerator.CheckIfQuestExist(Name) || GameManager.gameManager.companyController.CheckIfQuestExist(Name);
     }
 
     void Attach(bool v)

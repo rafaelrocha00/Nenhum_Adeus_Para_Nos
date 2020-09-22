@@ -12,7 +12,12 @@ public class RepairQuest : Quest
 
     public override void CheckComplete<T>(T thing)
     {
-        //throw new System.NotImplementedException();
+        try
+        {
+            RepairableObject rep = thing as RepairableObject;
+            if (rep.Name.Equals(objectToRepair)) TryComplete();
+        }
+        catch { Debug.Log("Not a repairable"); }
     }
 
     public override void InstantiateObjs(ObjectInstancer oi)

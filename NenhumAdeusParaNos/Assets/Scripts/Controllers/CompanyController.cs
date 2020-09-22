@@ -33,6 +33,24 @@ public class CompanyController : MonoBehaviour
     {
         return resources[id].quant;
     }
+
+    public bool CheckIfQuestExist(string objectName)
+    {
+        Quest[] aux = new Quest[quests_onPC.Count];
+        //Debug.Log("Checando na Compania");
+        quests_onPC.CopyTo(aux, 0);
+
+        for (int i = 0; i < aux.Length; i++)
+        {
+            //Debug.Log("Analisando quests que estão no pc: " + aux[i].Name);
+            if (aux[i] is RepairQuest)
+            {
+                RepairQuest rq = (RepairQuest)aux[i];
+                return rq.ObjectToRepair.Equals(objectName);
+            }
+        }
+        return false;
+    }
 }
 
 public struct Resource

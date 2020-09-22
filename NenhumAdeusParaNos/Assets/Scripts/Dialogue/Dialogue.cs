@@ -27,6 +27,12 @@ public class Dialogue : ScriptableObject
         actualID = -1;
     }
 
+    public void CheckQuest()
+    {
+        Debug.Log("Checking QUest");
+        GameManager.gameManager.questController.CheckQuests(this);
+    }
+
     public virtual string NextString()
     {
         if (actualID < allStrings.Length - 1)
@@ -41,6 +47,7 @@ public class Dialogue : ScriptableObject
             GameManager.gameManager.dialogueController.EndDialogue();
             myNPC.EndDialogue();
             ResetDialogue();
+            CheckQuest();
             return "";
         }
     }

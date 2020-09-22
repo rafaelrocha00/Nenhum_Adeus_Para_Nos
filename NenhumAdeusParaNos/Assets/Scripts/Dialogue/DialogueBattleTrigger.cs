@@ -25,6 +25,7 @@ public class DialogueBattleTrigger : Dialogue
             aux.Add(mainCharacter);
             GameManager.gameManager.battleController.StartBattle(aux);
             ResetDialogue();
+            CheckQuest();
             return "";
         }
     }

@@ -10,6 +10,9 @@ public class BattleController : MonoBehaviour
     [HideInInspector] Player mainCharacter;
     public Player MainCharacter { get { if (mainCharacter == null) FindPlayer(); return mainCharacter; } set { mainCharacter = value; } }
 
+    [HideInInspector] bool battleUnlocked = false;
+    public bool BattleUnlocked { get { return battleUnlocked; } set { battleUnlocked = value; } }
+
     [HideInInspector] bool activeBattle = false;
     public bool ActiveBattle { get { return activeBattle; } set { activeBattle = value; } }
 
@@ -31,7 +34,8 @@ public class BattleController : MonoBehaviour
     ParticleSystem startBattleEffect;
 
     public void StartBattle(List<BattleUnit> fighters)
-    {       
+    {
+        if (!battleUnlocked) return;
         StartCoroutine(DelayedStartBattle(fighters));
     }
     IEnumerator DelayedStartBattle(List<BattleUnit> fighters)

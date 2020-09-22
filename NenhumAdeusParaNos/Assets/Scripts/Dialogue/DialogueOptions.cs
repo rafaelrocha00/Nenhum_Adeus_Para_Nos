@@ -7,6 +7,9 @@ public class DialogueOptions : ScriptableObject
 {
     public Dialogue[] dialogueOp;
     int lastID = -1;
+    
+    public Dialogue[] unlockableDialogues;
+    int curretDialogue = -1;
 
     private void OnDisable()
     {
@@ -17,18 +20,35 @@ public class DialogueOptions : ScriptableObject
     {
         if (dialogueOp != null && dialogueOp.Length > 0)
         {
-            int random = Random.Range(0, dialogueOp.Length);
-            if (dialogueOp.Length > 1 && lastID >= 0)
+            if (curretDialogue < 0)
             {
-                while (random == lastID)
+                int random = Random.Range(0, dialogueOp.Length);
+                if (dialogueOp.Length > 1 && lastID >= 0)
                 {
-                    random = Random.Range(0, dialogueOp.Length);
+                    while (random == lastID)
+                    {
+                        random = Random.Range(0, dialogueOp.Length);
+                    }
+                    lastID = random;
                 }
-                lastID = random;
+
+                return dialogueOp[random];
             }
-            
-            return dialogueOp[random];
+            else return unlockableDialogues[curretDialogue];
         }
         else return null;
+    }
+
+    public void UnlockDialogue()
+    {
+        if (curretDialogue < unlockableDialogues.Length - 1)
+        {
+            curretDialogue++;
+        }
+    }
+
+    private void OnEnable()
+    {
+        curretDialogue = -1;
     }
 }

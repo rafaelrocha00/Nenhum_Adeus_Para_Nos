@@ -4,16 +4,27 @@ using UnityEngine;
 
 public class BrokenObject : Interactives
 {
-    public RepairableObject ro;
+    public RepairableObject repairableObject;
+
+    public Sprite objIcon;
+
+    public ResourceItem baseMaterial;
+
+    [SerializeField] int minCombinedValue = 0;
+    public int MinCombinedValue { get { return minCombinedValue; } }
 
     public override void Interact(Player player)
     {
         //Abrir janela de conserto
+        DesactiveBtp();
+        GameManager.gameManager.MainHud.OpenCloseInventory(true);
+        GameManager.gameManager.MainHud.OpenCraftSection(this);
+        CheckQuest();
     }
 
     public void FinishRepair(int bonusTime)
     {
-        ro.Repair(bonusTime);
-        //OnExit(player);
+        repairableObject.Repair(bonusTime);
+        GameManager.gameManager.MainHud.OpenCloseInventory(false);        
     }
 }

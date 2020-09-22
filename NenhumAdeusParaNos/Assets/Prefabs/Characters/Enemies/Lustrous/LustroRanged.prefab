@@ -107,6 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponModel: {fileID: 0}
+  equipped: 0
   rangedWConfig: {fileID: 11400000, guid: f0d194c883a1d0d489020c09c9bd4907, type: 2}
 --- !u!1 &2451270583671630251
 GameObject:
@@ -277,6 +278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde3a45690b66a64782b5e5353020fee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myName: Ranged Lus
   buttonToPressPref: {fileID: 6638989974725394705, guid: 1a98f6b0eb2747648aedcb7a647713cd,
     type: 3}
   popUPHigh: 3
@@ -285,7 +287,6 @@ MonoBehaviour:
   myWeapon: {fileID: 0}
   defaultSpeed: 5.5
   rangedKiteSpeed: 4
-  npcName: Name
   areaName: Area Name
   expressions:
   - {fileID: 21300000, guid: 3bfd473483f3f3648b3c8dd8a785f5f8, type: 3}
@@ -293,16 +294,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 89537223a2b0bae4583dcb78a50d9b67, type: 3}
   thisPersonality: 1
   enemyType: 0
-  hasOtherNPCTalk: 0
-  theOtherNPC: {fileID: 0}
-  waitingForAnswer: 0
   dialogues: {fileID: 0}
+  dialogues_battle: {fileID: 0}
   questDialogues: []
-  dialogueWithOtherNPC: {fileID: 0}
-  myDialogues:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   hostile: 1
   heavy: 0
   dashTime: 0.5

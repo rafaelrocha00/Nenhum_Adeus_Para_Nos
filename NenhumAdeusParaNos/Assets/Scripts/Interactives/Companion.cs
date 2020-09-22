@@ -70,6 +70,7 @@ public class Companion : NPC
 
     public override void Interact(Player player)
     {
+        CheckQuest();
         Debug.Log("Não interage");
     }
 }

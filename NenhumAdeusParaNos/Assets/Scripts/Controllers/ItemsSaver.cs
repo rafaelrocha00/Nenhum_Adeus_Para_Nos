@@ -86,7 +86,7 @@ public class ItemsSaver : MonoBehaviour
     {
         for (int i = 0; i < chestItems.Count; i++)
         {
-            if (chestItems[i].chestName.Equals(sto.depositName))
+            if (chestItems[i].chestName.Equals(sto.Name))
             {
                 for (int j = 0; j < chestItems[i].itemCoords.Length; j++)
                 {

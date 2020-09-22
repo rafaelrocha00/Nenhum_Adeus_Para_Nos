@@ -39,7 +39,7 @@ public class RepairController : MonoBehaviour
     }
     public void RemoveRepair(string name)
     {
-        int i = activeRepairs.FindIndex(x => x.objectName.Equals(name));
+        int i = activeRepairs.FindIndex(x => x.Name.Equals(name));
         if (i >= 0) activeRepairs.RemoveAt(i);
     }
 

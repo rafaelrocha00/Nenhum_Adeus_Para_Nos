@@ -55,7 +55,7 @@ public class QuestGenerator : MonoBehaviour
         if (firstGen)
         {
             firstGen = false;
-            GenKilQuest();
+            GenKillQuest();
             GenDelQuest();
             //GenRepQuest();
         }
@@ -126,19 +126,19 @@ public class QuestGenerator : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            IncreaseChance(Random.Range(0, 3));
-        }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            try { Debug.Log(quest_queue.Peek().Name); }
-            catch { }
-        }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            GenQuest();
-        }
+        //if (Input.GetKeyDown(KeyCode.P))
+        //{
+        //    IncreaseChance(Random.Range(0, 3));
+        //}
+        //if (Input.GetKeyDown(KeyCode.L))
+        //{
+        //    try { Debug.Log(quest_queue.Peek().Name); }
+        //    catch { }
+        //}
+        //if (Input.GetKeyDown(KeyCode.K))
+        //{
+        //    GenQuest();
+        //}
     }
 
     public void GenQuest()
@@ -149,7 +149,7 @@ public class QuestGenerator : MonoBehaviour
 
             if (aux < jobsChances[0])
             {
-                GenKilQuest();
+                GenKillQuest();
                 return;
             }
             aux = Random.Range(0, 100 - jobsChances[0]);
@@ -159,11 +159,11 @@ public class QuestGenerator : MonoBehaviour
                 return;
             }
             //GenRepQuest();
-            GenKilQuest();
+            GenKillQuest();
         }
     }
 
-    public void GenKilQuest()
+    public void GenKillQuest()
     {
         Debug.Log("Gerando KILL quest");
         int rand = Random.Range(0, 2);
@@ -252,14 +252,15 @@ public class QuestGenerator : MonoBehaviour
 
         DefaultSet(newQuest);
     }
-    public void GenRepQuest()
+    public void GenRepQuest(string repairName)
     {
         Debug.Log("Gerando REPAIR quest");
         RepairQuest newQuest = ScriptableObject.CreateInstance("RepairQuest") as RepairQuest;
 
-        newQuest.ObjectToRepair = objectsToRepair[Random.Range(0, objectsToRepair.Count)];
+        //newQuest.ObjectToRepair = objectsToRepair[Random.Range(0, objectsToRepair.Count)];
+        newQuest.ObjectToRepair = repairName;
 
-        newQuest.Name = "Conserte um negócio aí";
+        newQuest.Name = "Consertar coisa";
         newQuest.Description = "Consertar: " + newQuest.ObjectToRepair;
         newQuest.MoneyReward = 80;
         newQuest.ResourceReward = 8;
@@ -277,5 +278,22 @@ public class QuestGenerator : MonoBehaviour
         actualID++;
 
         quest_queue.Enqueue(_q);
+    }
+
+    public bool CheckIfQuestExist(string objectName)
+    {
+        Quest[] aux = new Quest[quest_queue.Count];
+        //Debug.Log("Checando no Generator");
+        quest_queue.CopyTo(aux, 0);
+
+        for (int i = 0; i < aux.Length; i++)
+        {
+            if (aux[i] is RepairQuest)
+            {
+                RepairQuest rq = (RepairQuest)aux[i];
+                return rq.ObjectToRepair.Equals(objectName);
+            }
+        }
+        return false;
     }
 }

@@ -19,6 +19,9 @@ public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [HideInInspector] DropSlot originDropSlot;
     public DropSlot OriginDropSlot { get { return originDropSlot; } set { originDropSlot = value; } }
 
+    [HideInInspector] bool wasInMaterialSlot;
+    public bool WasInMaterialSlot { get { return wasInMaterialSlot; } set { wasInMaterialSlot = value; } }
+
     public void SetSlot(InvenSlot[,] slot)
     {
         //if (myInvenSlots != null)
@@ -69,7 +72,7 @@ public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void RemoveAndDestroy()
     {
-        if (originSlots == null && originDropSlot != null)
+        if (originSlots == null && originDropSlot != null && originDropSlot is WeaponSlot)
         {
             WeaponSlot aux = (WeaponSlot)originDropSlot;
             GameManager.gameManager.battleController.MainCharacter.EquipOriginalWeapon(aux.slotID);

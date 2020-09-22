@@ -72,7 +72,7 @@ public class ObjectInstancer : MonoBehaviour
 
         try
         {
-            chest.GetComponent<Storage>().depositName = locName;
+            chest.GetComponent<Storage>().Name = locName;
             if (!chestSpawnPoint.Used) chestSpawnPoint.SpawnObject(chest);
         }
         catch (System.Exception)

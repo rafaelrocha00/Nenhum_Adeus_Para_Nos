@@ -41,6 +41,10 @@ public abstract class Quest : ScriptableObject
     [TextArea] public string acceptText;
     [TextArea] public string completeText;
 
+    [Header("Unlockable Dialogues")]
+    public bool unlockDialogue;
+    public DialogueOptions dialogueOptions;
+
     public abstract void CheckComplete<T>(T thing);
 
     public void AcceptQuest()
@@ -67,6 +71,11 @@ public abstract class Quest : ScriptableObject
                 {
                     GameManager.gameManager.inventoryController.Inventory.AddItem(quest_itemRewards[i]);
                 }
+            }
+
+            if (unlockDialogue)
+            {
+                dialogueOptions.UnlockDialogue();
             }
         }
     }
@@ -98,7 +107,7 @@ public abstract class Quest : ScriptableObject
         Reset();
     }
 
-    public void Reset()
+    public virtual void Reset()
     {
         accepted = false;
         completed = false;

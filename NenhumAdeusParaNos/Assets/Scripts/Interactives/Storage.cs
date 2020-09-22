@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Storage : Interactives
 {
-    public string depositName = "";
+    //public string depositName = "";
     public int page_number = 1;
     public bool main = false;
 
@@ -34,6 +34,7 @@ public class Storage : Interactives
 
         GameManager.gameManager.MainHud.OpenCloseInventory(true);
         DesactiveBtp();
+        CheckQuest();
     }
 
     void GenerateSlots()
@@ -84,7 +85,7 @@ public class Storage : Interactives
     IEnumerator GenItems()
     {
         yield return new WaitForEndOfFrame();
-        if (!GameManager.gameManager.itemsSaver.FindChest(depositName))
+        if (!GameManager.gameManager.itemsSaver.FindChest(Name))
         {
             for (int i = 0; i < items.Count; i++)
             {
@@ -193,7 +194,7 @@ public class Storage : Interactives
             if (!value && storageMenu.activeSelf)
             {
                 GameManager.gameManager.questController.CheckQuests(this);
-                GameManager.gameManager.itemsSaver.SetChestsItemCoords(GetItemsByPage(), depositName);
+                GameManager.gameManager.itemsSaver.SetChestsItemCoords(GetItemsByPage(), Name);
                 ResetPages();
             }
             else if (value)
