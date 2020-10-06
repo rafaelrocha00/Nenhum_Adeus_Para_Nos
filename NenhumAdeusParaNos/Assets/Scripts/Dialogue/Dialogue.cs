@@ -17,6 +17,14 @@ public class Dialogue : ScriptableObject
 
     protected bool mcSpeak = false;
 
+    [Header("Post Dialogue")]
+
+    public bool unlockPlayerMovement = false;
+    public bool makeNPCWalk = false;
+    public Vector3 finalPoint = Vector3.zero;
+    public bool changeSceneState = false;
+    public int changingState = 0;
+
     private void OnDisable()
     {
         ResetDialogue();
@@ -27,10 +35,13 @@ public class Dialogue : ScriptableObject
         actualID = -1;
     }
 
-    public void CheckQuest()
+    public void CheckPostDialogueActions()
     {
         Debug.Log("Checking QUest");
         GameManager.gameManager.questController.CheckQuests(this);
+        if (unlockPlayerMovement) mainCharacter.CanMove = true;
+        if (makeNPCWalk) myNPC.MoveNavMesh(finalPoint);
+        if (changeSceneState) GameManager.gameManager.ChangeCurrentSceneState(changingState);
     }
 
     public virtual string NextString()
@@ -47,7 +58,7 @@ public class Dialogue : ScriptableObject
             GameManager.gameManager.dialogueController.EndDialogue();
             myNPC.EndDialogue();
             ResetDialogue();
-            CheckQuest();
+            CheckPostDialogueActions();
             return "";
         }
     }

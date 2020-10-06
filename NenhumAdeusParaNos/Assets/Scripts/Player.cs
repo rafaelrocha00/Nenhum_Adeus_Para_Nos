@@ -69,6 +69,8 @@ public class Player : MonoBehaviour, BattleUnit
     bool slowMoving = false;
     public float defaultSlow = 30.0f;//%
 
+    [HideInInspector] bool canMove = true;
+    public bool CanMove { get { return canMove; } set { canMove = value; } }
     [HideInInspector] bool dashing = false;
     public bool Dashing { get { return dashing; } }
 
@@ -174,6 +176,8 @@ public class Player : MonoBehaviour, BattleUnit
         if (!battleUnlocked) HideShowWeapon();
         StartCoroutine(WalkSFX());
 
+        if (!GameManager.gameManager.NewGame) EnableCharController(true);
+
         StartCoroutine("GetMainHUD");
     }
     IEnumerator GetMainHUD()
@@ -188,7 +192,7 @@ public class Player : MonoBehaviour, BattleUnit
         RaycastHit hit;
         //Debug.Log(moving);
 
-        if (!cc.isGrounded)
+        if (cc.enabled && !cc.isGrounded)
         {
             Vector3 downForce = new Vector3(0, -9.81f, 0) * Time.deltaTime;
             cc.Move(downForce);
@@ -202,7 +206,7 @@ public class Player : MonoBehaviour, BattleUnit
             //Debug.Log(lookPos);
         }        
 
-        if (CanFight() && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0))
+        if (canMove && CanFight() && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0))
         {
             if (!dashing)
             {
@@ -1084,5 +1088,10 @@ public class Player : MonoBehaviour, BattleUnit
     {
         if (defense_life > 0) return false;
         else return true;
+    }
+
+    public void EnableCharController(bool v)
+    {
+        cc.enabled = v;
     }
 }

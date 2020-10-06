@@ -12,11 +12,12 @@ public abstract class Interactives : MonoBehaviour
     public float popUPHigh;
 
     public bool oneInteraction = false;
-    protected bool canInteract = true;
+    public bool canInteract = true;
 
     private void OnTriggerEnter(Collider other)
     {
         if (oneInteraction && !canInteract) return;
+        if (!canInteract) return;
 
         if (other.tag.Equals("player") && !GameManager.gameManager.battleController.ActiveBattle)
         {

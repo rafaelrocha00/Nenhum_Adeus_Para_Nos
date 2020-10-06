@@ -145,6 +145,7 @@ public class CalendarController : MonoBehaviour
 
     public void UpdateHudH()
     {
-        GameManager.gameManager.MainHud.UpdateDate(daysOfWeek[date.day], date.hour, date.mins);
+        try { GameManager.gameManager.MainHud.UpdateDate(daysOfWeek[date.day], date.hour, date.mins); }
+        catch { Debug.Log("Hud Null"); }
     }
 }

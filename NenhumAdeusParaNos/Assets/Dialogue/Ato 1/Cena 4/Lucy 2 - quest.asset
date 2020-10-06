@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33e764f683fbdb84cb255f46cf51aa5c, type: 3}
+  m_Script: {fileID: 11500000, guid: c7538afdc471f674686979fda2705b48, type: 3}
   m_Name: Lucy 2 - quest
   m_EditorClassIdentifier: 
-  qName: banheiro consertar
+  qName: Consertando o banheiro
   id: 0
   description: quest_description
   moneyReward: 0
@@ -22,16 +22,16 @@ MonoBehaviour:
   limitDay: -1
   generated: 0
   resourceT: 4
-  completingQuestDialogue: {fileID: 11400000, guid: aab0cc12824e66b4a95d88019bc169a8,
-    type: 2}
+  completingQuestDialogue: {fileID: 0}
   quest_itemRewards: []
   quest_itemRQuants: 
-  completed: 0
-  accepted: 0
+  completed: 1
+  accepted: 1
   cancelled: 0
   waitingReturnToNPC: 0
-  acceptText: Tenho que consertar o banheiro e tomar banho
-  completeText: Completou
+  acceptText: Tenho que ir consertar o banheiro... denovo. Umas madeiras devem servir.
+  completeText: "Consertado. Que n\xE3o quebre outra vez."
   unlockDialogue: 1
   dialogueOptions: {fileID: 11400000, guid: a7f4e301705faa64e900ef6419d89c70, type: 2}
-  objectToInteract: Bathroom
+  objectToRepair: Bathroom
+  toInstantiate: {fileID: 0}

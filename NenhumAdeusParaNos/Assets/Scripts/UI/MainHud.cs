@@ -12,6 +12,8 @@ public class MainHud : MonoBehaviour
 
     public GameObject gameOverScreen;
 
+    public GameObject uiToHide;
+
     public GameObject inventory;
     public Transform itemStorages;
 
@@ -181,6 +183,11 @@ public class MainHud : MonoBehaviour
     //{
     //    equippedDialogueB.GetComponent<Animator>().SetBool("WaitingAnswer", value);
     //}
+
+    public void ShowHiddenUI(bool v)
+    {
+        uiToHide.SetActive(v);
+    }
 
     public void UpdateStamina(float staminaValue)
     {

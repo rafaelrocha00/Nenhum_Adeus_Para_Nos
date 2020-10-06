@@ -6,16 +6,23 @@ using UnityEngine.SceneManagement;
 public class Door : MonoBehaviour
 {
     public bool sameScene;
-    public InteriorQuickTravel iQuickTravel;
+    public int spawnpointID = -1;
+    public SceneStateManager iQuickTravel;
 
     public string sceneName;
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("npc") && !other.isTrigger) Destroy(other.gameObject);
+
         if (other.CompareTag("player"))
         {
+            if (GameManager.gameManager.dialogueController.ActiveMainDialogue) return;
+
             if (!sameScene)
             {
+                GameManager.gameManager.SpawnpointID = spawnpointID;
+
                 GameManager.gameManager.inventoryController.Inventory.SaveItems();
                 GameManager.gameManager.itemsSaver.BlockChestGen();
 

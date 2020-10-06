@@ -24,9 +24,14 @@ public class GameManager : MonoBehaviour
     [HideInInspector] CamMove mainCamera;
     public CamMove MainCamera { get { if (mainCamera == null) { mainCamera = Camera.main.GetComponent<CamMove>(); return mainCamera; } else return mainCamera; } }
 
-    public float[][] personalities = new float[4][];
+    //public float[][] personalities = new float[4][];
+    [SerializeField] int spawnpointID = -1;
+    public int SpawnpointID { get { return spawnpointID; } set { spawnpointID = value; } }
 
     public string PlayerName = "guest";
+
+    [HideInInspector] bool newGame = true;
+    public bool NewGame { get { return newGame; } set { newGame = value; } }
 
     private void Awake()
     {
@@ -70,5 +75,19 @@ public class GameManager : MonoBehaviour
         }
 
         //if (Input.GetKeyDown(KeyCode.O)) Client_UDP.Singleton.SendToServer("Jogador: " + PlayerName + " | Maior Recompensa: 500,68(s)");
+    }
+
+    public void ChangeCurrentSceneState(int s)
+    {
+        try
+        {
+            GameObject go = GameObject.Find("SceneStateManager");
+            go.GetComponent<SceneStateManager>().ChangeSceneState(s);
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
     }
 }

@@ -140,7 +140,7 @@ public abstract class NPC : Interactives, BattleUnit
 
     protected abstract void Movement();
 
-    protected void MoveNavMesh(Vector3 pos)
+    public void MoveNavMesh(Vector3 pos)
     {
         navMesh.isStopped = false;
         navMesh.destination = pos;

@@ -15,9 +15,14 @@ public class ItemGenerator : MonoBehaviour
     {
         if (items.Count > 0)
         {
-            Item itemAux = items[Random.Range(0, items.Count)];
+            //Item itemAux = items[Random.Range(0, items.Count)];
 
-            GameManager.gameManager.inventoryController.Inventory.AddItem(itemAux);
+            //GameManager.gameManager.inventoryController.Inventory.AddItem(itemAux);
+            for (int i = 0; i < items.Count; i++)
+            {
+                GameManager.gameManager.inventoryController.Inventory.AddItem(items[i]);
+            }
+
             //GameObject newItemObj = Instantiate(itemPref, transform, false) as GameObject;
             //newItemObj.transform.position = this.transform.position;
             //RectTransform newItemRect = newItemObj.GetComponent<RectTransform>();
@@ -30,6 +35,7 @@ public class ItemGenerator : MonoBehaviour
 
     public ItemButton GenItem(Item item)
     {
+        Debug.Log("Gerando definitivamente o item");
         GameObject newItemObj = Instantiate(itemPref, transform, false) as GameObject;
         newItemObj.transform.position = this.transform.position;
         RectTransform newItemRect = newItemObj.GetComponent<RectTransform>();

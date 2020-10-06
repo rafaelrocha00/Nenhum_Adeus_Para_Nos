@@ -8,7 +8,8 @@ public class BrokenObject : Interactives
 
     public Sprite objIcon;
 
-    public ResourceItem baseMaterial;
+    //public ResourceItem baseMaterial;
+    public ResourceItem.MaterialType baseMaterialType;
 
     [SerializeField] int minCombinedValue = 0;
     public int MinCombinedValue { get { return minCombinedValue; } }

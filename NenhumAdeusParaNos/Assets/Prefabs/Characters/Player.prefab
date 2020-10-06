@@ -575,7 +575,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 8794528357842232904}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.42886925
   m_Height: 1.6412733
   m_Direction: 1
@@ -595,11 +595,11 @@ MonoBehaviour:
   animator: {fileID: 8794528357269942863}
   staminaBar: {fileID: 8794528358881575691}
   shieldControl: {fileID: 8794528357411835786}
-  defaultSpeed: 3.7
-  maxSpeed: 6.5
+  defaultSpeed: 2.48
+  maxSpeed: 4
   runningSpeed: 8
   rotateSpeed: 10
-  acceleration: 2.75
+  acceleration: 2.8
   accelerationTime: 1
   dashSpeed: 25
   dashTime: 0.25
@@ -627,7 +627,7 @@ MonoBehaviour:
   clip_dash: {fileID: 8300000, guid: 9d40a7940b785e84fb1335eceb3ac710, type: 3}
   clip_shieldHit: {fileID: 8300000, guid: b9f88880be927ac49883b697880315eb, type: 3}
   clip_shieldBreak: {fileID: 8300000, guid: 519afedd8382af14b949922bf4c30c4f, type: 3}
-  walkSFXInterval: 0.38
+  walkSFXInterval: 0.45
 --- !u!54 &8794528357842232906
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -752,7 +752,7 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.74
+  m_Height: 1.6
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
@@ -1175,7 +1175,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 88e93ae698c1ec642b85a883560074df,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.048
+      value: 0.001
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 88e93ae698c1ec642b85a883560074df,
         type: 3}

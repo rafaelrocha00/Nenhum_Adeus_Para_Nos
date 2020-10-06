@@ -26,7 +26,12 @@ public class INPC : NPC
     public DialogueWithChoice[] questDialogues;
     public DialogueQuestTrigger[] directQuestDialogue;
     //public Dialogue dialogueWithOtherNPC;
-    //public DialogueOptions[] myDialogues = new DialogueOptions[3];   
+    //public DialogueOptions[] myDialogues = new DialogueOptions[3];
+    public bool despawnIfQuestAccepted = false;
+    public Quest questAccepted;
+
+    public bool despawnIfQuestCompleted = false;
+    public Quest questCompleted;
 
     [Header("--------------- Comabte ---------------")]
     public bool hostile = false;
@@ -53,6 +58,12 @@ public class INPC : NPC
     #region Audio Clips
     public AudioClip clip_death;
     #endregion
+
+    protected override void Initialize()
+    {
+        if (despawnIfQuestAccepted && questAccepted.Accepted) Destroy(gameObject);
+        if (despawnIfQuestCompleted && questAccepted.Completed) Destroy(gameObject);
+    }
 
     public override void Interact(Player player)
     {
@@ -414,7 +425,7 @@ public class INPC : NPC
     }
 
     private void OnTriggerEnter(Collider other)
-    {
+    {        
         if (other.tag.Equals("player"))
         {
             if (GameManager.gameManager.battleController.ActiveBattle || GameManager.gameManager.dialogueController.ActiveMainDialogue) return;
@@ -443,7 +454,7 @@ public class INPC : NPC
                 Debug.Log("Olhando quests");
                 //Não abrir quando quest já completa
                 for (int i = 0; i < questDialogues.Length; i++)
-                {                    
+                {
                     DialogueQuestTrigger dqt = questDialogues[i].SearchQuestDialogue();
                     Debug.Log(dqt.quest.Accepted);
                     Debug.Log(dqt.quest.Completed);
@@ -470,6 +481,8 @@ public class INPC : NPC
     }
     void DefaultInteraction(Collider other)
     {
+        if (!canInteract) return;
+
         Player player = other.GetComponent<Player>();
         if (buttonPref == null) buttonPref = Instantiate(buttonToPressPref, transform.position + Vector3.up * popUPHigh, Quaternion.identity, this.transform);
         else buttonPref.SetActive(true);

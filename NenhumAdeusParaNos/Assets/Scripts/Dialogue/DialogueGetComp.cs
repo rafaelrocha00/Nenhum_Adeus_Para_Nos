@@ -30,7 +30,7 @@ public class DialogueGetComp : Dialogue
             mainCharacter.MyCompanion = aux.GetComponent<Companion>();
             myNPC.gameObject.SetActive(false);
             ResetDialogue();
-            CheckQuest();
+            CheckPostDialogueActions();
             return "";
         }
     }

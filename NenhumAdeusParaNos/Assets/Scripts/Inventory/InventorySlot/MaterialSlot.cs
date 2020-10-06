@@ -26,7 +26,7 @@ public class MaterialSlot : DropSlot
             empty = false;
             itemButton.transform.SetParent(transform);
             resource = (ResourceItem)itemButton.Item;
-            craftingSection.AddResource(resource.CombinedValue, resource.BonusTime, thisItemB.Item.itemName.Equals(craftingSection.brokenObject.baseMaterial.itemName));
+            craftingSection.AddResource(resource.CombinedValue, resource.BonusTime, resource.MatType.Equals(craftingSection.brokenObject.baseMaterialType));//thisItemB.Item.itemName.Equals(craftingSection.brokenObject.baseMaterial.itemName));
             return true;
         }        
         else return false;
@@ -41,7 +41,7 @@ public class MaterialSlot : DropSlot
     {
         if (thisItemB != null)
         {
-            craftingSection.AddResource(-resource.CombinedValue, -resource.BonusTime, thisItemB.Item.itemName.Equals(craftingSection.brokenObject.baseMaterial.itemName));
+            craftingSection.AddResource(-resource.CombinedValue, -resource.BonusTime, resource.MatType.Equals(craftingSection.brokenObject.baseMaterialType));
             thisItemB.OriginDropSlot = null;
             thisItemB = null;
         }
