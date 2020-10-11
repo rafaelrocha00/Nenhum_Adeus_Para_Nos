@@ -12,8 +12,8 @@ public class Player : MonoBehaviour, BattleUnit
     public GameObject staminaBar;
     public ShieldShaderControl shieldControl;
 
-    [HideInInspector] Companion myCompanion;
-    public Companion MyCompanion { get { return myCompanion; } set { myCompanion = value; } }
+    [HideInInspector] List<Companion> myCompanions = new List<Companion>();
+    public List<Companion> MyCompanions { get { return myCompanions; } set { myCompanions = value; } }
 
     public float defaultSpeed = 3.5f;
     public float maxSpeed = 6.0f;
@@ -179,12 +179,44 @@ public class Player : MonoBehaviour, BattleUnit
         if (!GameManager.gameManager.NewGame) EnableCharController(true);
 
         StartCoroutine("GetMainHUD");
+
+        SpawnCompanions();
     }
     IEnumerator GetMainHUD()
     {
         yield return new WaitForEndOfFrame();
         GameManager.gameManager.MainHud.MainCharacter = this;
     }
+
+    public void SpawnCompanions()
+    {
+        if (GameManager.gameManager == null) return;
+       
+        if (myCompanions.Count > 0) return;
+
+        Debug.Log("Checando se tem companion pra spawnar");
+
+        for (int i = 0; i < GameManager.gameManager.PlayerCompanionsPref.Count; i++)
+        {
+            GameObject aux = Instantiate(GameManager.gameManager.PlayerCompanionsPref[i], transform.position, transform.rotation) as GameObject;
+            myCompanions.Add(aux.GetComponent<Companion>());
+        }
+    }
+
+    public void MoveCompanions(Vector3 newPos)
+    {
+        for (int i = 0; i < myCompanions.Count; i++)
+        {
+            myCompanions[i].DirectMove(newPos);
+        }
+    }
+    //private void OnDisable()
+    //{
+    //for (int i = 0; i < myCompanions.Count; i++)
+    //{
+    //    GameManager.gameManager.PlayerCompanionsPref.Add(myCompanions[i].myPref);
+    //}
+    //}
 
     void Update()
     {
@@ -339,6 +371,8 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (Input.GetKeyDown(KeyCode.E))
         {
+            //Debug.Log("InteracingObjs != null? " + interactingObjs != null);
+
             if (interactingObjs != null && interactingObjs.Count > 0 && canInteract && CanFight() && !GameManager.gameManager.dialogueController.ActiveMainDialogue)
             {
                 Debug.Log("Achando o npc mais na sua frente");
@@ -930,7 +964,7 @@ public class Player : MonoBehaviour, BattleUnit
         InteractingObjs.Clear();
         animator.SetLayerWeight(1, 0);
         inBattle = true;
-        if (myCompanion != null) myCompanion.StartBattle();
+        if (myCompanions.Count > 0) SetCompanionsBattle(true);//myCompanion.StartBattle();
         RunSwitch(true);
         animator.SetBool("InBattle", true);
     }
@@ -940,7 +974,7 @@ public class Player : MonoBehaviour, BattleUnit
         animator.SetBool("InBattle", false);        
         RunSwitch(false);
         inBattle = false;
-        if (myCompanion != null) myCompanion.EndBattle();
+        if (myCompanions.Count > 0) SetCompanionsBattle(false);//myCompanion.EndBattle();
         aimLocked = false;
         if (defending)
         {
@@ -949,6 +983,15 @@ public class Player : MonoBehaviour, BattleUnit
         defense_life = defense_maxLife;
         UpdateDefense(0);
         playedShieldBreakeSong = false;
+    }
+
+    void SetCompanionsBattle(bool v)
+    {
+        for (int i = 0; i < myCompanions.Count; i++)
+        {
+            if (v) myCompanions[i].StartBattle();
+            else myCompanions[i].EndBattle();
+        }
     }
 
     public bool CanFight()

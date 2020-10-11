@@ -9,13 +9,15 @@ public class Spawnpoint : MonoBehaviour
 
     private void Start()
     {
-        Invoke("MovePlayer", 0.01f);
+        //Invoke("MovePlayer", 0.01f);
+        MovePlayer();
     }
 
     public void MovePlayer()
     {
         try
-        {
+        {            
+            Debug.Log("Movendo Player");
             Transform currentSpawnP = transform.GetChild(GameManager.gameManager.SpawnpointID);
             Transform currentSpawnPCam = transform.GetChild(GameManager.gameManager.SpawnpointID).GetChild(0);
 

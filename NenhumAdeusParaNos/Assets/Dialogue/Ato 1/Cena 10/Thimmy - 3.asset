@@ -13,13 +13,20 @@ MonoBehaviour:
   m_Name: Thimmy - 3
   m_EditorClassIdentifier: 
   allStrings:
-  - "J\xE1 t\xE1 na hora da escola?\r\n"
+  - "J\xE1 t\xE1 na hora da escola?\r   "
   - "Sim, eu j\xE1 vou chamar sua prima.\r\n"
   - "N\xE3o devia ser o tio levando a gente para escola?\r\n"
   - "Ele n\xE3o vai fazer nada a n\xE3o ser que voc\xEAs pe\xE7am.\r\n"
   - "\xC9 qual \xE9 o problema comigo levando voc\xEAs?\r\n"
-  - Nenhum.
+  - 'Nenhum.          '
   - 'Isso mesmo. Agora vamos ou a gente vai se atrasar.
 
 '
-  mcStrings: 
+  mcStrings: 01000000030000000400000006000000
+  unlockableDialogues: []
+  unlockPlayerMovement: 0
+  makeNPCWalk: 0
+  finalPoint: {x: 0, y: 0, z: 0}
+  changeSceneState: 0
+  sceneState: {fileID: 0}
+  objectToBreak: 

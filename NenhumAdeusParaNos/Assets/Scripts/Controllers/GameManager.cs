@@ -33,6 +33,11 @@ public class GameManager : MonoBehaviour
     [HideInInspector] bool newGame = true;
     public bool NewGame { get { return newGame; } set { newGame = value; } }
 
+    [HideInInspector] List<GameObject> playerCompanionsPref = new List<GameObject>();
+    public List<GameObject> PlayerCompanionsPref { get { return playerCompanionsPref; } }
+
+    SceneStateManager currentSceneStateManager;
+
     private void Awake()
     {
         if (gameManager != null && gameManager != this)
@@ -77,12 +82,17 @@ public class GameManager : MonoBehaviour
         //if (Input.GetKeyDown(KeyCode.O)) Client_UDP.Singleton.SendToServer("Jogador: " + PlayerName + " | Maior Recompensa: 500,68(s)");
     }
 
-    public void ChangeCurrentSceneState(int s)
+    public void ChangeCurrentSceneState(SceneStateConditions sceneState)
     {
         try
         {
-            GameObject go = GameObject.Find("SceneStateManager");
-            go.GetComponent<SceneStateManager>().ChangeSceneState(s);
+            if (currentSceneStateManager == null)
+            {
+                GameObject go = GameObject.Find("SceneStateManager");
+                currentSceneStateManager = go.GetComponent<SceneStateManager>();
+            }
+            //GameObject go = GameObject.Find("SceneStateManager");
+            currentSceneStateManager.ChangeSceneState(sceneState.ChangingState, sceneState.MovePlayer, sceneState.FadeInOut);
         }
         catch (System.Exception)
         {

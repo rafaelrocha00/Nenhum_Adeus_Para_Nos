@@ -147,6 +147,8 @@ public class MainHud : MonoBehaviour
         GameManager.gameManager.MainHud = this;
 
         GameManager.gameManager.calendarController.UpdateHudH();
+
+        if (!GameManager.gameManager.NewGame) uiToHide.SetActive(true);
     }
 
     private void Update()

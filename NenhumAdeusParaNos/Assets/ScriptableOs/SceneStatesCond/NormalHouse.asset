@@ -9,8 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ff4d29914d042744b497dfeb58fd15c, type: 3}
-  m_Name: Lucy 2
+  m_Script: {fileID: 11500000, guid: c072bc987abab664c90217afc6a36e1c, type: 3}
+  m_Name: NormalHouse
   m_EditorClassIdentifier: 
-  dialogueOp:
-  - {fileID: 11400000, guid: 123b9e30d44ab574ab456ca1c8927237, type: 2}
+  changingState: 0
+  questToNotBeAccepted: {fileID: 0}
+  questToBeCompleted: {fileID: 0}
+  movePlayer: 0
+  fadeInOut: 1

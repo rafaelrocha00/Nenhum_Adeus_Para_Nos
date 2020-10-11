@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7538afdc471f674686979fda2705b48, type: 3}
-  m_Name: Lucy 2 - quest
+  m_Name: Benjo - 1 Quest
   m_EditorClassIdentifier: 
-  qName: Consertando o banheiro
+  qName: Consertar muro do benjo
   id: 0
   description: quest_description
   moneyReward: 0
@@ -25,13 +25,13 @@ MonoBehaviour:
   completingQuestDialogue: {fileID: 0}
   quest_itemRewards: []
   quest_itemRQuants: 
-  completed: 1
-  accepted: 1
+  completed: 0
+  accepted: 0
   cancelled: 0
   waitingReturnToNPC: 0
-  acceptText: Tenho que ir consertar o banheiro... denovo. Umas madeiras devem servir.
-  completeText: "Consertado. Que n\xE3o quebre outra vez."
-  unlockDialogue: 1
-  dialogueOptions: {fileID: 11400000, guid: a7f4e301705faa64e900ef6419d89c70, type: 2}
-  objectToRepair: Bathroom
+  acceptText: 
+  completeText: 
+  unlockableDialogues:
+  - {fileID: 11400000, guid: c2f4e330eaeac43469fd9376f456ad46, type: 2}
+  objectToRepair: Muro
   toInstantiate: {fileID: 0}

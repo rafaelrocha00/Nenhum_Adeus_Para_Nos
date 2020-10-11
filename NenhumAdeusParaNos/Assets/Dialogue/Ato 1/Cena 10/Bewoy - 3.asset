@@ -14,9 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allStrings:
   - "N\xE3o devia estar fazendo alguma coisa n\xE3o?"
-  - 'Tipo o que?
-
-'
+  - 'Tipo o que?           '
   - "Eu n\xE3o sei, por isso estou perguntando.\r\n"
-  - "Minha agenda t\xE1 livre. Se precisar de ajuda, eu to aqui.\r\n"
+  - "Minha agenda t\xE1 livre. Se precisar de ajuda, eu to aqui.\r"
   mcStrings: 0000000002000000
+  unlockableDialogues: []
+  unlockPlayerMovement: 0
+  makeNPCWalk: 0
+  finalPoint: {x: 0, y: 0, z: 0}
+  changeSceneState: 0
+  sceneState: {fileID: 0}
+  objectToBreak: 

@@ -15,6 +15,13 @@ MonoBehaviour:
   allStrings:
   - "Que horas s\xE3o?"
   mcStrings: 
+  unlockableDialogues: []
+  unlockPlayerMovement: 0
+  makeNPCWalk: 0
+  finalPoint: {x: 0, y: 0, z: 0}
+  changeSceneState: 0
+  changingState: 0
+  objectToBreak: 
   dialogueChoices:
   - {fileID: 11400000, guid: 22d8b2310b26bd74794db43d8bc63be1, type: 2}
   - {fileID: 11400000, guid: 0c60dd0bc9a099a4b9008c38a29902e8, type: 2}

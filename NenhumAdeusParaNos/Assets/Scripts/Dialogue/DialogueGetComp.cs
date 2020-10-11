@@ -27,7 +27,9 @@ public class DialogueGetComp : Dialogue
             //aux.Add(mainCharacter);
             //GameManager.gameManager.battleController.StartBattle(aux);
             GameObject aux = Instantiate(compPref, myNPC.transform.position, myNPC.transform.rotation) as GameObject;
-            mainCharacter.MyCompanion = aux.GetComponent<Companion>();
+            GameManager.gameManager.PlayerCompanionsPref.Add(compPref);
+            //mainCharacter.MyCompanion = aux.GetComponent<Companion>();
+            mainCharacter.MyCompanions.Add(aux.GetComponent<Companion>());
             myNPC.gameObject.SetActive(false);
             ResetDialogue();
             CheckPostDialogueActions();

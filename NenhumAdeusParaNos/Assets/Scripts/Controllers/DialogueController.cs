@@ -75,14 +75,14 @@ public class DialogueController : MonoBehaviour
         catch { }
     }
 
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.E) && activeMainDialogue && !(actualDialogue is DialogueBattle) && !waitingForAnswerBattle && !waitingForAnswer)
-    //    {
-    //        Debug.Log("NextString");
-    //        NextString();
-    //    }
-    //}
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E) && activeMainDialogue && !waitingForAnswer)
+        {
+            Debug.Log("NextString");
+            NextString();
+        }
+    }
 
     /// <summary>
     /// 

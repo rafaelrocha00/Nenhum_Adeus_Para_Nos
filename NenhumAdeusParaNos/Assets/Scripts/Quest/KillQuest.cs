@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Quest", menuName = "Quests/Kill Quest")]
 public class KillQuest : Quest
 {
+    [Header("Kill Quest")]
     public INPC.EnemyType enemyType = INPC.EnemyType.None;
     //public INPC.Faction faction = INPC.Faction.None;
 

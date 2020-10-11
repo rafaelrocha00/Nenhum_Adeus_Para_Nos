@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Quest", menuName = "Quests/Arrive Quest")]
 public class ArriveQuest : Quest
 {
+    [Header("Arrive Quest")]
     public string placeToGoName;
 
     public override void CheckComplete<T>(T thing)

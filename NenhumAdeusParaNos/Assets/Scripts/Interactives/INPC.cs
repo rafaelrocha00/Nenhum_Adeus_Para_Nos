@@ -27,11 +27,11 @@ public class INPC : NPC
     public DialogueQuestTrigger[] directQuestDialogue;
     //public Dialogue dialogueWithOtherNPC;
     //public DialogueOptions[] myDialogues = new DialogueOptions[3];
-    public bool despawnIfQuestAccepted = false;
-    public Quest questAccepted;
+    public bool toBeAccepted = true;
 
-    public bool despawnIfQuestCompleted = false;
-    public Quest questCompleted;
+    public Quest questAcceptedToDespawn;
+    public Quest questCompletedToDespawn;
+
 
     [Header("--------------- Comabte ---------------")]
     public bool hostile = false;
@@ -61,8 +61,25 @@ public class INPC : NPC
 
     protected override void Initialize()
     {
-        if (despawnIfQuestAccepted && questAccepted.Accepted) Destroy(gameObject);
-        if (despawnIfQuestCompleted && questAccepted.Completed) Destroy(gameObject);
+        if (CheckDespawnQuest()) Destroy(this.gameObject);
+    }
+
+    bool CheckDespawnQuest()
+    {
+        if (questAcceptedToDespawn != null)
+        {
+            if ((questAcceptedToDespawn.Accepted && toBeAccepted) || 
+                (!questAcceptedToDespawn.Accepted && !toBeAccepted))
+                return true;
+        }
+        if (questCompletedToDespawn != null)
+        {
+            if ((questCompletedToDespawn.Completed && toBeAccepted) ||
+                (!questCompletedToDespawn.Completed && !toBeAccepted))
+                return true;
+        }
+
+        return false;
     }
 
     public override void Interact(Player player)
@@ -428,6 +445,8 @@ public class INPC : NPC
     {        
         if (other.tag.Equals("player"))
         {
+            if (CheckDespawnQuest()) return;
+
             if (GameManager.gameManager.battleController.ActiveBattle || GameManager.gameManager.dialogueController.ActiveMainDialogue) return;
             //Se tem quest, inicia uma conversa com o player, sobre a quest
             if (directQuestDialogue.Length > 0)

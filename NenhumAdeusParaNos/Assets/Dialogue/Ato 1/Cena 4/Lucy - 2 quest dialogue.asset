@@ -23,8 +23,13 @@ MonoBehaviour:
 
 '
   mcStrings: 0000000005000000
+  unlockableDialogues:
+  - {fileID: 11400000, guid: a7f4e301705faa64e900ef6419d89c70, type: 2}
   unlockPlayerMovement: 0
   makeNPCWalk: 0
   finalPoint: {x: 0, y: 0, z: 0}
+  changeSceneState: 0
+  changingState: 0
+  objectToBreak: 
   quest: {fileID: 11400000, guid: 353e3390724607d4c99d64c93caf8d00, type: 2}
   accepting: 1

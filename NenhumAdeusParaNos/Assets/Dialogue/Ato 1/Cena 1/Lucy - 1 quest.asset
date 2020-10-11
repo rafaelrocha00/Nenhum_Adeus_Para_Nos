@@ -32,10 +32,11 @@ MonoBehaviour:
   waitingReturnToNPC: 0
   acceptText: Aceitou
   completeText: Completou
-  unlockDialogue: 1
-  dialogueOptions: {fileID: 11400000, guid: a7f4e301705faa64e900ef6419d89c70, type: 2}
+  unlockableDialogues:
+  - {fileID: 11400000, guid: a7f4e301705faa64e900ef6419d89c70, type: 2}
+  questToAccept: {fileID: 0}
   npcsToTalk:
-  - Vampirinha
-  - Emo
-  - Bebado
+  - Tuty
+  - Thimmy
+  - Bewoy
   talked: 000000

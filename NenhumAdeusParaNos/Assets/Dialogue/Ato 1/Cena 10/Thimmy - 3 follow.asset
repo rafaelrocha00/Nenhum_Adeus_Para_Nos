@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02f39efc334ca074e99e8815f483c008, type: 3}
+  m_Name: Thimmy - 3 follow
+  m_EditorClassIdentifier: 
+  allStrings:
+  - "J\xE1 t\xE1 na hora da escola?\r   "
+  - "Sim, eu j\xE1 vou chamar sua prima.\r"
+  - "N\xE3o devia ser o tio levando a gente para escola?\r"
+  - "Ele n\xE3o vai fazer nada a n\xE3o ser que voc\xEAs pe\xE7am.\r"
+  - "\xC9 qual \xE9 o problema comigo levando voc\xEAs?\r"
+  - 'Nenhum.          '
+  - Isso mesmo. Agora vamos ou a gente vai se atrasar.
+  mcStrings: 01000000030000000400000006000000
+  unlockableDialogues: []
+  unlockPlayerMovement: 0
+  makeNPCWalk: 0
+  finalPoint: {x: 0, y: 0, z: 0}
+  changeSceneState: 0
+  sceneState: {fileID: 0}
+  objectToBreak: 
+  compPref: {fileID: 5593015891013515454, guid: da9fdac11a4e36044a41909f69eb8a4a,
+    type: 3}

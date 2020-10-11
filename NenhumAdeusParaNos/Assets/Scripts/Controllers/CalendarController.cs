@@ -98,7 +98,7 @@ public class CalendarController : MonoBehaviour
         if (timer >= timeScale)
         {
             timer = 0.0f;
-            if (SceneManager.GetActiveScene().buildIndex > 1) UpdateMin();
+            if (SceneManager.GetActiveScene().buildIndex > 0) UpdateMin();
         }
 
         if (Input.GetKeyDown(KeyCode.G)) UpdateMin(480);
@@ -132,7 +132,7 @@ public class CalendarController : MonoBehaviour
         date.UpdateMin(v);
 
         DayNightCycle.Instance.UpdatePostProcess(date.hour + date.mins / 60);
-        GameManager.gameManager.repairController.CheckIfActiveRepairBroke(date);
+        GameManager.gameManager.repairController.CheckDateEvent(date);
         //Debug.Log(date.hour + " / " + date.mins);
         UpdateHudH();
     }

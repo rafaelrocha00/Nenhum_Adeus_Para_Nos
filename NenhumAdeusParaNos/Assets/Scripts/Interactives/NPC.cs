@@ -41,7 +41,6 @@ public abstract class NPC : Interactives, BattleUnit
 
     private void Start()
     {
-        //Debug.Log("Oxi");
         charStats = new CharacterStats(this);
         navMesh = GetComponent<NavMeshAgent>();
 

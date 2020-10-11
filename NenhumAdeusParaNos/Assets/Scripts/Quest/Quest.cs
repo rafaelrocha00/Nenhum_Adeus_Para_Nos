@@ -42,8 +42,10 @@ public abstract class Quest : ScriptableObject
     [TextArea] public string completeText;
 
     [Header("Unlockable Dialogues")]
-    public bool unlockDialogue;
-    public DialogueOptions dialogueOptions;
+    public DialogueOptions[] unlockableDialogues;
+
+    [Header("Chain Quest")]
+    public Quest questToAccept;
 
     public abstract void CheckComplete<T>(T thing);
 
@@ -73,10 +75,15 @@ public abstract class Quest : ScriptableObject
                 }
             }
 
-            if (unlockDialogue)
+            if (unlockableDialogues != null)
             {
-                dialogueOptions.UnlockDialogue();
+                for (int i = 0; i < unlockableDialogues.Length; i++)
+                {
+                    unlockableDialogues[i].UnlockDialogue();
+                }
             }
+
+            if (questToAccept != null) questToAccept.AcceptQuest();
         }
     }
 

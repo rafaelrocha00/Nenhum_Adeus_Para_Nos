@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Quest", menuName = "Quests/Repair Quest")]
 public class RepairQuest : Quest
 {
+    [Header("Repair Quest")]
     [SerializeField] string objectToRepair = "";
     public string ObjectToRepair { get { return objectToRepair; } set { objectToRepair = value; } }
 

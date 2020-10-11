@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7538afdc471f674686979fda2705b48, type: 3}
+  m_Script: {fileID: 11500000, guid: 6fabced99eb604648b986f82b3c23590, type: 3}
   m_Name: Lucy - 3 quest
   m_EditorClassIdentifier: 
-  qName: Consertar muro
+  qName: quest_name
   id: 0
   description: quest_description
   moneyReward: 0
@@ -31,7 +31,8 @@ MonoBehaviour:
   waitingReturnToNPC: 0
   acceptText: 
   completeText: 
-  unlockDialogue: 1
-  dialogueOptions: {fileID: 11400000, guid: c2f4e330eaeac43469fd9376f456ad46, type: 2}
-  objectToRepair: Muro
-  toInstantiate: {fileID: 0}
+  unlockableDialogues:
+  - {fileID: 11400000, guid: c2f4e330eaeac43469fd9376f456ad46, type: 2}
+  npcsToTalk:
+  - Benjo
+  talked: 00

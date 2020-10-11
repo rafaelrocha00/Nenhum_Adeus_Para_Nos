@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Quest", menuName = "Quests/Assassin Quest")]
 public class AssassinQuest : Quest
 {
+    [Header("Assassin Quest")]
     [SerializeField] string areaName = "";
     [SerializeField] string targetName = "";
     public string AreaName { get { return areaName; } set { areaName = value; } }

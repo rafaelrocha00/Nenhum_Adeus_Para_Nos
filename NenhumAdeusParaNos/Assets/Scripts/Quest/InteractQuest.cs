@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Quest", menuName = "Quests/Interact Quest")]
 public class InteractQuest : Quest
 {
+    [Header("Interact Quest")]
     public string objectToInteract;
 
     public override void CheckComplete<T>(T thing)

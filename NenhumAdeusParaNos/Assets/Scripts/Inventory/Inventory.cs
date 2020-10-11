@@ -74,6 +74,8 @@ public class Inventory : MonoBehaviour
     {
         ItemButton[] allItems = myGrid.itemHolder.GetComponentsInChildren<ItemButton>();
 
+        if (allItems.Length == 0) return;
+
         GameManager.gameManager.itemsSaver.SetInventoryItemCoords(allItems);
     }
 

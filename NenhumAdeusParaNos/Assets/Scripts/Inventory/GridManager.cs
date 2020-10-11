@@ -36,10 +36,12 @@ public class GridManager : MonoBehaviour
             }
         }
 
+        Debug.Log("Gerou o inventário");
         if (generateOnStart) Invoke("LoadInvenItems", 0.05f);
     }
     void LoadInvenItems()
     {
+        Debug.Log("Tentando carregar itens");
         if (!GameManager.gameManager.itemsSaver.SavedInven()) GameManager.gameManager.inventoryController.Inventory.iGen.GenRandomItem();
         GameManager.gameManager.itemsSaver.SetInventoryItems();
     }

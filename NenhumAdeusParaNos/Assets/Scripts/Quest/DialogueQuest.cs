@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Quest", menuName = "Quests/Dialogue Quest")]
 public class DialogueQuest : Quest
 {
+    [Header("Dialogue Quest")]
     public string[] npcsToTalk;
     public bool[] talked;
 

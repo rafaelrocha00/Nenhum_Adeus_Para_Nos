@@ -7,6 +7,8 @@ public class Companion : NPC
 {
     INPC closestEnemy;
 
+    public GameObject myPref;
+
     protected override void Initialize()
     {
         ignoreBarrier = true;
@@ -38,10 +40,17 @@ public class Companion : NPC
         {
             if (mCharacter == null) mCharacter = GameManager.gameManager.battleController.MainCharacter;
             Vector3 toPlayerVec = mCharacter.transform.position - transform.position;
-            Vector3 targPos = toPlayerVec.normalized * (toPlayerVec.magnitude - 2) + transform.position;
+            Vector3 targPos = toPlayerVec.normalized * (toPlayerVec.magnitude) + transform.position;
 
             MoveNavMesh(targPos);
         }
+    }
+
+    public void DirectMove(Vector3 newPos)
+    {
+        navMesh.enabled = false;
+        transform.position = newPos;
+        navMesh.enabled = true;
     }
 
     protected override void ComfirmAttack()

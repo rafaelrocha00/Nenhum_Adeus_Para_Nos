@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RepairableObject : Interactives
+public class RepairableObject : Interactives, IDateEvent
 {
     //public string objectName;
 
@@ -14,22 +14,60 @@ public class RepairableObject : Interactives
     Collider c;
     CalendarController.Date dateToBreak;
 
+    public Interactives unlockableInt;
+
+    [Header("Repair Quests")]
+    public bool genRepairQuest = true;
+    public bool unbreakableByTime = false;
+    public Quest condToBreak;
+
     private void Start()
     {
         c = GetComponent<Collider>();
-        Invoke("SetDate", 0.05f);
+        Invoke("SetDate", 0.02f);/////////////////////////////
     }
-    void SetDate()
+
+    public void SetDate()
     {
-        CalendarController.Date d = GameManager.gameManager.calendarController.DateInfo;
-        dateToBreak = new CalendarController.Date(d.week, d.day, d.hour, d.mins);//Tem q o ver o quando passou em outra cena
-        dateToBreak.UpdateMin(baseLife);
-        if (GameManager.gameManager.repairController.TryAddRepair(Name, dateToBreak))
+        if (unbreakableByTime)
         {
-            if (GameManager.gameManager.repairController.FindRepair(Name).CompareTo(GameManager.gameManager.calendarController.DateInfo) < 1)
-            Break();
+            if (condToBreak.Accepted && !condToBreak.Completed) Break();
+            GameManager.gameManager.repairController.AddActiveDateEvent(this);
+            return;
         }
-        GameManager.gameManager.repairController.AddActiveRepair(this);
+
+        //CalendarController.Date d = GameManager.gameManager.calendarController.DateInfo;
+        //dateToBreak = new CalendarController.Date(d.week, d.day, d.hour, d.mins);
+        //dateToBreak.UpdateMin(baseLife);
+        CreateNewDate();
+        if (GameManager.gameManager.repairController.TryAddDateEvent(Name, dateToBreak))
+        {
+            CalendarController.Date d = GameManager.gameManager.repairController.FindDateEvent(Name);
+            dateToBreak = d;
+
+            if (dateToBreak.CompareTo(GameManager.gameManager.calendarController.DateInfo) < 1)
+                Break();
+        }
+        if (!broken) GameManager.gameManager.repairController.AddActiveDateEvent(this);
+
+        Debug.Log(dateToBreak.ToString());
+    }
+
+    public void CheckDate(CalendarController.Date d)
+    {
+        if (unbreakableByTime) return;
+
+        if (dateToBreak.CompareTo(d) < 1) Break();
+    }
+
+    public string GetName()
+    {
+        return Name;
+    }
+
+    public void ForceEvent()
+    {
+        Break();
     }
 
     public override void Interact(Player player)
@@ -41,14 +79,27 @@ public class RepairableObject : Interactives
 
     public void Repair(int bonusTime)
     {
+        if (!unbreakableByTime)
+        {
+            //CalendarController.Date d = GameManager.gameManager.calendarController.DateInfo;
+            //dateToBreak = new CalendarController.Date(d.week, d.day, d.hour, d.mins);
+            //dateToBreak.UpdateMin(baseLife + bonusTime);
+            Debug.Log(bonusTime);
+            CreateNewDate(bonusTime);
+            GameManager.gameManager.repairController.RenewDate(Name, dateToBreak);
+            GameManager.gameManager.repairController.AddActiveDateEvent(this);
+        }
+        broken = false;
+        if (unlockableInt != null) unlockableInt.canInteract = true;
+        GameManager.gameManager.questController.CheckQuests(this);
+        StartCoroutine(DetachAnimation(true));
+    }
+
+    void CreateNewDate(int bonusTime = 0)
+    {
         CalendarController.Date d = GameManager.gameManager.calendarController.DateInfo;
         dateToBreak = new CalendarController.Date(d.week, d.day, d.hour, d.mins);
         dateToBreak.UpdateMin(baseLife + bonusTime);
-        GameManager.gameManager.repairController.RenewDate(Name, dateToBreak);
-        GameManager.gameManager.repairController.AddActiveRepair(this);
-        broken = false;
-        GameManager.gameManager.questController.CheckQuests(this);
-        StartCoroutine(DetachAnimation(true));
     }
 
     IEnumerator DetachAnimation(bool v)
@@ -59,13 +110,13 @@ public class RepairableObject : Interactives
         OnExit(GameManager.gameManager.battleController.MainCharacter);
     }
 
-    void Break()
+    public void Break()
     {
         Debug.Log("Broke");
         broken = true;
         EnableInteraction(true);
-        GameManager.gameManager.repairController.RemoveRepair(Name);
-        if (!AlreadyHasQuest()) GameManager.gameManager.questGenerator.GenRepQuest(Name);
+        GameManager.gameManager.repairController.RemoveDateEvent(Name);
+        if (genRepairQuest && !AlreadyHasQuest()) GameManager.gameManager.questGenerator.GenRepQuest(Name);
         //Mudar estado de textura/modelo.
     }
 
@@ -86,10 +137,5 @@ public class RepairableObject : Interactives
     public void EnableInteraction(bool v)
     {
         c.enabled = v;
-    }
-
-    public void CheckDate(CalendarController.Date d)
-    {
-        if (dateToBreak.CompareTo(d) < 1) Break();
     }
 }

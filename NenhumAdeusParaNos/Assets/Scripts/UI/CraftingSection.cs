@@ -42,6 +42,10 @@ public class CraftingSection : MonoBehaviour
         brokenObject = bo;
         minCombinedValue = bo.MinCombinedValue;
         brokenObjectIcon.sprite = bo.objIcon;
+
+        totalBonusTime = 0;
+        totalCombinedValue = 0;
+        totalBaseValue = 0;
     }
 
     public void AddResource(int cv, int bt, bool base_mat = false)
@@ -110,7 +114,8 @@ public class CraftingSection : MonoBehaviour
     public void Confirm()
     {
         if (repair_enabled)
-        {            
+        {
+            int bt = totalBonusTime;
             for (int i = 0; i < materialSlots.Count; i++)
             {
                 if (materialSlots[i].ThisItemB != null)
@@ -120,9 +125,8 @@ public class CraftingSection : MonoBehaviour
                 }
             }
             RemoveMaterialSlot();
-            brokenObject.FinishRepair(totalBonusTime);
+            brokenObject.FinishRepair(bt);
             GameManager.gameManager.audioController.PlayEffect(clip_craft);
-            Debug.Log(totalBonusTime);
         }
     }
 

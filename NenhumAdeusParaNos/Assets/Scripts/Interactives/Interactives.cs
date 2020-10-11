@@ -14,6 +14,17 @@ public abstract class Interactives : MonoBehaviour
     public bool oneInteraction = false;
     public bool canInteract = true;
 
+    public Quest triggerQuest;
+    // public RepairableObject triggerRepairable;
+
+    private void Start()
+    {
+        if (triggerQuest != null)
+        {
+            if (triggerQuest.Accepted && !triggerQuest.Completed) canInteract = true;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (oneInteraction && !canInteract) return;
@@ -35,7 +46,7 @@ public abstract class Interactives : MonoBehaviour
         {
             Player player = other.GetComponent<Player>();
             player.Interacting = false;
-            player.CanInteract = false;
+            if (player.InteractingObjs.Count <= 1) player.CanInteract = false;
             Debug.Log(player.Interacting);
             OnExit(player);
         }

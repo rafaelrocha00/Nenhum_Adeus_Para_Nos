@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23680a6d83a0c45429169e80d702624a, type: 3}
-  m_Name: Benjo - 2
+  m_Script: {fileID: 11500000, guid: 2cc231529148de24ca6aeda3695e168a, type: 3}
+  m_Name: Benjo - 2 quest dialogue
   m_EditorClassIdentifier: 
   allStrings:
   - "Terminei. Isso deve segurar at\xE9 a gente conseguir materiais melhores.\r\n"
@@ -20,3 +20,15 @@ MonoBehaviour:
     moleque deve ser um inc\xF4modo.\r\n"
   - "\xC9, nessa idade \xE9 complicado. D\xE1 um oi para eles por mim ent\xE3o.\r\n"
   mcStrings: 0000000003000000
+  unlockableDialogues:
+  - {fileID: 11400000, guid: 22665e3f4902acf43bc3d2f49803992d, type: 2}
+  - {fileID: 11400000, guid: c2f4e330eaeac43469fd9376f456ad46, type: 2}
+  - {fileID: 11400000, guid: f4a74a96990c34e4dbd39e49d7583120, type: 2}
+  unlockPlayerMovement: 0
+  makeNPCWalk: 0
+  finalPoint: {x: 0, y: 0, z: 0}
+  changeSceneState: 1
+  sceneState: {fileID: 11400000, guid: a0c1bb59c7fc0a74f897b65fd91be1bc, type: 2}
+  objectToBreak: 
+  quest: {fileID: 11400000, guid: 10d194aa87987684887ae8faf14c4df9, type: 2}
+  accepting: 1

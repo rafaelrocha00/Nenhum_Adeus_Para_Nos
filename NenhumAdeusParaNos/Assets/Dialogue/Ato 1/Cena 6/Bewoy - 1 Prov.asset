@@ -19,10 +19,12 @@ MonoBehaviour:
   - '...                        '
   - "Depois que eu voltar do Benjo eu quero falar com voc\xEA.\r"
   mcStrings: 010000000300000004000000
+  unlockableDialogues: []
   unlockPlayerMovement: 1
   makeNPCWalk: 0
   finalPoint: {x: 0, y: 0, z: 0}
   changeSceneState: 1
-  changingState: 0
+  sceneState: {fileID: 11400000, guid: 6e379c3bb9b6b3e4ba1d790f579d5f52, type: 2}
+  objectToBreak: 
   quest: {fileID: 11400000, guid: 44df44211bcb18044a3f1040d50d8e52, type: 2}
   accepting: 1

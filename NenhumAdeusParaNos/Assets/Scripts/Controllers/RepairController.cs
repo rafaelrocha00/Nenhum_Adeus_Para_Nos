@@ -4,24 +4,25 @@ using UnityEngine;
 
 public class RepairController : MonoBehaviour
 {
-    public Dictionary<string, CalendarController.Date> repairs = new Dictionary<string, CalendarController.Date>();
-    public List<RepairableObject> activeRepairs = new List<RepairableObject>();
+    public Dictionary<string, CalendarController.Date> dateEvents = new Dictionary<string, CalendarController.Date>();
+    public List<IDateEvent> activeDateEvents = new List<IDateEvent>();
 
     private void Start()
     {
         OnLoadScene();
     }
 
-    public CalendarController.Date FindRepair(string n)
+    public CalendarController.Date FindDateEvent(string n)
     {
-        return repairs[n];
+        try { return dateEvents[n]; }
+        catch { return null; }
     }
 
-    public bool TryAddRepair(string n, CalendarController.Date date)
+    public bool TryAddDateEvent(string n, CalendarController.Date date)
     {
-        if (!repairs.ContainsKey(n))
+        if (!dateEvents.ContainsKey(n))
         {
-            repairs.Add(n, date);
+            dateEvents.Add(n, date);
             return false;
         }
         else return true;
@@ -29,31 +30,40 @@ public class RepairController : MonoBehaviour
 
     public void RenewDate(string n, CalendarController.Date newDate)
     {
-        CalendarController.Date d = repairs[n];
-        d = newDate;
+        //CalendarController.Date d = dateEvents[n];
+        //d = newDate;
+        dateEvents[n] = newDate;
     }
 
-    public void AddActiveRepair(RepairableObject r)
+    public void AddActiveDateEvent(IDateEvent d)
     {
-        activeRepairs.Add(r);
+        activeDateEvents.Add(d);
     }
-    public void RemoveRepair(string name)
+    public void RemoveDateEvent(string name)
     {
-        int i = activeRepairs.FindIndex(x => x.Name.Equals(name));
-        if (i >= 0) activeRepairs.RemoveAt(i);
+        //int i = activeDateEvents.FindIndex(x => x.Name.Equals(name));
+        int i = activeDateEvents.FindIndex(x => x.GetName().Equals(name));
+        if (i >= 0) activeDateEvents.RemoveAt(i);
     }
 
-    public void CheckIfActiveRepairBroke(CalendarController.Date d)
+    public void CheckDateEvent(CalendarController.Date d)
     {
-        for (int i = 0; i < activeRepairs.Count; i++)
+        for (int i = 0; i < activeDateEvents.Count; i++)
         {
-            activeRepairs[i].CheckDate(d);
+            activeDateEvents[i].CheckDate(d);
         }
+    }
+
+    public void ForceDateEvent(string name)
+    {
+        //int i = activeDateEvents.FindIndex(x => x.Name.Equals(name));
+        int i = activeDateEvents.FindIndex(x => x.GetName().Equals(name));
+        if (i >= 0) activeDateEvents[i].ForceEvent();
     }
 
     public void OnLoadScene()
     {
         Debug.Log("Limpando Consertos ativos");
-        activeRepairs.Clear();
+        activeDateEvents.Clear();
     }
 }

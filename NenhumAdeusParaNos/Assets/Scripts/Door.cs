@@ -7,7 +7,7 @@ public class Door : MonoBehaviour
 {
     public bool sameScene;
     public int spawnpointID = -1;
-    public SceneStateManager iQuickTravel;
+    public SceneNav iQuickTravel;
 
     public string sceneName;
 
