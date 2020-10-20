@@ -22,8 +22,8 @@ public class PlaceToGo : MonoBehaviour
                     Player p = other.GetComponent<Player>();
                     if (stopPlayerComp)
                     {
-                        if (!removeComp) p.DespawnCompanions();
-                        else p.RemoveCompanions();
+                        p.DespawnCompanions();
+                        if (removeComp) p.RemoveCompanions();
                     }
                 }
                 catch { }

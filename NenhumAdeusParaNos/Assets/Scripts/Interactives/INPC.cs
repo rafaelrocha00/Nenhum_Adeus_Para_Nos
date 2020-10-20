@@ -105,7 +105,7 @@ public class INPC : NPC
             for (int i = 0; i < questDialogues.Length; i++)
             {
                 DialogueQuestTrigger dqt = questDialogues[i].SearchQuestDialogue();
-                if (dqt.quest.WaitingReturnToNPC && !dqt.quest.Completed)
+                if (dqt != null && dqt.quest.WaitingReturnToNPC && !dqt.quest.Completed)
                 {
                     //dqt.quest.completingQuestDialogue.MainCharacter = GameManager.gameManager.battleController.MainCharacter;
                     //dqt.quest.completingQuestDialogue.MyNPC = this;
@@ -477,7 +477,12 @@ public class INPC : NPC
                         //GameManager.gameManager.dialogueController.StartDialogue(directQuestDialogue[i], transform, expressions[1]);
                         StartDialogue(directQuestDialogue[i], GameManager.gameManager.battleController.MainCharacter);
                         return;
-                    }                    
+                    }        
+                    else if (!directQuestDialogue[i].quest.Completed)
+                    {
+                        DefaultInteraction(other);
+                        return;
+                    }
                 }
             }
             if (questDialogues.Length > 0)// && !myQuestAccepeted)
