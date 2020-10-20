@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca039650f52f2da42b284a0495b9b11e, type: 3}
+  m_Name: Tuty - 3 quest chain 1
+  m_EditorClassIdentifier: 
+  qName: "Chegue na farm\xE1cia"
+  id: 1234
+  description: quest_description
+  moneyReward: 0
+  resourceReward: 0
+  contractor: contractor_
+  mustReturn: 0
+  limitDay: -1
+  generated: 0
+  resourceT: 4
+  completingQuestDialogue: {fileID: 0}
+  quest_itemRewards: []
+  quest_itemRQuants: 
+  completed: 0
+  accepted: 0
+  cancelled: 0
+  waitingReturnToNPC: 0
+  acceptText: 
+  completeText: 
+  unlockableDialogues:
+  - {fileID: 11400000, guid: 03a7ce7072dbc9342803df3c2d0ec5f6, type: 2}
+  - {fileID: 11400000, guid: d08120ebc0f4a4b43b439fc82b81bb00, type: 2}
+  questToAccept: {fileID: 11400000, guid: dced23b83e3b6a74fbd09f9c590432fb, type: 2}
+  sceneStateChange: {fileID: 0}
+  placeToGoName: School

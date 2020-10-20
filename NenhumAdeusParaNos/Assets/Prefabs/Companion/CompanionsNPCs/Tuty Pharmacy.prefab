@@ -39,6 +39,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4493194863198854318, guid: 3e256cdef3dcd3948a0254befc4be65b,
         type: 3}
+      propertyPath: questDialogues.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4493194863198854318, guid: 3e256cdef3dcd3948a0254befc4be65b,
+        type: 3}
       propertyPath: canInteract
       value: 1
       objectReference: {fileID: 0}
@@ -53,6 +58,18 @@ PrefabInstance:
       propertyPath: directQuestDialogue.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: 22602fa54dc7c9b43aa60f9261ab43b6,
+        type: 2}
+    - target: {fileID: 4493194863198854318, guid: 3e256cdef3dcd3948a0254befc4be65b,
+        type: 3}
+      propertyPath: directQuestDialogue.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 22602fa54dc7c9b43aa60f9261ab43b6,
+        type: 2}
+    - target: {fileID: 4493194863198854318, guid: 3e256cdef3dcd3948a0254befc4be65b,
+        type: 3}
+      propertyPath: questDialogues.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0b576f9bb8da2d34092c453c568020e9,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e256cdef3dcd3948a0254befc4be65b, type: 3}

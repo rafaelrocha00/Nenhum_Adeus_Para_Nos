@@ -477,11 +477,10 @@ public class INPC : NPC
                         //GameManager.gameManager.dialogueController.StartDialogue(directQuestDialogue[i], transform, expressions[1]);
                         StartDialogue(directQuestDialogue[i], GameManager.gameManager.battleController.MainCharacter);
                         return;
-                    }
-                    DefaultInteraction(other);
+                    }                    
                 }
             }
-            else if (questDialogues.Length > 0)// && !myQuestAccepeted)
+            if (questDialogues.Length > 0)// && !myQuestAccepeted)
             {
                 Debug.Log("Olhando quests");
                 //Não abrir quando quest já completa
@@ -490,7 +489,7 @@ public class INPC : NPC
                     DialogueQuestTrigger dqt = questDialogues[i].SearchQuestDialogue();
                     Debug.Log(dqt.quest.Accepted);
                     Debug.Log(dqt.quest.Completed);
-                    if (!dqt.quest.Accepted)
+                    if (dqt != null && !dqt.quest.Accepted)
                     {
                         //questDialogues[i].MyNPC = this;
                         //questDialogues[i].MainCharacter = GameManager.gameManager.battleController.MainCharacter;
@@ -498,17 +497,17 @@ public class INPC : NPC
                         StartDialogue(questDialogues[i], GameManager.gameManager.battleController.MainCharacter);
                         return;
                     }
-                    DefaultInteraction(other);
                 }
             }
+            DefaultInteraction(other);
             //else if (hasOtherNPCTalk)
             //{
             //    GameManager.gameManager.dialogueController.StartDialogue(dialogueWithOtherNPC, transform, true);
             //}
-            else
-            {
-                DefaultInteraction(other);
-            }
+            //else
+            //{
+            //    DefaultInteraction(other);
+            //}
         }
     }
     void DefaultInteraction(Collider other)
