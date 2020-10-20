@@ -487,9 +487,9 @@ public class INPC : NPC
                 for (int i = 0; i < questDialogues.Length; i++)
                 {
                     DialogueQuestTrigger dqt = questDialogues[i].SearchQuestDialogue();
-                    Debug.Log(dqt.quest.Accepted);
-                    Debug.Log(dqt.quest.Completed);
-                    if (dqt != null && !dqt.quest.Accepted)
+                    //Debug.Log(dqt.quest.Accepted);
+                    //Debug.Log(dqt.quest.Completed);
+                    if (dqt == null || !dqt.quest.Accepted)
                     {
                         //questDialogues[i].MyNPC = this;
                         //questDialogues[i].MainCharacter = GameManager.gameManager.battleController.MainCharacter;
