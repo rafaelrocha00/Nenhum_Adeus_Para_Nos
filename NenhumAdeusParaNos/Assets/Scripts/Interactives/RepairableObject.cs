@@ -91,7 +91,11 @@ public class RepairableObject : Interactives, IDateEvent
             GameManager.gameManager.repairController.AddActiveDateEvent(this);
         }
         broken = false;
-        if (unlockableInt != null) unlockableInt.canInteract = true;
+        if (unlockableInt != null)
+        {
+            unlockableInt.canInteract = true;
+            unlockableInt.EnableCollider(true);
+        }
         GameManager.gameManager.questController.CheckQuests(this);
         StartCoroutine(DetachAnimation(true));
     }

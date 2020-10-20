@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3616767226527725424}
   - component: {fileID: 5722474367829052742}
   - component: {fileID: 2042058577970033087}
-  - component: {fileID: 1809032024822160663}
+  - component: {fileID: 7049342375811546203}
   m_Layer: 0
   m_Name: Banquinho.v1
   m_TagString: Untagged
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 23150b8bb55560d4b9705d9d3fcca959, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -80,7 +80,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &1809032024822160663
+--- !u!65 &7049342375811546203
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,5 +91,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.796622, y: 0.97834563, z: 0.78787}
-  m_Center: {x: 0.000000011904216, y: 0.4951535, z: -0.099859804}
+  m_Size: {x: 2.796622, y: 0.7878697, z: 0.97834563}
+  m_Center: {x: -0.0000000029835532, y: -0.09985219, z: 0.4951535}

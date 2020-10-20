@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8732084714519525661}
   - component: {fileID: 321337184835781419}
   - component: {fileID: 6289583767376445394}
-  - component: {fileID: 529964356188928725}
-  m_Layer: 0
+  - component: {fileID: 7287463682440700637}
+  m_Layer: 12
   m_Name: Arame farpado.v1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 5725694777515248398}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 35.38, y: -4.47, z: 95.18}
-  m_LocalScale: {x: 2.9890213, y: 2.989021, z: 2.989021}
+  m_LocalScale: {x: 2.9890232, y: 2.989021, z: 2.9890223}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 670224309865224971, guid: cc11a49c4d143c84cb5fca26007f601b, type: 3}
+  - {fileID: 2100000, guid: 23150b8bb55560d4b9705d9d3fcca959, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -80,7 +80,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &529964356188928725
+--- !u!65 &7287463682440700637
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,5 +91,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.44266883, y: 0.43036416, z: 0.69344753}
-  m_Center: {x: 0.114692375, y: 0.18848789, z: -0.027913855}
+  m_Size: {x: 0.44266874, y: 0.69344753, z: 0.43036398}
+  m_Center: {x: -0.11469236, y: -0.027910046, z: 0.18848684}

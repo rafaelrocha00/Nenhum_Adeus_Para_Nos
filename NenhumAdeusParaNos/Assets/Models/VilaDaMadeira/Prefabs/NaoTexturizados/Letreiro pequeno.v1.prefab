@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4682966407672927188}
   - component: {fileID: 4442303632215484898}
   - component: {fileID: 7969879263210525979}
-  - component: {fileID: 3049685560307213891}
+  - component: {fileID: 5064688270409121215}
   m_Layer: 0
   m_Name: Letreiro pequeno.v1
   m_TagString: Untagged
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6629797300637803691, guid: 2bcda81ebc12fab4fa41917fefa832cb, type: 3}
+  - {fileID: 2100000, guid: 8417abbff11bf05449e7ec0862114549, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -80,7 +80,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &3049685560307213891
+--- !u!65 &5064688270409121215
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,5 +91,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.0929098, y: 1.9516804, z: 0.50485337}
-  m_Center: {x: 0.0066371528, y: 0.93524325, z: 0.057567485}
+  m_Size: {x: 2.0929098, y: 0.5048533, z: 1.9516805}
+  m_Center: {x: -0.006637126, y: 0.057567485, z: 0.93524325}

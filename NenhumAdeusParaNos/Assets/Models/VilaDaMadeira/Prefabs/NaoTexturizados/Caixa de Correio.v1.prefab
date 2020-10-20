@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 4181589879984920344}
   - component: {fileID: 5142261300089433390}
   - component: {fileID: 1468298836183765463}
-  m_Layer: 0
+  - component: {fileID: 803294541036899810}
+  m_Layer: 12
   m_Name: Caixa de Correio.v1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,9 +26,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 890767213584737547}
-  m_LocalRotation: {x: -0, y: -0.707106, z: -0, w: 0.7071076}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 20.02, y: -6.93, z: -10.42}
-  m_LocalScale: {x: 1.5604, y: 1.5604, z: 1.5604}
+  m_LocalScale: {x: 1.5604, y: 1.5603997, z: 1.5604}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -58,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: a682e3126fda10d42a3da4d3b06d6915, type: 3}
+  - {fileID: 2100000, guid: 23150b8bb55560d4b9705d9d3fcca959, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -79,3 +80,16 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &803294541036899810
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890767213584737547}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.25633976, y: 0.49379203, z: 0.9192132}
+  m_Center: {x: 0.000000091824596, y: 0.046753183, z: 0.46020347}

@@ -243,7 +243,7 @@ public class DialogueController : MonoBehaviour
             if (mainCam == null) SetCam();
             dialoguePopUp.transform.position = mainCam.WorldToScreenPoint(transf.position);
         }
-        dialoguePopUp.InitialSet(sp, /*isPlayer,*/ id);
+        dialoguePopUp.SetSprite(sp);
 
     }
 
@@ -255,9 +255,9 @@ public class DialogueController : MonoBehaviour
         }
     }
 
-    public void ChangePopUpPos(Transform transf)
+    public void ChangePopUpPos(Transform transf, Sprite sp)
     {
-        dialoguePopUp.GetComponent<DialoguePopUp>().SetTransform(transf);
+        dialoguePopUp.GetComponent<DialoguePopUp>().SetTransform(transf, sp);
     }
 
     IEnumerator NextStringCountdown()

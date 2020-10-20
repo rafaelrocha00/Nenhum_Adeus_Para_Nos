@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 191237501333050715}
   - component: {fileID: 9222369014091591533}
   - component: {fileID: 3224830954718909332}
-  m_Layer: 0
+  - component: {fileID: 7664945479486383866}
+  m_Layer: 12
   m_Name: Cone.v1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,9 +26,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3817980075390166856}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -24.96, y: -12.55, z: 27.37839}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.7912, y: 1.7912, z: 1.7912}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -58,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6478536213147159724, guid: 0ef45901bf4bbdf41ab9d69d62b1fdf6, type: 3}
+  - {fileID: 2100000, guid: 23150b8bb55560d4b9705d9d3fcca959, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -79,3 +80,16 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &7664945479486383866
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3817980075390166856}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.589595, y: 0.5895951, z: 0.86705166}
+  m_Center: {x: 1.952654e-24, y: 0.00000013035302, z: 0.43739247}

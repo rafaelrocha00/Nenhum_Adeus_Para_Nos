@@ -95,4 +95,9 @@ public abstract class Interactives : MonoBehaviour
         Debug.Log("Removendo " + this.name);
         DesactiveBtp();
     }
+
+    public void EnableCollider(bool v)
+    {
+        GetComponent<Collider>().enabled = v;
+    }
 }

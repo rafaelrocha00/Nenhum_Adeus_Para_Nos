@@ -12,6 +12,8 @@ public class Player : MonoBehaviour, BattleUnit
     public GameObject staminaBar;
     public ShieldShaderControl shieldControl;
 
+    public Sprite portrait;
+
     [HideInInspector] List<Companion> myCompanions = new List<Companion>();
     public List<Companion> MyCompanions { get { return myCompanions; } set { myCompanions = value; } }
 

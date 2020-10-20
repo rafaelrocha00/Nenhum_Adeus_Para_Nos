@@ -150,7 +150,8 @@ public abstract class NPC : Interactives, BattleUnit
 
     public void EndDialogue()
     {
-        GameManager.gameManager.dialogueController.EndDialogue();
+        //OnExit(mCharacter);
+        GameManager.gameManager.dialogueController.EndDialogue();        
     }
 
     public void ReceiveItem()

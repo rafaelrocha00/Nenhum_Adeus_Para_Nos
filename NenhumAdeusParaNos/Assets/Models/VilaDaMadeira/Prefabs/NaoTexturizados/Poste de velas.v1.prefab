@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2638989464646700371}
   - component: {fileID: 6468458039091197797}
   - component: {fileID: 790413878076312476}
-  - component: {fileID: 2158819880531695615}
-  m_Layer: 0
+  - component: {fileID: 3141215010169803739}
+  m_Layer: 12
   m_Name: Poste de velas.v1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1352429226440343360}
-  m_Mesh: {fileID: 3607141019600499917, guid: f4c05f21cdd0e4f40930acb27890531a, type: 3}
+  m_Mesh: {fileID: 4441817974509218314, guid: f4c05f21cdd0e4f40930acb27890531a, type: 3}
 --- !u!23 &790413878076312476
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: f4c05f21cdd0e4f40930acb27890531a, type: 3}
+  - {fileID: -6327726948311580439, guid: f4c05f21cdd0e4f40930acb27890531a, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -80,7 +80,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &2158819880531695615
+--- !u!65 &3141215010169803739
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,5 +91,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9032579, y: 3.5182347, z: 0.9032579}
-  m_Center: {x: 0, y: 1.6943033, z: 0}
+  m_Size: {x: 0.90325737, y: 0.90325826, z: 3.4504423}
+  m_Center: {x: -0.0000047683716, y: 0.00000012525493, z: 1.6757145}

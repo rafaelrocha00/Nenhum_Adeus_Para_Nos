@@ -9,6 +9,7 @@ public class PlaceToGo : MonoBehaviour
 
     public Quest questToBeAccepted;
     public bool stopPlayerComp;
+    public bool removeComp;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -19,7 +20,11 @@ public class PlaceToGo : MonoBehaviour
                 try
                 {
                     Player p = other.GetComponent<Player>();
-                    p.DespawnCompanions();
+                    if (stopPlayerComp)
+                    {
+                        if (!removeComp) p.DespawnCompanions();
+                        else p.RemoveCompanions();
+                    }
                 }
                 catch { }
             }
