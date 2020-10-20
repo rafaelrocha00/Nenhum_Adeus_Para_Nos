@@ -12,27 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fabced99eb604648b986f82b3c23590, type: 3}
   m_Name: Benjo - 2 quest chain 1
   m_EditorClassIdentifier: 
-  qName: quest_name
-  id: 0
+  qName: Fale com Tuty
+  id: 345
   description: quest_description
   moneyReward: 0
   resourceReward: 0
   contractor: contractor_
   mustReturn: 0
   limitDay: -1
-  generated: 1
+  generated: 0
   resourceT: 4
   completingQuestDialogue: {fileID: 0}
   quest_itemRewards: []
   quest_itemRQuants: 
-  completed: 0
-  accepted: 0
+  completed: 1
+  accepted: 1
   cancelled: 0
   waitingReturnToNPC: 0
   acceptText: 
   completeText: 
   unlockableDialogues: []
-  questToAccept: {fileID: 0}
+  questToAccept: {fileID: 11400000, guid: 7bd25e2e2d68e184298cc8897fa745f2, type: 2}
+  sceneStateChange: {fileID: 0}
   npcsToTalk:
   - Tuty
-  talked: 00
+  talked: 01

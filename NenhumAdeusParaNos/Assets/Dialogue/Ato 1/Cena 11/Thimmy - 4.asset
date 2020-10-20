@@ -14,9 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allStrings:
   - "Se as coisas tivessem dado certo, eu podia pagar o rem\xE9dio.\r\n"
-  - 'O que quer dizer?
-
-'
+  - "O que quer dizer?       \n"
   - 'Eu consegui um emprego no bar da Limey.
 
 '
@@ -26,9 +24,7 @@ MonoBehaviour:
 
 '
   - "Eu perdi o sal\xE1rio que ela me deu.\r\n"
-  - '...
-
-'
+  - "...                  \n"
   - "Como voc\xEA perdeu?\r\n"
   - "Eu n\xE3o sei. S\xF3 sumiu. N\xE3o t\xE1 mais onde eu deixei. Eu n\xE3o sei
     o que fazer.\r\n"
@@ -36,4 +32,11 @@ MonoBehaviour:
 
 '
   - "Eu sou um in\xFAtil.\r"
-  mcStrings: 
+  mcStrings: 01000000030000000500000007000000080000000a000000
+  unlockableDialogues: []
+  unlockPlayerMovement: 0
+  makeNPCWalk: 0
+  finalPoint: {x: 0, y: 0, z: 0}
+  changeSceneState: 0
+  sceneState: {fileID: 0}
+  objectToBreak: 

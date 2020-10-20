@@ -6,11 +6,13 @@ using UnityEngine.UI;
 
 public class INPC : NPC
 {
+    [Header("INPC")]
     //[SerializeField] string npcName = "Name";
     [SerializeField] string areaName = "Area Name";
     //public string Name { get { return npcName; } set { npcName = value; } }
     public string AreaName { get { return areaName; } set { areaName = value; } }
-    public Sprite[] expressions = new Sprite[3];
+    //public Sprite[] expressions = new Sprite[3];
+    //public Sprite portrait;
 
     public enum Personalities { Tsundere, Yandere }
     public enum EnemyType { Lustro, Citzen, Capitalist, Communist, None }
@@ -62,6 +64,15 @@ public class INPC : NPC
     protected override void Initialize()
     {
         if (CheckDespawnQuest()) Destroy(this.gameObject);
+
+        CustomEvents.instance.onDialogueStart += EnterDialogueAnim;
+        CustomEvents.instance.onDialogueEnd += ExitDialogueAnim;
+    }
+
+    private void OnDestroy()
+    {
+        CustomEvents.instance.onDialogueStart -= EnterDialogueAnim;
+        CustomEvents.instance.onDialogueEnd -= ExitDialogueAnim;
     }
 
     bool CheckDespawnQuest()
@@ -74,8 +85,8 @@ public class INPC : NPC
         }
         if (questCompletedToDespawn != null)
         {
-            if ((questCompletedToDespawn.Completed && toBeAccepted) ||
-                (!questCompletedToDespawn.Completed && !toBeAccepted))
+            if ((questCompletedToDespawn.Completed && !toBeAccepted) ||
+                (!questCompletedToDespawn.Completed && toBeAccepted))
                 return true;
         }
 
@@ -146,7 +157,7 @@ public class INPC : NPC
             if (thisPersonality == Personalities.Tsundere && charStats.LifePercentage() > 0.5f) return;
             else if (thisPersonality == Personalities.Yandere && (charStats.LifePercentage() < 0.3f || charStats.LifePercentage() > 0.7f)) return;
             GameManager.gameManager.battleController.DisableNPCInteractions();
-            GameManager.gameManager.MainHud.OpenDialogueTab(expressions[1]);
+            GameManager.gameManager.MainHud.OpenDialogueTab(/*expressions[1]*/portrait);
             dialogue = dialogues_battle.GetRandomDialogue();
         }
         else dialogue = dialogues.GetRandomDialogue();
@@ -160,17 +171,19 @@ public class INPC : NPC
     {
         d.MyNPC = this;
         d.MainCharacter = p;
-        GameManager.gameManager.dialogueController.StartDialogue(d, transform, expressions[1]);
+        GameManager.gameManager.dialogueController.StartDialogue(d, transform, /*expressions[1]*/portrait);
     }
 
-    public void EndDialogue()
-    {
-        GameManager.gameManager.dialogueController.EndDialogue();
-    }
+    //public void EndDialogue()
+    //{
+    //    GameManager.gameManager.dialogueController.EndDialogue();
+    //}
 
     protected override void Movement()
     {
         float actualVelocity = navMesh.velocity.magnitude / navMesh.speed;
+        if (actualVelocity < 0.01f) return;
+
         if (anim != null) anim.SetFloat("Vel", actualVelocity);
         if (inBattle && !stunned && !charging)
         {
@@ -445,7 +458,7 @@ public class INPC : NPC
     {        
         if (other.tag.Equals("player"))
         {
-            if (CheckDespawnQuest()) return;
+            //if (CheckDespawnQuest()) return;
 
             if (GameManager.gameManager.battleController.ActiveBattle || GameManager.gameManager.dialogueController.ActiveMainDialogue) return;
             //Se tem quest, inicia uma conversa com o player, sobre a quest
@@ -526,5 +539,19 @@ public class INPC : NPC
             GetComponent<SphereCollider>().enabled = false;
         }
         catch { }
+    }
+
+    public void EnterDialogueAnim(string npc_name)
+    {
+        if (!Name.Equals(npc_name) || anim == null) return;
+
+        anim.SetBool("Talking", true);
+    }
+
+    public void ExitDialogueAnim(string npc_name)
+    {
+        if (!Name.Equals(npc_name) || anim == null) return;
+
+        anim.SetBool("Talking", false);
     }
 }

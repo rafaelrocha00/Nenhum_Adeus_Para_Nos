@@ -7,10 +7,23 @@ public class PlaceToGo : MonoBehaviour
     [SerializeField] string placeName = "";
     public string PlaceName { get { return placeName; } set { placeName = value; } }
 
+    public Quest questToBeAccepted;
+    public bool stopPlayerComp;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("player"))
         {
+            if (stopPlayerComp && questToBeAccepted.Accepted && !questToBeAccepted.Completed)
+            {
+                try
+                {
+                    Player p = other.GetComponent<Player>();
+                    p.DespawnCompanions();
+                }
+                catch { }
+            }
+
             Debug.Log("Player chegou em " + placeName);
             GameManager.gameManager.questController.CheckQuests(this);
         }

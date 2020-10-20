@@ -554,6 +554,7 @@ Transform:
   m_Children:
   - {fileID: 168565969365226715}
   - {fileID: 934816059219273196}
+  - {fileID: 2488249094023471423}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -581,6 +582,7 @@ MonoBehaviour:
   companyController: {fileID: 0}
   repairController: {fileID: 0}
   itemsSaver: {fileID: 0}
+  spawnpointID: -1
   PlayerName: guest
 --- !u!114 &6258150706636257314
 MonoBehaviour:
@@ -784,7 +786,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c1ba1eb1df017841b18357a64da284e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeRepairs: []
+--- !u!1 &6734423632661234687
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2488249094023471423}
+  - component: {fileID: 6279097663096437806}
+  m_Layer: 0
+  m_Name: QuestEvents
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2488249094023471423
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6734423632661234687}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6506660029207911046}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6279097663096437806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6734423632661234687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48473a7b3bbbcc142a2b96b1e962334d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6745858012484666349
 GameObject:
   m_ObjectHideFlags: 0

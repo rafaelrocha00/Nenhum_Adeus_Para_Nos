@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RepairableObject : Interactives, IDateEvent
 {
+    [Header("Repairable Object")]
     //public string objectName;
 
     public GameObject state_broken;

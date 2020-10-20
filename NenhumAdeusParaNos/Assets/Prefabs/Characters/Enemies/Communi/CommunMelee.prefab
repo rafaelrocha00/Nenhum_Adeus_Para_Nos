@@ -399,21 +399,27 @@ MonoBehaviour:
   buttonToPressPref: {fileID: 6638989974725394705, guid: 1a98f6b0eb2747648aedcb7a647713cd,
     type: 3}
   popUPHigh: 3
+  oneInteraction: 0
+  canInteract: 1
+  onlyAcceptedQuest: 0
+  onlyCompletedQuest: 0
+  triggerQuest: {fileID: 0}
   anim: {fileID: 6519655210772065340}
   lifeBar: {fileID: 1313677962489035489}
   myWeapon: {fileID: 2358577263071711676}
   defaultSpeed: 7
   rangedKiteSpeed: 4
   areaName: Fazenda Norte
-  expressions:
-  - {fileID: 21300000, guid: 34c564bd4430b3e45b5d684bcc90dab5, type: 3}
-  - {fileID: 21300000, guid: 6a000658735108d46a3363ebee60e3fe, type: 3}
-  - {fileID: 21300000, guid: e8c2415d507aa9e43898137af0e94dfc, type: 3}
+  portrait: {fileID: 21300000, guid: 6a000658735108d46a3363ebee60e3fe, type: 3}
   thisPersonality: 0
   enemyType: 3
   dialogues: {fileID: 0}
   dialogues_battle: {fileID: 0}
   questDialogues: []
+  directQuestDialogue: []
+  toBeAccepted: 1
+  questAcceptedToDespawn: {fileID: 0}
+  questCompletedToDespawn: {fileID: 0}
   hostile: 1
   heavy: 0
   dashTime: 0.2

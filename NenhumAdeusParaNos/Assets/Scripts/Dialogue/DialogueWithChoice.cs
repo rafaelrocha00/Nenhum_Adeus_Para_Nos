@@ -8,6 +8,9 @@ public class DialogueWithChoice : Dialogue
     public Dialogue[] dialogueChoices = new Dialogue[3];
     public string[] options;
 
+    public Item requiredItem;
+    public int optionToUnlock = -1;
+
     [HideInInspector] bool lastString = false;
     public bool LastString { get { return lastString; } }
 

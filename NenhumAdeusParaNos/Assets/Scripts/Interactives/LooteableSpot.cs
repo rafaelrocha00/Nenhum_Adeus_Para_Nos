@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LooteableSpot : Interactives, IDateEvent
 {
+    [Header("Looteable Spot")]
     public GameObject visualResources;
 
     public ResourceItem[] possibleItens = new ResourceItem[1];

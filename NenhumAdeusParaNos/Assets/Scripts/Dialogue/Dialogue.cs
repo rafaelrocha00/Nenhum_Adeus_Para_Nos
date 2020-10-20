@@ -10,8 +10,8 @@ public class Dialogue : ScriptableObject
 
     protected int actualID = -1;
 
-    [HideInInspector] protected INPC myNPC;
-    public INPC MyNPC { get { return myNPC; } set { myNPC = value; } }
+    [HideInInspector] protected NPC myNPC;
+    public NPC MyNPC { get { return myNPC; } set { myNPC = value; } }
     [HideInInspector] protected Player mainCharacter;
     public Player MainCharacter { get { return mainCharacter; } set { mainCharacter = value; } }
 

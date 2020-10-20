@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bed : Interactives
 {
+    [Header("Bed")]
     Player p;
     public int timeTopass = 480;
 

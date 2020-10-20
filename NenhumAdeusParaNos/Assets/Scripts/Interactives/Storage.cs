@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Storage : Interactives
 {
+    [Header("Storage")]
     //public string depositName = "";
     public int page_number = 1;
     public bool main = false;
@@ -122,7 +123,7 @@ public class Storage : Interactives
         myGrids[page].AlocateByCoord(coords, newItem);
     }
 
-    ItemButton[][] GetItemsByPage()
+    public ItemButton[][] GetItemsByPage()
     {
         ItemButton[][] allItems = new ItemButton[page_number][];
         for (int i = 0; i < page_number; i++)

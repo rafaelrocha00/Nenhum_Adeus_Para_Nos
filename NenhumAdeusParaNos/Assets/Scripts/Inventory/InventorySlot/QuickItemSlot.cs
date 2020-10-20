@@ -26,7 +26,7 @@ public class QuickItemSlot : DropSlot
         if (itemButton.Item is QuickUseItem/* && itemButton.OriginSlots[0, 0].MyGridManager.generateOnStart*/)
         {
             bool aux = true;
-            if (!itemButton.OriginSlots[0, 0].MyGridManager.generateOnStart) aux = GameManager.gameManager.inventoryController.Inventory.myGrid.TryAlocateItem(itemButton);
+            if (!itemButton.OriginSlots[0, 0].MyGridManager.CompareTag("inventory")) aux = GameManager.gameManager.inventoryController.Inventory.myGrid.TryAlocateItem(itemButton);
 
             if (aux)
             {
@@ -39,7 +39,7 @@ public class QuickItemSlot : DropSlot
                 hasInInventory = true;
                 if (itemButton.Item is Notes) GameManager.gameManager.questController.mainNotes = (Notes)itemButton.Item;
                 Invoke("CheckItemInventory", 0.01f);
-                if (!itemButton.OriginSlots[0, 0].MyGridManager.generateOnStart) return true;
+                if (!itemButton.OriginSlots[0, 0].MyGridManager.CompareTag("inventory")) return true;
                 else return false;
             }
         }

@@ -13,7 +13,10 @@ public class InteractQuest : Quest
         try
         {
             Interactives interactive = thing as Interactives;
-            if (interactive.Name.Equals(objectToInteract)) TryComplete();
+            if (interactive.Name.Equals(objectToInteract))
+            {
+                TryComplete();
+            }
         }
         catch { Debug.Log("Not a interactive"); }
     }

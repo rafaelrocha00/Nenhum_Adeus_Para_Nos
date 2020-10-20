@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fabced99eb604648b986f82b3c23590, type: 3}
   m_Name: Benjo - 2 quest
   m_EditorClassIdentifier: 
-  qName: Fale com lucy fora da casa
+  qName: Fale com Thimmy
   id: 4157
   description: quest_description
   moneyReward: 0
@@ -34,6 +34,7 @@ MonoBehaviour:
   unlockableDialogues:
   - {fileID: 11400000, guid: 24757a100ba168f47b8d2ca554dbbdc4, type: 2}
   questToAccept: {fileID: 11400000, guid: 2bc8d3c7510546441acaf33aba8ad4a7, type: 2}
+  sceneStateChange: {fileID: 0}
   npcsToTalk:
   - Thimmy
   talked: 00

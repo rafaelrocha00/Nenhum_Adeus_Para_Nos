@@ -180,7 +180,7 @@ public class Player : MonoBehaviour, BattleUnit
 
         StartCoroutine("GetMainHUD");
 
-        SpawnCompanions();
+        Invoke("SpawnCompanions", 0.02f);
     }
     IEnumerator GetMainHUD()
     {
@@ -190,9 +190,7 @@ public class Player : MonoBehaviour, BattleUnit
 
     public void SpawnCompanions()
     {
-        if (GameManager.gameManager == null) return;
-       
-        if (myCompanions.Count > 0) return;
+        if (GameManager.gameManager == null || myCompanions.Count > 0 || UnityEngine.SceneManagement.SceneManager.GetActiveScene().name.Equals("Farmacia")) return;
 
         Debug.Log("Checando se tem companion pra spawnar");
 
@@ -209,6 +207,24 @@ public class Player : MonoBehaviour, BattleUnit
         {
             myCompanions[i].DirectMove(newPos);
         }
+    }
+
+    public void DespawnCompanions()
+    {
+        for (int i = 0; i < myCompanions.Count; i++)
+        {
+            myCompanions[i].SpawnMyNPC();
+        }
+    }
+
+    public void RemoveCompanions()
+    {
+        for (int i = 0; i < myCompanions.Count; i++)
+        {
+            Destroy(myCompanions[i].gameObject);
+        }
+        myCompanions.Clear();
+        GameManager.gameManager.PlayerCompanionsPref.Clear();
     }
     //private void OnDisable()
     //{

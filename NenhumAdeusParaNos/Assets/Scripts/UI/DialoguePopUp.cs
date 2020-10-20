@@ -108,9 +108,18 @@ public class DialoguePopUp : MonoBehaviour
     public void OpenChoicesTab(DialogueWithChoice d)
     {
         dialogueOptionsTab.SetActive(true);
+
         for (int i = 0; i < d.options.Length; i++)
         {
-            dialogueOptions[i].SetOption(d.options[i], i, d.dialogueChoices[i], d.MyNPC, d.MainCharacter);
+            if (d.optionToUnlock == i)
+            {
+                InvenSlot aux = GameManager.gameManager.inventoryController.Inventory.FindItem(d.requiredItem.itemName);
+                if (aux != null) dialogueOptions[i].SetOption(d.options[i], i, d.dialogueChoices[i], d.MyNPC, d.MainCharacter);
+            }
+            else
+            {
+                dialogueOptions[i].SetOption(d.options[i], i, d.dialogueChoices[i], d.MyNPC, d.MainCharacter);
+            }
         }
     }
     public void CloseChoicesTab()

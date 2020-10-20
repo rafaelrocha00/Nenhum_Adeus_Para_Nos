@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7538afdc471f674686979fda2705b48, type: 3}
   m_Name: Lucy - 2 quest - reapair shower
   m_EditorClassIdentifier: 
-  qName: Consertando o banheiro
-  id: 0
+  qName: Consertar o banheiro
+  id: 231
   description: quest_description
   moneyReward: 0
   resourceReward: 0
@@ -33,5 +33,6 @@ MonoBehaviour:
   completeText: "Consertado. Que n\xE3o quebre outra vez."
   unlockableDialogues: []
   questToAccept: {fileID: 11400000, guid: 19ef10ee4ff47a643aec90ed4ce8139c, type: 2}
+  sceneStateChange: {fileID: 0}
   objectToRepair: Bathroom
   toInstantiate: {fileID: 0}

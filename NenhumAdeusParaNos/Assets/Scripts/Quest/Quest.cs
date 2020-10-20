@@ -49,12 +49,17 @@ public abstract class Quest : ScriptableObject
 
     public abstract void CheckComplete<T>(T thing);
 
+    [Header("Changing Scene")]
+    public SceneStateConditions sceneStateChange;
+
     public void AcceptQuest()
     {
         cancelled = false;
         accepted = true;
         GameManager.gameManager.questController.AcceptQuest(this);
         if (!generated) GameManager.gameManager.questController.AddNote(acceptText);//mainNotes.AddNote(acceptText);
+
+        CustomEvents.instance.OnQuestAccepted(qName);
     }
 
     public void Complete()
@@ -66,25 +71,36 @@ public abstract class Quest : ScriptableObject
 
         if (!generated)
         {
-            GameManager.gameManager.questController.AddNote(completeText);//mainNotes.AddNote(completeText);
-            for (int i = 0; i < quest_itemRewards.Length; i++)
-            {
-                for (int j = 0; j < quest_itemRQuants[i]; j++)
-                {
-                    GameManager.gameManager.inventoryController.Inventory.AddItem(quest_itemRewards[i]);
-                }
-            }
-
-            if (unlockableDialogues != null)
-            {
-                for (int i = 0; i < unlockableDialogues.Length; i++)
-                {
-                    unlockableDialogues[i].UnlockDialogue();
-                }
-            }
-
-            if (questToAccept != null) questToAccept.AcceptQuest();
+            OnComplete();
         }
+
+        CustomEvents.instance.OnQuestComplete(qName);
+
+        Debug.Log("QUEST COMPLETA: " + qName);
+    }
+
+    void OnComplete()
+    {
+        GameManager.gameManager.questController.AddNote(completeText);//mainNotes.AddNote(completeText);
+        for (int i = 0; i < quest_itemRewards.Length; i++)
+        {
+            for (int j = 0; j < quest_itemRQuants[i]; j++)
+            {
+                GameManager.gameManager.inventoryController.Inventory.AddItem(quest_itemRewards[i]);
+            }
+        }
+
+        if (unlockableDialogues != null)
+        {
+            for (int i = 0; i < unlockableDialogues.Length; i++)
+            {
+                unlockableDialogues[i].UnlockDialogue();
+            }
+        }
+
+        if (questToAccept != null) questToAccept.AcceptQuest();
+
+        if (sceneStateChange != null) GameManager.gameManager.ChangeCurrentSceneState(sceneStateChange);
     }
 
     public void Cancel()

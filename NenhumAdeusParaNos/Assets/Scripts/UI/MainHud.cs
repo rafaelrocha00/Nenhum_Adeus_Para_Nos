@@ -19,6 +19,8 @@ public class MainHud : MonoBehaviour
 
     public CraftingSection craftingSection;
 
+    public ShopUI shopUI;
+
     public GameObject quickMenu;
     [HideInInspector] bool isQuickMenuActive;
     public bool IsQuickMenuActive { get { return isQuickMenuActive; } }
@@ -149,6 +151,16 @@ public class MainHud : MonoBehaviour
         GameManager.gameManager.calendarController.UpdateHudH();
 
         if (!GameManager.gameManager.NewGame) uiToHide.SetActive(true);
+
+        if (GameManager.gameManager.NewGame)
+        {
+            OpenCloseInventory(true);
+            Invoke("DelayClose", 0.02f);
+        }
+    }
+    void DelayClose()
+    {
+        OpenCloseInventory(false);
     }
 
     private void Update()
@@ -165,7 +177,7 @@ public class MainHud : MonoBehaviour
         //{
         //    OpenCloseDiaryMenu();
         //}
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.I))
         {
             OpenCloseInventory(!inventory.activeSelf);
         }
@@ -174,6 +186,7 @@ public class MainHud : MonoBehaviour
         {
             if (notesMenu.activeSelf) OpenCloseNotesMenu(false);
             else if (actualStorage != null && actualStorage.storageMenu.activeSelf) actualStorage.OpenCloseStorage(false);
+            else if (shopUI.gameObject.activeSelf) shopUI.Exit();
             else if (inventory.activeSelf) OpenCloseInventory(false);
             else if (pauseMenu.activeSelf) OpenClosePauseMenu(false);
             else OpenClosePauseMenu(true);
@@ -258,6 +271,18 @@ public class MainHud : MonoBehaviour
             craftingSection.ReturnItems();
             craftingSection.gameObject.SetActive(false);           
         }
+    }
+
+    public void OpenShopUI(Shop shop)
+    {
+        OpenCloseInventory(true);
+        shopUI.gameObject.SetActive(true);
+        shopUI.Shop = shop;
+    }
+    public void CloseShopUI()
+    {
+        shopUI.gameObject.SetActive(false);
+        OpenCloseInventory(false);
     }
 
     public void OpenClosePauseMenu(bool value)

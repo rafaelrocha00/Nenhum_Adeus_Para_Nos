@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4825ceb27fa0f34c9ae7d003d92d851, type: 3}
+  m_Name: Balconista - default
+  m_EditorClassIdentifier: 
+  allStrings:
+  - 'Bem vindo Ed, deseja alguma coisa?      '
+  mcStrings: 
+  unlockableDialogues: []
+  unlockPlayerMovement: 0
+  makeNPCWalk: 0
+  finalPoint: {x: 0, y: 0, z: 0}
+  changeSceneState: 0
+  sceneState: {fileID: 0}
+  objectToBreak: 
+  dialogueChoices:
+  - {fileID: 11400000, guid: 931e47dcb26d36c44874d001534dd4c1, type: 2}
+  - {fileID: 11400000, guid: c8124fc46e934554794f398976ec4722, type: 2}
+  options:
+  - Ver a loja.
+  - "At\xE9."
+  requiredItem: {fileID: 0}
+  optionToUnlock: -1

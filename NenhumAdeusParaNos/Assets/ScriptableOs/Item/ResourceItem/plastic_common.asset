@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e64b088e2f332341beb70b664321080, type: 3}
+  m_Name: plastic_common
+  m_EditorClassIdentifier: 
+  itemName: "Coisas de pl\xE1stico"
+  description: "Algumas coisinhas recicl\xE1veis de pl\xE1stico"
+  itemSprite: {fileID: -5486600367332403877, guid: d858983bab0720746bdeb1c79d10b0c2,
+    type: 3}
+  slotSize: {x: 1, y: 1}
+  item_value: 10
+  matType: 2
+  bonusTime: 20
+  rarity: 69

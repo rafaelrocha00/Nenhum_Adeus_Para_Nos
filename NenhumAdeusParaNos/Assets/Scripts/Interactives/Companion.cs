@@ -5,18 +5,34 @@ using UnityEngine.AI;
 
 public class Companion : NPC
 {
+    [Header("Companion")]
     INPC closestEnemy;
 
     public GameObject myPref;
+
+    public GameObject npcToSpawnPref;
+
+    public Dialogue warningDialogue;
 
     protected override void Initialize()
     {
         ignoreBarrier = true;
         mCharacter = GameManager.gameManager.battleController.MainCharacter;
+
+        CustomEvents.instance.onExitTrajectory += WarnPlayer;
+    }
+
+    private void OnDestroy()
+    {
+        CustomEvents.instance.onExitTrajectory -= WarnPlayer;
     }
 
     protected override void Movement()
     {
+        float actualVelocity = navMesh.velocity.magnitude / navMesh.speed;
+
+        if (anim != null) anim.SetFloat("Vel", actualVelocity);
+
         if (inBattle)
         {
             if (inBattleTarget == null)
@@ -44,6 +60,18 @@ public class Companion : NPC
 
             MoveNavMesh(targPos);
         }
+    }
+
+    public void WarnPlayer()
+    {
+        if (warningDialogue == null) return;
+
+        Debug.Log("Avisando o player");
+
+        warningDialogue.MyNPC = this;
+        warningDialogue.MainCharacter = mCharacter;
+
+        GameManager.gameManager.dialogueController.StartDialogue(warningDialogue, transform, portrait);
     }
 
     public void DirectMove(Vector3 newPos)
@@ -81,5 +109,14 @@ public class Companion : NPC
     {
         CheckQuest();
         Debug.Log("Não interage");
+    }
+
+    public void SpawnMyNPC()
+    {
+        if (npcToSpawnPref == null) { this.gameObject.SetActive(false); return; }
+
+        Instantiate(npcToSpawnPref, transform.position, transform.rotation);
+
+        this.gameObject.SetActive(false);
     }
 }

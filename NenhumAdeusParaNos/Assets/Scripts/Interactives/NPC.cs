@@ -6,8 +6,11 @@ using UnityEngine.UI;
 
 public abstract class NPC : Interactives, BattleUnit
 {
+    [Header("NPC")]
     [HideInInspector] protected CharacterStats charStats;
     public CharacterStats CharStats { get { return charStats; } }
+
+    public Sprite portrait;
 
     public Animator anim;
     public Image lifeBar;
@@ -143,6 +146,16 @@ public abstract class NPC : Interactives, BattleUnit
     {
         navMesh.isStopped = false;
         navMesh.destination = pos;
+    }
+
+    public void EndDialogue()
+    {
+        GameManager.gameManager.dialogueController.EndDialogue();
+    }
+
+    public void ReceiveItem()
+    {
+        if (anim != null) anim.SetTrigger("ReceivedItem");
     }
 
     protected void TryAttack()

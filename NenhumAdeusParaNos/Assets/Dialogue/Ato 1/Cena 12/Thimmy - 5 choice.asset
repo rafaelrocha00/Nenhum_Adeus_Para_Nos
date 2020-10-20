@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4825ceb27fa0f34c9ae7d003d92d851, type: 3}
+  m_Name: Thimmy - 5 choice
+  m_EditorClassIdentifier: 
+  allStrings:
+  - "\xF4 Thimmy.          "
+  - "O que foi, v\xF4?            "
+  mcStrings: 00000000
+  unlockableDialogues: []
+  unlockPlayerMovement: 0
+  makeNPCWalk: 0
+  finalPoint: {x: 0, y: 0, z: 0}
+  changeSceneState: 0
+  sceneState: {fileID: 0}
+  objectToBreak: 
+  dialogueChoices:
+  - {fileID: 11400000, guid: ae2c76d77e9cb004b942dafa5900927c, type: 2}
+  - {fileID: 11400000, guid: a3d01d62cfe7fcc45827399f9e7af6e9, type: 2}
+  - {fileID: 11400000, guid: ae95015f7c3ae1346b3d62202c1d465e, type: 2}
+  options:
+  - Dar dinheiro
+  - Dar nada
+  - Dar doce
+  requiredItem: {fileID: 11400000, guid: 8a4fbdbf8f526b54381823fc83e3a1ab, type: 2}
+  optionToUnlock: 2

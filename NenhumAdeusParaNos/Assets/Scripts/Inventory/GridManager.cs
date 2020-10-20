@@ -28,6 +28,7 @@ public class GridManager : MonoBehaviour
             for (int y = 0; y < ySize; y++)
             {
                 GameObject newSlot = Instantiate(slotPref, this.transform, false) as GameObject;
+                newSlot.tag = tag;
                 invenGrid[x, y] = newSlot.GetComponent<InvenSlot>();
                 invenGrid[x, y].Coordinates = new Vector2Int(x, y);
                 invenGrid[x, y].MyGridManager = this;
@@ -37,7 +38,7 @@ public class GridManager : MonoBehaviour
         }
 
         Debug.Log("Gerou o inventário");
-        if (generateOnStart) Invoke("LoadInvenItems", 0.05f);
+        if (CompareTag("inventory")) Invoke("LoadInvenItems", 0.05f);
     }
     void LoadInvenItems()
     {
@@ -63,6 +64,7 @@ public class GridManager : MonoBehaviour
                     {
                         //ItemButton auxIB = itemGenerator.GenItem(item);
                         invenGrid[j, i].DropItem(itemB);
+                        itemB.tag = tag;
                         //itemWasPlaced = true;
                         return true;
                     }
@@ -94,11 +96,13 @@ public class GridManager : MonoBehaviour
                             //ItemButton auxIB = itemGenerator.GenItem(item);
                             AlocateBigItem(itemB, itemSlots);
                             //itemWasPlaced = true;
+                            itemB.tag = tag;
                             return true;
                         }
                     }
                     //if (itemWasPlaced) break;
                 }
+                else { Debug.Log("Não está vazio?"); }
             }
             //if (itemWasPlaced) break;
         }
@@ -112,7 +116,7 @@ public class GridManager : MonoBehaviour
             for (int j = 0; j < slots.GetLength(1); j++)
             {
                 slots[i, j].ThisItemButton = itemButton;
-                slots[i, j].SetFull();
+                //slots[i, j].SetFull();
             }
         }
 
@@ -205,6 +209,15 @@ public class GridManager : MonoBehaviour
         catch { Debug.Log("Item not found"); }
 
         return aux;
+    }
+
+    public void DeleteAllItems()
+    {
+        ItemButton[] allItems = itemHolder.GetComponentsInChildren<ItemButton>();
+        for (int i = 0; i < allItems.Length; i++)
+        {
+            allItems[i].RemoveAndDestroy();
+        }
     }
 
     public void CheckIfItemWasAdded()

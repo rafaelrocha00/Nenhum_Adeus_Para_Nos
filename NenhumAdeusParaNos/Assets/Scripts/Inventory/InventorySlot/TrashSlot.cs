@@ -25,6 +25,8 @@ public class TrashSlot : DropSlot
 
     public override bool OnDrop(ItemButton itemButton)
     {
+        if (itemButton.Item is Notes) return false;
+
         //itemButton.RemoveAndDestroy();
         //Se for confirmar, abrir janela de confirmação
         GameManager.gameManager.MainHud.OpenCloseDestroyItem(true);

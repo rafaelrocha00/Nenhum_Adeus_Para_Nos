@@ -10,4 +10,7 @@ public class Item : ScriptableObject
     public Sprite itemSprite;
 
     public Vector2Int slotSize = new Vector2Int(1, 1);
+
+    [SerializeField] int item_value = 0;
+    public int Value { get { return item_value; } }
 }

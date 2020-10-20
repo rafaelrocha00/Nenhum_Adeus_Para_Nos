@@ -8,14 +8,14 @@ public class DialogueOption : MonoBehaviour
     Text optionText;
 
     Dialogue myDialogue;
-    INPC actualNPC;
+    NPC actualNPC;
 
     private void Start()
     {
         optionText = GetComponent<Text>();
     }
 
-    public void SetOption(string text, int id, Dialogue dialogue, INPC theNPC, Player player)
+    public void SetOption(string text, int id, Dialogue dialogue, NPC theNPC, Player player)
     {
         optionText = GetComponent<Text>();
 
@@ -41,6 +41,6 @@ public class DialogueOption : MonoBehaviour
     {
         //actualNPC.ChangeDialogue(myDialogue);
         //actualNPC.NextString();
-        GameManager.gameManager.dialogueController.ChooseOption(myDialogue, myDialogue.MyNPC.expressions[1]);          
+        GameManager.gameManager.dialogueController.ChooseOption(myDialogue, myDialogue.MyNPC.portrait/*expressions[1]*/);          
     }
 }

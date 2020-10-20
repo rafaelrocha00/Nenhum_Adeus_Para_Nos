@@ -14,6 +14,9 @@ public abstract class Interactives : MonoBehaviour
     public bool oneInteraction = false;
     public bool canInteract = true;
 
+    [Header("Quest Triggerable")]
+    public bool onlyAcceptedQuest;
+    public bool onlyCompletedQuest;
     public Quest triggerQuest;
     // public RepairableObject triggerRepairable;
 
@@ -21,7 +24,19 @@ public abstract class Interactives : MonoBehaviour
     {
         if (triggerQuest != null)
         {
-            if (triggerQuest.Accepted && !triggerQuest.Completed) canInteract = true;
+            if (onlyAcceptedQuest)
+            {
+                canInteract = triggerQuest.Accepted;
+                return;
+            }
+            if (onlyCompletedQuest)
+            {
+                canInteract = triggerQuest.Completed;
+                return;
+            }
+
+            //if (triggerQuest.Accepted && !triggerQuest.Completed) canInteract = true;
+            canInteract = triggerQuest.Accepted && !triggerQuest.Completed;
         }
     }
 

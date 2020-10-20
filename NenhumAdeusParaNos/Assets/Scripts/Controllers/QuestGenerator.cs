@@ -55,7 +55,7 @@ public class QuestGenerator : MonoBehaviour
         if (firstGen)
         {
             firstGen = false;
-            GenKillQuest();
+            //GenKillQuest();
             GenDelQuest();
             //GenRepQuest();
         }

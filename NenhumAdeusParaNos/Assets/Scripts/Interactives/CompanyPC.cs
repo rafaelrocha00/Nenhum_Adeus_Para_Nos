@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class CompanyPC : Interactives
 {
+    [Header("CompanyPC")]
     public Transform camT;
     CamMove cam;
     public GameObject pcScreen;
@@ -110,7 +111,22 @@ public class CompanyPC : Interactives
 
     private void Start()
     {
-        Invoke("CheckQuests", 0.05f);
+        if (triggerQuest != null)
+        {
+            if (onlyAcceptedQuest)
+            {
+                canInteract = triggerQuest.Accepted;
+            }
+            if (onlyCompletedQuest)
+            {
+                canInteract = triggerQuest.Completed;
+            }
+
+            //if (triggerQuest.Accepted && !triggerQuest.Completed) canInteract = true;
+            canInteract = triggerQuest.Accepted && !triggerQuest.Completed;
+        }
+
+        if (canInteract) Invoke("CheckQuests", 0.05f);
     }
 
     private void Update()

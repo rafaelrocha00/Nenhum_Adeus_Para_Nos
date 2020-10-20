@@ -47,13 +47,13 @@ public class InvenSlot : DropSlot//, IPointerEnterHandler, IPointerExitHandler
         //GameManager.gameManager.inventoryController.ActualInvenSlot = this;
         GameManager.gameManager.inventoryController.ActualGridManager = this.myGridManager;
         if (image == null) image = GetComponent<Image>();
-        image.color = selectedColor;
+        //image.color = selectedColor;
         //selected = true;
     }
     public void Deselect()
     {
        // GameManager.gameManager.inventoryController.ActualInvenSlot = null;
-        if (IsEmpty())image.color = Color.white;
+        //if (IsEmpty())image.color = Color.white;
         //selected = false;
     }
 
@@ -61,10 +61,18 @@ public class InvenSlot : DropSlot//, IPointerEnterHandler, IPointerExitHandler
     {
         if (IsEmpty())
         {
+            //if (CompareTag("shop") && itemButton.OriginSlots == null) return false;
+
+
+            if ((CompareTag("shop") && itemButton.CompareTag("inventory")) || 
+                (CompareTag("inventory") && itemButton.CompareTag("shop")))
+                return false;
+
             if (itemButton.Item.slotSize == Vector2Int.one)
             {
                 DropItem(itemButton);
                 if (itemButton.Item is QuickUseItem) myGridManager.CheckIfItemWasAdded();
+                itemButton.OriginDropSlot = null;
                 return true;
             }
             else
@@ -134,7 +142,7 @@ public class InvenSlot : DropSlot//, IPointerEnterHandler, IPointerExitHandler
         InvenSlot[,] auxMatrix = new InvenSlot[1, 1];
         auxMatrix[0, 0] = this;
 
-        SetFull();
+        //SetFull();
         itemButton.SetSlot(auxMatrix);
         ThisItemButton = itemButton;
         Debug.Log("SettingItemPos");
@@ -177,7 +185,7 @@ public class InvenSlot : DropSlot//, IPointerEnterHandler, IPointerExitHandler
     public void ClearSlot()
     {
         ThisItemButton = null;
-        image.color = Color.white;
+        //image.color = Color.white;
     }
 
     public void SetSlotQuadrant(SlotQuadrant quadrant)
@@ -186,10 +194,10 @@ public class InvenSlot : DropSlot//, IPointerEnterHandler, IPointerExitHandler
         actualYRed = quadrant.yRed;
     }
 
-    public void SetFull()
-    {
-        image.color = Color.red;
-    }
+    //public void SetFull()
+    //{
+    //    image.color = Color.red;
+    //}
 
     public Vector2Int GetQuadrantRed()
     {
