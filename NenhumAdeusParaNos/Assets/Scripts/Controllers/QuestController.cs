@@ -17,6 +17,8 @@ public class QuestController : MonoBehaviour
 
     public void AddNote(string txt)
     {
+        if (txt.Equals("")) return;
+
         try
         {
             mainNotes.AddNote(txt);

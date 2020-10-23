@@ -30,12 +30,14 @@ MonoBehaviour:
   cancelled: 0
   waitingReturnToNPC: 0
   acceptText: 
-  completeText: 
+  completeText: "Desde quando \xE9 t\xE3o caro? Daqui a pouco eu passo aqui. N\xE3o
+    posso voltar sem esse rem\xE9dio."
   unlockableDialogues:
   - {fileID: 11400000, guid: 03a7ce7072dbc9342803df3c2d0ec5f6, type: 2}
   - {fileID: 11400000, guid: 09dcc18496e7a9e49a97a5516493b33c, type: 2}
-  questToAccept: {fileID: 11400000, guid: 75179cc053688fe45a6130afeec8b148, type: 2}
+  questToAccept: {fileID: 11400000, guid: 08def2e638bfa7f46b9d296e3f2809b8, type: 2}
   sceneStateChange: {fileID: 0}
+  compToAdd: []
   npcsToTalk:
   - Balconista
   talked: 00

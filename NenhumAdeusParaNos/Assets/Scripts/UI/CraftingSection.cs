@@ -66,7 +66,7 @@ public class CraftingSection : MonoBehaviour
 
     void UpdateProgressionBar()
     {
-        float combinedValueRate = (float)totalCombinedValue / minCombinedValue;
+        float combinedValueRate = (float)totalCombinedValue / minCombinedValue * 0.75f;
         float baseValueRate = (float)totalBaseValue / totalCombinedValue * combinedValueRate;
         baseValueRate = (totalCombinedValue == 0) ? 0 : baseValueRate;
 
@@ -76,11 +76,14 @@ public class CraftingSection : MonoBehaviour
         }
         else combinedProgressionBar.color = c_repair_disabled;
 
-        if (combinedValueRate <= 1.34f) combinedProgressionBar.transform.localScale = new Vector3(combinedValueRate, 1, 1);
-        else combinedProgressionBar.transform.localScale = new Vector3(1.34f, 1, 1);
+        combinedProgressionBar.fillAmount = combinedValueRate;
+        baseProgressionBar.fillAmount = baseValueRate;
 
-        if (baseValueRate <= 1.34f) baseProgressionBar.transform.localScale = new Vector3(baseValueRate, 1, 1);
-        else baseProgressionBar.transform.localScale = new Vector3(1.34f, 1, 1);
+        //if (combinedValueRate <= 1.34f) combinedProgressionBar.transform.localScale = new Vector3(combinedValueRate, 1, 1);
+        //else combinedProgressionBar.transform.localScale = new Vector3(1.34f, 1, 1);
+
+        //if (baseValueRate <= 1.34f) baseProgressionBar.transform.localScale = new Vector3(baseValueRate, 1, 1);
+        //else baseProgressionBar.transform.localScale = new Vector3(1.34f, 1, 1);
     }
 
     public void AddNewMaterialSlot()

@@ -211,12 +211,16 @@ public class Player : MonoBehaviour, BattleUnit
         }
     }
 
-    public void DespawnCompanions()
+    public INPC[] DespawnCompanions()
     {
+        Debug.Log("Despawnando Companions");
+        List<INPC> aux = new List<INPC>();
         for (int i = 0; i < myCompanions.Count; i++)
-        {
-            myCompanions[i].SpawnMyNPC();
+        {            
+            aux.Add(myCompanions[i].SpawnMyNPC());
+            Debug.Log("Adicionou o npc: " + aux[i].Name);
         }
+        return aux.ToArray();
     }
 
     public void RemoveCompanions()

@@ -85,6 +85,8 @@ public abstract class Interactives : MonoBehaviour
 
     public virtual void OnExit(Player p)
     {
+        //if (p.InteractingObjs == null) return;
+
         for (int i = 0; i < p.InteractingObjs.Count; i++)
         {
             Debug.Log(p.InteractingObjs[i].name);

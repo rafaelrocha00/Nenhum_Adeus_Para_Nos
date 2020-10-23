@@ -42,6 +42,7 @@ public class SpriteAnimator : MonoBehaviour
 
     IEnumerator Animate(bool infinity, int cycles = -1)
     {
+        if (image == null) image = GetComponent<Image>();
         while (infinity || cycles > 0)
         {
             for (int i = 0; i < sprites.Length; i++)

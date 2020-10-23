@@ -9,7 +9,7 @@ public class DialogueOptions : ScriptableObject
     int lastID = -1;
     
     public Dialogue[] unlockableDialogues;
-    int curretDialogue = -1;
+    public int curretDialogue = -1;
 
     private void OnDisable()
     {

@@ -140,7 +140,7 @@ public class DialogueController : MonoBehaviour
         NextString();
         StartCoroutine("CheckPlayerDistance");
 
-        CustomEvents.instance.OnDialogueStart(actualDialogue.MyNPC.Name);
+        CustomEvents.instance.OnDialogueStart(actualDialogue.MyNPC.GetName());
     }
     IEnumerator CheckPlayerDistance()
     {
@@ -166,11 +166,11 @@ public class DialogueController : MonoBehaviour
                 DialogueWithChoice dwc = (DialogueWithChoice)actualDialogue;
                 if (!dwc.HasThisIndex(index)) return;
                 newD = dwc.dialogueChoices[index];
-                sp = dwc.MyNPC.portrait;//expressions[1];
+                sp = dwc.MyNPC.GetPortrait();//expressions[1];
             }
             CloseDialogueOptTab();
             waitingForAnswer = false;
-            StartDialogue(newD, lastDialogueWithChoice.MyNPC.transform, sp);            
+            StartDialogue(newD, lastDialogueWithChoice.MyNPC.GetTransform(), sp);            
         }
         catch
         {
@@ -203,7 +203,7 @@ public class DialogueController : MonoBehaviour
             StopAllCoroutines();
             //if (GameManager.gameManager.battleController.ActiveBattle) GameManager.gameManager.MainHud.CloseDialogueTab();
 
-            CustomEvents.instance.OnDialogueEnd(actualDialogue.MyNPC.Name);
+            CustomEvents.instance.OnDialogueEnd(actualDialogue.MyNPC.GetName());
         }
     }
 

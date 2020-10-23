@@ -106,15 +106,15 @@ NavMeshSettings:
   m_BuildSettings:
     serializedVersion: 2
     agentTypeID: 0
-    agentRadius: 0.22
-    agentHeight: 0.7
+    agentRadius: 0.21
+    agentHeight: 1.22
     agentSlope: 45
     agentClimb: 0.4
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
-    cellSize: 0.07333333
+    cellSize: 0.07
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
@@ -3017,6 +3017,7 @@ MonoBehaviour:
   spawnpointID: -1
   iQuickTravel: {fileID: 1865530578}
   sceneName: 
+  quesToAccept: {fileID: 0}
 --- !u!135 &177508329
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4349,6 +4350,7 @@ MonoBehaviour:
   spawnpointID: -1
   iQuickTravel: {fileID: 1865530578}
   sceneName: 
+  quesToAccept: {fileID: 0}
 --- !u!1001 &283279313
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15609,6 +15611,7 @@ MonoBehaviour:
   spawnpointID: -1
   iQuickTravel: {fileID: 1865530578}
   sceneName: 
+  quesToAccept: {fileID: 0}
 --- !u!1001 &1153293328
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17824,7 +17827,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.22286767, g: 0.6132076, b: 0.130162, a: 0.34901962}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -19585,6 +19588,7 @@ MonoBehaviour:
   spawnpointID: 0
   iQuickTravel: {fileID: 0}
   sceneName: VilaDaMadeira
+  quesToAccept: {fileID: 0}
 --- !u!65 &1434864747
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -30366,6 +30370,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Thimmy
       objectReference: {fileID: 0}
+    - target: {fileID: 1912157365944007655, guid: af3692988c9fdd84d89a43e71a3c0500,
+        type: 3}
+      propertyPath: questAcceptedToDespawn
+      value: 
+      objectReference: {fileID: 11400000, guid: 2bc8d3c7510546441acaf33aba8ad4a7,
+        type: 2}
     - target: {fileID: 2424403118656072221, guid: af3692988c9fdd84d89a43e71a3c0500,
         type: 3}
       propertyPath: m_LocalPosition.x

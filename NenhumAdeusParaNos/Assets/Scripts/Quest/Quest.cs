@@ -52,6 +52,9 @@ public abstract class Quest : ScriptableObject
     [Header("Changing Scene")]
     public SceneStateConditions sceneStateChange;
 
+    [Header("Companions")]
+    public GameObject[] compToAdd;
+
     public void AcceptQuest()
     {
         cancelled = false;
@@ -101,6 +104,14 @@ public abstract class Quest : ScriptableObject
         if (questToAccept != null) questToAccept.AcceptQuest();
 
         if (sceneStateChange != null) GameManager.gameManager.ChangeCurrentSceneState(sceneStateChange);
+
+        if (compToAdd != null)
+        {
+            for (int i = 0; i < compToAdd.Length; i++)
+            {
+                GameManager.gameManager.PlayerCompanionsPref.Add(compToAdd[i]);
+            }
+        }
     }
 
     public void Cancel()

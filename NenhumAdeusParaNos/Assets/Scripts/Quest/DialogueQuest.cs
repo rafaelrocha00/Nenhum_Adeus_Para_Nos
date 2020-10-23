@@ -16,7 +16,7 @@ public class DialogueQuest : Quest
             Dialogue d = thing as Dialogue;
             for (int i = 0; i < npcsToTalk.Length; i++)
             {
-                if (d.MyNPC.Name.Equals(npcsToTalk[i])) talked[i] = true;
+                if (d.MyNPC.GetName().Equals(npcsToTalk[i])) talked[i] = true;
             }
             CheckTalked();
         }

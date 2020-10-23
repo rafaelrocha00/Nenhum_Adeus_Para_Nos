@@ -345,7 +345,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 3
+  m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &225632115688620716
 MonoBehaviour:
@@ -368,14 +368,14 @@ MonoBehaviour:
   onlyAcceptedQuest: 0
   onlyCompletedQuest: 0
   triggerQuest: {fileID: 0}
+  portrait: {fileID: -4275524389874115289, guid: 05096b5c3ba5d1543a7fef8f730629a1,
+    type: 3}
   anim: {fileID: 2939236823457336062}
   lifeBar: {fileID: 4992083887400618478}
   myWeapon: {fileID: 479200080101752951}
   defaultSpeed: 3.5
   rangedKiteSpeed: 4
   areaName: Area Name
-  portrait: {fileID: -4275524389874115289, guid: 05096b5c3ba5d1543a7fef8f730629a1,
-    type: 3}
   thisPersonality: 0
   enemyType: 2
   dialogues: {fileID: 11400000, guid: c2f4e330eaeac43469fd9376f456ad46, type: 2}

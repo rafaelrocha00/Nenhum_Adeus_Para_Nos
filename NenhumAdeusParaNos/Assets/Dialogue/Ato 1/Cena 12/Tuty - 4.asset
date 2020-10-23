@@ -15,9 +15,18 @@ MonoBehaviour:
   allStrings:
   - "A gente j\xE1 t\xE1 atrasado.\r\n\n"
   mcStrings: 
+  unlockableDialogues: []
+  unlockPlayerMovement: 0
+  makeNPCWalk: 0
+  finalPoint: {x: 0, y: 0, z: 0}
+  changeSceneState: 0
+  sceneState: {fileID: 0}
+  objectToBreak: 
   dialogueChoices:
   - {fileID: 11400000, guid: 689f3ecc3a6bbfc43be5ef788d5baafc, type: 2}
   - {fileID: 11400000, guid: 0f6061f6e35a8e84793163fce4843d5a, type: 2}
   options:
   - Eu percebi.
-  - "Se voc\xEA falar para sua m\xE3e..."
+  - "Se voc\xEA falar..."
+  requiredItem: {fileID: 0}
+  optionToUnlock: -1

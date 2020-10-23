@@ -65,7 +65,8 @@ public class ShopUI : MonoBehaviour
     public void UpdateBar(float rate)
     {
         Debug.Log("Updating Bar: " + rate);
-        progressionBar.transform.localScale = new Vector3(rate, 1, 1);
+        //progressionBar.transform.localScale = new Vector3(rate, 1, 1);
+        progressionBar.fillAmount = rate;
 
         if (rate == 1) progressionBar.color = unlockedColor;
         else progressionBar.color = lockedColor;

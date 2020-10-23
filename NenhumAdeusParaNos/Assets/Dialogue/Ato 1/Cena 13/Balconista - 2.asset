@@ -13,16 +13,22 @@ MonoBehaviour:
   m_Name: Balconista - 2
   m_EditorClassIdentifier: 
   allStrings:
-  - "Ol\xE1, Edward. J\xE1 sabia que voc\xEA ia voltar, ent\xE3o j\xE1 tinha at\xE9
-    separado.\r\n"
-  - "Nossa\u2026 obrigado.\r\n"
   - "Bem, eu n\xE3o deveria ter aumentado os pre\xE7os. "
   - "Ainda mais sabendo que sua filha precisa deste rem\xE9dio."
-  - "Pe\xE7o perd\xE3o."
-  mcStrings: 01000000
+  - "Pe\xE7o perd\xE3o.        "
+  mcStrings: 
+  unlockableDialogues: []
+  unlockPlayerMovement: 0
+  makeNPCWalk: 0
+  finalPoint: {x: 0, y: 0, z: 0}
+  changeSceneState: 0
+  sceneState: {fileID: 0}
+  objectToBreak: 
   dialogueChoices:
   - {fileID: 11400000, guid: 91ef4e8ba6decfc4b927e7aa311987ce, type: 2}
   - {fileID: 11400000, guid: 70c997429accf7c4daedd2600b9207d8, type: 2}
   options:
-  - "N\xE3o precisa se desculpar."
-  - Tudo bem.
+  - "N\xE3o se desculpe"
+  - Tudo bem, mas...
+  requiredItem: {fileID: 0}
+  optionToUnlock: -1

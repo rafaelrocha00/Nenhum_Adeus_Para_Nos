@@ -21,7 +21,7 @@ public class DialogueBattleTrigger : Dialogue
             //myNPC.StartBattle();
             //mainCharacter.StartBattle();
             List<BattleUnit> aux = new List<BattleUnit>();
-            aux.Add(myNPC);
+            aux.Add((NPC)myNPC);
             aux.Add(mainCharacter);
             GameManager.gameManager.battleController.StartBattle(aux);
             ResetDialogue();

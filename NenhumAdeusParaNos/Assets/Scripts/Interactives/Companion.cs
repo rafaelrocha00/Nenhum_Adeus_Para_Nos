@@ -111,12 +111,14 @@ public class Companion : NPC
         Debug.Log("Não interage");
     }
 
-    public void SpawnMyNPC()
+    public INPC SpawnMyNPC()
     {
-        if (npcToSpawnPref == null) { this.gameObject.SetActive(false); return; }
+        if (npcToSpawnPref == null) { this.gameObject.SetActive(false); return null; }
 
-        Instantiate(npcToSpawnPref, transform.position, transform.rotation);
+        GameObject go = Instantiate(npcToSpawnPref, transform.position, transform.rotation) as GameObject;
 
         this.gameObject.SetActive(false);
+
+        return go.GetComponent<INPC>();
     }
 }

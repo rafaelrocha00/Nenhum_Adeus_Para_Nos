@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca039650f52f2da42b284a0495b9b11e, type: 3}
+  m_Script: {fileID: 11500000, guid: 6fabced99eb604648b986f82b3c23590, type: 3}
   m_Name: Tuty - 3 quest chain 1
   m_EditorClassIdentifier: 
-  qName: Chegue na escola
-  id: 1234
+  qName: "Fale com Thimmy na farm\xE1cia"
+  id: 0
   description: quest_description
   moneyReward: 0
   resourceReward: 0
@@ -31,9 +31,12 @@ MonoBehaviour:
   waitingReturnToNPC: 0
   acceptText: 
   completeText: 
-  unlockableDialogues:
-  - {fileID: 11400000, guid: 03a7ce7072dbc9342803df3c2d0ec5f6, type: 2}
-  - {fileID: 11400000, guid: d08120ebc0f4a4b43b439fc82b81bb00, type: 2}
-  questToAccept: {fileID: 11400000, guid: dced23b83e3b6a74fbd09f9c590432fb, type: 2}
+  unlockableDialogues: []
+  questToAccept: {fileID: 11400000, guid: 75179cc053688fe45a6130afeec8b148, type: 2}
   sceneStateChange: {fileID: 0}
-  placeToGoName: School
+  compToAdd:
+  - {fileID: 544366100932895069, guid: e43995bb4f156bd48b1a5284a793c5bc, type: 3}
+  - {fileID: 5593015891013515454, guid: da9fdac11a4e36044a41909f69eb8a4a, type: 3}
+  npcsToTalk:
+  - Thimmy
+  talked: 00

@@ -29,9 +29,12 @@ MonoBehaviour:
   accepted: 0
   cancelled: 0
   waitingReturnToNPC: 0
-  acceptText: 
-  completeText: 
+  acceptText: "Esse muro ficou bem destru\xEDdo. O que poderia ter feito isso?"
+  completeText: Isso deve aguentar.
   unlockableDialogues:
   - {fileID: 11400000, guid: c2f4e330eaeac43469fd9376f456ad46, type: 2}
+  questToAccept: {fileID: 0}
+  sceneStateChange: {fileID: 0}
+  compToAdd: []
   objectToRepair: Muro
   toInstantiate: {fileID: 0}

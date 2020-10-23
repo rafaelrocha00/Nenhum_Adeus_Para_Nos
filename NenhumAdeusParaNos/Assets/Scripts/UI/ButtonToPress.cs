@@ -6,12 +6,23 @@ public class ButtonToPress : MonoBehaviour
 {
     Camera main;
 
+    public SpriteAnimator sa;
+
     private void Start()
     {
         main = Camera.main;
         //transform.rotation = Quaternion.LookRotation(main.transform.forward + Vector3.up);
     }
 
+    private void OnEnable()
+    {
+        sa.Play(true);
+    }
+
+    private void OnDisable()
+    {
+        sa.Stop();
+    }
 
     private void FixedUpdate()
     {

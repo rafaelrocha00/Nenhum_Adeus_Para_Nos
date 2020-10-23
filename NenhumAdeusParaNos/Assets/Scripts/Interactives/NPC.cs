@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
-public abstract class NPC : Interactives, BattleUnit
+public abstract class NPC : Interactives, BattleUnit, IDialogueable
 {
     [Header("NPC")]
     [HideInInspector] protected CharacterStats charStats;
@@ -144,13 +144,15 @@ public abstract class NPC : Interactives, BattleUnit
 
     public void MoveNavMesh(Vector3 pos)
     {
+        if (navMesh == null) navMesh = GetComponent<NavMeshAgent>();
         navMesh.isStopped = false;
         navMesh.destination = pos;
     }
 
     public void EndDialogue()
     {
-        //OnExit(mCharacter);
+        if (mCharacter == null) mCharacter = GameManager.gameManager.battleController.MainCharacter;
+        OnExit(mCharacter);
         GameManager.gameManager.dialogueController.EndDialogue();        
     }
 
@@ -280,5 +282,20 @@ public abstract class NPC : Interactives, BattleUnit
     public virtual void Knockback(float dis)
     {
 
+    }
+
+    public string GetName()
+    {
+        return Name;
+    }
+
+    public Sprite GetPortrait()
+    {
+        return portrait;
+    }
+
+    public Transform GetTransform()
+    {
+        return transform;
     }
 }

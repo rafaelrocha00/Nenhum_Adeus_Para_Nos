@@ -29,12 +29,14 @@ MonoBehaviour:
   accepted: 0
   cancelled: 0
   waitingReturnToNPC: 0
-  acceptText: 
-  completeText: 
+  acceptText: Agora um banho serviria bem.
+  completeText: "N\xE3o vejo a hora do rango."
   unlockableDialogues:
   - {fileID: 11400000, guid: a7f4e301705faa64e900ef6419d89c70, type: 2}
   - {fileID: 11400000, guid: 22665e3f4902acf43bc3d2f49803992d, type: 2}
   - {fileID: 11400000, guid: f4a74a96990c34e4dbd39e49d7583120, type: 2}
   - {fileID: 11400000, guid: 53c0e22971cec764d967bb50957ceb59, type: 2}
   questToAccept: {fileID: 0}
+  sceneStateChange: {fileID: 0}
+  compToAdd: []
   objectToInteract: Bath

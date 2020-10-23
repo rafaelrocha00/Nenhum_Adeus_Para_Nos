@@ -1,22 +1,37 @@
 fileFormatVersion: 2
-guid: d858983bab0720746bdeb1c79d10b0c2
+guid: 568c576d0cdd5a1408c7f2c730b0dda1
 TextureImporter:
   internalIDToNameTable:
   - first:
       213: -687432767874903322
-    second: wood
+    second: wood_sprite
   - first:
       213: -1290083965437165528
-    second: stones
+    second: stone_sprite
   - first:
       213: -5045104978351055317
-    second: trash
+    second: trash_sprite
   - first:
       213: 4832262009048390356
-    second: metal
+    second: metal_sprite
   - first:
       213: -5486600367332403877
-    second: plastic
+    second: plastic_sprite
+  - first:
+      213: -1710804876560349912
+    second: spritesmateriais-Sheet_5
+  - first:
+      213: 1069451847917428780
+    second: spritesmateriais-Sheet_6
+  - first:
+      213: 7876534616726007908
+    second: spritesmateriais-Sheet_7
+  - first:
+      213: 8959938301740043271
+    second: spritesmateriais-Sheet_8
+  - first:
+      213: -7861031223204994208
+    second: spritesmateriais-Sheet_9
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -46,7 +61,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
+    filterMode: 0
     aniso: -1
     mipBias: -100
     wrapU: 1
@@ -79,7 +94,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -91,7 +106,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -103,7 +118,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -115,7 +130,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -126,15 +141,15 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: wood
+      name: wood_sprite
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 195
-        height: 195
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -147,15 +162,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stones
+      name: stone_sprite
       rect:
         serializedVersion: 2
-        x: 195
+        x: 64
         y: 0
-        width: 195
-        height: 195
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -168,15 +183,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: trash
+      name: trash_sprite
       rect:
         serializedVersion: 2
-        x: 390
+        x: 128
         y: 0
-        width: 195
-        height: 195
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -189,15 +204,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: metal
+      name: metal_sprite
       rect:
         serializedVersion: 2
-        x: 585
+        x: 192
         y: 0
-        width: 195
-        height: 195
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -210,15 +225,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: plastic
+      name: plastic_sprite
       rect:
         serializedVersion: 2
-        x: 780
+        x: 256
         y: 0
-        width: 195
-        height: 195
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -233,7 +248,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 2537eea264f105042b6de19aa3cc4a29
+    spriteID: 4d879b6ff4fbad74ca0a9adc2d22dc34
     internalID: 0
     vertices: []
     indices: 

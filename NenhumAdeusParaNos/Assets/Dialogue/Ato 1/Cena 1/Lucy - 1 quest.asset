@@ -30,11 +30,13 @@ MonoBehaviour:
   accepted: 0
   cancelled: 0
   waitingReturnToNPC: 0
-  acceptText: Aceitou
-  completeText: Completou
+  acceptText: "T\xE1 na hora de acordar todo mundo."
+  completeText: Melhor avisar a Lucy.
   unlockableDialogues:
   - {fileID: 11400000, guid: a7f4e301705faa64e900ef6419d89c70, type: 2}
   questToAccept: {fileID: 0}
+  sceneStateChange: {fileID: 0}
+  compToAdd: []
   npcsToTalk:
   - Tuty
   - Thimmy

@@ -9,7 +9,10 @@ public class PlaceToGo : MonoBehaviour
 
     public Quest questToBeAccepted;
     public bool stopPlayerComp;
+    public bool movementComp;
     public bool removeComp;
+
+    public Transform arrivePoints;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -22,7 +25,17 @@ public class PlaceToGo : MonoBehaviour
                     Player p = other.GetComponent<Player>();
                     if (stopPlayerComp)
                     {
-                        p.DespawnCompanions();
+                        INPC[] instancedNPCs = p.DespawnCompanions();
+                        if (movementComp)
+                        {
+                            Debug.Log("Movendo");
+                            for (int i = 0; i < instancedNPCs.Length; i++)
+                            {
+                                Debug.Log("Movendo Novos Npcs para o local");
+                                instancedNPCs[i].MoveNavMesh(arrivePoints.GetChild(i).position);
+                            }
+                        }
+
                         if (removeComp) p.RemoveCompanions();
                     }
                 }

@@ -11,9 +11,13 @@ public class Door : MonoBehaviour
 
     public string sceneName;
 
+    public Quest quesToAccept;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("npc") && !other.isTrigger) Destroy(other.gameObject);
+
+        if (quesToAccept != null && !quesToAccept.Accepted) quesToAccept.AcceptQuest();
 
         if (other.CompareTag("player"))
         {
@@ -21,6 +25,8 @@ public class Door : MonoBehaviour
 
             if (!sameScene)
             {
+                if (sceneName.Equals("")) return;
+
                 GameManager.gameManager.SpawnpointID = spawnpointID;
 
                 GameManager.gameManager.inventoryController.Inventory.SaveItems();

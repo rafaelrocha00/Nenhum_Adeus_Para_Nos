@@ -18,7 +18,11 @@ public class DialogueShop : Dialogue
             GameManager.gameManager.dialogueController.EndDialogue();
             myNPC.EndDialogue();
 
-            try { myNPC.GetComponent<Shop>().OpenShop(); }
+            try
+            {
+                NPC aux = (NPC)myNPC;
+                aux.GetComponent<Shop>().OpenShop();
+            }
             catch { }
 
             ResetDialogue();

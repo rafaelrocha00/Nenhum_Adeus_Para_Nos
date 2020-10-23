@@ -10,8 +10,8 @@ public class Dialogue : ScriptableObject
 
     protected int actualID = -1;
 
-    [HideInInspector] protected NPC myNPC;
-    public NPC MyNPC { get { return myNPC; } set { myNPC = value; } }
+    [HideInInspector] protected IDialogueable myNPC;
+    public IDialogueable MyNPC { get { return myNPC; } set { myNPC = value; } }
     [HideInInspector] protected Player mainCharacter;
     public Player MainCharacter { get { return mainCharacter; } set { mainCharacter = value; } }
 
@@ -94,13 +94,13 @@ public class Dialogue : ScriptableObject
             else mcSpeak = false;
         }
         if (mcSpeak) GameManager.gameManager.dialogueController.ChangePopUpPos(mainCharacter.transform, mainCharacter.portrait);
-        else GameManager.gameManager.dialogueController.ChangePopUpPos(myNPC.transform, myNPC.portrait);
+        else GameManager.gameManager.dialogueController.ChangePopUpPos(myNPC.GetTransform(), myNPC.GetPortrait());
     }
 
     public float GetPlayerNPCDistance()
     {
         if (myNPC != null && mainCharacter != null)
-            return (myNPC.transform.position - mainCharacter.transform.position).sqrMagnitude;
+            return (myNPC.GetTransform().position - mainCharacter.transform.position).sqrMagnitude;
         return 0;
     }
 }

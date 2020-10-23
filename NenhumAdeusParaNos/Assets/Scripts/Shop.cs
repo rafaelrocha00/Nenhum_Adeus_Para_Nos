@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shop : MonoBehaviour
+public class Shop : MonoBehaviour, IDialogueable
 {
     public Item[] sellingItems;
 
@@ -15,6 +15,10 @@ public class Shop : MonoBehaviour
     public int CurrentValue { get { return currentValue; } set { currentValue = value; } }
 
     bool unlocked = false;
+
+    [Header("Dialogue")]
+    public DialogueOptions postTradeDialogues;
+    public DialogueOptions postCancelDialogues;
 
     public void OpenShop()
     {
@@ -55,7 +59,9 @@ public class Shop : MonoBehaviour
             }
         }
 
-        ResetValue();
+        StartDialogue(true);
+
+        CancelTrade();
     }
 
     public void CancelTrade()
@@ -64,6 +70,22 @@ public class Shop : MonoBehaviour
 
         GameManager.gameManager.MainHud.CloseShopUI();
         GameManager.gameManager.MainHud.OpenCloseInventory(false);
+
+        StartDialogue(false);
+    }
+
+    void StartDialogue(bool postTrade)
+    {
+        if ((postTrade && postTradeDialogues == null) || (!postTrade && postCancelDialogues == null)) return;
+
+        if (!GameManager.gameManager.dialogueController.ActiveMainDialogue)
+        {
+            Dialogue aux = (postTrade) ? postTradeDialogues.GetRandomDialogue() : postCancelDialogues.GetRandomDialogue();
+            aux.MyNPC = this;
+            aux.MainCharacter = GameManager.gameManager.battleController.MainCharacter;
+
+            GameManager.gameManager.dialogueController.StartDialogue(aux, transform, GetPortrait());
+        }
     }
 
     void ResetValue()
@@ -71,5 +93,31 @@ public class Shop : MonoBehaviour
         currentValue = 0;
         currentRequiredValue = 0;
         GameManager.gameManager.MainHud.shopUI.UpdateBar(0);
+    }
+
+    public void EndDialogue()
+    {
+        GameManager.gameManager.dialogueController.EndDialogue();
+    }
+
+    public void MoveNavMesh(Vector3 point) { }
+
+    public void OnExit(Player p) { }
+
+    public void ReceiveItem() { }
+
+    public string GetName()
+    {
+        return GetComponent<INPC>().Name;
+    }
+
+    public Sprite GetPortrait()
+    {
+        return GetComponent<INPC>().portrait;
+    }
+
+    public Transform GetTransform()
+    {
+        return transform;
     }
 }

@@ -9,18 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fabced99eb604648b986f82b3c23590, type: 3}
+  m_Script: {fileID: 11500000, guid: ca039650f52f2da42b284a0495b9b11e, type: 3}
   m_Name: Tuty - 3 quest chain 2
   m_EditorClassIdentifier: 
-  qName: Fale com Thimmy na escola
-  id: 0
+  qName: Chegue na escola
+  id: 1234
   description: quest_description
   moneyReward: 0
   resourceReward: 0
   contractor: contractor_
   mustReturn: 0
   limitDay: -1
-  generated: 1
+  generated: 0
   resourceT: 4
   completingQuestDialogue: {fileID: 0}
   quest_itemRewards: []
@@ -29,11 +29,12 @@ MonoBehaviour:
   accepted: 0
   cancelled: 0
   waitingReturnToNPC: 0
-  acceptText: 
+  acceptText: Depois eu dou algo pra ele, de qualquer forma, temos que nos apressar.
   completeText: 
-  unlockableDialogues: []
-  questToAccept: {fileID: 11400000, guid: 4383bfa7071a16442b02ee9653cef05e, type: 2}
+  unlockableDialogues:
+  - {fileID: 11400000, guid: 03a7ce7072dbc9342803df3c2d0ec5f6, type: 2}
+  - {fileID: 11400000, guid: d08120ebc0f4a4b43b439fc82b81bb00, type: 2}
+  questToAccept: {fileID: 11400000, guid: dced23b83e3b6a74fbd09f9c590432fb, type: 2}
   sceneStateChange: {fileID: 0}
-  npcsToTalk:
-  - Thimmy
-  talked: 00
+  compToAdd: []
+  placeToGoName: School
