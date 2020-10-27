@@ -112,7 +112,7 @@ public class CamMove : MonoBehaviour
         //if (!GameManager.gameManager.battleController.ActiveBattle) distanceToTarget.x = defaultDistance.x * 1.6f;
         //else distanceToTarget.x = distanceInBattle.x * 1.6f;
         if (v) distanceToTarget.x = defaultDistance.x *  0.7f;
-        else   distanceToTarget.x = defaultDistance.x *  1.4f;
+        else   distanceToTarget.x = defaultDistance.x *  1.7f;
     }
     public void SetCameraToRight(bool v)
     {

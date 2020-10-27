@@ -36,6 +36,9 @@ public class QuestGenerator : MonoBehaviour
 
     public Queue<Quest> quest_queue = new Queue<Quest>();
 
+    List<string> usedItems = new List<string>();
+    List<string> usedDeposits = new List<string>();
+
     public void Start()
     {
         jobsChances[0] = 34;
@@ -56,6 +59,8 @@ public class QuestGenerator : MonoBehaviour
         {
             firstGen = false;
             //GenKillQuest();
+            GenDelQuest();
+            GenDelQuest();
             GenDelQuest();
             //GenRepQuest();
         }
@@ -200,8 +205,8 @@ public class QuestGenerator : MonoBehaviour
                     toInst.Add(enemy_capitalist[Random.Range(0, enemy_capitalist.Count)]);
             }
             //}
-            kq.MoneyReward = 100 * rand;
-            kq.ResourceReward = 10 * rand;
+            //kq.MoneyReward = 100 * rand;
+            //kq.ResourceReward = 10 * rand;
             kq.QuantToKill = rand;
             kq.toInstantiate = toInst.ToArray();
 
@@ -217,8 +222,8 @@ public class QuestGenerator : MonoBehaviour
 
             aq.Name = "Elimine um alvo";
             aq.Description = "Eliminar " + aq.TargetName + ", Paradeiro: " + aq.AreaName;
-            aq.MoneyReward = 500;
-            aq.ResourceReward = 50;
+            //aq.MoneyReward = 500;
+            //aq.ResourceReward = 50;
             aq.toInstantiate = enemy_all[Random.Range(0, enemy_all.Length)];
         }
 
@@ -233,21 +238,35 @@ public class QuestGenerator : MonoBehaviour
         newQuest.itemsQuant = new int[rand];
         string itemsTD = "";
         int reward = 0;
+
+        newQuest.DepositName = storageNames[Random.Range(0, storageNames.Count)];
+
         for (int i = 0; i < rand; i++)
         {
             if (rand > 1 && i == rand - 1) itemsTD += "& ";
-            newQuest.itemsToDelivery[i] = itemsToDel[Random.Range(0, itemsToDel.Count)];
+
+            int choosenItem = Random.Range(0, itemsToDel.Count);
+            if (usedItems.Contains(itemsToDel[choosenItem].itemName) && usedDeposits.Contains(newQuest.DepositName))
+            {
+                choosenItem++;
+                if (choosenItem == itemsToDel.Count) choosenItem = 0;
+            }
+
+            newQuest.itemsToDelivery[i] = itemsToDel[choosenItem];
+            usedItems.Add(newQuest.itemsToDelivery[i].itemName);
+
             newQuest.itemsQuant[i] = Random.Range(1, maxItensQuant + 1);
             itemsTD += newQuest.itemsToDelivery[i].itemName + " " + newQuest.itemsQuant[i] + "x ";
 
             reward += newQuest.itemsToDelivery[i].slotSize.x * newQuest.itemsToDelivery[i].slotSize.y * newQuest.itemsQuant[i];
         }
-        newQuest.DepositName = storageNames[Random.Range(0, storageNames.Count)];        
+
+        usedDeposits.Add(newQuest.DepositName);
 
         newQuest.Name = "Entregue umas coisas";
         newQuest.Description = "Entregar: " + itemsTD + ", Local: " + newQuest.DepositName;
-        newQuest.MoneyReward = 100 * reward;
-        newQuest.ResourceReward = 20 * reward;
+        //newQuest.MoneyReward = 100 * reward;
+        //newQuest.ResourceReward = 20 * reward;
         newQuest.toInstantiate = chests[Random.Range(0, chests.Length)];
 
         DefaultSet(newQuest);
@@ -262,8 +281,8 @@ public class QuestGenerator : MonoBehaviour
 
         newQuest.Name = "Consertar coisa";
         newQuest.Description = "Consertar: " + newQuest.ObjectToRepair;
-        newQuest.MoneyReward = 80;
-        newQuest.ResourceReward = 8;
+        //newQuest.MoneyReward = 80;
+        //newQuest.ResourceReward = 8;
 
         DefaultSet(newQuest);
     }
@@ -271,7 +290,18 @@ public class QuestGenerator : MonoBehaviour
     void DefaultSet(Quest _q)
     {
         _q.ID = actualID;
-        _q.resourceT = (CompanyController.ResourceType)Random.Range(0, 4);
+
+        Item[] allItems = Resources.LoadAll<Item>("Item");
+
+        _q.quest_itemRewards = new Item[1];
+        _q.quest_itemRQuants = new int[1];
+
+        _q.quest_itemRewards[0] = allItems[Random.Range(0, allItems.Length)];
+        Vector2Int quantRange = new Vector2Int(1, 4);
+        if (_q.quest_itemRewards[0] is ResourceItem) quantRange = new Vector2Int(3, 8);
+        _q.quest_itemRQuants[0] = Random.Range(quantRange.x, quantRange.y);
+
+        //_q.resourceT = (CompanyController.ResourceType)Random.Range(0, 4);
         _q.Contractor = contractorNames[Random.Range(0, contractorNames.Count)];
         _q.LimitDay = Random.Range(0, 7);
 

@@ -9,19 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fabced99eb604648b986f82b3c23590, type: 3}
+  m_Script: {fileID: 11500000, guid: 6753b678b8c05be47acbcd77b584162e, type: 3}
   m_Name: Tuty - 3 quest chain 4
   m_EditorClassIdentifier: 
-  qName: "Volte na farm\xE1cia"
-  id: 0
+  qName: Consiga Morfina
+  id: 113
   description: quest_description
-  moneyReward: 0
-  resourceReward: 0
   contractor: contractor_
   mustReturn: 0
   limitDay: -1
   generated: 0
-  resourceT: 4
   completingQuestDialogue: {fileID: 0}
   quest_itemRewards: []
   quest_itemRQuants: 
@@ -29,14 +26,14 @@ MonoBehaviour:
   accepted: 0
   cancelled: 0
   waitingReturnToNPC: 0
-  acceptText: "Agora, como tenho que dar um jeito nos rem\xE9dios, devo ter alguns
-    trabalhos nos meus e-mails."
-  completeText: 
+  acceptText: "O rem\xE9dio da Leya \xE9 prioridade agora, devo ter alguns e-mails
+    com trabalho."
+  completeText: Com isso, eu posso voltar e entregar pra Leya.
   unlockableDialogues:
-  - {fileID: 11400000, guid: 03a7ce7072dbc9342803df3c2d0ec5f6, type: 2}
-  questToAccept: {fileID: 0}
+  - {fileID: 11400000, guid: 96b2495f02f55894b85a19a8263d3ed0, type: 2}
+  - {fileID: 11400000, guid: 22665e3f4902acf43bc3d2f49803992d, type: 2}
+  - {fileID: 11400000, guid: a7f4e301705faa64e900ef6419d89c70, type: 2}
+  questToAccept: {fileID: 11400000, guid: 4383bfa7071a16442b02ee9653cef05e, type: 2}
   sceneStateChange: {fileID: 0}
   compToAdd: []
-  npcsToTalk:
-  - Balconista
-  talked: 00
+  itemToGet: {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}

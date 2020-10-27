@@ -50,23 +50,25 @@ public class CompanyPC : Interactives
 
         questDesc_name.text = quest.Name;
         questDesc_description.text = quest.Description;
-        string resourceT = "";
-        switch (quest.resourceT)
-        {
-            case CompanyController.ResourceType.Tool:
-                resourceT = "Ferramentas";
-                break;
-            case CompanyController.ResourceType.Food:
-                resourceT = "Comidas";
-                break;
-            case CompanyController.ResourceType.Med:
-                resourceT = "Medicamentos";
-                break;
-            case CompanyController.ResourceType.Feedstock:
-                resourceT = "Matéria-Prima";
-                break;
-        }
-        questDesc_reward.text = quest.MoneyReward.ToString("0.00") + " & " + quest.ResourceReward.ToString() + " " + resourceT;
+        //string resourceT = "";
+        //switch (quest.resourceT)
+        //{
+        //    case CompanyController.ResourceType.Tool:
+        //        resourceT = "Ferramentas";
+        //        break;
+        //    case CompanyController.ResourceType.Food:
+        //        resourceT = "Comidas";
+        //        break;
+        //    case CompanyController.ResourceType.Med:
+        //        resourceT = "Medicamentos";
+        //        break;
+        //    case CompanyController.ResourceType.Feedstock:
+        //        resourceT = "Matéria-Prima";
+        //        break;
+        //}
+        //questDesc_reward.text = quest.MoneyReward.ToString("0.00") + " & " + quest.ResourceReward.ToString() + " " + resourceT;
+        questDesc_reward.text = quest.quest_itemRewards[0].itemName + "  x" + quest.quest_itemRQuants[0].ToString();
+
         questDesc_limit.text = GameManager.gameManager.calendarController.DaysOfWeek[quest.LimitDay];
         questDesc_contractor.text = quest.Contractor;
     }
@@ -90,20 +92,20 @@ public class CompanyPC : Interactives
     }
     #endregion
     #region Resources
-    public Text money;
-    public Text[] resourcesQuants = new Text[4];
+    //public Text money;
+    //public Text[] resourcesQuants = new Text[4];
 
-    public void SetMoney()
-    {
-        money.text = GameManager.gameManager.companyController.Money.ToString("0.00");
-    }
-    public void SetResource()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            resourcesQuants[i].text = GameManager.gameManager.companyController.GetResourceQuant(i).ToString();
-        }
-    }
+    //public void SetMoney()
+    //{
+    //    money.text = GameManager.gameManager.companyController.Money.ToString("0.00");
+    //}
+    //public void SetResource()
+    //{
+    //    for (int i = 0; i < 4; i++)
+    //    {
+    //        resourcesQuants[i].text = GameManager.gameManager.companyController.GetResourceQuant(i).ToString();
+    //    }
+    //}
     #endregion
     #endregion
 
@@ -158,8 +160,8 @@ public class CompanyPC : Interactives
         pcScreen.SetActive(true);
         pcLight.SetActive(true);
 
-        SetMoney();
-        SetResource();
+        //SetMoney();
+        //SetResource();
 
         GenerateJobs();
         CheckQuest();
@@ -170,6 +172,8 @@ public class CompanyPC : Interactives
     public void Exit()
     {
         ExitPC(GameManager.gameManager.battleController.MainCharacter);
+
+        EndInteraction();
     }
 
     public void ExitPC(Player p)

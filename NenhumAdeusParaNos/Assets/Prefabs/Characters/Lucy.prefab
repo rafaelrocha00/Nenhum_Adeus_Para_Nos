@@ -209,7 +209,7 @@ GameObject:
   - component: {fileID: 7224348380111069108}
   m_Layer: 10
   m_Name: Lucy
-  m_TagString: Untagged
+  m_TagString: npc
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -271,9 +271,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myName: Lucy
-  buttonToPressPref: {fileID: 6638989974725394705, guid: 1a98f6b0eb2747648aedcb7a647713cd,
+  buttonToPressPref: {fileID: 7946430027621689139, guid: 2566e8908f0cc0e42919a4e2f9fae37e,
     type: 3}
-  popUPHigh: 4
+  popUPHigh: 3
   oneInteraction: 0
   canInteract: 0
   onlyAcceptedQuest: 0
@@ -536,6 +536,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8511842793438932524}
     m_Modifications:
+    - target: {fileID: -6782022309231004308, guid: 80b57bb91a8539046a596ca771a334a9,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0de8cee191de8aa4f85114401c5cd0c5, type: 2}
     - target: {fileID: -4216859302048453862, guid: 80b57bb91a8539046a596ca771a334a9,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -298,7 +298,7 @@ GameObject:
   - component: {fileID: 3057908402072740558}
   m_Layer: 10
   m_Name: Benjo
-  m_TagString: Untagged
+  m_TagString: npc
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -360,9 +360,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myName: Benjo
-  buttonToPressPref: {fileID: 6638989974725394705, guid: 1a98f6b0eb2747648aedcb7a647713cd,
+  buttonToPressPref: {fileID: 7946430027621689139, guid: 2566e8908f0cc0e42919a4e2f9fae37e,
     type: 3}
-  popUPHigh: 4
+  popUPHigh: 3
   oneInteraction: 0
   canInteract: 1
   onlyAcceptedQuest: 0
@@ -595,6 +595,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Benjo
       objectReference: {fileID: 0}
+    - target: {fileID: 2279109784418782532, guid: 3d3d103f45c9d3547a6f57ce63bada9e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7c932f3b230edec4ca4ec5937bb9dce7, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d3d103f45c9d3547a6f57ce63bada9e, type: 3}
 --- !u!1 &3458195269151858478 stripped

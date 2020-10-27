@@ -157,12 +157,14 @@ public class DialogueController : MonoBehaviour
 
     public void ChooseOption(Dialogue d, Sprite sp, int index = -1)
     {
+        if (!activeMainDialogue && !(actualDialogue is DialogueWithChoice)) return;
+
         try
         {
             Debug.Log("ChoosingDialogue");
             Dialogue newD = d;
             if (index > -1)
-            {                
+            {
                 DialogueWithChoice dwc = (DialogueWithChoice)actualDialogue;
                 if (!dwc.HasThisIndex(index)) return;
                 newD = dwc.dialogueChoices[index];
@@ -170,11 +172,12 @@ public class DialogueController : MonoBehaviour
             }
             CloseDialogueOptTab();
             waitingForAnswer = false;
-            StartDialogue(newD, lastDialogueWithChoice.MyNPC.GetTransform(), sp);            
+            StartDialogue(newD, lastDialogueWithChoice.MyNPC.GetTransform(), sp);
         }
-        catch
+        catch (System.Exception)
         {
-            Debug.Log("Não pode escolher");
+            /*DialogueWith Choice dwc = (DialogueWithChoice)actualDialogue;
+            if (dwc is DialogueWithChoice)*/ throw;
         }
     }
 

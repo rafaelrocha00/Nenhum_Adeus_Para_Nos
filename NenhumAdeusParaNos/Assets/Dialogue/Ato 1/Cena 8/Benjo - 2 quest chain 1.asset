@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Benjo - 2 quest chain 1
   m_EditorClassIdentifier: 
   qName: Fale com Tuty
-  id: 345
+  id: 107
   description: quest_description
   moneyReward: 0
   resourceReward: 0
@@ -25,8 +25,8 @@ MonoBehaviour:
   completingQuestDialogue: {fileID: 0}
   quest_itemRewards: []
   quest_itemRQuants: 
-  completed: 1
-  accepted: 1
+  completed: 0
+  accepted: 0
   cancelled: 0
   waitingReturnToNPC: 0
   acceptText: 
@@ -34,6 +34,7 @@ MonoBehaviour:
   unlockableDialogues: []
   questToAccept: {fileID: 11400000, guid: 7bd25e2e2d68e184298cc8897fa745f2, type: 2}
   sceneStateChange: {fileID: 0}
+  compToAdd: []
   npcsToTalk:
   - Tuty
-  talked: 01
+  talked: 00

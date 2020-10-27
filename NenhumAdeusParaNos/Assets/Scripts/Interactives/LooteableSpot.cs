@@ -67,6 +67,8 @@ public class LooteableSpot : Interactives, IDateEvent
         GameManager.gameManager.MainHud.OpenCloseInventory(true);
 
         RemoveResource(aux, randItem, player);
+
+        EndInteraction();
     }
 
     public void SpawnResource()

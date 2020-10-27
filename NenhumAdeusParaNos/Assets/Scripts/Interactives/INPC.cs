@@ -34,6 +34,7 @@ public class INPC : NPC
     public Quest questAcceptedToDespawn;
     public Quest questCompletedToDespawn;
 
+    public bool rotates = true;
 
     [Header("--------------- Comabte ---------------")]
     public bool hostile = false;
@@ -57,6 +58,8 @@ public class INPC : NPC
 
     Vector3 startPos;
 
+    Quaternion originRot;
+
     #region Audio Clips
     public AudioClip clip_death;
     #endregion
@@ -64,6 +67,8 @@ public class INPC : NPC
     protected override void Initialize()
     {
         if (CheckDespawnQuest()) Destroy(this.gameObject);
+
+        originRot = transform.rotation;
 
         CustomEvents.instance.onDialogueStart += EnterDialogueAnim;
         CustomEvents.instance.onDialogueEnd += ExitDialogueAnim;
@@ -77,6 +82,14 @@ public class INPC : NPC
 
     bool CheckDespawnQuest()
     {
+        if (questAcceptedToDespawn != null && questCompletedToDespawn != null)
+        {
+            if (questAcceptedToDespawn.Accepted && !questCompletedToDespawn.Completed && toBeAccepted) return true;
+            else if (!questAcceptedToDespawn.Accepted && questCompletedToDespawn.Completed) return true;
+
+            return false;
+        }
+
         if (questAcceptedToDespawn != null)
         {
             if ((questAcceptedToDespawn.Accepted && toBeAccepted) || 
@@ -165,6 +178,8 @@ public class INPC : NPC
         //dialogue.MainCharacter = player;
         //GameManager.gameManager.dialogueController.StartDialogue(dialogue, transform, expressions[1]);
         StartDialogue(dialogue, player);
+
+        if (rotates) StartCoroutine(RotateTo(Quaternion.LookRotation(player.transform.position - transform.position)));
     }
 
     void StartDialogue(Dialogue d, Player p)
@@ -172,6 +187,20 @@ public class INPC : NPC
         d.MyNPC = this;
         d.MainCharacter = p;
         GameManager.gameManager.dialogueController.StartDialogue(d, transform, /*expressions[1]*/portrait);
+    }
+
+    IEnumerator RotateTo(Quaternion newRot)
+    {
+        float timer = 0.0f;
+        while (timer <= 1.0f)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, newRot, Time.fixedDeltaTime * 5.0f);
+
+            timer += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+
+        Debug.Log("Finished Rotate");
     }
 
     //public void EndDialogue()
@@ -194,6 +223,12 @@ public class INPC : NPC
             Vector3 lookPos = new Vector3(mCharacter.transform.position.x, transform.position.y, mCharacter.transform.position.z);
             transform.LookAt(lookPos);
         }
+    }
+
+    public override void EndDialogue()
+    {
+        base.EndDialogue();
+        if (rotates) StartCoroutine(RotateTo(originRot));
     }
 
     protected override void ComfirmAttack()
@@ -520,7 +555,12 @@ public class INPC : NPC
         if (!canInteract) return;
 
         Player player = other.GetComponent<Player>();
-        if (buttonPref == null) buttonPref = Instantiate(buttonToPressPref, transform.position + Vector3.up * popUPHigh, Quaternion.identity, this.transform);
+        if (buttonPref == null)
+        {
+            //buttonPref = Instantiate(buttonToPressPref, transform.position + Vector3.up * popUPHigh, Quaternion.identity);
+            buttonPref = Instantiate(buttonToPressPref, GameManager.gameManager.MainHud.pressEPops, false) as GameObject;
+            buttonPref.GetComponent<ButtonToPress>().SetTransf(transform, popUPHigh);
+        }
         else buttonPref.SetActive(true);
         player.InteractingObjs.Add(this);
         Debug.Log("Adicionando npc na lista de interagiveis do player");

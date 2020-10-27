@@ -260,24 +260,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myName: Ranged Cap
-  buttonToPressPref: {fileID: 6638989974725394705, guid: 1a98f6b0eb2747648aedcb7a647713cd,
+  buttonToPressPref: {fileID: 7946430027621689139, guid: 2566e8908f0cc0e42919a4e2f9fae37e,
     type: 3}
   popUPHigh: 4
+  oneInteraction: 0
+  canInteract: 1
+  onlyAcceptedQuest: 0
+  onlyCompletedQuest: 0
+  triggerQuest: {fileID: 0}
+  portrait: {fileID: 0}
   anim: {fileID: 7558995131082767392}
   lifeBar: {fileID: 8638719574170113876}
   myWeapon: {fileID: 3748087364147568333}
   defaultSpeed: 5.5
   rangedKiteSpeed: 4
   areaName: Area Name
-  expressions:
-  - {fileID: 21300000, guid: 3bfd473483f3f3648b3c8dd8a785f5f8, type: 3}
-  - {fileID: 21300000, guid: 89537223a2b0bae4583dcb78a50d9b67, type: 3}
-  - {fileID: 21300000, guid: 0a71d962e9cbec847a26a3921e38913c, type: 3}
   thisPersonality: 0
   enemyType: 2
   dialogues: {fileID: 0}
   dialogues_battle: {fileID: 0}
   questDialogues: []
+  directQuestDialogue: []
+  toBeAccepted: 1
+  questAcceptedToDespawn: {fileID: 0}
+  questCompletedToDespawn: {fileID: 0}
   hostile: 1
   heavy: 0
   dashTime: 0.5

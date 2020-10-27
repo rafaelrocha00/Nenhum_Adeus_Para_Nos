@@ -57,6 +57,8 @@ public class MainHud : MonoBehaviour
     public Text itemDesc_name;
     public Text itemDesc_description;
 
+    public Transform pressEPops;
+
     #region Opçoes_de_Dialogo
     //public void OpenDialogueOptTab(DialogueWithChoice dialogue)
     //{
@@ -152,15 +154,20 @@ public class MainHud : MonoBehaviour
 
         if (!GameManager.gameManager.NewGame) uiToHide.SetActive(true);
 
-        if (GameManager.gameManager.NewGame)
-        {
-            OpenCloseInventory(true);
-            Invoke("DelayClose", 0.02f);
-        }
+        //if (GameManager.gameManager.NewGame)
+        //{
+        Invoke("DelayOpen", 0.02f);
+        //}
+    }
+    void DelayOpen()
+    {
+        GameManager.gameManager.inventoryController.Inventory.myGrid.Generate();
+        //OpenCloseInventory(true);
+        //Invoke("DelayClose", 0.01f);
     }
     void DelayClose()
     {
-        OpenCloseInventory(false);
+        //OpenCloseInventory(false);
     }
 
     private void Update()

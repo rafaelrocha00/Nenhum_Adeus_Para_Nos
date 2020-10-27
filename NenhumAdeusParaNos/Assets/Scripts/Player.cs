@@ -176,7 +176,7 @@ public class Player : MonoBehaviour, BattleUnit
         right = Quaternion.Euler(new Vector3(0, 90, 0)) * forward;
 
         if (!battleUnlocked) HideShowWeapon();
-        StartCoroutine(WalkSFX());
+        //StartCoroutine(WalkSFX());
 
         if (!GameManager.gameManager.NewGame) EnableCharController(true);
 
@@ -250,15 +250,7 @@ public class Player : MonoBehaviour, BattleUnit
         {
             Vector3 downForce = new Vector3(0, -9.81f, 0) * Time.deltaTime;
             cc.Move(downForce);
-        }
-
-        if (Physics.Raycast(ray, out hit, 1000, aimLayermask))
-        {
-            //Debug.Log("Colisor: " + hit.collider.name);
-            if (!aimLocked) battleAim = new Vector3(hit.point.x, transform.position.y, hit.point.z);
-            if (aimingThrowable || placingItem) transform.LookAt(battleAim);
-            //Debug.Log(lookPos);
-        }        
+        }   
 
         if (canMove && CanFight() && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0))
         {
@@ -273,6 +265,19 @@ public class Player : MonoBehaviour, BattleUnit
             if (!running) moveSpeed = defaultSpeed;
             moveTime = 0.0f;
             if (moving) StopMoving();
+        }
+
+        if (Physics.Raycast(ray, out hit, 1000, aimLayermask))
+        {
+            //Debug.Log("Colisor: " + hit.collider.name);
+            if (!aimLocked)
+            {
+                //battleAim = new Vector3(hit.point.x, transform.position.y, hit.point.z);
+                battleAim = hit.point - transform.position;
+                battleAim.y = 0;
+            }
+            if (aimingThrowable || placingItem) transform.rotation = Quaternion.LookRotation(battleAim); //transform.LookAt(battleAim);
+            //Debug.Log(lookPos);
         }
 
         if (Input.GetMouseButtonDown(2))//GetKeyDown(KeyCode.C))
@@ -395,7 +400,8 @@ public class Player : MonoBehaviour, BattleUnit
         {
             //Debug.Log("InteracingObjs != null? " + interactingObjs != null);
 
-            if (interactingObjs != null && interactingObjs.Count > 0 && canInteract && CanFight() && !GameManager.gameManager.dialogueController.ActiveMainDialogue)
+            if (interactingObjs != null && interactingObjs.Count > 0 && canInteract && CanFight() &&
+                !GameManager.gameManager.dialogueController.ActiveMainDialogue && !GameManager.gameManager.MainHud.shopUI.gameObject.activeSelf)
             {
                 Debug.Log("Achando o npc mais na sua frente");
                 interacting = true;
@@ -407,6 +413,10 @@ public class Player : MonoBehaviour, BattleUnit
                     {
                         Debug.Log("atualizando o mais na frente");
                         aux = interactingObjs[i];
+                    }
+                    else
+                    {
+                        interactingObjs[i].DesactiveBtp();
                     }
                     Debug.Log(aux.name);
                 }
@@ -545,14 +555,16 @@ public class Player : MonoBehaviour, BattleUnit
         {
             if (targetedEnemy != null)
             {
-                battleAim = new Vector3(targetedEnemy.transform.position.x, transform.position.y, targetedEnemy.transform.position.z);
+                //battleAim = new Vector3(targetedEnemy.transform.position.x, transform.position.y, targetedEnemy.transform.position.z);
+                battleAim = targetedEnemy.transform.position - transform.position;
+                battleAim.y = 0;
             }
             else LockAim();
         }
 
-        CheckLook_WalkDir(heading, xMov, zMov);
+        if (!aimingThrowable && !placingItem) transform.rotation = Quaternion.LookRotation(battleAim);//transform.LookAt(battleAim);
 
-        if (!aimingThrowable && !placingItem) transform.LookAt(battleAim);
+        CheckLook_WalkDir(heading, xMov, zMov);
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -564,15 +576,15 @@ public class Player : MonoBehaviour, BattleUnit
             }
         }  
     }
-    IEnumerator WalkSFX()
-    {
-        yield return new WaitForEndOfFrame();
-        while (true)
-        {           
-            if (moving) GameManager.gameManager.audioController.PlayEffect(clip_walkGrass, false, 0, true);
-            yield return new WaitForSeconds(walkSFXInterval);
-        }
-    }
+    //IEnumerator WalkSFX()
+    //{
+    //    yield return new WaitForEndOfFrame();
+    //    while (true)
+    //    {           
+    //        if (moving) GameManager.gameManager.audioController.PlayEffect(clip_walkGrass, false, 0, true);
+    //        yield return new WaitForSeconds(walkSFXInterval);
+    //    }
+    //}
 
     void StopMoving()
     {
@@ -1153,6 +1165,21 @@ public class Player : MonoBehaviour, BattleUnit
     {
         if (defense_life > 0) return false;
         else return true;
+    }
+
+    public void EnableInteraction()
+    {
+        if (interactingObjs.Count == 0) return;
+
+        for (int i = 0; i < interactingObjs.Count; i++)
+        {
+            interactingObjs[i].ActiveBtp();
+        }
+        Invoke("ResetInteraction", 0.02f);
+    }
+    void ResetInteraction()
+    {
+        canInteract = true;
     }
 
     public void EnableCharController(bool v)

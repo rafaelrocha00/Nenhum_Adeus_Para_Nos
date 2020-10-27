@@ -145,15 +145,17 @@ public abstract class NPC : Interactives, BattleUnit, IDialogueable
     public void MoveNavMesh(Vector3 pos)
     {
         if (navMesh == null) navMesh = GetComponent<NavMeshAgent>();
+        Debug.Log("Movendo NPc");
         navMesh.isStopped = false;
         navMesh.destination = pos;
     }
 
-    public void EndDialogue()
+    public virtual void EndDialogue()
     {
         if (mCharacter == null) mCharacter = GameManager.gameManager.battleController.MainCharacter;
         OnExit(mCharacter);
-        GameManager.gameManager.dialogueController.EndDialogue();        
+        EndInteraction();
+        GameManager.gameManager.dialogueController.EndDialogue();
     }
 
     public void ReceiveItem()

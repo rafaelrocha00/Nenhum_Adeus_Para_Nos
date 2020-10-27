@@ -13,15 +13,12 @@ MonoBehaviour:
   m_Name: Lucy - 1 quest
   m_EditorClassIdentifier: 
   qName: Acordar a familia
-  id: 0
+  id: 100
   description: quest_description
-  moneyReward: 0
-  resourceReward: 0
   contractor: contractor_
   mustReturn: 0
   limitDay: -1
   generated: 0
-  resourceT: 4
   completingQuestDialogue: {fileID: 11400000, guid: a1b1470c85525d24c8654d9ec55dd210,
     type: 2}
   quest_itemRewards: []
@@ -41,4 +38,5 @@ MonoBehaviour:
   - Tuty
   - Thimmy
   - Bewoy
-  talked: 000000
+  - Leya
+  talked: 00000000

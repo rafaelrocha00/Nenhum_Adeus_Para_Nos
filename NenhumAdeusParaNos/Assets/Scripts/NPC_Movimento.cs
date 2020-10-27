@@ -5,21 +5,35 @@ using UnityEngine.AI;
 
 public class NPC_Movimento : MonoBehaviour
 {
-    [SerializeField]List<GameObject> Waypoints = new List<GameObject>();
+    [SerializeField] List<GameObject> Waypoints = new List<GameObject>();
+
     bool movendo = true;
     bool podeMover = true;
+    bool interacting = false;
     int index = 0;
     [SerializeField]List<float> tempoParaEsperar = new List<float>();
     [SerializeField] Animator anim = null;
-         
+
+    [HideInInspector] Transform playerPos;
+    public Transform PlayerPos { set { playerPos = value; } }
+
     private void Start()
     {
+        if (anim == null) anim = GetComponentInChildren<Animator>();
+
+        if (Waypoints.Count == 0)
+        {
+            podeMover = false;
+            return;
+        }
+
         MudarDestino();
         StartCoroutine(Esperar());
     }
 
     private void Update()
     {
+
         if (podeMover)
         {
             transform.position = Vector3.MoveTowards(transform.position, Waypoints[index].transform.position, Time.deltaTime);
@@ -32,6 +46,10 @@ public class NPC_Movimento : MonoBehaviour
                 Rotacao(Waypoints[index].transform.position - Waypoints[Waypoints.Count -1].transform.position);
 
             }
+        }
+        else if (interacting)
+        {
+            Rotacao(new Vector3(playerPos.position.x, transform.position.y, playerPos.position.z) - transform.position);
         }
 
         if (movendo && podeMover)
@@ -94,11 +112,13 @@ public class NPC_Movimento : MonoBehaviour
     public void Parar()
     {
         podeMover = false;
+        interacting = true;
     }
 
     public void Voltar()
     {
-        podeMover = true;
+        if (Waypoints.Count > 0) podeMover = true;
+        interacting = false;
     }
 
    

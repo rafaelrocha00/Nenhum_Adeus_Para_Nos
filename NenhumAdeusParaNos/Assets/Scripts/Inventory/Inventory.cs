@@ -62,6 +62,7 @@ public class Inventory : MonoBehaviour
     public void AddItemByCoord(Item i, Vector2Int[,] coords)
     {
         ItemButton newItem = iGen.GenItem(i);
+        newItem.tag = myGrid.tag;
         myGrid.AlocateByCoord(coords, newItem);
     }
 

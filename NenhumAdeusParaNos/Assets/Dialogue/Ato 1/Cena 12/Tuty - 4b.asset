@@ -16,9 +16,18 @@ MonoBehaviour:
   - "Se voc\xEA falar para sua m\xE3e, eu n\xE3o te dou dinheiro, combinado?"
   - "\xC9 brincadeira, n\xE9?"
   mcStrings: 00000000
+  unlockableDialogues: []
+  unlockPlayerMovement: 0
+  makeNPCWalk: 0
+  finalPoint: {x: 0, y: 0, z: 0}
+  changeSceneState: 0
+  sceneState: {fileID: 0}
+  objectToBreak: 
   dialogueChoices:
-  - {fileID: 11400000, guid: 726f8f97edd922a4989793394d8ad14b, type: 2}
-  - {fileID: 11400000, guid: cef7b8f11be58cc49b1463fc60ccc5f5, type: 2}
+  - {fileID: 11400000, guid: 82677e9531e96af4fb63466bcc9fbaf5, type: 2}
+  - {fileID: 11400000, guid: 5debc77166158154483cedf15a756f88, type: 2}
   options:
   - "N\xE3o."
   - Sim.
+  requiredItem: {fileID: 0}
+  optionToUnlock: -1

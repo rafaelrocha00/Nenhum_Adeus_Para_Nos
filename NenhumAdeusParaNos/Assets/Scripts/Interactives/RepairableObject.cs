@@ -113,6 +113,7 @@ public class RepairableObject : Interactives, IDateEvent
         yield return new WaitForSeconds(1);
         Attach(v);
         OnExit(GameManager.gameManager.battleController.MainCharacter);
+        EndInteraction();
     }
 
     public void Break()

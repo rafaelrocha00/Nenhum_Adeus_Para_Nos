@@ -28,8 +28,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5902380043707863810}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -158.39, y: 0.957, z: -54.63}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4081516633980491481}
@@ -92,7 +92,7 @@ BoxCollider:
   m_GameObject: {fileID: 5902380043707863810}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -121,12 +121,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26d0bc2466d9c8a43a027711d0d0366c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonToPressPref: {fileID: 6638989974725394705, guid: 1a98f6b0eb2747648aedcb7a647713cd,
+  myName: 
+  buttonToPressPref: {fileID: 7946430027621689139, guid: 2566e8908f0cc0e42919a4e2f9fae37e,
     type: 3}
   popUPHigh: 3
-  depositName: 
+  oneInteraction: 0
+  canInteract: 1
+  onlyAcceptedQuest: 0
+  onlyCompletedQuest: 0
+  triggerQuest: {fileID: 0}
   page_number: 1
   main: 0
+  questItemsSpawner: 0
   storageMenu: {fileID: 0}
   pages: []
   storagePref: {fileID: 5863475236746612159, guid: eb871af7af20d0e459335e74922aa58f,
@@ -145,6 +151,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tesouro
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149307975725733679, guid: dd0c66b1fba821f4ca53052aa03e033b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8155277350538388796, guid: dd0c66b1fba821f4ca53052aa03e033b,
         type: 3}

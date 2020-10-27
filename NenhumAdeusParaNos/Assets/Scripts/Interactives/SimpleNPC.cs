@@ -14,6 +14,8 @@ public class SimpleNPC : Interactives, IDialogueable
 
     Animator anim;
 
+    NPC_Movimento movement;
+
     private void Start()
     {
         navmesh = GetComponent<NavMeshAgent>();
@@ -21,6 +23,8 @@ public class SimpleNPC : Interactives, IDialogueable
 
         CustomEvents.instance.onDialogueStart += EnterDialogueAnim;
         CustomEvents.instance.onDialogueEnd += ExitDialogueAnim;
+
+        movement = GetComponent<NPC_Movimento>();
     }
 
     private void OnDestroy()
@@ -31,12 +35,22 @@ public class SimpleNPC : Interactives, IDialogueable
 
     public override void Interact(Player player)
     {
+        if (myDialogues == null) return;
+
         DesactiveBtp();
         StartDialogue(player);
+
+        if (movement != null)
+        {
+            movement.PlayerPos = player.transform;
+            movement.Parar();
+        }
     }
 
     void StartDialogue(Player p)
     {
+        if (myDialogues == null) return;
+
         Dialogue aux = myDialogues.GetRandomDialogue();
         aux.MyNPC = this;
         aux.MainCharacter = p;
@@ -45,8 +59,10 @@ public class SimpleNPC : Interactives, IDialogueable
     }
 
     public void EndDialogue()
-    {
+    {       
+        EndInteraction();
         GameManager.gameManager.dialogueController.EndDialogue();
+        movement.Voltar();
     }
 
     public string GetName()

@@ -23,7 +23,7 @@ public class SceneNav : MonoBehaviour
         inFirstFloor = true;
         p.transform.position = ffPos.position;
         p.MoveCompanions(ffPos.position);
-        Invoke("ActivePlayer", 0.5f);
+        Invoke("ActivePlayer", 0.25f);
     }
 
     public void GoToSecondFloor(Player p)
@@ -35,7 +35,7 @@ public class SceneNav : MonoBehaviour
         inFirstFloor = false;
         p.transform.position = sfPos.position;
         p.MoveCompanions(sfPos.position);
-        Invoke("ActivePlayer", 0.2f);
+        Invoke("ActivePlayer", 0.25f);
     }
 
     //void AlternateFloors()
@@ -50,6 +50,7 @@ public class SceneNav : MonoBehaviour
         player = p;
         Debug.Log("Navigando");
         p.enabled = false;
+        //p.EnableCharController(false);
         if (inFirstFloor) GoToSecondFloor(p);
         else GoToFirstFloor(p);
     }
@@ -57,5 +58,6 @@ public class SceneNav : MonoBehaviour
     void ActivePlayer()
     {
         player.enabled = true;
+        //player.EnableCharController(true);
     }
 }

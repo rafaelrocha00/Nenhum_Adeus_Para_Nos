@@ -9,6 +9,7 @@ public class Storage : Interactives
     //public string depositName = "";
     public int page_number = 1;
     public bool main = false;
+    public bool questItemsSpawner = false;
 
     public GameObject storageMenu;
     public GameObject[] pages;
@@ -98,10 +99,21 @@ public class Storage : Interactives
 
         if (main)
         {
-            int qSize = GameManager.gameManager.companyController.itemsToAlocate.Count;
-            for (int i = 0; i < qSize; i++)
+            //int qSize = GameManager.gameManager.companyController.itemsToAlocate.Count;
+            //for (int i = 0; i < qSize; i++)
+            //{
+            //    TryAlocateItem(GameManager.gameManager.companyController.itemsToAlocate.Dequeue());
+            //}
+            while (GameManager.gameManager.companyController.itemsToAlocate.Count > 0)
             {
                 TryAlocateItem(GameManager.gameManager.companyController.itemsToAlocate.Dequeue());
+            }
+        }
+        else if (questItemsSpawner)
+        {
+            while (GameManager.gameManager.itemsSaver.itemsToDelivery.Count > 0)
+            {
+                TryAlocateItem(GameManager.gameManager.itemsSaver.itemsToDelivery.Dequeue());
             }
         }
     }
@@ -151,6 +163,14 @@ public class Storage : Interactives
         return myGrids[actualPage].CheckItemQuant(itemName);
     }
 
+    public void RemoveItems(string itemName, int quant = 1)
+    {
+        for (int i = 0; i < quant; i++)
+        {
+            myGrids[actualPage].RemoveItem(itemName);
+        }
+    }
+
     public override void OnExit(Player p)
     {
         base.OnExit(p);
@@ -196,6 +216,7 @@ public class Storage : Interactives
             {
                 GameManager.gameManager.questController.CheckQuests(this);
                 GameManager.gameManager.itemsSaver.SetChestsItemCoords(GetItemsByPage(), Name);
+                EndInteraction();
                 ResetPages();
             }
             else if (value)

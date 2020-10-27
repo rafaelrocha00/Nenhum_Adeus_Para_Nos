@@ -11,13 +11,14 @@ public class Door : MonoBehaviour
 
     public string sceneName;
 
+    public Quest quesToBeCompleted;
     public Quest quesToAccept;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("npc") && !other.isTrigger) Destroy(other.gameObject);
 
-        if (quesToAccept != null && !quesToAccept.Accepted) quesToAccept.AcceptQuest();
+        if (quesToAccept != null && !quesToAccept.Accepted && quesToBeCompleted.Completed) quesToAccept.AcceptQuest();
 
         if (other.CompareTag("player"))
         {

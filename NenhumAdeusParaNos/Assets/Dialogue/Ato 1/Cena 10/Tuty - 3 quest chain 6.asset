@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca039650f52f2da42b284a0495b9b11e, type: 3}
+  m_Name: Tuty - 3 quest chain 6
+  m_EditorClassIdentifier: 
+  qName: Chegue na ponte
+  id: 115
+  description: quest_description
+  contractor: contractor_
+  mustReturn: 0
+  limitDay: -1
+  generated: 0
+  completingQuestDialogue: {fileID: 0}
+  quest_itemRewards: []
+  quest_itemRQuants: 
+  completed: 0
+  accepted: 0
+  cancelled: 0
+  waitingReturnToNPC: 0
+  acceptText: 
+  completeText: "Droga, vai demorar muito pra dar a volta, mas n\xE3o tenho escolha."
+  unlockableDialogues:
+  - {fileID: 11400000, guid: c2f4e330eaeac43469fd9376f456ad46, type: 2}
+  questToAccept: {fileID: 0}
+  sceneStateChange: {fileID: 0}
+  compToAdd: []
+  placeToGoName: Broken Bridge

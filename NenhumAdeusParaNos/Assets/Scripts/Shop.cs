@@ -20,6 +20,20 @@ public class Shop : MonoBehaviour, IDialogueable
     public DialogueOptions postTradeDialogues;
     public DialogueOptions postCancelDialogues;
 
+    private void Start()
+    {
+        Item[] savedItems = GameManager.gameManager.itemsSaver.SetShopItems(GetName());
+        if (savedItems == null) return;
+
+        sellingItems = new Item[savedItems.Length];
+        savedItems.CopyTo(sellingItems, 0);
+    }
+
+    private void OnDestroy()
+    {        
+        GameManager.gameManager.itemsSaver.SaveShopItems(GetName(), sellingItems);
+    }
+
     public void OpenShop()
     {
         GameManager.gameManager.MainHud.OpenShopUI(this);
@@ -55,11 +69,15 @@ public class Shop : MonoBehaviour, IDialogueable
             if (choosenItems[i].ThisItemB != null)
             {
                 GameManager.gameManager.inventoryController.Inventory.myGrid.TryAlocateItem(choosenItems[i].ThisItemB);
+                GameManager.gameManager.questController.CheckQuests(choosenItems[i].ThisItemB.Item);
+
                 choosenItems[i].Clear();
             }
         }
 
         StartDialogue(true);
+
+        sellingItems = GameManager.gameManager.MainHud.shopUI.shopItems.GetAllItems();
 
         CancelTrade();
     }

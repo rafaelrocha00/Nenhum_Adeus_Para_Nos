@@ -9,8 +9,8 @@ public abstract class Quest : ScriptableObject
     [SerializeField] string qName = "quest_name";
     [SerializeField] int id = 0;
     [SerializeField] string description = "quest_description";
-    [SerializeField] int moneyReward = 0;    
-    [SerializeField] int resourceReward = 0;
+    //[SerializeField] int moneyReward = 0;    
+    //[SerializeField] int resourceReward = 0;
     [SerializeField] string contractor = "contractor_";
     [SerializeField] protected bool mustReturn = false;
     [SerializeField] int limitDay = -1;
@@ -18,9 +18,9 @@ public abstract class Quest : ScriptableObject
     public int ID { get { return id; } set { id = value; } }
     public bool generated = true;
     public string Description { get { return description; } set { description = value; } }
-    public int MoneyReward { get { return moneyReward; } set { moneyReward = value; } }
-    public CompanyController.ResourceType resourceT = CompanyController.ResourceType.None;
-    public int ResourceReward { get { return resourceReward; } set { resourceReward = value; } }
+    //public int MoneyReward { get { return moneyReward; } set { moneyReward = value; } }
+    //public CompanyController.ResourceType resourceT = CompanyController.ResourceType.None;
+    //public int ResourceReward { get { return resourceReward; } set { resourceReward = value; } }
     public string Contractor { get { return contractor; } set { contractor = value; } }
     public bool MustReturn { get { return mustReturn; } set { mustReturn = value; } }
     public DialogueQuestTrigger completingQuestDialogue;
@@ -55,7 +55,7 @@ public abstract class Quest : ScriptableObject
     [Header("Companions")]
     public GameObject[] compToAdd;
 
-    public void AcceptQuest()
+    public virtual void AcceptQuest()
     {
         cancelled = false;
         accepted = true;
@@ -67,10 +67,23 @@ public abstract class Quest : ScriptableObject
 
     public void Complete()
     {
+        Debug.Log("Completando mesmo");
+
         completed = true;
         GameManager.gameManager.questController.CompleteQuest(this);
-        GameManager.gameManager.companyController.AddResource(resourceT, resourceReward);
-        GameManager.gameManager.companyController.Money += moneyReward;
+        //GameManager.gameManager.companyController.AddResource(resourceT, resourceReward);
+        //GameManager.gameManager.companyController.Money += moneyReward;
+
+        Debug.Log("Adcionando itens");
+        for (int i = 0; i < quest_itemRewards.Length; i++)
+        {
+            Debug.Log("Item: " + quest_itemRewards[i].itemName + " x " + quest_itemRQuants[i]);
+            for (int j = 0; j < quest_itemRQuants[i]; j++)
+            {
+                Debug.Log("Adicionando Item: " + quest_itemRewards[i].itemName);
+                GameManager.gameManager.inventoryController.Inventory.AddItem(quest_itemRewards[i]);
+            }
+        }
 
         if (!generated)
         {
@@ -85,13 +98,13 @@ public abstract class Quest : ScriptableObject
     void OnComplete()
     {
         GameManager.gameManager.questController.AddNote(completeText);//mainNotes.AddNote(completeText);
-        for (int i = 0; i < quest_itemRewards.Length; i++)
-        {
-            for (int j = 0; j < quest_itemRQuants[i]; j++)
-            {
-                GameManager.gameManager.inventoryController.Inventory.AddItem(quest_itemRewards[i]);
-            }
-        }
+        //for (int i = 0; i < quest_itemRewards.Length; i++)
+        //{
+        //    for (int j = 0; j < quest_itemRQuants[i]; j++)
+        //    {
+        //        GameManager.gameManager.inventoryController.Inventory.AddItem(quest_itemRewards[i]);
+        //    }
+        //}
 
         if (unlockableDialogues != null)
         {

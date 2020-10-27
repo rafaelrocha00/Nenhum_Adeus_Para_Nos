@@ -15,6 +15,8 @@ public class QuestController : MonoBehaviour
 
     public Notes mainNotes;
 
+    int questsCompleted = 0;
+
     public void AddNote(string txt)
     {
         if (txt.Equals("")) return;
@@ -46,10 +48,11 @@ public class QuestController : MonoBehaviour
         try
         {
             activeQuests.RemoveAt(FindQuestIndex(q.ID));
+            questsCompleted--;
             completedQuests.Add(q);
 
             //Enviar pro servidor o nome do player e a recompensa
-            if (q.generated) Client_UDP.Singleton.SendToServer("Jogador: " + GameManager.gameManager.PlayerName + " | Maior Recompensa: $" + q.MoneyReward.ToString("00") + "(s)");
+            //if (q.generated) Client_UDP.Singleton.SendToServer("Jogador: " + GameManager.gameManager.PlayerName + " | Maior Recompensa: $" + q.MoneyReward.ToString("00") + "(s)");
         }
         catch (System.Exception)
         {
@@ -83,10 +86,12 @@ public class QuestController : MonoBehaviour
 
     public void CheckQuests<T>(T t)
     {
-        for (int i = 0; i < activeQuests.Count; i++)
+        int oldQuant = activeQuests.Count;
+        for (int i = 0; i < oldQuant; i++)
         {
-            activeQuests[i].CheckComplete(t);
+            activeQuests[i + questsCompleted].CheckComplete(t);
         }
+        questsCompleted = 0;
     }
 
     public void CancelQuestsOnLimit()

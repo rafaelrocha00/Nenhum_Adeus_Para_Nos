@@ -48,7 +48,12 @@ public abstract class Interactives : MonoBehaviour
         if (other.tag.Equals("player") && !GameManager.gameManager.battleController.ActiveBattle)
         {
             Player player = other.GetComponent<Player>();
-            if (buttonPref == null) buttonPref = Instantiate(buttonToPressPref, transform.position + Vector3.up * popUPHigh, Quaternion.identity);
+            if (buttonPref == null)
+            {
+                //buttonPref = Instantiate(buttonToPressPref, transform.position + Vector3.up * popUPHigh, Quaternion.identity);
+                buttonPref = Instantiate(buttonToPressPref, GameManager.gameManager.MainHud.pressEPops, false) as GameObject;
+                buttonPref.GetComponent<ButtonToPress>().SetTransf(transform, popUPHigh);
+            }
             else buttonPref.SetActive(true);
             player.InteractingObjs.Add(this);
             player.CanInteract = true;
@@ -67,11 +72,16 @@ public abstract class Interactives : MonoBehaviour
         }
     }
 
-    protected void DesactiveBtp()
+    public void ActiveBtp()
+    {
+        if (buttonPref != null) buttonPref.SetActive(true);
+    }
+
+    public void DesactiveBtp()
     {
         if (buttonPref != null)
         {
-            buttonPref.transform.position = transform.position + Vector3.up * popUPHigh;
+            //buttonPref.transform.position = transform.position + Vector3.up * popUPHigh;
             buttonPref.SetActive(false);
         }
     }
@@ -81,6 +91,13 @@ public abstract class Interactives : MonoBehaviour
     public void CheckQuest()
     {
         GameManager.gameManager.questController.CheckQuests(this);
+    }
+
+    public void EndInteraction()
+    {
+        Player p = GameManager.gameManager.battleController.MainCharacter;
+
+        p.EnableInteraction();
     }
 
     public virtual void OnExit(Player p)

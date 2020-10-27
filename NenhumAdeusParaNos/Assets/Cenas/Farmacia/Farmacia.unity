@@ -1352,6 +1352,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3687985031568485161, guid: 513ab17499aa7a44f983df20fc7342fe,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3687985032539992368, guid: 513ab17499aa7a44f983df20fc7342fe,
         type: 3}
       propertyPath: m_Name
@@ -1593,6 +1598,7 @@ MonoBehaviour:
   spawnpointID: 1
   iQuickTravel: {fileID: 0}
   sceneName: VilaDaMadeira
+  quesToAccept: {fileID: 0}
 --- !u!4 &901650005
 Transform:
   m_ObjectHideFlags: 0
@@ -3322,6 +3328,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6057511816828284434, guid: 0811ea1c8b960e641a58bbae0f51a243,
+        type: 3}
+      propertyPath: m_Radius
+      value: 3.56
+      objectReference: {fileID: 0}
     - target: {fileID: 6482551104356920315, guid: 0811ea1c8b960e641a58bbae0f51a243,
         type: 3}
       propertyPath: myName
@@ -3360,9 +3371,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sellingItems:
   - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
+  - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
+  - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
+  - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
+  - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
+  - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
+  - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
+  - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
+  - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
+  - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
+  - {fileID: 11400000, guid: 8a4fbdbf8f526b54381823fc83e3a1ab, type: 2}
+  - {fileID: 11400000, guid: 8a4fbdbf8f526b54381823fc83e3a1ab, type: 2}
+  - {fileID: 11400000, guid: 8a4fbdbf8f526b54381823fc83e3a1ab, type: 2}
+  - {fileID: 11400000, guid: 8a4fbdbf8f526b54381823fc83e3a1ab, type: 2}
   - {fileID: 11400000, guid: 8a4fbdbf8f526b54381823fc83e3a1ab, type: 2}
   acceptableItems:
   - {fileID: 11400000, guid: ae8a7623015c15e4d9e7c78b39d95b77, type: 2}
+  postTradeDialogues: {fileID: 11400000, guid: 96b2495f02f55894b85a19a8263d3ed0, type: 2}
+  postCancelDialogues: {fileID: 0}
 --- !u!1001 &2056527178
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -13,6 +13,7 @@ public class Bed : Interactives
         GameManager.gameManager.MainHud.FadeInOut();
         p = player;
 
+        DesactiveBtp();
         p.enabled = false;
         Invoke("PassTime", 1);
         Invoke("ActivePlayer", 3);
@@ -29,6 +30,8 @@ public class Bed : Interactives
     void ActivePlayer()
     {
         p.enabled = true;
-        DesactiveBtp();
+        OnExit(p);
+        //DesactiveBtp();
+        EndInteraction();
     }
 }

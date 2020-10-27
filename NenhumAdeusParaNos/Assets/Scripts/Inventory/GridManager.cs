@@ -16,7 +16,11 @@ public class GridManager : MonoBehaviour
 
     private void Start()
     {
-        if (generateOnStart) Generate();
+        //if (generateOnStart) Generate();
+        if (generateOnStart)
+        {
+            Invoke("OrganizeItems", 0.02f);
+        }
     }
 
     public void Generate()
@@ -45,6 +49,15 @@ public class GridManager : MonoBehaviour
         Debug.Log("Tentando carregar itens");
         if (!GameManager.gameManager.itemsSaver.SavedInven()) GameManager.gameManager.inventoryController.Inventory.iGen.GenRandomItem();
         GameManager.gameManager.itemsSaver.SetInventoryItems();
+    }
+
+    void OrganizeItems()
+    {
+        ItemButton[] allItems = itemHolder.GetComponentsInChildren<ItemButton>();
+        for (int i = 0; i < allItems.Length; i++)
+        {
+            AlocateByCoord(allItems[i].myCoords, allItems[i]);
+        }
     }
 
     public bool TryAlocateItem(ItemButton itemB)
@@ -102,7 +115,7 @@ public class GridManager : MonoBehaviour
                     }
                     //if (itemWasPlaced) break;
                 }
-                else { Debug.Log("Não está vazio?"); }
+                //else { Debug.Log("Não está vazio?"); }
             }
             //if (itemWasPlaced) break;
         }
@@ -218,6 +231,18 @@ public class GridManager : MonoBehaviour
         {
             allItems[i].RemoveAndDestroy();
         }
+    }
+
+    public Item[] GetAllItems()
+    {
+        ItemButton[] aux = itemHolder.GetComponentsInChildren<ItemButton>();
+        List<Item> allItems = new List<Item>();
+        for (int i = 0; i < aux.Length; i++)
+        {
+            allItems.Add(aux[i].Item);
+        }
+
+        return allItems.ToArray();
     }
 
     public void CheckIfItemWasAdded()

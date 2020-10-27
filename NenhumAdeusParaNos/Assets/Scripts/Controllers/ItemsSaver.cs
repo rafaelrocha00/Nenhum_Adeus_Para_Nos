@@ -19,7 +19,11 @@ public class ItemsSaver : MonoBehaviour
     Item_Coord[] invenItems;
     List<Chest_Item> chestItems = new List<Chest_Item>();
 
+    Dictionary<string, Item[]> shopItems = new Dictionary<string, Item[]>();
+
     public bool chestGeneratedItems = false;
+
+    public Queue<Item> itemsToDelivery = new Queue<Item>();
 
     public bool SavedInven()
     {
@@ -105,5 +109,24 @@ public class ItemsSaver : MonoBehaviour
 
         if (id < 0) return false;
         else return true;
+    }
+
+    public void SaveShopItems(string shopName, Item[] inSaleItems)
+    {
+        if (!shopItems.ContainsKey(shopName))
+        {
+            shopItems.Add(shopName, inSaleItems);
+        }
+        else
+        {
+            shopItems[shopName] = new Item[inSaleItems.Length];
+            inSaleItems.CopyTo(shopItems[shopName], 0);
+        }
+    }
+
+    public Item[] SetShopItems(string shopName)
+    {
+        if (shopItems.ContainsKey(shopName)) return shopItems[shopName];
+        else return null;
     }
 }
