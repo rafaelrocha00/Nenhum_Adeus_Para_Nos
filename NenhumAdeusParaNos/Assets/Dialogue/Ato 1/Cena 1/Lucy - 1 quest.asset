@@ -23,15 +23,15 @@ MonoBehaviour:
     type: 2}
   quest_itemRewards: []
   quest_itemRQuants: 
-  completed: 0
-  accepted: 0
+  completed: 1
+  accepted: 1
   cancelled: 0
   waitingReturnToNPC: 0
   acceptText: "T\xE1 na hora de acordar todo mundo."
   completeText: Melhor avisar a Lucy.
   unlockableDialogues:
   - {fileID: 11400000, guid: a7f4e301705faa64e900ef6419d89c70, type: 2}
-  questToAccept: {fileID: 0}
+  questToAccept: {fileID: 11400000, guid: f1345227afabfa14ebfa35fbb93c2077, type: 2}
   sceneStateChange: {fileID: 0}
   compToAdd: []
   npcsToTalk:
@@ -39,4 +39,4 @@ MonoBehaviour:
   - Thimmy
   - Bewoy
   - Leya
-  talked: 00000000
+  talked: 01010101

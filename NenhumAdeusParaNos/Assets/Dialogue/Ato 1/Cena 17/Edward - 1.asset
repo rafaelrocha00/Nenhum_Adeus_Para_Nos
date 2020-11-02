@@ -13,7 +13,13 @@ MonoBehaviour:
   m_Name: Edward - 1
   m_EditorClassIdentifier: 
   allStrings:
-  - 'O que?
-
-'
+  - "O que?                           \n"
   mcStrings: 00000000
+  unlockableDialogues: []
+  lockPlayerMovement: 1
+  unlockPlayerMovement: 0
+  makeNPCWalk: 0
+  finalPoint: {x: 0, y: 0, z: 0}
+  changeSceneState: 0
+  sceneState: {fileID: 0}
+  objectToBreak: 

@@ -16,7 +16,7 @@ public class RepairQuest : Quest
         try
         {
             RepairableObject rep = thing as RepairableObject;
-            if (rep.Name.Equals(objectToRepair) && !rep.broken) TryComplete();
+            if (rep.Name.Equals(objectToRepair) && !rep.broken) { TryComplete(); rep.CheckQuestMarker(); }
         }
         catch { Debug.Log("Not a repairable"); }
     }

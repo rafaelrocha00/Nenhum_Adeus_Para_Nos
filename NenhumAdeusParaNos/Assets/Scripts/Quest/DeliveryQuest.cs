@@ -49,6 +49,7 @@ public class DeliveryQuest : Quest
                     sto.RemoveItems(itemsToDelivery[i].itemName, itemsQuant[i]);
                 }
                 TryComplete();
+                sto.CheckQuestMarker();
             }            
         }
         catch { Debug.Log("Not a storage"); }

@@ -15,25 +15,22 @@ MonoBehaviour:
   qName: Consertar muro do benjo
   id: 105
   description: quest_description
-  moneyReward: 0
-  resourceReward: 0
   contractor: contractor_
   mustReturn: 0
   limitDay: -1
   generated: 0
-  resourceT: 4
   completingQuestDialogue: {fileID: 0}
   quest_itemRewards: []
   quest_itemRQuants: 
-  completed: 0
-  accepted: 0
+  completed: 1
+  accepted: 1
   cancelled: 0
   waitingReturnToNPC: 0
   acceptText: "Esse muro ficou bem destru\xEDdo. O que poderia ter feito isso?"
   completeText: Isso deve aguentar.
   unlockableDialogues:
   - {fileID: 11400000, guid: c2f4e330eaeac43469fd9376f456ad46, type: 2}
-  questToAccept: {fileID: 0}
+  questToAccept: {fileID: 11400000, guid: bb3a2128d20c35843b7c22912853846c, type: 2}
   sceneStateChange: {fileID: 0}
   compToAdd: []
   objectToRepair: Muro

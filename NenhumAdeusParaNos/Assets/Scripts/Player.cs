@@ -122,7 +122,7 @@ public class Player : MonoBehaviour, BattleUnit
     #endregion
     public float walkSFXInterval = 0.5f;
 
-    [HideInInspector] bool battleUnlocked = false;
+    [SerializeField] bool battleUnlocked = false;
     public bool BattleUnlocked { get { return battleUnlocked; } set { battleUnlocked = value; } }
 
     bool inBattle;
@@ -1165,6 +1165,20 @@ public class Player : MonoBehaviour, BattleUnit
     {
         if (defense_life > 0) return false;
         else return true;
+    }
+
+    public void Repair(Vector3 repairPos)
+    {
+        Vector3 look = repairPos - transform.position;
+        look.y = 0;
+        transform.rotation = Quaternion.LookRotation(look);
+        canMove = false;
+        animator.SetTrigger("Repair");
+        Invoke("ResetCanMove", 1.5f);
+    }
+    void ResetCanMove()
+    {
+        canMove = true;
     }
 
     public void EnableInteraction()

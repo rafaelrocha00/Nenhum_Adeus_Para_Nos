@@ -49,6 +49,9 @@ public class MainHud : MonoBehaviour
     [HideInInspector] Storage actualStorage = null;
     public Storage ActualStorage { set { actualStorage = value; } }
 
+    CompanyPC currentPC;
+    bool onPC;
+
     public Text date;
 
     public Image fadeScr;
@@ -57,7 +60,7 @@ public class MainHud : MonoBehaviour
     public Text itemDesc_name;
     public Text itemDesc_description;
 
-    public Transform pressEPops;
+    public Transform popUpsHolder;
 
     #region Opçoes_de_Dialogo
     //public void OpenDialogueOptTab(DialogueWithChoice dialogue)
@@ -192,6 +195,7 @@ public class MainHud : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (notesMenu.activeSelf) OpenCloseNotesMenu(false);
+            else if (onPC) currentPC.Exit();
             else if (actualStorage != null && actualStorage.storageMenu.activeSelf) actualStorage.OpenCloseStorage(false);
             else if (shopUI.gameObject.activeSelf) shopUI.Exit();
             else if (inventory.activeSelf) OpenCloseInventory(false);
@@ -336,6 +340,13 @@ public class MainHud : MonoBehaviour
         quickItemSlots[id].transform.parent.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 30);
     }
 
+    public void EnterPC(bool v, CompanyPC pc = null)
+    {
+        EnablePopUps(!v);
+        onPC = v;
+        currentPC = pc;
+    }
+
     public void FadeInOut()
     {
         StartCoroutine("FadeIn");
@@ -348,9 +359,10 @@ public class MainHud : MonoBehaviour
         while (timer <= 1)
         {
             fadeScr.color = Color.Lerp(new Color(0, 0, 0, 0), Color.black, timer);
-            yield return new WaitForEndOfFrame();
-            timer += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+            timer += Time.fixedDeltaTime;
         }
+        fadeScr.color = Color.black;
         StartCoroutine(FadeOut(2));
     }
     IEnumerator FadeOut(float t)
@@ -360,8 +372,8 @@ public class MainHud : MonoBehaviour
         while (timer <= 1)
         {
             fadeScr.color = Color.Lerp(Color.black, new Color(0, 0, 0, 0), timer);
-            yield return new WaitForEndOfFrame();
-            timer += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+            timer += Time.fixedDeltaTime;
         }
 
         fadeScr.gameObject.SetActive(false);
@@ -400,6 +412,11 @@ public class MainHud : MonoBehaviour
             rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, rect.sizeDelta.y + ammount);
         }
         catch { Debug.Log("Não tem RectTransform"); }
+    }
+
+    public void EnablePopUps(bool v)
+    {
+        popUpsHolder.gameObject.SetActive(v);
     }
 
     void DestroyChilds(Transform transform)

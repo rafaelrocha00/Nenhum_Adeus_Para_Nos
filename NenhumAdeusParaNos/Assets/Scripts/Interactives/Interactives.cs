@@ -8,17 +8,23 @@ public abstract class Interactives : MonoBehaviour
     public string Name { get { return myName; } set { myName = value; } }
     public GameObject buttonToPressPref;
     protected GameObject buttonPref;
+    protected GameObject quest_mark;
+    protected Quest active_quest;
 
     public float popUPHigh;
 
     public bool oneInteraction = false;
     public bool canInteract = true;
 
+    //protected List<Quest> quests_targeted_me = new List<Quest>();
+
     [Header("Quest Triggerable")]
     public bool onlyAcceptedQuest;
     public bool onlyCompletedQuest;
     public Quest triggerQuest;
     // public RepairableObject triggerRepairable;
+
+    //protected bool firstEnable = true;
 
     private void Start()
     {
@@ -38,6 +44,60 @@ public abstract class Interactives : MonoBehaviour
             //if (triggerQuest.Accepted && !triggerQuest.Completed) canInteract = true;
             canInteract = triggerQuest.Accepted && !triggerQuest.Completed;
         }
+
+        //Acionar evento
+        //firstEnable = false;
+    }
+
+    private void OnEnable()
+    {
+        /*if (!firstEnable)*/
+        Invoke("AddQuestEvent", 0.005f);
+    }
+    void AddQuestEvent()
+    {
+        Debug.Log("adicionando quest event /" + Name);
+        CustomEvents.instance.onQuestAccepted += CheckForQuestObjectives;
+    }
+
+    private void OnDisable()
+    {
+        CustomEvents.instance.onQuestAccepted -= CheckForQuestObjectives;
+
+        if (quest_mark != null) quest_mark.SetActive(false);
+    }
+
+    public virtual void CheckForQuestObjectives(Quest q_)
+    {
+        Debug.Log("Checando quest no interagiveis");
+
+        if (q_ is InteractQuest)
+        {
+            InteractQuest q = (InteractQuest)q_;
+            if (q.objectToInteract.Equals(Name))
+            {
+                SpawnQuestMarker();
+                active_quest = q;
+                //if (quests_targeted_me.Contains(q_)) quests_targeted_me.Add(q_);
+                return;
+            }
+        }
+    }
+
+    protected void SpawnQuestMarker()
+    {
+        if (quest_mark != null)
+        {
+            quest_mark.SetActive(true);
+            return;
+        }
+
+        quest_mark = Instantiate(GameManager.gameManager.questController.quest_marker_pref, GameManager.gameManager.MainHud.popUpsHolder, false) as GameObject;
+        quest_mark.GetComponent<ButtonToPress>().SetTransf(transform, popUPHigh);
+    }
+    public void CheckQuestMarker()
+    {
+        if (quest_mark != null && quest_mark.activeSelf) quest_mark.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -51,10 +111,14 @@ public abstract class Interactives : MonoBehaviour
             if (buttonPref == null)
             {
                 //buttonPref = Instantiate(buttonToPressPref, transform.position + Vector3.up * popUPHigh, Quaternion.identity);
-                buttonPref = Instantiate(buttonToPressPref, GameManager.gameManager.MainHud.pressEPops, false) as GameObject;
+                buttonPref = Instantiate(buttonToPressPref, GameManager.gameManager.MainHud.popUpsHolder, false) as GameObject;
                 buttonPref.GetComponent<ButtonToPress>().SetTransf(transform, popUPHigh);
             }
-            else buttonPref.SetActive(true);
+            else
+            {
+                buttonPref.GetComponent<ButtonToPress>().SetTransf(transform, popUPHigh);
+                buttonPref.SetActive(true);
+            }
             player.InteractingObjs.Add(this);
             player.CanInteract = true;
         }

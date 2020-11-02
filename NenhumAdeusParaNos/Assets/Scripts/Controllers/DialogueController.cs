@@ -157,7 +157,8 @@ public class DialogueController : MonoBehaviour
 
     public void ChooseOption(Dialogue d, Sprite sp, int index = -1)
     {
-        if (!activeMainDialogue && !(actualDialogue is DialogueWithChoice)) return;
+        //if (!activeMainDialogue && !(actualDialogue is DialogueWithChoice)) return;
+        if (!waitingForAnswer) return;
 
         try
         {
@@ -174,10 +175,9 @@ public class DialogueController : MonoBehaviour
             waitingForAnswer = false;
             StartDialogue(newD, lastDialogueWithChoice.MyNPC.GetTransform(), sp);
         }
-        catch (System.Exception)
+        catch 
         {
-            /*DialogueWith Choice dwc = (DialogueWithChoice)actualDialogue;
-            if (dwc is DialogueWithChoice)*/ throw;
+            Debug.Log("Erro doido ai");
         }
     }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Resource Item", menuName = "Item/Resource Item")]
 public class ResourceItem : Item
 {
-    public enum MaterialType { Wood, Metal, Plastic, Stone, Trash };
+    public enum MaterialType { Wood, Metal, Plastic, Stone, Trash, Paper };
 
     [SerializeField] MaterialType matType = MaterialType.Wood;
     public MaterialType MatType { get { return matType; } }

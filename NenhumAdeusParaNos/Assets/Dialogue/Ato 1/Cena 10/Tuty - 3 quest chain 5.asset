@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fabced99eb604648b986f82b3c23590, type: 3}
   m_Name: Tuty - 3 quest chain 5
   m_EditorClassIdentifier: 
-  qName: "Volte na farm\xE1cia"
+  qName: Volte pra casa
   id: 114
   description: quest_description
   contractor: contractor_
@@ -22,15 +22,15 @@ MonoBehaviour:
   completingQuestDialogue: {fileID: 0}
   quest_itemRewards: []
   quest_itemRQuants: 
-  completed: 0
-  accepted: 0
+  completed: 1
+  accepted: 1
   cancelled: 0
   waitingReturnToNPC: 0
   acceptText: 
   completeText: "J\xE1 deve estar na hora de buscar os muleques na escola."
   unlockableDialogues: []
   questToAccept: {fileID: 11400000, guid: 028a6f410d236974bb6444539a47d2c2, type: 2}
-  sceneStateChange: {fileID: 0}
+  sceneStateChange: {fileID: 11400000, guid: 4183265d016a3f14aa6dcb3dcbe2fd1c, type: 2}
   compToAdd: []
   npcsToTalk:
   - Lucy

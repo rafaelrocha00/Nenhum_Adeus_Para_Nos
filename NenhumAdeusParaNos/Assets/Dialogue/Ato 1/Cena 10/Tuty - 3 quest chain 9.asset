@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fabced99eb604648b986f82b3c23590, type: 3}
+  m_Name: Tuty - 3 quest chain 9
+  m_EditorClassIdentifier: 
+  qName: Fale com Benjo
+  id: 118
+  description: quest_description
+  contractor: contractor_
+  mustReturn: 0
+  limitDay: -1
+  generated: 0
+  completingQuestDialogue: {fileID: 0}
+  quest_itemRewards: []
+  quest_itemRQuants: 
+  completed: 0
+  accepted: 0
+  cancelled: 0
+  waitingReturnToNPC: 0
+  acceptText: 
+  completeText: 
+  unlockableDialogues:
+  - {fileID: 11400000, guid: 05fa62f2e97c26948abb332aa1482308, type: 2}
+  questToAccept: {fileID: 11400000, guid: e956ae74b0f1a37438bf2c4c49b1d01f, type: 2}
+  sceneStateChange: {fileID: 0}
+  compToAdd: []
+  npcsToTalk:
+  - Benjo
+  talked: 00

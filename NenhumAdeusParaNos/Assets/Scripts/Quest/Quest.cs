@@ -62,7 +62,9 @@ public abstract class Quest : ScriptableObject
         GameManager.gameManager.questController.AcceptQuest(this);
         if (!generated) GameManager.gameManager.questController.AddNote(acceptText);//mainNotes.AddNote(acceptText);
 
-        CustomEvents.instance.OnQuestAccepted(qName);
+        Debug.Log("QUEST ACEITA: " + qName);
+
+        CustomEvents.instance.OnQuestAccepted(this);
     }
 
     public void Complete()
@@ -90,7 +92,7 @@ public abstract class Quest : ScriptableObject
             OnComplete();
         }
 
-        CustomEvents.instance.OnQuestComplete(qName);
+        CustomEvents.instance.OnQuestComplete(this);
 
         Debug.Log("QUEST COMPLETA: " + qName);
     }

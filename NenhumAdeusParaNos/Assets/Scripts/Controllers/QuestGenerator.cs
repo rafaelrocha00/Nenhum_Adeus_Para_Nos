@@ -11,6 +11,8 @@ public class QuestGenerator : MonoBehaviour
     bool firstGen = true;
 
     public List<string> contractorNames = new List<string>();
+
+    [Header("Kill")]
     #region KillQuests
     public int maxEnemies = 10;
     public List<string> locationNames = new List<string>();
@@ -22,22 +24,24 @@ public class QuestGenerator : MonoBehaviour
     public GameObject[] enemy_all;
     #endregion
 
+    [Header("Delivery")]
     #region DeliveryQuest
-    public int maxItensQuant = 10;
+    //public int maxItensQuant = 10;
     public int maxDifItens = 2;
-    public List<Item> itemsToDel = new List<Item>();
-    public List<string> storageNames = new List<string>();
+    //public List<Item> itemsToDel = new List<Item>();
+    //public List<string> storageNames = new List<string>();
+    public DeliveryQuestReceiver[] receivers;
     public GameObject[] chests;
     #endregion
 
-    #region RepairQuest
-    public List<string> objectsToRepair = new List<string>();
-    #endregion
+    //#region RepairQuest
+    //public List<string> objectsToRepair = new List<string>();
+    //#endregion
 
     public Queue<Quest> quest_queue = new Queue<Quest>();
 
-    List<string> usedItems = new List<string>();
-    List<string> usedDeposits = new List<string>();
+    //List<string> usedItems = new List<string>();
+    //List<string> usedDeposits = new List<string>();
 
     public void Start()
     {
@@ -239,37 +243,42 @@ public class QuestGenerator : MonoBehaviour
         string itemsTD = "";
         int reward = 0;
 
-        newQuest.DepositName = storageNames[Random.Range(0, storageNames.Count)];
+        DeliveryQuestReceiver newReceiver = receivers[Random.Range(0, receivers.Length)];
+
+        newQuest.DepositName = newReceiver.Receiver_Location;//storageNames[Random.Range(0, storageNames.Count)];
 
         for (int i = 0; i < rand; i++)
         {
             if (rand > 1 && i == rand - 1) itemsTD += "& ";
 
-            int choosenItem = Random.Range(0, itemsToDel.Count);
-            if (usedItems.Contains(itemsToDel[choosenItem].itemName) && usedDeposits.Contains(newQuest.DepositName))
-            {
-                choosenItem++;
-                if (choosenItem == itemsToDel.Count) choosenItem = 0;
-            }
+            //int choosenItem = Random.Range(0, itemsToDel.Count);
+            //if (usedItems.Contains(itemsToDel[choosenItem].itemName) && usedDeposits.Contains(newQuest.DepositName))
+            //{
+            //    choosenItem++;
+            //    if (choosenItem == itemsToDel.Count) choosenItem = 0;
+            //}
 
-            newQuest.itemsToDelivery[i] = itemsToDel[choosenItem];
-            usedItems.Add(newQuest.itemsToDelivery[i].itemName);
+            newQuest.itemsToDelivery[i] = newReceiver.GetDelivery();//itemsToDel[choosenItem];
+            //usedItems.Add(newQuest.itemsToDelivery[i].itemName);
 
-            newQuest.itemsQuant[i] = Random.Range(1, maxItensQuant + 1);
+            newQuest.itemsQuant[i] = newReceiver.GetDeliveryQuant();//Random.Range(1, maxItensQuant + 1);
             itemsTD += newQuest.itemsToDelivery[i].itemName + " " + newQuest.itemsQuant[i] + "x ";
 
             reward += newQuest.itemsToDelivery[i].slotSize.x * newQuest.itemsToDelivery[i].slotSize.y * newQuest.itemsQuant[i];
         }
 
-        usedDeposits.Add(newQuest.DepositName);
+        //usedDeposits.Add(newQuest.DepositName);
 
         newQuest.Name = "Entregue umas coisas";
         newQuest.Description = "Entregar: " + itemsTD + ", Local: " + newQuest.DepositName;
+
+        newQuest.quest_itemRewards = newReceiver.GetReward();
+        newQuest.quest_itemRQuants = newReceiver.GetRewardQuant(newQuest.quest_itemRewards[0]);
         //newQuest.MoneyReward = 100 * reward;
         //newQuest.ResourceReward = 20 * reward;
         newQuest.toInstantiate = chests[Random.Range(0, chests.Length)];
 
-        DefaultSet(newQuest);
+        DefaultSet(newQuest, false);
     }
     public void GenRepQuest(string repairName)
     {
@@ -287,19 +296,22 @@ public class QuestGenerator : MonoBehaviour
         DefaultSet(newQuest);
     }
 
-    void DefaultSet(Quest _q)
+    void DefaultSet(Quest _q, bool genRewards = true)
     {
         _q.ID = actualID;
 
         Item[] allItems = Resources.LoadAll<Item>("Item");
 
-        _q.quest_itemRewards = new Item[1];
-        _q.quest_itemRQuants = new int[1];
+        if (genRewards)
+        {
+            _q.quest_itemRewards = new Item[1];
+            _q.quest_itemRQuants = new int[1];
 
-        _q.quest_itemRewards[0] = allItems[Random.Range(0, allItems.Length)];
-        Vector2Int quantRange = new Vector2Int(1, 4);
-        if (_q.quest_itemRewards[0] is ResourceItem) quantRange = new Vector2Int(3, 8);
-        _q.quest_itemRQuants[0] = Random.Range(quantRange.x, quantRange.y);
+            _q.quest_itemRewards[0] = allItems[Random.Range(0, allItems.Length)];
+            Vector2Int quantRange = new Vector2Int(1, 4);
+            if (_q.quest_itemRewards[0] is ResourceItem) quantRange = new Vector2Int(3, 8);
+            _q.quest_itemRQuants[0] = Random.Range(quantRange.x, quantRange.y);
+        }
 
         //_q.resourceT = (CompanyController.ResourceType)Random.Range(0, 4);
         _q.Contractor = contractorNames[Random.Range(0, contractorNames.Count)];

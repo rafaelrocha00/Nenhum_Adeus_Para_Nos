@@ -67,7 +67,8 @@ public class DialoguePopUp : MonoBehaviour
     }
     public void SetSprite(Sprite sp)
     {
-
+        if (sp == null) { speakerImage.enabled = false; return; }
+        else speakerImage.enabled = true;
         speakerImage.sprite = sp;
 
     }
@@ -111,7 +112,7 @@ public class DialoguePopUp : MonoBehaviour
         dialogueOptionsTab.SetActive(false);
         for (int i = 0; i < dialogueOptions.Length; i++)
         {
-            dialogueOptions[i].CleanText();
+            if (dialogueOptions[i].gameObject.activeSelf) dialogueOptions[i].CleanText();
         }
     }
 }

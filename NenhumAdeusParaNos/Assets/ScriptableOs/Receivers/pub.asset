@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8421980d7c1f7345815ce9ef020c51d, type: 3}
+  m_Name: pub
+  m_EditorClassIdentifier: 
+  receiver_location: Bar da Limey
+  receiver_possible_deliveries:
+  - {fileID: 11400000, guid: 7cc9274fc019cac4a983216144fff847, type: 2}
+  - {fileID: 11400000, guid: 7e1429813e8faff4d8258f1000457ced, type: 2}
+  - {fileID: 11400000, guid: ccb830df67bea534dacb7c980673e261, type: 2}
+  - {fileID: 11400000, guid: c0c7778bd5bf10243be03d1be1b6c952, type: 2}
+  - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
+  - {fileID: 11400000, guid: ce83947d67fc93e4d8914db4c63e5c3f, type: 2}
+  - {fileID: 11400000, guid: c0db047aa5cb2ef4c82c7d18639630fb, type: 2}
+  receiver_deliveries_quant: {x: 4, y: 7}
+  receiver_possible_rewards:
+  - {fileID: 11400000, guid: cb5d933ccd04cee4bb16179ade3e3c9d, type: 2}
+  - {fileID: 11400000, guid: 6df6f05da955ff94799a1c2c6fd38f1f, type: 2}
+  - {fileID: 11400000, guid: f0c657f758ad93b4c96bf926dee8acc8, type: 2}
+  - {fileID: 11400000, guid: 8ed63e4e443fc804c96e9d7efe04d53e, type: 2}
+  - {fileID: 11400000, guid: 4a531cb3491f2e24fb01e64bba3fdfae, type: 2}
+  receiver_rewards_quant: {x: 3, y: 5}

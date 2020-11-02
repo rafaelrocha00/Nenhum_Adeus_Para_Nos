@@ -16,24 +16,26 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("npc") && !other.isTrigger) Destroy(other.gameObject);
-
-        if (quesToAccept != null && !quesToAccept.Accepted && quesToBeCompleted.Completed) quesToAccept.AcceptQuest();
+        if (other.CompareTag("npc") && !other.isTrigger) { Destroy(other.gameObject); return; }
 
         if (other.CompareTag("player"))
         {
+            if (quesToAccept != null && !quesToAccept.Accepted && quesToBeCompleted.Completed) quesToAccept.AcceptQuest();
+
             if (GameManager.gameManager.dialogueController.ActiveMainDialogue) return;
 
             if (!sameScene)
             {
                 if (sceneName.Equals("")) return;
 
-                GameManager.gameManager.SpawnpointID = spawnpointID;
+                //GameManager.gameManager.SpawnpointID = spawnpointID;
 
-                GameManager.gameManager.inventoryController.Inventory.SaveItems();
-                GameManager.gameManager.itemsSaver.BlockChestGen();
+                //GameManager.gameManager.inventoryController.Inventory.SaveItems();
+                //GameManager.gameManager.itemsSaver.BlockChestGen();
 
-                SceneManager.LoadScene(sceneName);
+                //SceneManager.LoadScene(sceneName);
+
+                GameManager.gameManager.ChangeScene(sceneName);
             }
             else
             {

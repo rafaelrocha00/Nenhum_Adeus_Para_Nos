@@ -1598,6 +1598,7 @@ MonoBehaviour:
   spawnpointID: 1
   iQuickTravel: {fileID: 0}
   sceneName: VilaDaMadeira
+  quesToBeCompleted: {fileID: 0}
   quesToAccept: {fileID: 0}
 --- !u!4 &901650005
 Transform:
@@ -2464,7 +2465,7 @@ PrefabInstance:
         type: 3}
       propertyPath: questCompletedToDespawn
       value: 
-      objectReference: {fileID: 11400000, guid: ee6c4516749f0ec4d89d85efd9375137,
+      objectReference: {fileID: 11400000, guid: 08def2e638bfa7f46b9d296e3f2809b8,
         type: 2}
     - target: {fileID: 2424403118656072221, guid: af3692988c9fdd84d89a43e71a3c0500,
         type: 3}
@@ -2917,7 +2918,7 @@ PrefabInstance:
         type: 3}
       propertyPath: questCompletedToDespawn
       value: 
-      objectReference: {fileID: 11400000, guid: ee6c4516749f0ec4d89d85efd9375137,
+      objectReference: {fileID: 11400000, guid: 08def2e638bfa7f46b9d296e3f2809b8,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e256cdef3dcd3948a0254befc4be65b, type: 3}

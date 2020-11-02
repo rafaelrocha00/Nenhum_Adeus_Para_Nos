@@ -15,7 +15,11 @@ public class QuestController : MonoBehaviour
 
     public Notes mainNotes;
 
-    int questsCompleted = 0;
+    public int questsCompleted = 0;
+    public GameObject quest_marker_pref;
+    //Criar um evento para checagem de quests, que todos os objetivos de quests vão acionar, CheckQuestsToSpawnMarker(Quest quest, GameObject qm_pref);
+    //Objetos que podem ser objetivos de quest, se adicionam nesse evento, com uma checagem que vê se a quest q for enviada é do tipo certo e ele é um dos objetivos.
+    //Esse evendo será chamado no OnAccept assim como no início da cena. ao completar a quest, o prórpio objeto pode tirar o ícone.
 
     public void AddNote(string txt)
     {
@@ -113,4 +117,33 @@ public class QuestController : MonoBehaviour
             }
         }
     }
+
+
+    public void SpawnAllQuestMarks()
+    {
+        Invoke("SpawnAllQM", 0.05f);
+    }
+
+    public void SpawnAllQM()
+    {
+        for (int i = 0; i < activeQuests.Count; i++)
+        {
+            CustomEvents.instance.OnQuestAccepted(activeQuests[i]);
+        }
+    }
+
+    //public T[] FindQuestType<T>()
+    //{
+    //    List<T> foundQuests = new List<T>();
+
+    //    for (int i = 0; i < activeQuests.Count; i++)
+    //    {
+    //        if (activeQuests[i].GetType() == typeof(T))
+    //        {
+    //            foundQuests.Add((T)System.Convert.ChangeType(activeQuests[i], typeof(T)));
+    //        }
+    //    }
+
+    //    return foundQuests.ToArray();
+    //}
 }

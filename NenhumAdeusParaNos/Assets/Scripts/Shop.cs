@@ -20,6 +20,11 @@ public class Shop : MonoBehaviour, IDialogueable
     public DialogueOptions postTradeDialogues;
     public DialogueOptions postCancelDialogues;
 
+    GameObject quest_mark;
+    TradeQuest quest_tome;
+
+    //bool firstEnable = true;
+
     private void Start()
     {
         Item[] savedItems = GameManager.gameManager.itemsSaver.SetShopItems(GetName());
@@ -27,11 +32,51 @@ public class Shop : MonoBehaviour, IDialogueable
 
         sellingItems = new Item[savedItems.Length];
         savedItems.CopyTo(sellingItems, 0);
+
+        //CustomEvents.instance.onQuestAccepted += CheckForQuestObjectives;
+        //firstEnable = false;
+    }
+
+    private void OnEnable()
+    {
+        /*if (!firstEnable) */CustomEvents.instance.onQuestAccepted += CheckForQuestObjectives;
+    }
+
+    private void OnDisable()
+    {
+        CustomEvents.instance.onQuestAccepted -= CheckForQuestObjectives;
+
+        if (quest_mark != null) quest_mark.SetActive(false);
     }
 
     private void OnDestroy()
     {        
         GameManager.gameManager.itemsSaver.SaveShopItems(GetName(), sellingItems);
+
+    }
+
+    public void CheckForQuestObjectives(Quest q_)
+    {
+        if (!(q_ is TradeQuest)) return;
+
+        TradeQuest q = (TradeQuest)q_;
+        if (q.shopName.Equals(GetName())) { SpawnQuestMarker(); quest_tome = q; }
+    }
+
+    void SpawnQuestMarker()
+    {
+        if (quest_mark != null)
+        {
+            quest_mark.SetActive(true);
+            return;
+        }
+
+        quest_mark = Instantiate(GameManager.gameManager.questController.quest_marker_pref, GameManager.gameManager.MainHud.popUpsHolder, false) as GameObject;
+        quest_mark.GetComponent<ButtonToPress>().SetTransf(transform, 2.5f);
+    }
+    public void CheckQuestMarker()
+    {
+        if (quest_mark != null && quest_mark.activeSelf) quest_mark.SetActive(false);
     }
 
     public void OpenShop()
@@ -76,6 +121,8 @@ public class Shop : MonoBehaviour, IDialogueable
         }
 
         StartDialogue(true);
+
+        if (quest_tome != null && quest_tome.Completed) CheckQuestMarker();
 
         sellingItems = GameManager.gameManager.MainHud.shopUI.shopItems.GetAllItems();
 

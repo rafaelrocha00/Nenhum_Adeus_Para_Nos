@@ -72,6 +72,9 @@ public class INPC : NPC
 
         CustomEvents.instance.onDialogueStart += EnterDialogueAnim;
         CustomEvents.instance.onDialogueEnd += ExitDialogueAnim;
+
+        //Acionar evento
+        //firstEnable = false;
     }
 
     private void OnDestroy()
@@ -80,14 +83,66 @@ public class INPC : NPC
         CustomEvents.instance.onDialogueEnd -= ExitDialogueAnim;
     }
 
+    public override void CheckForQuestObjectives(Quest q_)
+    {
+        base.CheckForQuestObjectives(q_);
+
+        Debug.Log("Checando quest nos npcs");
+
+        if (q_ is DialogueQuest)
+        {
+            DialogueQuest q = (DialogueQuest)q_;
+            for (int i = 0; i < q.npcsToTalk.Length; i++)
+            {
+                if (q.npcsToTalk[i].Equals(Name) && !q.talked[i])
+                {
+                    SpawnQuestMarker();
+                    active_quest = q;
+                    return;
+                }
+            }
+        }
+
+        if (q_ is AssassinQuest)
+        {
+            AssassinQuest q = (AssassinQuest)q_;
+            if (q.TargetName.Equals(Name))
+            {
+                SpawnQuestMarker();
+                active_quest = q;
+                return;
+            }
+        }
+
+        //if (q_ is KillQuest)
+        //{
+        //    KillQuest q = (KillQuest)q_;
+        //    if (q.enemyType == enemyType)
+        //    {
+        //        SpawnQuestMarker();
+        //        active_quest = q;
+        //        return;
+        //    }
+        //}
+    }
+
     bool CheckDespawnQuest()
     {
         if (questAcceptedToDespawn != null && questCompletedToDespawn != null)
         {
-            if (questAcceptedToDespawn.Accepted && !questCompletedToDespawn.Completed && toBeAccepted) return true;
-            else if (!questAcceptedToDespawn.Accepted && questCompletedToDespawn.Completed) return true;
 
-            return false;
+            if (toBeAccepted)
+            {
+                if (questAcceptedToDespawn.Accepted && !questCompletedToDespawn.Completed) return true;
+                else return false;
+            }
+            else
+            {
+                if (!questAcceptedToDespawn.Accepted || questCompletedToDespawn.Completed) return true;
+                else return false;
+            }
+
+
         }
 
         if (questAcceptedToDespawn != null)
@@ -184,6 +239,7 @@ public class INPC : NPC
 
     void StartDialogue(Dialogue d, Player p)
     {
+        CheckQuestMarker();
         d.MyNPC = this;
         d.MainCharacter = p;
         GameManager.gameManager.dialogueController.StartDialogue(d, transform, /*expressions[1]*/portrait);
@@ -558,10 +614,14 @@ public class INPC : NPC
         if (buttonPref == null)
         {
             //buttonPref = Instantiate(buttonToPressPref, transform.position + Vector3.up * popUPHigh, Quaternion.identity);
-            buttonPref = Instantiate(buttonToPressPref, GameManager.gameManager.MainHud.pressEPops, false) as GameObject;
+            buttonPref = Instantiate(buttonToPressPref, GameManager.gameManager.MainHud.popUpsHolder, false) as GameObject;
             buttonPref.GetComponent<ButtonToPress>().SetTransf(transform, popUPHigh);
         }
-        else buttonPref.SetActive(true);
+        else
+        {
+            buttonPref.GetComponent<ButtonToPress>().SetTransf(transform, popUPHigh);
+            buttonPref.SetActive(true);
+        }
         player.InteractingObjs.Add(this);
         Debug.Log("Adicionando npc na lista de interagiveis do player");
         player.CanInteract = true;

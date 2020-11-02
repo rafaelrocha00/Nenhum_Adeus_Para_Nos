@@ -16,6 +16,7 @@ public class InteractQuest : Quest
             if (interactive.Name.Equals(objectToInteract))
             {
                 TryComplete();
+                interactive.CheckQuestMarker();
             }
         }
         catch { Debug.Log("Not a interactive"); }

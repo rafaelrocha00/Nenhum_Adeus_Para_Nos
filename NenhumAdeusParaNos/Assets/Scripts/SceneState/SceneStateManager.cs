@@ -34,6 +34,7 @@ public class SceneStateManager : MonoBehaviour
         {
             if (sceneStateConditions[i].CanChangeState())
             {
+                Debug.Log("Carregando cena: " + sceneStateConditions[i].name);
                 ChangeSceneState(sceneStateConditions[i].ChangingState, sceneStateConditions[i].MovePlayer, sceneStateConditions[i].FadeInOut);
                 return;
             }
@@ -42,7 +43,7 @@ public class SceneStateManager : MonoBehaviour
 
     public void ChangeSceneState(int s, bool movePlayer, bool fade)
     {
-        StartCoroutine(ChangeState(s, movePlayer, fade));
+        StartCoroutine(ChangeState(s, movePlayer, fade));        
     }
 
     IEnumerator ChangeState(int s, bool movePlayer = true, bool fade = true)
@@ -64,6 +65,8 @@ public class SceneStateManager : MonoBehaviour
             sceneStates[i].SetActive(false);
         }
         sceneStates[s].SetActive(true);
+
+        GameManager.gameManager.questController.SpawnAllQuestMarks();
     }
     IEnumerator ChangePlayerPosOnChange()
     {

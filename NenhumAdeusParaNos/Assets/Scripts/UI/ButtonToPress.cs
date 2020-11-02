@@ -27,12 +27,12 @@ public class ButtonToPress : MonoBehaviour
 
     private void OnEnable()
     {
-        sa.Play(true);
+        if (sa != null) sa.Play(true);
     }
 
     private void OnDisable()
     {
-        sa.Stop();
+        if (sa != null) sa.Stop();
     }
 
     private void FixedUpdate()

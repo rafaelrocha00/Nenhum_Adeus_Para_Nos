@@ -5,7 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Quest", menuName = "Quests/Trade Quest")]
 public class TradeQuest : Quest
 {
-    public Item itemToGet;
+    public string shopName;
+    public Item itemToGet;   
 
     public override void CheckComplete<T>(T thing)
     {

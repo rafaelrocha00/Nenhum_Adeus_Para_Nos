@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -38,6 +39,14 @@ public class GameManager : MonoBehaviour
 
     SceneStateManager currentSceneStateManager;
 
+    public List<Quest> questsToSkip = new List<Quest>();
+    int id = 0;
+    bool accepting = false;
+
+    public Image black_screen;
+    public Text title_txt;
+
+
     private void Awake()
     {
         if (gameManager != null && gameManager != this)
@@ -65,6 +74,7 @@ public class GameManager : MonoBehaviour
         itemsSaver = GetComponent<ItemsSaver>();
 
         GameManager.gameManager.repairController.OnLoadScene();
+        GameManager.gameManager.questController.SpawnAllQuestMarks();
     }
 
     private void Update()
@@ -76,6 +86,29 @@ public class GameManager : MonoBehaviour
                 battleController.ActiveBattle = false;
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
                 dialogueController.SetCam();
+            }
+
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                gameManager.questController.questsCompleted = 0;
+
+                if (accepting)
+                {
+                    if (!questsToSkip[id].Accepted) questsToSkip[id].AcceptQuest();
+                    else Debug.Log("Ja aceitou");
+                    accepting = false;
+                }
+                else
+                {
+                    questsToSkip[id].Complete();
+                    id++;
+                    accepting = true;
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                ShowTitle();
             }
         }
 
@@ -98,6 +131,88 @@ public class GameManager : MonoBehaviour
         {
 
             throw;
+        }
+    }
+
+    public void ChangeScene(string sceneName)
+    {
+        GameManager.gameManager.SpawnpointID = spawnpointID;
+
+        GameManager.gameManager.inventoryController.Inventory.SaveItems();
+        GameManager.gameManager.itemsSaver.BlockChestGen();
+
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public void ShowTitle()
+    {
+        black_screen.gameObject.SetActive(true);
+        StartCoroutine(FadeIn(0.26f, 0.0f));
+        StartCoroutine(FadeInTitle(0.26f, 0.5f));
+    }
+
+    public void HideTitle(float delay)
+    {
+        black_screen.gameObject.SetActive(true);
+        StartCoroutine(FadeOutTitle(1.26f, delay));
+        StartCoroutine(FadeOut(1.5f, delay + 1.75f));
+    }
+
+    IEnumerator FadeIn(float t, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        float timer = 0.0f;
+
+        while (timer <= t)
+        {
+            black_screen.color = new Color(0, 0, 0, timer / t);
+            timer += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    IEnumerator FadeInTitle(float t, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        float timer = 0.0f;
+
+        while (timer <= t)
+        {
+            title_txt.color = new Color(1, 1, 1, timer / t);
+            timer += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    IEnumerator FadeOut(float t, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        float timer = 0.0f;
+
+        while (timer <= t)
+        {
+            black_screen.color = new Color(0, 0, 0, 1 - timer / t);
+            timer += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+
+        black_screen.gameObject.SetActive(false);
+    }
+
+    IEnumerator FadeOutTitle(float t, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        float timer = 0.0f;
+
+        while (timer <= t)
+        {
+            title_txt.color = new Color(1, 1, 1, 1 - timer / t);
+            timer += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
         }
     }
 }

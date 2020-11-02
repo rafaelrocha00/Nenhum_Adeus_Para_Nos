@@ -28,6 +28,21 @@ public class RepairableObject : Interactives, IDateEvent
         Invoke("SetDate", 0.02f);/////////////////////////////
     }
 
+    public override void CheckForQuestObjectives(Quest q_)
+    {
+        base.CheckForQuestObjectives(q_);
+
+        if (!(q_ is RepairQuest)) return;
+
+        RepairQuest q = (RepairQuest)q_;
+        if (q.ObjectToRepair.Equals(Name))
+        {
+            SpawnQuestMarker();
+            active_quest = q;
+            return;
+        }
+    }
+
     public void SetDate()
     {
         if (unbreakableByTime)
@@ -97,6 +112,8 @@ public class RepairableObject : Interactives, IDateEvent
             unlockableInt.EnableCollider(true);
         }
         GameManager.gameManager.questController.CheckQuests(this);
+
+        GameManager.gameManager.battleController.MainCharacter.Repair(state_broken.transform.position);
         StartCoroutine(DetachAnimation(true));
     }
 
@@ -110,7 +127,7 @@ public class RepairableObject : Interactives, IDateEvent
     IEnumerator DetachAnimation(bool v)
     {
         //Efeito de particula;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(v ? 1.5f : 0.5f);
         Attach(v);
         OnExit(GameManager.gameManager.battleController.MainCharacter);
         EndInteraction();

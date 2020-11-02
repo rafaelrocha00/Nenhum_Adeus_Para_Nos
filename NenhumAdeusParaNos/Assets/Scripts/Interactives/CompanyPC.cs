@@ -118,10 +118,12 @@ public class CompanyPC : Interactives
             if (onlyAcceptedQuest)
             {
                 canInteract = triggerQuest.Accepted;
+                return;
             }
             if (onlyCompletedQuest)
             {
                 canInteract = triggerQuest.Completed;
+                return;
             }
 
             //if (triggerQuest.Accepted && !triggerQuest.Completed) canInteract = true;
@@ -129,6 +131,8 @@ public class CompanyPC : Interactives
         }
 
         if (canInteract) Invoke("CheckQuests", 0.05f);
+
+        //firstEnable = false;
     }
 
     private void Update()
@@ -144,8 +148,9 @@ public class CompanyPC : Interactives
 
     void CheckQuests()
     {
-        if (GameManager.gameManager.questGenerator.quest_queue.Count > 0 || GameManager.gameManager.companyController.quests_onPC.Count > 0)
+        if (GameManager.gameManager.questGenerator.quest_queue.Count > 0 /*|| GameManager.gameManager.companyController.quests_onPC.Count > 0*/)
             Enable_DisableQM(true);
+        else Enable_DisableQM(false);
     }
 
     public override void Interact(Player player)
@@ -165,6 +170,9 @@ public class CompanyPC : Interactives
 
         GenerateJobs();
         CheckQuest();
+        CheckQuests();
+
+        GameManager.gameManager.MainHud.EnterPC(true, this);
 
         //SetRanking();
     }
@@ -184,6 +192,12 @@ public class CompanyPC : Interactives
         cam.LerpRot(cam.DefaultRotation, 1.0f);
         pcScreen.SetActive(false);
         pcLight.SetActive(false);
+
+        Invoke("EnableQMs", 1.0f);
+    }
+    void EnableQMs()
+    {
+        GameManager.gameManager.MainHud.EnterPC(false);
     }
 
     public void Enable_DisableQM(bool value)
@@ -240,6 +254,10 @@ public class CompanyPC : Interactives
             }
             enqueuedQuests = true;
         }
+
+        CustomEvents.instance.onQuestAccepted -= CheckForQuestObjectives;
+
+        if (quest_mark != null) quest_mark.SetActive(false);
     }
 
     //public void SetRanking()

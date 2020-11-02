@@ -12,21 +12,21 @@ public class CustomEvents : MonoBehaviour
         instance = this;
     }
 
-    public event Action<string> onQuestComplete;
-    public void OnQuestComplete(string quest_name)
+    public event Action<Quest> onQuestComplete;
+    public void OnQuestComplete(Quest quest)
     {
         if (onQuestComplete != null)
         {
-            onQuestComplete(quest_name);
+            onQuestComplete(quest);
         }
     }
 
-    public event Action<string> onQuestAccepted;
-    public void OnQuestAccepted(string quest_name)
+    public event Action<Quest> onQuestAccepted;
+    public void OnQuestAccepted(Quest quest)
     {
         if (onQuestAccepted != null)
         {
-            onQuestAccepted(quest_name);
+            onQuestAccepted(quest);
         }
     }
 

@@ -19,7 +19,7 @@ public class QuestTrajectory : MonoBehaviour
         CustomEvents.instance.onQuestAccepted += CheckCondition;
         CustomEvents.instance.onQuestComplete += CheckCondition;
 
-        CheckCondition(quest.Name);
+        //CheckCondition(quest);
     }
 
     private void OnDestroy()
@@ -28,9 +28,9 @@ public class QuestTrajectory : MonoBehaviour
         CustomEvents.instance.onQuestComplete -= CheckCondition;
     }
 
-    public void CheckCondition(string quest_name)
+    public void CheckCondition(Quest q_)
     {
-        if (!quest_name.Equals(quest.Name)) return;
+        if (!q_.Name.Equals(quest.Name)) return;
 
         if (quest.Accepted && !quest.Completed) route.SetActive(true);
         else if (!quest.Accepted || quest.Completed) route.SetActive(false);

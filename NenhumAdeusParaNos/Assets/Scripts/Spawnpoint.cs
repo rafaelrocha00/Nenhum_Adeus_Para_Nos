@@ -9,8 +9,8 @@ public class Spawnpoint : MonoBehaviour
 
     private void Start()
     {
-        //Invoke("MovePlayer", 0.01f);
-        MovePlayer();
+        Invoke("MovePlayer", 0.01f);
+        //MovePlayer();
     }
 
     public void MovePlayer()

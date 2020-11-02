@@ -53,11 +53,18 @@ public class SceneNav : MonoBehaviour
         //p.EnableCharController(false);
         if (inFirstFloor) GoToSecondFloor(p);
         else GoToFirstFloor(p);
+
+        Invoke("SpawnQM", 0.02f);
     }
 
     void ActivePlayer()
     {
         player.enabled = true;
         //player.EnableCharController(true);
+    }
+
+    void SpawnQM()
+    {
+        GameManager.gameManager.questController.SpawnAllQM();
     }
 }

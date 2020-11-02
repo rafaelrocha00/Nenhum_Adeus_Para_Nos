@@ -18,7 +18,7 @@ public class AssassinQuest : Quest
         try
         {
             INPC npc = thing as INPC;
-            if (npc.Name.Equals(targetName)) TryComplete();
+            if (npc.Name.Equals(targetName)) { TryComplete(); npc.CheckQuestMarker(); }
         }
         catch { Debug.Log("Not a npc"); }
     }

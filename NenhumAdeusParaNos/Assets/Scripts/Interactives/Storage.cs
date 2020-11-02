@@ -26,6 +26,21 @@ public class Storage : Interactives
     public List<Item> items = new List<Item>();
     bool generatedMenu;
 
+    public override void CheckForQuestObjectives(Quest q_)
+    {
+        base.CheckForQuestObjectives(q_);
+
+        if (!(q_ is DeliveryQuest)) return;
+
+        DeliveryQuest q = (DeliveryQuest)q_;
+        if (q.DepositName.Equals(Name))
+        {
+            SpawnQuestMarker();
+            active_quest = q;
+            return;
+        }
+    }
+
     public override void Interact(Player player)
     {
         if (!generatedMenu)
@@ -69,10 +84,15 @@ public class Storage : Interactives
         }
         myGrids[0].Generate();
 
-        prevPageB = aux.transform.Find("PrevPage").gameObject;
-        nextPageB = aux.transform.Find("NextPage").gameObject;
+        prevPageB = aux.transform.GetChild(2).Find("PrevPage").gameObject;
+        nextPageB = aux.transform.GetChild(2).Find("NextPage").gameObject;
+        GameObject exitB = aux.transform.GetChild(1).Find("Exit").gameObject;
+        
         prevPageB.GetComponent<Button>().onClick.AddListener(PreviousPage);
         nextPageB.GetComponent<Button>().onClick.AddListener(NextPage);
+        exitB.GetComponent<Button>().onClick.AddListener(CloseStorage);
+
+        aux.transform.GetChild(1).Find("chest_name").GetComponent<Text>().text = Name;
 
         StartCoroutine("GenItems");;
         generatedMenu = true;
@@ -226,5 +246,10 @@ public class Storage : Interactives
 
             storageMenu.SetActive(value);
         }
+    }
+
+    public void CloseStorage()
+    {
+        OpenCloseStorage(false);
     }
 }

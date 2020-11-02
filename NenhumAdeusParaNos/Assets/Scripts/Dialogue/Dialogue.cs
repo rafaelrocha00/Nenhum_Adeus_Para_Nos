@@ -20,6 +20,7 @@ public class Dialogue : ScriptableObject
     [Header("Post Dialogue")]
 
     public DialogueOptions[] unlockableDialogues;
+    public bool lockPlayerMovement = false;
     public bool unlockPlayerMovement = false;
     public bool makeNPCWalk = false;
     public Vector3 finalPoint = Vector3.zero;
@@ -41,7 +42,9 @@ public class Dialogue : ScriptableObject
     {
         Debug.Log("Checking QUest");
         GameManager.gameManager.questController.CheckQuests(this);
-        if (unlockPlayerMovement) mainCharacter.CanMove = true;
+        if (lockPlayerMovement) mainCharacter.CanMove = false;
+        else if (unlockPlayerMovement) mainCharacter.CanMove = true;
+
         if (makeNPCWalk) myNPC.MoveNavMesh(finalPoint);
         if (changeSceneState) GameManager.gameManager.ChangeCurrentSceneState(sceneState);
         if (!objectToBreak.Equals("")) GameManager.gameManager.repairController.ForceDateEvent(objectToBreak);
