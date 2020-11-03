@@ -9,15 +9,15 @@ public class Spawnpoint : MonoBehaviour
 
     private void Start()
     {
-        Invoke("MovePlayer", 0.01f);
-        //MovePlayer();
+        //Invoke("MovePlayer", 5.0f);
+        MovePlayer();
     }
 
     public void MovePlayer()
     {
         try
         {            
-            Debug.Log("Movendo Player");
+            Debug.Log("Movendo Player | Spawn: " + GameManager.gameManager.SpawnpointID);
             Transform currentSpawnP = transform.GetChild(GameManager.gameManager.SpawnpointID);
             Transform currentSpawnPCam = transform.GetChild(GameManager.gameManager.SpawnpointID).GetChild(0);
 
@@ -26,6 +26,8 @@ public class Spawnpoint : MonoBehaviour
 
             cam.transform.position = currentSpawnPCam.transform.position;
             cam.transform.rotation = currentSpawnPCam.transform.rotation;
+
+            Debug.Log("Trocou posição do player");
         }
         catch { Debug.Log("Não tem esse spawn;"); }
     }

@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scene State Contition", fileName = "Scene State Condition")]
 public class SceneStateConditions : ScriptableObject
 {
+    [SerializeField] string targetScene = "";
+
     [SerializeField] int changingState = -1;
 
     [SerializeField] Quest questToNotBeAccepted = null;
@@ -12,6 +14,8 @@ public class SceneStateConditions : ScriptableObject
 
     [SerializeField] bool movePlayer = false;
     [SerializeField] bool fadeInOut = false;
+
+    public string TargetScene { get { return targetScene; } }
 
     public int ChangingState { get { return changingState; } }
 

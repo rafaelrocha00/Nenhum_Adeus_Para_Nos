@@ -17,9 +17,8 @@ public class QuestController : MonoBehaviour
 
     public int questsCompleted = 0;
     public GameObject quest_marker_pref;
-    //Criar um evento para checagem de quests, que todos os objetivos de quests vão acionar, CheckQuestsToSpawnMarker(Quest quest, GameObject qm_pref);
-    //Objetos que podem ser objetivos de quest, se adicionam nesse evento, com uma checagem que vê se a quest q for enviada é do tipo certo e ele é um dos objetivos.
-    //Esse evendo será chamado no OnAccept assim como no início da cena. ao completar a quest, o prórpio objeto pode tirar o ícone.
+    public GameObject new_quest_marker_pref;
+
 
     public void AddNote(string txt)
     {

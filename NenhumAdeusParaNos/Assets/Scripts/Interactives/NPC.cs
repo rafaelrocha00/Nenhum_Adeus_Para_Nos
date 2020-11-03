@@ -145,7 +145,7 @@ public abstract class NPC : Interactives, BattleUnit, IDialogueable
     public void MoveNavMesh(Vector3 pos)
     {
         if (navMesh == null) navMesh = GetComponent<NavMeshAgent>();
-        Debug.Log("Movendo NPc");
+        //Debug.Log("Movendo NPc");
         navMesh.isStopped = false;
         navMesh.destination = pos;
     }

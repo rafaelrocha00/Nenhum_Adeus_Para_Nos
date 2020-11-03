@@ -22,15 +22,17 @@ MonoBehaviour:
   completingQuestDialogue: {fileID: 0}
   quest_itemRewards: []
   quest_itemRQuants: 
-  completed: 1
-  accepted: 1
+  completed: 0
+  accepted: 0
   cancelled: 0
   waitingReturnToNPC: 0
   acceptText: 
-  completeText: "J\xE1 deve estar na hora de buscar os muleques na escola."
+  completeText: "J\xE1 deve estar na hora de buscar as crian\xE7as na escola."
   unlockableDialogues: []
   questToAccept: {fileID: 11400000, guid: 028a6f410d236974bb6444539a47d2c2, type: 2}
-  sceneStateChange: {fileID: 11400000, guid: 4183265d016a3f14aa6dcb3dcbe2fd1c, type: 2}
+  sceneStateChange: {fileID: 0}
+  endAct_1: 0
+  timeToPass: 0
   compToAdd: []
   npcsToTalk:
   - Lucy

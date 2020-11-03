@@ -87,7 +87,7 @@ public class INPC : NPC
     {
         base.CheckForQuestObjectives(q_);
 
-        Debug.Log("Checando quest nos npcs");
+        //Debug.Log("Checando quest nos npcs");
 
         if (q_ is DialogueQuest)
         {

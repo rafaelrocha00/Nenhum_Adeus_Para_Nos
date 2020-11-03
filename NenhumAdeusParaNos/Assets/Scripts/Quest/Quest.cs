@@ -51,6 +51,8 @@ public abstract class Quest : ScriptableObject
 
     [Header("Changing Scene")]
     public SceneStateConditions sceneStateChange;
+    public bool endAct_1 = false;
+    public int timeToPass = 0;
 
     [Header("Companions")]
     public GameObject[] compToAdd;
@@ -127,6 +129,10 @@ public abstract class Quest : ScriptableObject
                 GameManager.gameManager.PlayerCompanionsPref.Add(compToAdd[i]);
             }
         }
+
+        if (endAct_1) GameManager.gameManager.ShowTitle("VilaDaMadeira");
+
+        if (timeToPass > 0) GameManager.gameManager.calendarController.PassTime(timeToPass);
     }
 
     public void Cancel()

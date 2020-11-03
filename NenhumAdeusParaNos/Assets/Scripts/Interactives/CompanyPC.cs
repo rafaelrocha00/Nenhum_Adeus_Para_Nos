@@ -14,7 +14,7 @@ public class CompanyPC : Interactives
     bool generated = false;
     bool enqueuedQuests = false;
 
-    public GameObject questMarker;
+    public GameObject new_quest_marker;
 
     public Transform rewardsArea;
     public GameObject rewardRankP;
@@ -31,6 +31,8 @@ public class CompanyPC : Interactives
     public Text questDesc_reward;
     public Text questDesc_limit;
     public Text questDesc_contractor;
+
+    bool in_progress_quests;
 
     public void AddQuest(Quest quest)
     {
@@ -118,19 +120,19 @@ public class CompanyPC : Interactives
             if (onlyAcceptedQuest)
             {
                 canInteract = triggerQuest.Accepted;
+                if (canInteract) Invoke("CheckQuests", 0.05f);
                 return;
             }
             if (onlyCompletedQuest)
             {
                 canInteract = triggerQuest.Completed;
+                if (canInteract) Invoke("CheckQuests", 0.05f);
                 return;
             }
 
             //if (triggerQuest.Accepted && !triggerQuest.Completed) canInteract = true;
             canInteract = triggerQuest.Accepted && !triggerQuest.Completed;
         }
-
-        if (canInteract) Invoke("CheckQuests", 0.05f);
 
         //firstEnable = false;
     }
@@ -148,7 +150,9 @@ public class CompanyPC : Interactives
 
     void CheckQuests()
     {
-        if (GameManager.gameManager.questGenerator.quest_queue.Count > 0 /*|| GameManager.gameManager.companyController.quests_onPC.Count > 0*/)
+        Debug.Log("Checando quests no pc");
+
+        if (GameManager.gameManager.questGenerator.quest_queue.Count > 0 || GameManager.gameManager.companyController.quests_onPC.Count > 0)
             Enable_DisableQM(true);
         else Enable_DisableQM(false);
     }
@@ -202,7 +206,16 @@ public class CompanyPC : Interactives
 
     public void Enable_DisableQM(bool value)
     {
-        questMarker.SetActive(value);
+        Debug.Log("Ativando icone de quest: " + value);
+
+        if (new_quest_marker == null)
+        {
+            new_quest_marker = Instantiate(GameManager.gameManager.questController.new_quest_marker_pref, GameManager.gameManager.MainHud.popUpsHolder, false) as GameObject;
+            new_quest_marker.GetComponent<ButtonToPress>().SetTransf(transform, 1.75f);
+        }
+
+        in_progress_quests = value;
+        new_quest_marker.SetActive(value);
     }
 
     public void GenerateJobs()
@@ -244,6 +257,13 @@ public class CompanyPC : Interactives
         }
     }
 
+    private void OnEnable()
+    {
+        if (in_progress_quests && new_quest_marker != null) new_quest_marker.SetActive(true);
+
+        Invoke("AddQuestEvent", 0.005f);
+    }
+
     private void OnDisable()
     {
         if (!enqueuedQuests)
@@ -258,6 +278,7 @@ public class CompanyPC : Interactives
         CustomEvents.instance.onQuestAccepted -= CheckForQuestObjectives;
 
         if (quest_mark != null) quest_mark.SetActive(false);
+        if (new_quest_marker != null) new_quest_marker.SetActive(false);
     }
 
     //public void SetRanking()

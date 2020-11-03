@@ -35,7 +35,7 @@ public class Door : MonoBehaviour
 
                 //SceneManager.LoadScene(sceneName);
 
-                GameManager.gameManager.ChangeScene(sceneName);
+                GameManager.gameManager.ChangeScene(sceneName, spawnpointID);
             }
             else
             {

@@ -89,9 +89,7 @@ public class GameManager : MonoBehaviour
             }
 
             if (Input.GetKeyDown(KeyCode.F))
-            {
-                gameManager.questController.questsCompleted = 0;
-
+            {               
                 if (accepting)
                 {
                     if (!questsToSkip[id].Accepted) questsToSkip[id].AcceptQuest();
@@ -100,10 +98,12 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    questsToSkip[id].Complete();
+                    if (!questsToSkip[id].Completed) questsToSkip[id].Complete();
                     id++;
                     accepting = true;
                 }
+
+                gameManager.questController.questsCompleted = 0;
             }
 
             if (Input.GetKeyDown(KeyCode.L))
@@ -134,9 +134,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ChangeScene(string sceneName)
+    public void ChangeScene(string sceneName, int id)
     {
-        GameManager.gameManager.SpawnpointID = spawnpointID;
+        GameManager.gameManager.SpawnpointID = id;
 
         GameManager.gameManager.inventoryController.Inventory.SaveItems();
         GameManager.gameManager.itemsSaver.BlockChestGen();
@@ -144,11 +144,17 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
-    public void ShowTitle()
+    public void ShowTitle(string sceneName = "")
     {
         black_screen.gameObject.SetActive(true);
-        StartCoroutine(FadeIn(0.26f, 0.0f));
-        StartCoroutine(FadeInTitle(0.26f, 0.5f));
+        StartCoroutine(FadeIn(0.26f, 3.0f, sceneName));
+        StartCoroutine(FadeInTitle(0.26f, 3.5f));
+
+        if (!sceneName.Equals(""))
+        {
+            HideTitle(6.0f);
+        }
+
     }
 
     public void HideTitle(float delay)
@@ -158,7 +164,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(FadeOut(1.5f, delay + 1.75f));
     }
 
-    IEnumerator FadeIn(float t, float delay)
+    IEnumerator FadeIn(float t, float delay, string sn = "")
     {
         yield return new WaitForSeconds(delay);
 
@@ -170,6 +176,8 @@ public class GameManager : MonoBehaviour
             timer += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
+
+        if (!sn.Equals("")) GameManager.gameManager.ChangeScene(sn, -1);
     }
 
     IEnumerator FadeInTitle(float t, float delay)

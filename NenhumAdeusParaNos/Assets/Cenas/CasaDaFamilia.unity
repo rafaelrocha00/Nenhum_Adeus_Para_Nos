@@ -19574,7 +19574,7 @@ GameObject:
   - component: {fileID: 1434864748}
   - component: {fileID: 1434864747}
   - component: {fileID: 1434864746}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Porta
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27063,6 +27063,11 @@ PrefabInstance:
     - target: {fileID: 6506660029207911046, guid: e4bbb92bdd79fff4a9fd55892b5c117d,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7097529589195451729, guid: e4bbb92bdd79fff4a9fd55892b5c117d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

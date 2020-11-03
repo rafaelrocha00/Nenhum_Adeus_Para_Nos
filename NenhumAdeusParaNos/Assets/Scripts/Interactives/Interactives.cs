@@ -56,7 +56,7 @@ public abstract class Interactives : MonoBehaviour
     }
     void AddQuestEvent()
     {
-        Debug.Log("adicionando quest event /" + Name);
+        //Debug.Log("adicionando quest event /" + Name);
         CustomEvents.instance.onQuestAccepted += CheckForQuestObjectives;
     }
 
@@ -69,7 +69,7 @@ public abstract class Interactives : MonoBehaviour
 
     public virtual void CheckForQuestObjectives(Quest q_)
     {
-        Debug.Log("Checando quest no interagiveis");
+        //Debug.Log("Checando quest no interagiveis");
 
         if (q_ is InteractQuest)
         {
