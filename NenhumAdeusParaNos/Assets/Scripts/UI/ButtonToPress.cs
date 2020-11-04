@@ -35,7 +35,7 @@ public class ButtonToPress : MonoBehaviour
         if (sa != null) sa.Stop();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         //transform.position = new Vector3(transform.position.x, transform.position.y + Mathf.Sin(Time.time) * 0.01f, transform.position.z);
         //transform.rotation = Quaternion.LookRotation(/*main.transform.forward + Vector3.up*/Vector3.Cross(main.transform.forward, main.transform.right));

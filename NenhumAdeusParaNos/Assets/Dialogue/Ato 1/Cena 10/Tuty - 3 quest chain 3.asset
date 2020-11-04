@@ -15,25 +15,25 @@ MonoBehaviour:
   qName: Fale com Thimmy na escola
   id: 112
   description: quest_description
-  moneyReward: 0
-  resourceReward: 0
   contractor: contractor_
   mustReturn: 0
   limitDay: -1
   generated: 0
-  resourceT: 4
   completingQuestDialogue: {fileID: 0}
   quest_itemRewards: []
   quest_itemRQuants: 
-  completed: 0
-  accepted: 0
+  completed: 1
+  accepted: 1
   cancelled: 0
   waitingReturnToNPC: 0
   acceptText: 
-  completeText: 
+  completeText: "O rem\xE9dio da Leya \xE9 prioridade agora. Melhor ir conseguir
+    pl\xE1stico."
   unlockableDialogues: []
   questToAccept: {fileID: 11400000, guid: 45dc44fb62c52a640a3f6d3c79d093e0, type: 2}
   sceneStateChange: {fileID: 0}
+  endAct_1: 0
+  timeToPass: 0
   compToAdd: []
   npcsToTalk:
   - Thimmy

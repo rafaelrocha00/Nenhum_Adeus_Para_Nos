@@ -27,8 +27,15 @@ public class SceneStateConditions : ScriptableObject
 
     public bool CanChangeState()
     {
-        try { return questToBeCompleted.Completed && !questToNotBeAccepted.Accepted; }
-        catch {  }
+        //try
+        //{
+        //    return questToBeCompleted.Completed && !questToNotBeAccepted.Accepted;
+        //}
+        //catch {  }
+        if (questToBeCompleted != null && questToNotBeAccepted != null)
+        {
+            return questToBeCompleted.Completed && !questToNotBeAccepted.Accepted;
+        }
 
         if (questToBeCompleted != null && questToBeCompleted.Completed) return true;
 

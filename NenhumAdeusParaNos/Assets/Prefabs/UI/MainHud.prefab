@@ -6432,7 +6432,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Voltar ao Menu
+  m_Text: Sair
 --- !u!1 &3687985031746899966
 GameObject:
   m_ObjectHideFlags: 0
@@ -8566,7 +8566,7 @@ GameObject:
   - component: {fileID: 3687985032522968750}
   - component: {fileID: 3687985032522968737}
   m_Layer: 5
-  m_Name: BackToMenu
+  m_Name: Exit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8667,7 +8667,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 3687985032522968750}
   m_OnClick:
     m_PersistentCalls:

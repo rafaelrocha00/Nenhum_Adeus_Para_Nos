@@ -548,7 +548,7 @@ public class Player : MonoBehaviour, BattleUnit
         movingTowardWall = 1;
         if (Physics.Raycast(transform.up * 0.2f + transform.position, heading, out hit, 0.5f, dashMask)) movingTowardWall = 0;
 
-        transform.position += heading * moveSpeed * Time.deltaTime * movingTowardWall;
+        //transform.position += heading * moveSpeed * Time.deltaTime * movingTowardWall;
         cc.Move(heading * moveSpeed * Time.deltaTime);
 
         if (aimLocked)

@@ -22,12 +22,11 @@ MonoBehaviour:
   completingQuestDialogue: {fileID: 0}
   quest_itemRewards: []
   quest_itemRQuants: 
-  completed: 0
-  accepted: 0
+  completed: 1
+  accepted: 1
   cancelled: 0
   waitingReturnToNPC: 0
-  acceptText: "O rem\xE9dio da Leya \xE9 prioridade agora, devo ter alguns e-mails
-    com trabalho."
+  acceptText: 
   completeText: Com isso, eu posso voltar e entregar pra Leya.
   unlockableDialogues:
   - {fileID: 11400000, guid: 96b2495f02f55894b85a19a8263d3ed0, type: 2}
@@ -35,6 +34,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a7f4e301705faa64e900ef6419d89c70, type: 2}
   questToAccept: {fileID: 11400000, guid: 4383bfa7071a16442b02ee9653cef05e, type: 2}
   sceneStateChange: {fileID: 0}
+  endAct_1: 0
+  timeToPass: 0
   compToAdd: []
   shopName: Balconista
   itemToGet: {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}

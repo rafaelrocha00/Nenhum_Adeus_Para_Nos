@@ -386,8 +386,9 @@ public class MainHud : MonoBehaviour
 
     public void BackToMenu()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        //UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
         GameManager.gameManager.timeController.PauseResume(false);
+        Application.Quit();
     }
 
     public void ShowItemDesc(Item i, Vector3 pos)

@@ -43,11 +43,12 @@ public class SceneStateManager : MonoBehaviour
 
     public void ChangeSceneState(int s, bool movePlayer, bool fade)
     {
-        StartCoroutine(ChangeState(s, movePlayer, fade));        
+        StartCoroutine(ChangeState(s, movePlayer, fade));
     }
 
     IEnumerator ChangeState(int s, bool movePlayer = true, bool fade = true)
     {
+        yield return new WaitForEndOfFrame();
         //if (s == changingState)
         //{
         //    if (movePlayer) StartCoroutine(ChangePlayerPosOnChange());
