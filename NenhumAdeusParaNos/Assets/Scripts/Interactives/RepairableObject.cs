@@ -7,6 +7,7 @@ public class RepairableObject : Interactives, IDateEvent
     [Header("Repairable Object")]
     //public string objectName;
 
+    public GameObject state_broken_detached;
     public GameObject state_broken;
     public GameObject state_repaired;
 
@@ -48,6 +49,7 @@ public class RepairableObject : Interactives, IDateEvent
         if (unbreakableByTime)
         {
             if (condToBreak.Accepted && !condToBreak.Completed) Break();
+            else if (condToBreak.Completed) Repair(0);
             GameManager.gameManager.repairController.AddActiveDateEvent(this);
             return;
         }
@@ -141,6 +143,8 @@ public class RepairableObject : Interactives, IDateEvent
         GameManager.gameManager.repairController.RemoveDateEvent(Name);
         if (genRepairQuest && !AlreadyHasQuest()) GameManager.gameManager.questGenerator.GenRepQuest(Name);
         //Mudar estado de textura/modelo.
+        state_repaired.SetActive(false);
+        state_broken.SetActive(true);
     }
 
     bool AlreadyHasQuest()
@@ -151,10 +155,12 @@ public class RepairableObject : Interactives, IDateEvent
 
     void Attach(bool v)
     {
-        state_repaired.SetActive(v);
-        state_broken.SetActive(!v);
+        //state_repaired.SetActive(v);
+        //state_broken.SetActive(!v);
+        if (v) state_repaired.SetActive(v);
+        else state_broken.SetActive(v);
+        state_broken_detached.SetActive(!v);
         if (!v) EnableInteraction(false);
-
     }
 
     public void EnableInteraction(bool v)

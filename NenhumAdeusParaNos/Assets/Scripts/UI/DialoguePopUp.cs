@@ -10,6 +10,7 @@ public class DialoguePopUp : MonoBehaviour
 
     public Text dialogueText;
     public Image speakerImage;
+    public Image speakerImageBG;
     public Button thisButton;
     float fixedY = 0;
     //Vector3 fixedDistance;
@@ -67,8 +68,8 @@ public class DialoguePopUp : MonoBehaviour
     }
     public void SetSprite(Sprite sp)
     {
-        if (sp == null) { speakerImage.enabled = false; return; }
-        else speakerImage.enabled = true;
+        if (sp == null) { speakerImage.enabled = false; speakerImageBG.enabled = false; return; }
+        else { speakerImage.enabled = true; speakerImageBG.enabled = true; }
         speakerImage.sprite = sp;
 
     }
