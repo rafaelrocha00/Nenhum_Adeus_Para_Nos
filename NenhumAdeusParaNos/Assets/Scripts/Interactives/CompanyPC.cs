@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class CompanyPC : Interactives
 {
@@ -19,6 +20,8 @@ public class CompanyPC : Interactives
     public Transform rewardsArea;
     public GameObject rewardRankP;
 
+    public Transform map;
+
     #region Pc UI
     #region Jobs
     public Transform questList_tab;
@@ -30,7 +33,7 @@ public class CompanyPC : Interactives
     public Text questDesc_description;
     public Text questDesc_reward;
     public Text questDesc_limit;
-    public Text questDesc_contractor;
+    //public Text questDesc_contractor;
 
     bool in_progress_quests;
 
@@ -71,8 +74,8 @@ public class CompanyPC : Interactives
         //questDesc_reward.text = quest.MoneyReward.ToString("0.00") + " & " + quest.ResourceReward.ToString() + " " + resourceT;
         questDesc_reward.text = quest.quest_itemRewards[0].itemName + "  x" + quest.quest_itemRQuants[0].ToString();
 
-        questDesc_limit.text = GameManager.gameManager.calendarController.DaysOfWeek[quest.LimitDay];
-        questDesc_contractor.text = quest.Contractor;
+        questDesc_limit.text = GameManager.gameManager.calendarController.DaysOfWeek[quest.LimitDay] + " 23:59";
+        //questDesc_contractor.text = quest.Contractor;
     }
     public QuestButton NextQuest()
     {
@@ -93,21 +96,36 @@ public class CompanyPC : Interactives
         if (next != null) next.ShowDesc();
     }
     #endregion
-    #region Resources
-    //public Text money;
-    //public Text[] resourcesQuants = new Text[4];
+    #region Items
+    public Storage mainStorage;
+    public Transform items_holder;
+    public GameObject item_inpc_pref;
 
-    //public void SetMoney()
-    //{
-    //    money.text = GameManager.gameManager.companyController.Money.ToString("0.00");
-    //}
-    //public void SetResource()
-    //{
-    //    for (int i = 0; i < 4; i++)
-    //    {
-    //        resourcesQuants[i].text = GameManager.gameManager.companyController.GetResourceQuant(i).ToString();
-    //    }
-    //}
+    public void SeeStoragedItems()
+    {
+        mainStorage.GenerateSlots(true);
+        StartCoroutine(WaitToSeeItems());
+    }
+    IEnumerator WaitToSeeItems()
+    {
+        yield return new WaitForEndOfFrame();
+        Dictionary<Item, int> items_quants = mainStorage.GetItemsQuants();
+
+        for (int i = items_holder.childCount - 1; i >= 0; i--)
+        {
+            Destroy(items_holder.GetChild(i).gameObject);
+        }
+
+        for (int i = 0; i < items_quants.Count; i++)
+        {
+            KeyValuePair<Item, int> item_quant = Enumerable.ElementAt(items_quants, i);
+
+            GameObject aux = Instantiate(item_inpc_pref, items_holder, false) as GameObject;
+            aux.transform.GetChild(0).GetComponent<Image>().sprite = item_quant.Key.itemSprite;
+            aux.transform.GetChild(1).GetComponent<Text>().text = "x" + item_quant.Value.ToString();
+        }
+
+    }
     #endregion
     #endregion
 
@@ -175,6 +193,7 @@ public class CompanyPC : Interactives
         GenerateJobs();
         CheckQuest();
         CheckQuests();
+        SeeStoragedItems();
 
         GameManager.gameManager.MainHud.EnterPC(true, this);
 
@@ -279,6 +298,12 @@ public class CompanyPC : Interactives
 
         if (quest_mark != null) quest_mark.SetActive(false);
         if (new_quest_marker != null) new_quest_marker.SetActive(false);
+    }
+
+    public void MapZoom(float value)
+    {
+        if ((value > 1 && map.localScale.x >= 10) || (value <= 1 && map.localScale.x < 0.6f)) return;
+        map.localScale *= value;
     }
 
     //public void SetRanking()

@@ -11,7 +11,7 @@ public abstract class Quest : ScriptableObject
     [SerializeField] string description = "quest_description";
     //[SerializeField] int moneyReward = 0;    
     //[SerializeField] int resourceReward = 0;
-    [SerializeField] string contractor = "contractor_";
+    //[SerializeField] string contractor = "contractor_";
     [SerializeField] protected bool mustReturn = false;
     [SerializeField] int limitDay = -1;
     public string Name { get { return qName; } set { qName = value; } }
@@ -21,7 +21,7 @@ public abstract class Quest : ScriptableObject
     //public int MoneyReward { get { return moneyReward; } set { moneyReward = value; } }
     //public CompanyController.ResourceType resourceT = CompanyController.ResourceType.None;
     //public int ResourceReward { get { return resourceReward; } set { resourceReward = value; } }
-    public string Contractor { get { return contractor; } set { contractor = value; } }
+    //public string Contractor { get { return contractor; } set { contractor = value; } }
     public bool MustReturn { get { return mustReturn; } set { mustReturn = value; } }
     public DialogueQuestTrigger completingQuestDialogue;
     public int LimitDay { get { return limitDay; } set { limitDay = value; } }

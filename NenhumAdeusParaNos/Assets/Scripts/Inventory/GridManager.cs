@@ -64,7 +64,7 @@ public class GridManager : MonoBehaviour
     {
         //bool itemWasPlaced = false;
         //for (int i = 0; i < invenGrid.GetLength(0); i++)
-        Debug.Log(invenGrid == null);              
+        Debug.Log(invenGrid == null);
         for (int i = invenGrid.GetLength(1) - 1; i >= 0; i--)
         {
             //for (int j = 0; j < invenGrid.GetLength(1); j++)
