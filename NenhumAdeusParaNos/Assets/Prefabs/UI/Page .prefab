@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4605166709827614621}
+  - component: {fileID: 6955092152843476925}
   m_Layer: 5
   m_Name: 'Page '
   m_TagString: Untagged
@@ -37,6 +38,14 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.0000007636845, y: 0}
+--- !u!222 &6955092152843476925
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4039288756370444227}
+  m_CullTransparentMesh: 0
 --- !u!1 &8174548610265196289
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,6 +92,8 @@ GameObject:
   - component: {fileID: 8174548611349832968}
   - component: {fileID: 8174548611349832966}
   - component: {fileID: 8174548611349832969}
+  - component: {fileID: 4298366079750890670}
+  - component: {fileID: 8900558350896477400}
   m_Layer: 5
   m_Name: InvenGrid
   m_TagString: Untagged
@@ -151,3 +162,40 @@ MonoBehaviour:
   xSize: 1
   ySize: 1
   generateOnStart: 0
+--- !u!222 &4298366079750890670
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8174548611349832971}
+  m_CullTransparentMesh: 0
+--- !u!114 &8900558350896477400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8174548611349832971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1

@@ -1,16 +1,28 @@
 fileFormatVersion: 2
-guid: c3dcebace9a990548b1d153c01b359d9
+guid: b279cdfb4fc2f8346aa56c8d31d05274
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5095109697521064487
-    second: notes
+      213: -7733832498107398827
+    second: invenroty_open
   - first:
-      213: -6411752801431307285
-    second: notes_nextPageB_hover
+      213: -1243991248653471753
+    second: inventory_weapon_slot
   - first:
-      213: 8557362754890480830
-    second: notes_nextPageB_default
+      213: -6838350124666804663
+    second: inventory_trash_slot
+  - first:
+      213: 6039858529379335363
+    second: inventory_quickItem_slot
+  - first:
+      213: 4971853434196410995
+    second: inventory_close_button
+  - first:
+      213: 3182708972715842362
+    second: inventory_closed
+  - first:
+      213: -1229788349820253003
+    second: inventory_slot
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -56,7 +68,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -120,55 +132,139 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: notes
+      name: invenroty_open
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1059
-        height: 1139
+        width: 1388
+        height: 1560
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 72a146c564775b640800000000000000
-      internalID: 5095109697521064487
+      spriteID: 555cfed8158eba490800000000000000
+      internalID: -7733832498107398827
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: notes_nextPageB_hover
+      name: inventory_weapon_slot
       rect:
         serializedVersion: 2
-        x: 1090
-        y: 470
-        width: 210
-        height: 210
+        x: 1497
+        y: 1058
+        width: 306
+        height: 415
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 7, y: 7, z: 7, w: 7}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: beb321b4cc0e407a0800000000000000
-      internalID: -6411752801431307285
+      spriteID: 7ffa050ec847cbee0800000000000000
+      internalID: -1243991248653471753
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: notes_nextPageB_default
+      name: inventory_trash_slot
       rect:
         serializedVersion: 2
-        x: 1060
-        y: 730
-        width: 210
-        height: 210
+        x: 1917
+        y: 1224
+        width: 141
+        height: 154
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 946ac71facc4911a0800000000000000
+      internalID: -6838350124666804663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: inventory_quickItem_slot
+      rect:
+        serializedVersion: 2
+        x: 1581
+        y: 911
+        width: 111
+        height: 93
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ccb449f453e1d350800000000000000
+      internalID: 6039858529379335363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: inventory_close_button
+      rect:
+        serializedVersion: 2
+        x: 1732
+        y: 919
+        width: 72
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 372459c3b529ff440800000000000000
+      internalID: 4971853434196410995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: inventory_closed
+      rect:
+        serializedVersion: 2
+        x: 1447
+        y: 63
+        width: 1390
+        height: 800
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3b1d2ea2f04b2c20800000000000000
+      internalID: 3182708972715842362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: inventory_slot
+      rect:
+        serializedVersion: 2
+        x: 825
+        y: 428
+        width: 131
+        height: 131
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -176,8 +272,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ebcb763361cd1c670800000000000000
-      internalID: 8557362754890480830
+      spriteID: 5bccc04f20aeeeee0800000000000000
+      internalID: -1229788349820253003
       vertices: []
       indices: 
       edges: []
@@ -185,7 +281,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: bce49deae13b50b42ab12ec4eae57c88
     internalID: 0
     vertices: []
     indices: 

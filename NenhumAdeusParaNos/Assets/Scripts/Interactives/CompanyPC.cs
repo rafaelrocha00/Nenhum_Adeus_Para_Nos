@@ -33,6 +33,8 @@ public class CompanyPC : Interactives
     public Text questDesc_description;
     public Text questDesc_reward;
     public Text questDesc_limit;
+    public GameObject questDesc_acceptButton;
+    public GameObject questDesc_refuseButton;
     //public Text questDesc_contractor;
 
     bool in_progress_quests;
@@ -50,7 +52,13 @@ public class CompanyPC : Interactives
         actualQuestB = questB;
         if (!quest.Accepted)
         {
-            quest.AcceptQuest();
+            questDesc_acceptButton.SetActive(true);
+            questDesc_refuseButton.SetActive(true);
+        }
+        else
+        {
+            questDesc_acceptButton.SetActive(false);
+            questDesc_refuseButton.SetActive(false);
         }
 
         questDesc_name.text = quest.Name;
@@ -83,7 +91,13 @@ public class CompanyPC : Interactives
         if (aux + 1 >= quest_list.Count) return quest_list[aux - 1];
         else return quest_list[aux + 1];
     }
-    public void CancelQuest()
+
+    public void AcceptQuest()
+    {
+        actualQuestB.AcceptQuest();
+    }
+
+    public void RefuseQuest()
     {
         questDesc_window.SetActive(false);
         QuestButton next = null;

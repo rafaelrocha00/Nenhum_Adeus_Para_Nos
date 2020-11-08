@@ -98,7 +98,7 @@ public class Storage : Interactives
 
         StartCoroutine(GenItems(close));;
         generatedMenu = true;
-        GameManager.gameManager.MainHud.ActualStorage = this;
+        GameManager.gameManager.MainHud.ActualStorage = this;       
     }
 
     void LoadItems()
@@ -117,6 +117,7 @@ public class Storage : Interactives
             }
         }
         else LoadItems();
+        if (close) CloseStorage();
         ResetPages();
 
         if (main)
@@ -139,7 +140,7 @@ public class Storage : Interactives
             }
         }
 
-        if (close) CloseStorage();
+        //if (close) CloseStorage();
     }
 
     void TryAlocateItem(Item item)
@@ -151,6 +152,14 @@ public class Storage : Interactives
         }
 
         Destroy(auxIB.gameObject);
+    }
+
+    public void TryAlocateGeneratedItem(ItemButton ib)
+    {
+        for (int i = 0; i < myGrids.Length; i++)
+        {
+            if (myGrids[i].TryAlocateItem(ib)) return;
+        }
     }
 
     public void AddItemByCoord(Item i, Vector2Int[,] coords, int page)
