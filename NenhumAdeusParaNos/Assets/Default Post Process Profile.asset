@@ -52,10 +52,10 @@ MonoBehaviour:
     overrideState: 0
     value: 1
   temperature:
-    overrideState: 0
+    overrideState: 1
     value: 0
   tint:
-    overrideState: 0
+    overrideState: 1
     value: 0
   colorFilter:
     overrideState: 1
@@ -77,7 +77,7 @@ MonoBehaviour:
     value: 0
   mixerRedOutRedIn:
     overrideState: 0
-    value: 100
+    value: 70.89
   mixerRedOutGreenIn:
     overrideState: 0
     value: 0
@@ -104,10 +104,10 @@ MonoBehaviour:
     value: 100
   lift:
     overrideState: 0
-    value: {x: 1, y: 1, z: 1, w: 0}
+    value: {x: 0.9710003, y: 1, z: 0.9782504, w: 0}
   gamma:
     overrideState: 0
-    value: {x: 1, y: 1, z: 1, w: 0}
+    value: {x: 0.94512624, y: 0.944892, z: 1, w: 0}
   gain:
     overrideState: 0
     value: {x: 1, y: 1, z: 1, w: 0}
@@ -1378,6 +1378,7 @@ MonoBehaviour:
   - {fileID: 6699989020131405435}
   - {fileID: 6556783936513043375}
   - {fileID: -215567973020245544}
+  - {fileID: 7137847328292670729}
 --- !u!114 &686031307306683624
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1479,3 +1480,31 @@ MonoBehaviour:
   fastMode:
     overrideState: 0
     value: 0
+--- !u!114 &7137847328292670729
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 556797029e73b2347956b6579e77e05b, type: 3}
+  m_Name: DepthOfField
+  m_EditorClassIdentifier: 
+  active: 0
+  enabled:
+    overrideState: 1
+    value: 1
+  focusDistance:
+    overrideState: 1
+    value: 0.1
+  aperture:
+    overrideState: 0
+    value: 4.98
+  focalLength:
+    overrideState: 0
+    value: 51.81
+  kernelSize:
+    overrideState: 0
+    value: 1

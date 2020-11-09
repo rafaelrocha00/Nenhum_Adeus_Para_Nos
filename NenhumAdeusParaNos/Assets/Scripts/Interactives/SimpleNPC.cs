@@ -62,6 +62,7 @@ public class SimpleNPC : Interactives, IDialogueable
     {       
         EndInteraction();
         GameManager.gameManager.dialogueController.EndDialogue();
+        if(movement != null)
         movement.Voltar();
     }
 

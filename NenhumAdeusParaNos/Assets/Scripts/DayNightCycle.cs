@@ -51,6 +51,8 @@ public class DayNightCycle : MonoBehaviour
     
     public void UpdatePostProcess(float time)
     {
+        if (_grading == null) return;
+
         //Debug.Log(time);
         var lift = Vector4.Lerp(nightLift, dayLift, dayNightCurve.Evaluate(time / 24f));
         var gamma = Vector4.Lerp(nightGamma, dayGamma, dayNightCurve.Evaluate(time / 24f));
