@@ -126,7 +126,8 @@ public class DialogueController : MonoBehaviour
     public void StartDialogue(Dialogue newDialogue, Transform transf, Sprite sp/*, INPC npc = null*/)
     {
         if (newDialogue is DialogueWithChoice) lastDialogueWithChoice = (DialogueWithChoice)newDialogue;
-        activeMainDialogue = true;
+        //activeMainDialogue = true;
+        StartCoroutine(WaitToEnterDialogue());
         int id = 0;
         //bool isPlayer = (newDialogue is DialogueBattle);        
         //if (isPlayer)
@@ -142,6 +143,12 @@ public class DialogueController : MonoBehaviour
 
         CustomEvents.instance.OnDialogueStart(actualDialogue.MyNPC.GetName());
     }
+    IEnumerator WaitToEnterDialogue()
+    {
+        yield return new WaitForEndOfFrame();
+        activeMainDialogue = true;
+    }
+
     IEnumerator CheckPlayerDistance()
     {
         while (activeMainDialogue)

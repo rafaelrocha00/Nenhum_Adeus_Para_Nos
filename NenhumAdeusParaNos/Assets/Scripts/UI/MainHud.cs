@@ -15,6 +15,9 @@ public class MainHud : MonoBehaviour
     public GameObject uiToHide;
 
     public GameObject inventory;
+    public GameObject inventoryClosed;
+    public Coroutine openingInventory;
+
     public Transform itemStorages;
 
     public CraftingSection craftingSection;
@@ -47,7 +50,7 @@ public class MainHud : MonoBehaviour
     public Image inBattle_edIcon, inBattle_enemyIcon;
 
     [HideInInspector] Storage actualStorage = null;
-    public Storage ActualStorage { set { actualStorage = value; } }
+    public Storage ActualStorage { get { return actualStorage; } set { actualStorage = value; } }
 
     CompanyPC currentPC;
     bool onPC;
@@ -93,8 +96,11 @@ public class MainHud : MonoBehaviour
 
     #region Notes
     public GameObject notesMenu;
+
     public Transform allNotes;
-    Text[] notesTxtAreas;    
+    Text[] notesTxtAreas;
+    Text[] notesStrikeTroughAreas;
+
     public GameObject nextPageB;
     public GameObject prevPageB;
     public int maxCharPerPage = 300;
@@ -107,17 +113,33 @@ public class MainHud : MonoBehaviour
         if (value) notesMenu.SetActive(!notesMenu.activeSelf);
         else notesMenu.SetActive(false);
         if (!gotTexts && notesMenu.activeSelf)
-        {
-            notesTxtAreas = allNotes.GetComponentsInChildren<Text>(true);
+        {            
+            List<Text> allTexts = new List<Text>();
+
+            List<Text> mainTexts = new List<Text>();
+            List<Text> strikeTroughs = new List<Text>();
+
+            allNotes.GetComponentsInChildren(true, allTexts);
+
+            for (int i = 0; i < allTexts.Count; i++)
+            {
+                if (i % 2 == 0) mainTexts.Add(allTexts[i]);
+                else strikeTroughs.Add(allTexts[i]);
+            }
+            notesTxtAreas = mainTexts.ToArray();
+            notesStrikeTroughAreas = strikeTroughs.ToArray();
+
             gotTexts = true;
         }        
     }
 
-    public void WriteNotes(string[] notes)
+    public void WriteNotes(string[] notes, string[] strokes)
     {
         for (int i = 0; i < 10; i++)
         {
             if (notes[i].Equals("")) return;
+
+            notesStrikeTroughAreas[i].text = strokes[i];
             notesTxtAreas[i].text = notes[i];
         }
     }
@@ -157,6 +179,7 @@ public class MainHud : MonoBehaviour
 
         if (!GameManager.gameManager.NewGame) uiToHide.SetActive(true);
 
+        ShowDashIcon();
         //if (GameManager.gameManager.NewGame)
         //{
         Invoke("DelayOpen", 0.02f);
@@ -189,7 +212,7 @@ public class MainHud : MonoBehaviour
         //}
         if (Input.GetKeyDown(KeyCode.I))
         {
-            OpenCloseInventory(!inventory.activeSelf);
+            OpenCloseInventory(!inventoryClosed.activeSelf);
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -213,6 +236,11 @@ public class MainHud : MonoBehaviour
     public void ShowHiddenUI(bool v)
     {
         uiToHide.SetActive(v);
+    }
+
+    public void ShowDashIcon()
+    {
+        if (GameManager.gameManager.BattleUnlocked) dashIcon.gameObject.SetActive(true);
     }
 
     public void UpdateStamina(float staminaValue)
@@ -265,11 +293,27 @@ public class MainHud : MonoBehaviour
 
     public void OpenCloseInventory(bool value)
     {
-        if (!value) CloseCraftSection();
-        OpenClosePauseMenu(false);
-        inventory.SetActive(value);
+        if (!value)
+        {
+            CloseCraftSection();
+            if (openingInventory != null) StopCoroutine(openingInventory);
+            inventoryClosed.SetActive(false);
+            inventory.SetActive(false);            
+        }
+        else
+        {
+            openingInventory = StartCoroutine(InventoryOpenAnim());
+        }
+        OpenClosePauseMenu(false);;        
         ShowHideQuickItemSlot(!value);       
     }
+    IEnumerator InventoryOpenAnim()
+    {
+        inventoryClosed.SetActive(true);
+        yield return new WaitForSeconds(0.15f);
+        inventory.SetActive(true);
+    }
+
     public void OpenCraftSection(BrokenObject bo)
     {
         craftingSection.gameObject.SetActive(true);

@@ -34,6 +34,9 @@ public class GameManager : MonoBehaviour
     [HideInInspector] bool newGame = true;
     public bool NewGame { get { return newGame; } set { newGame = value; } }
 
+    [SerializeField] bool battleUnlocked = false;
+    public bool BattleUnlocked { get { return battleUnlocked; } }
+
     [HideInInspector] List<GameObject> playerCompanionsPref = new List<GameObject>();
     public List<GameObject> PlayerCompanionsPref { get { return playerCompanionsPref; } }
 
@@ -75,6 +78,7 @@ public class GameManager : MonoBehaviour
 
         GameManager.gameManager.repairController.OnLoadScene();
         GameManager.gameManager.questController.SpawnAllQuestMarks();
+        GameManager.gameManager.LockUnlockPlayerBattle();
     }
 
     private void Update()
@@ -113,6 +117,11 @@ public class GameManager : MonoBehaviour
         }
 
         //if (Input.GetKeyDown(KeyCode.O)) Client_UDP.Singleton.SendToServer("Jogador: " + PlayerName + " | Maior Recompensa: 500,68(s)");
+    }
+
+    public void LockUnlockPlayerBattle()
+    {
+        GameManager.gameManager.battleController.MainCharacter.BattleUnlocked = BattleUnlocked;
     }
 
     public void ChangeCurrentSceneState(SceneStateConditions sceneState)

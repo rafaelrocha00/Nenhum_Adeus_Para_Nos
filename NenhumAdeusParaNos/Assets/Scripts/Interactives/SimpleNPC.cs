@@ -64,6 +64,7 @@ public class SimpleNPC : Interactives, IDialogueable
         GameManager.gameManager.dialogueController.EndDialogue();
         if(movement != null)
         movement.Voltar();
+        if (movement != null) movement.Voltar();
     }
 
     public string GetName()

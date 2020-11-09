@@ -6,6 +6,7 @@ using UnityEngine;
 public class Notes : QuickUseItem
 {
     [TextArea] public string[] texts = new string[10];
+    public string[] strokes = new string[10];
     //public string[] Texts { get { return texts; } set { texts = value; } }
     public int maxChar = 340;
 
@@ -18,7 +19,7 @@ public class Notes : QuickUseItem
 
     public void WriteText()
     {
-        GameManager.gameManager.MainHud.WriteNotes(texts);
+        GameManager.gameManager.MainHud.WriteNotes(texts, strokes);
     }
 
     public void AddNote(string n)
@@ -32,6 +33,7 @@ public class Notes : QuickUseItem
                 break;
             }
         }
+        strokes[page] += new string('_', texts[page].Length);
         texts[page] += "- " + n + "\n\n";
 
         //WriteText();
@@ -40,5 +42,6 @@ public class Notes : QuickUseItem
     private void OnDisable()
     {
         texts = new string[10];
+        strokes = new string[10];
     }
 }

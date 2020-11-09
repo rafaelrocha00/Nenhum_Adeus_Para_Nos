@@ -54,8 +54,10 @@ public class Storage : Interactives
         CheckQuest();
     }
 
-    void GenerateSlots()
+    public void GenerateSlots(bool close = false)
     {
+        if (generatedMenu) return;
+
         myGrids = new GridManager[page_number];
         pages = new GameObject[page_number];
 
@@ -94,9 +96,9 @@ public class Storage : Interactives
 
         aux.transform.GetChild(1).Find("chest_name").GetComponent<Text>().text = Name;
 
-        StartCoroutine("GenItems");;
+        StartCoroutine(GenItems(close));;
         generatedMenu = true;
-        GameManager.gameManager.MainHud.ActualStorage = this;
+        GameManager.gameManager.MainHud.ActualStorage = this;       
     }
 
     void LoadItems()
@@ -104,7 +106,7 @@ public class Storage : Interactives
         GameManager.gameManager.itemsSaver.SetChestItems(this);
     }
 
-    IEnumerator GenItems()
+    IEnumerator GenItems(bool close = false)
     {
         yield return new WaitForEndOfFrame();
         if (!GameManager.gameManager.itemsSaver.FindChest(Name))
@@ -115,6 +117,7 @@ public class Storage : Interactives
             }
         }
         else LoadItems();
+        if (close) CloseStorage();
         ResetPages();
 
         if (main)
@@ -136,6 +139,8 @@ public class Storage : Interactives
                 TryAlocateItem(GameManager.gameManager.itemsSaver.itemsToDelivery.Dequeue());
             }
         }
+
+        //if (close) CloseStorage();
     }
 
     void TryAlocateItem(Item item)
@@ -147,6 +152,14 @@ public class Storage : Interactives
         }
 
         Destroy(auxIB.gameObject);
+    }
+
+    public void TryAlocateGeneratedItem(ItemButton ib)
+    {
+        for (int i = 0; i < myGrids.Length; i++)
+        {
+            if (myGrids[i].TryAlocateItem(ib)) return;
+        }
     }
 
     public void AddItemByCoord(Item i, Vector2Int[,] coords, int page)
@@ -163,6 +176,23 @@ public class Storage : Interactives
             allItems[i] = myGrids[i].itemHolder.GetComponentsInChildren<ItemButton>(true);
         }
         return allItems;
+    }
+
+    public Dictionary<Item, int> GetItemsQuants()
+    {
+        Dictionary<Item, int> allItemsByPage = new Dictionary<Item, int>();
+
+        for (int i = 0; i < page_number; i++)
+        {
+            Item[] allItems = myGrids[i].GetAllItems();
+            for (int j = 0; j < allItems.Length; j++)
+            {
+                if (allItemsByPage.ContainsKey(allItems[j])) allItemsByPage[allItems[j]]++;
+                else  allItemsByPage.Add(allItems[j], 1);
+            }
+        }
+
+        return allItemsByPage;
     }
 
     IEnumerator Mark()

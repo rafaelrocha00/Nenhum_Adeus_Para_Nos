@@ -63,7 +63,7 @@ public class Player : MonoBehaviour, BattleUnit
     Vector3 forward, right;
     //float directionMod = 0;
     bool moving = false;
-    int movingTowardWall = 1;
+    //int movingTowardWall = 1;
     Vector3 heading = Vector3.zero;
 
     float moveTime = 0.0f;
@@ -276,7 +276,7 @@ public class Player : MonoBehaviour, BattleUnit
                 battleAim = hit.point - transform.position;
                 battleAim.y = 0;
             }
-            if (aimingThrowable || placingItem) transform.rotation = Quaternion.LookRotation(battleAim); //transform.LookAt(battleAim);
+            /*if (aimingThrowable || placingItem)*/ transform.rotation = Quaternion.LookRotation(battleAim); //transform.LookAt(battleAim);
             //Debug.Log(lookPos);
         }
 
@@ -544,9 +544,9 @@ public class Player : MonoBehaviour, BattleUnit
         heading = Vector3.Normalize(rightMov + upMov);
         Vector3 newDirection = Vector3.RotateTowards(transform.forward, heading, rotateSpeed * Time.deltaTime, 0);
 
-        RaycastHit hit;
-        movingTowardWall = 1;
-        if (Physics.Raycast(transform.up * 0.2f + transform.position, heading, out hit, 0.5f, dashMask)) movingTowardWall = 0;
+        //RaycastHit hit;
+        //movingTowardWall = 1;
+        //if (Physics.Raycast(transform.up * 0.2f + transform.position, heading, out hit, 0.5f, dashMask)) movingTowardWall = 0;
 
         //transform.position += heading * moveSpeed * Time.deltaTime * movingTowardWall;
         cc.Move(heading * moveSpeed * Time.deltaTime);
@@ -562,7 +562,7 @@ public class Player : MonoBehaviour, BattleUnit
             else LockAim();
         }
 
-        if (!aimingThrowable && !placingItem) transform.rotation = Quaternion.LookRotation(battleAim);//transform.LookAt(battleAim);
+        //if (!aimingThrowable && !placingItem) transform.rotation = Quaternion.LookRotation(battleAim);//transform.LookAt(battleAim);
 
         CheckLook_WalkDir(heading, xMov, zMov);
 

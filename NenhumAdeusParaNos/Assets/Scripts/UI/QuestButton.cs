@@ -22,9 +22,14 @@ public class QuestButton : MonoBehaviour
         pc.ShowQuestDescription(quest, this);
     }
 
+    public void AcceptQuest()
+    {
+        quest.AcceptQuest();
+    }
+
     public void CancelQuest()
     {
-        quest.Cancel();
+        //quest.Cancel();
         Destroy(gameObject);
     }
 }

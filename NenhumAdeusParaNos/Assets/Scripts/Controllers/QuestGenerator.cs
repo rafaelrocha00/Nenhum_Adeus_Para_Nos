@@ -10,7 +10,7 @@ public class QuestGenerator : MonoBehaviour
 
     bool firstGen = true;
 
-    public List<string> contractorNames = new List<string>();
+    //public List<string> contractorNames = new List<string>();
 
     [Header("Kill")]
     #region KillQuests
@@ -314,7 +314,7 @@ public class QuestGenerator : MonoBehaviour
         }
 
         //_q.resourceT = (CompanyController.ResourceType)Random.Range(0, 4);
-        _q.Contractor = contractorNames[Random.Range(0, contractorNames.Count)];
+        //_q.Contractor = contractorNames[Random.Range(0, contractorNames.Count)];
         _q.LimitDay = Random.Range(0, 7);
 
         actualID++;

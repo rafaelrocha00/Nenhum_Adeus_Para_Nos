@@ -16,7 +16,7 @@ public class SceneStateManager : MonoBehaviour
 
     [Header("States")]
     public GameObject[] sceneStates = new GameObject[1];
-    public int changingState = -1;
+    //public int changingState = -1;
     public Transform newPlayerPos;
 
     [Header("Conditions to Change State")]
