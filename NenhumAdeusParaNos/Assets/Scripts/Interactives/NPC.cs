@@ -274,6 +274,8 @@ public abstract class NPC : Interactives, BattleUnit, IDialogueable
     public virtual Transform GetItemSpawnTransf()
     {
         return null;
+
+
     }
 
     public virtual void StartBattle(bool byTrigger = true)

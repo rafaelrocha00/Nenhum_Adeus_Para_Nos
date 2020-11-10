@@ -17,6 +17,7 @@ public class AudioController : MonoBehaviour
     {
         if (clip == null)
         {
+            Debug.Log("Não há clip");
             source_music.Stop();
             return;
         }

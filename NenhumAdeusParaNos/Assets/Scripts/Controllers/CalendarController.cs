@@ -130,7 +130,7 @@ public class CalendarController : MonoBehaviour
     void UpdateMin(int v = 1)
     {
         date.UpdateMin(v);
-
+        if(DayNightCycle.Instance != null)
         DayNightCycle.Instance.UpdatePostProcess(date.hour + date.mins / 60);
         GameManager.gameManager.repairController.CheckDateEvent(date);
         //Debug.Log(date.hour + " / " + date.mins);
