@@ -18,4 +18,6 @@ public class InventoryController : MonoBehaviour
 
     [HideInInspector] bool dragging = false;
     public bool Dragging { get { return dragging; } set { dragging = value; } }
+
+    public AudioClip clip_openStorage;
 }

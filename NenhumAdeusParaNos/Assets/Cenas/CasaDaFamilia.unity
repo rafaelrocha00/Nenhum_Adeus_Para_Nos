@@ -3002,20 +3002,7 @@ MonoBehaviour:
     type: 3}
   storageXSize: 8
   storageYSize: 10
-  items:
-  - {fileID: 11400000, guid: 09724890c1b55a54ea2c984d73a55de7, type: 2}
-  - {fileID: 11400000, guid: 09724890c1b55a54ea2c984d73a55de7, type: 2}
-  - {fileID: 11400000, guid: 09724890c1b55a54ea2c984d73a55de7, type: 2}
-  - {fileID: 11400000, guid: 09724890c1b55a54ea2c984d73a55de7, type: 2}
-  - {fileID: 11400000, guid: 09724890c1b55a54ea2c984d73a55de7, type: 2}
-  - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
-  - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
-  - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
-  - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
-  - {fileID: 11400000, guid: e7fe12e8f1bed1d47b85ecd35390255a, type: 2}
-  - {fileID: 11400000, guid: 06b7bf8160354ce43ac84df44a31399d, type: 2}
-  - {fileID: 11400000, guid: 06b7bf8160354ce43ac84df44a31399d, type: 2}
-  - {fileID: 11400000, guid: 454d400a4ea81094ab736b36d8e5cc33, type: 2}
+  items: []
 --- !u!4 &207415282
 Transform:
   m_ObjectHideFlags: 0
@@ -9694,9 +9681,11 @@ MonoBehaviour:
   questDesc_name: {fileID: 1040882188}
   questDesc_description: {fileID: 1715488087}
   questDesc_reward: {fileID: 1677714417}
+  questDesc_rewardImage: {fileID: 0}
   questDesc_limit: {fileID: 1116528463}
   questDesc_acceptButton: {fileID: 1288171957}
   questDesc_refuseButton: {fileID: 979365139}
+  blockButtonsImage: {fileID: 0}
   mainStorage: {fileID: 207415281}
   items_holder: {fileID: 599255125}
   item_inpc_pref: {fileID: 1133690061943001964, guid: a8112a09693ccbc429730012ece14741,

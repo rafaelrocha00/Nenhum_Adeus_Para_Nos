@@ -65,6 +65,8 @@ public class MainHud : MonoBehaviour
 
     public Transform popUpsHolder;
 
+    public AudioClip clip_passNotePage;
+
     #region Opçoes_de_Dialogo
     //public void OpenDialogueOptTab(DialogueWithChoice dialogue)
     //{
@@ -214,6 +216,7 @@ public class MainHud : MonoBehaviour
     }
     void UpdatePage()
     {
+        GameManager.gameManager.audioController.PlayEffect(clip_passNotePage);
         for (int i = 0; i < allNotePages.Length; i++)
         {
             Debug.Log(i);

@@ -138,8 +138,8 @@ public class DialogueController : MonoBehaviour
 
         OpenDialoguePopUp(transf/*, npc*/, sp,/* isPlayer,*/ id);
         actualDialogue = newDialogue;
-        NextString();
-        StartCoroutine("CheckPlayerDistance");
+        //NextString();
+        //StartCoroutine("CheckPlayerDistance");
 
         CustomEvents.instance.OnDialogueStart(actualDialogue.MyNPC.GetName());
     }
@@ -147,6 +147,8 @@ public class DialogueController : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         activeMainDialogue = true;
+        NextString();
+        StartCoroutine("CheckPlayerDistance");
     }
 
     IEnumerator CheckPlayerDistance()
@@ -155,7 +157,7 @@ public class DialogueController : MonoBehaviour
         {
             if (actualDialogue.GetPlayerNPCDistance() > 100)
             {
-                EndDialogue();
+                EndDialogue(true);
                 yield break;
             }
             yield return new WaitForSeconds(1);
@@ -200,13 +202,17 @@ public class DialogueController : MonoBehaviour
                 StartCoroutine("NextStringCountdown");
         }
     }
-    public void EndDialogue()
+    public void EndDialogue(bool byDist = false)
     {
         if (activeMainDialogue)
         {
             //Debug.Log("Ending");
             activeMainDialogue = false;
-            actualDialogue.ResetDialogue();
+            if (byDist)
+            {
+                actualDialogue.ResetDialogue();
+                actualDialogue.MyNPC.EndDialogue();
+            }
             //writing = false;
             CloseDialoguePopUp();
             waitingForAnswer = false;
@@ -225,7 +231,7 @@ public class DialogueController : MonoBehaviour
             writingTime = dialogueString.Length * 0.1f;
             dialoguePopUp.SetText(dialogueString);
         }
-        else EndDialogue();
+        else EndDialogue(true);
     }
 
     public void OpenDialogueOptTab(DialogueWithChoice d)

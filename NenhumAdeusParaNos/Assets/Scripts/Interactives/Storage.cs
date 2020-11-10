@@ -49,6 +49,7 @@ public class Storage : Interactives
         }
         else OpenCloseStorage(true);
 
+        GameManager.gameManager.audioController.PlayEffect(GameManager.gameManager.inventoryController.clip_openStorage);
         GameManager.gameManager.MainHud.OpenCloseInventory(true);
         DesactiveBtp();
         CheckQuest();

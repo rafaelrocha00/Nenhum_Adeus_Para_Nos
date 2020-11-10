@@ -17,6 +17,7 @@ public class OpenableDoor : Interactives
     //    if (questAcceptedCondition.Accepted) canInteract = true;
     //    else canInteract = false;
     //}
+    public AudioClip clip_openDoor;
 
     public override void Interact(Player player)
     {
@@ -24,6 +25,7 @@ public class OpenableDoor : Interactives
         anim.SetBool("Open", true);
         //gateCol.enabled = false;
 
+        GameManager.gameManager.audioController.PlayEffect(clip_openDoor);
         OnExit(player);
         canInteract = false;
         this.enabled = false;
