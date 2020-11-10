@@ -15,7 +15,6 @@ MonoBehaviour:
   qName: Consertar poste
   id: 41564
   description: quest_description
-  contractor: contractor_
   mustReturn: 0
   limitDay: -1
   generated: 0
@@ -23,10 +22,10 @@ MonoBehaviour:
   quest_itemRewards: []
   quest_itemRQuants: 
   completed: 0
-  accepted: 0
+  accepted: 1
   cancelled: 0
   waitingReturnToNPC: 0
-  acceptText: 
+  acceptText: Conserte o Poste
   completeText: 
   unlockableDialogues:
   - {fileID: 11400000, guid: a87b2a350c65f1e42b34557544a010f1, type: 2}

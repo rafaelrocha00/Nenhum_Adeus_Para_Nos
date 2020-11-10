@@ -11,5 +11,7 @@ public class MeleeConfig : WeaponConfig
     public bool stopToAtk = false;
     public bool multAtk = false;
 
+    public int weaponPresetIndex = 0;
+    public int defaultAtkAnim = 2;
     public MeleeSpecial special;
 }

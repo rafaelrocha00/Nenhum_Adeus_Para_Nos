@@ -159,8 +159,8 @@ public class Player : MonoBehaviour, BattleUnit
         //equippedMelee.myHolder = this;
         //equippedRanged.myHolder = this;
         weapons[0] = weapon_melee; weapon_melee.isEquipped = true;
-        weapons[1] = weapon_extraMelee;
-        weapons[2] = weapon_ranged; weapon_ranged.isEquipped = true;
+        weapons[1] = weapon_extraMelee; weapon_extraMelee.isEquipped = true;
+        weapons[2] = weapon_ranged; //weapon_ranged.isEquipped = true;
         weapons[3] = weapon_extraRanged;
         //weapon_melee.myHolder = this;
         //weapon_extraMelee.myHolder = this;
@@ -879,7 +879,7 @@ public class Player : MonoBehaviour, BattleUnit
             {
                 if (weapons[i].isEquipped)
                 {
-                    if (!weapons[i].WeaponConfig.weaponName.Equals(myWeapon.WeaponConfig.weaponName))
+                    if (!weapons[i].name.Equals(myWeapon.name))//WeaponConfig.weaponName.Equals(myWeapon.WeaponConfig.weaponName))
                     {
                         //Debug.Log(weapons[i].WeaponConfig.weaponName + " | " + myWeapon.WeaponConfig.weaponName);
                         //Debug.Log(weapons[i].WeaponConfig.weaponName.Equals(myWeapon.WeaponConfig.weaponName));

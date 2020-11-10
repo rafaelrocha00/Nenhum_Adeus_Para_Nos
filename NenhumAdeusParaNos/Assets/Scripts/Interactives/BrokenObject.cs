@@ -17,10 +17,21 @@ public class BrokenObject : Interactives
 
     Player p;
 
+    public bool waitingToAttach = false;
+    int bonusT;
+
     public override void Interact(Player player)
     {
-        //Abrir janela de conserto
         DesactiveBtp();
+
+        if (waitingToAttach)
+        {
+            repairableObject.HalfAttach(bonusT, minCombinedValue);
+            OnExit(player);
+            return;
+        }
+
+        //Abrir janela de conserto        
         p = player;
         GameManager.gameManager.MainHud.OpenCloseInventory(true);
         GameManager.gameManager.MainHud.OpenCraftSection(this);
@@ -30,7 +41,21 @@ public class BrokenObject : Interactives
     public void FinishRepair(int bonusTime)
     {
         OnExit(p);
-        repairableObject.Repair(bonusTime);
+        if (!repairableObject.repairByHit) repairableObject.Repair(bonusTime);
+        else
+        {
+            bonusT = bonusTime;
+            waitingToAttach = true;
+            StartCoroutine(ReenableInteraction());
+        }
         GameManager.gameManager.MainHud.OpenCloseInventory(false);        
+    }
+
+    IEnumerator ReenableInteraction()
+    {
+        SphereCollider col = GetComponent<SphereCollider>();
+        col.enabled = false;
+        yield return new WaitForEndOfFrame();
+        col.enabled = true;
     }
 }

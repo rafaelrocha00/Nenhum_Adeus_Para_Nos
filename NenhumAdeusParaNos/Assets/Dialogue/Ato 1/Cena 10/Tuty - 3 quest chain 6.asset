@@ -15,7 +15,6 @@ MonoBehaviour:
   qName: Chegue na ponte
   id: 115
   description: quest_description
-  contractor: contractor_
   mustReturn: 0
   limitDay: -1
   generated: 0
@@ -26,11 +25,13 @@ MonoBehaviour:
   accepted: 0
   cancelled: 0
   waitingReturnToNPC: 0
-  acceptText: 
+  acceptText: "J\xE1 deve estar na hora de buscar as crian\xE7as na escola."
   completeText: "Droga, vai demorar muito pra dar a volta, mas n\xE3o tenho escolha."
   unlockableDialogues:
   - {fileID: 11400000, guid: c2f4e330eaeac43469fd9376f456ad46, type: 2}
   questToAccept: {fileID: 11400000, guid: 6a42d68cbcf87934f928e9f0b7adf8f9, type: 2}
   sceneStateChange: {fileID: 0}
+  endAct_1: 0
+  timeToPass: 0
   compToAdd: []
   placeToGoName: Broken Bridge

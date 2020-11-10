@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     public bool NewGame { get { return newGame; } set { newGame = value; } }
 
     [SerializeField] bool battleUnlocked = false;
-    public bool BattleUnlocked { get { return battleUnlocked; } }
+    public bool BattleUnlocked { get { return battleUnlocked; } set { battleUnlocked = value; } }
 
     [HideInInspector] List<GameObject> playerCompanionsPref = new List<GameObject>();
     public List<GameObject> PlayerCompanionsPref { get { return playerCompanionsPref; } }
@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
         GameManager.gameManager.repairController.OnLoadScene();
         GameManager.gameManager.questController.SpawnAllQuestMarks();
         GameManager.gameManager.LockUnlockPlayerBattle();
+        GameManager.gameManager.battleController.BattleUnlocked = battleUnlocked;
     }
 
     private void Update()

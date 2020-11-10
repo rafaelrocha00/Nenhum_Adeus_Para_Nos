@@ -96,10 +96,13 @@ public class MainHud : MonoBehaviour
 
     #region Notes
     public GameObject notesMenu;
+    public CustomToggle mainToggle;
 
     public Transform allNotes;
-    Text[] notesTxtAreas;
-    Text[] notesStrikeTroughAreas;
+    //Text[] notesTxtAreas;
+    //Text[] notesStrikeTroughAreas;
+    NotepadNotes[] notes;
+    GridLayoutGroup[] allNotePages;
 
     public GameObject nextPageB;
     public GameObject prevPageB;
@@ -107,41 +110,91 @@ public class MainHud : MonoBehaviour
     int acPage = 0;
 
     bool gotTexts = false;
+    //string currentNoteTag = "";
+    Notes currentNote; 
 
     public void OpenCloseNotesMenu(bool value = true)
     {
         if (value) notesMenu.SetActive(!notesMenu.activeSelf);
         else notesMenu.SetActive(false);
         if (!gotTexts && notesMenu.activeSelf)
-        {            
-            List<Text> allTexts = new List<Text>();
+        {
+            //List<NotepadNotes> allNotes = new List<NotepadNotes>();
+            notes = allNotes.GetComponentsInChildren<NotepadNotes>(true);
+            allNotePages = allNotes.GetComponentsInChildren<GridLayoutGroup>(true);
+            //List<Text> mainTexts = new List<Text>();
+            //List<Text> strikeTroughs = new List<Text>();
 
-            List<Text> mainTexts = new List<Text>();
-            List<Text> strikeTroughs = new List<Text>();
+            //allNotes.GetComponentsInChildren(true, allTexts);
 
-            allNotes.GetComponentsInChildren(true, allTexts);
-
-            for (int i = 0; i < allTexts.Count; i++)
-            {
-                if (i % 2 == 0) mainTexts.Add(allTexts[i]);
-                else strikeTroughs.Add(allTexts[i]);
-            }
-            notesTxtAreas = mainTexts.ToArray();
-            notesStrikeTroughAreas = strikeTroughs.ToArray();
+            //for (int i = 0; i < allTexts.Count; i++)
+            //{
+            //    if (i % 2 == 0) mainTexts.Add(allTexts[i]);
+            //    else strikeTroughs.Add(allTexts[i]);
+            //}
+            //notesTxtAreas = mainTexts.ToArray();
+            //notesStrikeTroughAreas = strikeTroughs.ToArray();
 
             gotTexts = true;
         }        
     }
 
-    public void WriteNotes(string[] notes, string[] strokes)
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            if (notes[i].Equals("")) return;
+    //public void WriteNotes(string[] notes, string[] strokes)
+    //{
+    //    for (int i = 0; i < 10; i++)
+    //    {
+    //        if (notes[i].Equals("")) return;
 
-            notesStrikeTroughAreas[i].text = strokes[i];
-            notesTxtAreas[i].text = notes[i];
+    //        //notesStrikeTroughAreas[i].text = strokes[i];
+    //        //notesTxtAreas[i].text = notes[i];
+    //    }
+    //}
+    public void WriteNotes(List<string> texts, List<Quest> quests, bool main, Notes n)
+    {
+        //Debug.Log(noteTag);
+        mainToggle.Interactable = true;
+
+        //if (!currentNoteTag.Equals(noteTag))
+        //{
+        for (int i = 0; i < notes.Length; i++)
+        {
+            if (!notes[i].Written) break;
+
+            notes[i].EraseAll();
         }
+
+
+        if (texts.Count > 0)
+        {
+            for (int i = 0; i < texts.Count; i++)
+            {
+                notes[i].Write(texts[i], quests[i]);
+            }
+        }
+        //}
+        mainToggle.Switch(main);
+
+        currentNote = n;
+        //currentNoteTag = noteTag;
+        ErasureNote();
+    }
+
+    public void ErasureNote()
+    {
+        for (int i = 0; i < notes.Length; i++)
+        {
+            if (!notes[i].Written) return;
+
+            if (notes[i].Quest.Completed) notes[i].PutErasure();
+        }
+    }
+
+    public void MakeMain()
+    {
+        if (currentNote == null) return;
+
+        GameManager.gameManager.questController.ChangeMainNotes(currentNote);
+        //if (!GameManager.gameManager.questController.TryChangeMainNote(currentNote, mainToggle.isOn)) mainToggle.isOn = true;
     }
 
     public void NextPage()
@@ -161,13 +214,13 @@ public class MainHud : MonoBehaviour
     }
     void UpdatePage()
     {
-        for (int i = 0; i < notesTxtAreas.Length; i++)
+        for (int i = 0; i < allNotePages.Length; i++)
         {
             Debug.Log(i);
-            notesTxtAreas[i].gameObject.SetActive(false);
+            allNotePages[i].gameObject.SetActive(false);
         }
         Debug.Log(acPage);
-        notesTxtAreas[acPage].gameObject.SetActive(true);
+        allNotePages[acPage].gameObject.SetActive(true);
     }
     #endregion
 

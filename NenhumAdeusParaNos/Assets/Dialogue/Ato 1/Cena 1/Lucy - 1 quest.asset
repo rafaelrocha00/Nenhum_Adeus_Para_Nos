@@ -15,7 +15,6 @@ MonoBehaviour:
   qName: Acordar a familia
   id: 100
   description: quest_description
-  contractor: contractor_
   mustReturn: 0
   limitDay: -1
   generated: 0
@@ -23,20 +22,22 @@ MonoBehaviour:
     type: 2}
   quest_itemRewards: []
   quest_itemRQuants: 
-  completed: 1
-  accepted: 1
+  completed: 0
+  accepted: 0
   cancelled: 0
   waitingReturnToNPC: 0
   acceptText: "T\xE1 na hora de acordar todo mundo."
-  completeText: Melhor avisar a Lucy.
+  completeText: 
   unlockableDialogues:
   - {fileID: 11400000, guid: a7f4e301705faa64e900ef6419d89c70, type: 2}
   questToAccept: {fileID: 11400000, guid: f1345227afabfa14ebfa35fbb93c2077, type: 2}
   sceneStateChange: {fileID: 0}
+  endAct_1: 0
+  timeToPass: 0
   compToAdd: []
   npcsToTalk:
   - Tuty
   - Thimmy
   - Bewoy
   - Leya
-  talked: 01010101
+  talked: 00000000

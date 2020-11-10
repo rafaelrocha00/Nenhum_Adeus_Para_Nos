@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1d781b5159257648b335c1bace5c2d0, type: 3}
   m_Name: PlayerDefaultMelee
   m_EditorClassIdentifier: 
-  weaponName: "Bast\xE3o El\xE9trico"
-  defaultDamage: 25
-  defaultAttackSpeed: 0.5
+  weaponName: EdPunch
+  defaultDamage: 20
+  defaultAttackSpeed: 0.4
   range: 0
   stopToAtk: 0
   multAtk: 0
-  special: {fileID: 11400000, guid: e936d90b05ff3b34b844102f3564e19f, type: 2}
+  weaponPresetIndex: 1
+  defaultAtkAnim: 4
+  special: {fileID: 11400000, guid: f62d803b7d9822c4ebd4c313f0133d9e, type: 2}

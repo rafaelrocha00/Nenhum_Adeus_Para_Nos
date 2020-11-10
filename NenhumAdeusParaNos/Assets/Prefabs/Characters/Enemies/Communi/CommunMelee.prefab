@@ -320,6 +320,7 @@ MonoBehaviour:
   meleeConfig: {fileID: 11400000, guid: 41430faab6a3d504e825f38d0a0d7929, type: 2}
   anim: {fileID: 0}
   sCollider: {fileID: 6019805319482680276}
+  allWeaponPresets: []
 --- !u!1 &6549936749520996292
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,6 +421,7 @@ MonoBehaviour:
   toBeAccepted: 1
   questAcceptedToDespawn: {fileID: 0}
   questCompletedToDespawn: {fileID: 0}
+  rotates: 1
   hostile: 1
   heavy: 0
   dashTime: 0.2

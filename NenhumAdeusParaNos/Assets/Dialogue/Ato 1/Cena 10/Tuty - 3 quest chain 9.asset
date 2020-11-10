@@ -15,7 +15,6 @@ MonoBehaviour:
   qName: Fale com Benjo
   id: 118
   description: quest_description
-  contractor: contractor_
   mustReturn: 0
   limitDay: -1
   generated: 0
@@ -26,11 +25,11 @@ MonoBehaviour:
   accepted: 0
   cancelled: 0
   waitingReturnToNPC: 0
-  acceptText: 
+  acceptText: "Benjo parece ter vindo pra c\xE1, melhor achar ele logo."
   completeText: 
   unlockableDialogues:
   - {fileID: 11400000, guid: 05fa62f2e97c26948abb332aa1482308, type: 2}
-  questToAccept: {fileID: 11400000, guid: e956ae74b0f1a37438bf2c4c49b1d01f, type: 2}
+  questToAccept: {fileID: 0}
   sceneStateChange: {fileID: 0}
   endAct_1: 1
   timeToPass: 720

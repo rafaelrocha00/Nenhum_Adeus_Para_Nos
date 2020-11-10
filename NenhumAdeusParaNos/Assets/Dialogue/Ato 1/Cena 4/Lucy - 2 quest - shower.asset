@@ -15,13 +15,9 @@ MonoBehaviour:
   qName: Tomar banho
   id: 102
   description: quest_description
-  moneyReward: 0
-  resourceReward: 0
-  contractor: contractor_
   mustReturn: 0
   limitDay: -1
   generated: 0
-  resourceT: 4
   completingQuestDialogue: {fileID: 0}
   quest_itemRewards: []
   quest_itemRQuants: 
@@ -29,8 +25,8 @@ MonoBehaviour:
   accepted: 0
   cancelled: 0
   waitingReturnToNPC: 0
-  acceptText: Agora um banho serviria bem.
-  completeText: "N\xE3o vejo a hora do rango."
+  acceptText: Agora um banho cairia bem.
+  completeText: 
   unlockableDialogues:
   - {fileID: 11400000, guid: a7f4e301705faa64e900ef6419d89c70, type: 2}
   - {fileID: 11400000, guid: 22665e3f4902acf43bc3d2f49803992d, type: 2}
@@ -38,5 +34,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 53c0e22971cec764d967bb50957ceb59, type: 2}
   questToAccept: {fileID: 0}
   sceneStateChange: {fileID: 0}
+  endAct_1: 0
+  timeToPass: 0
   compToAdd: []
   objectToInteract: Bath

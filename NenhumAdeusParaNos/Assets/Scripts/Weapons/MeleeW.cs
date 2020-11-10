@@ -16,6 +16,7 @@ public class MeleeW : Weapon
 
     public Animator anim;
     public Collider sCollider;
+    public WeaponPreset[] allWeaponPresets;
 
     //float attackDelay = 0;
     bool hitted = false;
@@ -26,7 +27,14 @@ public class MeleeW : Weapon
         weaponConfig = meleeConfig;
 
         actualAtkspeed = meleeConfig.defaultAttackSpeed;
-        selectedDamage = meleeConfig.defaultDamage;        
+        selectedDamage = meleeConfig.defaultDamage;
+
+        allWeaponPresets = GetComponentsInChildren<WeaponPreset>(true);
+    }
+
+    public override void EnableModel(bool value)
+    {
+        allWeaponPresets[meleeConfig.weaponPresetIndex].Enable(value);
     }
 
     public void SetStrongAttack()
@@ -39,12 +47,12 @@ public class MeleeW : Weapon
     {
         selectedDamage = meleeConfig.defaultDamage;
         actualAtkspeed = meleeConfig.defaultAttackSpeed;
-        atkType = 2;
+        atkType = meleeConfig.defaultAtkAnim;
     }
 
     public override float Attack(Animator animator = null, float attackMod = 1)
     {
-        if (atkType >= 3 && !specialAtkEnabled)
+        if ((atkType == 3 || atkType == 5) && !specialAtkEnabled)
         {
             Debug.Log("Incooldown");
             SetNormalAttack();
@@ -59,7 +67,9 @@ public class MeleeW : Weapon
         }
 
         Debug.Log("Atacando");
-        sCollider.enabled = true;
+        if (sCollider == null) allWeaponPresets[meleeConfig.weaponPresetIndex].col.enabled = true;
+        else sCollider.enabled = true;
+
         selectedDamage *= attackMod;
         if (anim != null) anim.SetInteger("AttackType", atkType);
         if (animator != null) animator.SetInteger("Attacking", atkType);
@@ -83,14 +93,16 @@ public class MeleeW : Weapon
     void StopAnim()
     {
         if (anim != null) anim.SetInteger("AttackType", 0);
-        sCollider.enabled = false;
+        if (sCollider == null) allWeaponPresets[meleeConfig.weaponPresetIndex].col.enabled = false;
+        else sCollider.enabled = false;
+
         SetNormalAttack();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (!hitted && !other.isTrigger)
-        {
+        {            
             try
             {
                 //if (other.GetComponent<Player>() != null) other.GetComponent<Player>().CharStats.ReceiveDamage(selectedDamage);
@@ -98,7 +110,7 @@ public class MeleeW : Weapon
                 //if (other.GetComponent<BattleUnit>().IsInBattle())
                 //{
                 other.GetComponent<BattleUnit>().ReceiveDamage(selectedDamage);
-                if (atkType >= 3)meleeConfig.special.OnContactEffect(other.GetComponent<BattleUnit>());
+                if (atkType == 3 || atkType == 5) meleeConfig.special.OnContactEffect(other.GetComponent<BattleUnit>());
                 hitted = true;
                 if (!meleeConfig.multAtk) Invoke("ResetHit", meleeConfig.defaultAttackSpeed);
                 else Invoke("ResetHit", 0.1f);
@@ -106,7 +118,13 @@ public class MeleeW : Weapon
             }
             catch
             {
-                Debug.Log("Not a valid target");
+                RepairableObject ro = other.GetComponent<RepairableObject>();
+                if (ro != null)
+                {
+                    hitted = true;
+                    ro.ReceiveHit(meleeConfig);
+                    Invoke("ResetHit", 0.1f);
+                }
             }
         }
     }

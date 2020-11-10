@@ -11,12 +11,20 @@ public class RepairableObject : Interactives, IDateEvent
     public GameObject state_broken;
     public GameObject state_repaired;
 
+    public bool repairByHit = false;
+
     public int baseLife = 1;
     public bool broken = false;
     Collider c;
     CalendarController.Date dateToBreak;
 
     public Interactives unlockableInt;
+
+    [Header("Repair by Hit")]
+    public bool waitingToHit = false;
+    int bonusT;
+    public int life = 0;
+    public int maxLife = 0;
 
     [Header("Repair Quests")]
     public bool genRepairQuest = true;
@@ -31,6 +39,8 @@ public class RepairableObject : Interactives, IDateEvent
 
     public override void CheckForQuestObjectives(Quest q_)
     {
+        if (GameManager.gameManager.BattleUnlocked) repairByHit = true;
+
         base.CheckForQuestObjectives(q_);
 
         if (!(q_ is RepairQuest)) return;
@@ -115,8 +125,19 @@ public class RepairableObject : Interactives, IDateEvent
         }
         GameManager.gameManager.questController.CheckQuests(this);
 
-        GameManager.gameManager.battleController.MainCharacter.Repair(state_broken.transform.position);
-        StartCoroutine(DetachAnimation(true));
+        if (!repairByHit)
+        {
+            GameManager.gameManager.battleController.MainCharacter.Repair(state_broken.transform.position);
+            StartCoroutine(DetachAnimation(true));
+        }
+        else
+        {
+            waitingToHit = false;
+            maxLife = 0;
+            life = 0;
+            state_broken.SetActive(false);
+            state_repaired.SetActive(true);
+        }
     }
 
     void CreateNewDate(int bonusTime = 0)
@@ -139,7 +160,7 @@ public class RepairableObject : Interactives, IDateEvent
     {
         Debug.Log("Broke");
         broken = true;
-        EnableInteraction(true);
+        if (!repairByHit) EnableInteraction(true);
         GameManager.gameManager.repairController.RemoveDateEvent(Name);
         if (genRepairQuest && !AlreadyHasQuest()) GameManager.gameManager.questGenerator.GenRepQuest(Name);
         //Mudar estado de textura/modelo.
@@ -153,6 +174,16 @@ public class RepairableObject : Interactives, IDateEvent
         return GameManager.gameManager.questGenerator.CheckIfQuestExist(Name) || GameManager.gameManager.companyController.CheckIfQuestExist(Name);
     }
 
+    public void HalfAttach(int bonusTime, int maxValue)
+    {
+        waitingToHit = true;
+        maxLife = maxValue;
+        bonusT = bonusTime;
+
+        state_broken.SetActive(true);
+        state_broken_detached.SetActive(false);
+    }
+
     void Attach(bool v)
     {
         //state_repaired.SetActive(v);
@@ -160,11 +191,29 @@ public class RepairableObject : Interactives, IDateEvent
         if (v) state_repaired.SetActive(v);
         else state_broken.SetActive(v);
         state_broken_detached.SetActive(!v);
-        if (!v) EnableInteraction(false);
+        if (!v && !repairByHit) EnableInteraction(false);
     }
 
     public void EnableInteraction(bool v)
     {
         c.enabled = v;
+    }
+
+    public void ReceiveHit(MeleeConfig mconfig)
+    {
+        if (waitingToHit)
+        {
+            life = Mathf.Clamp(life + 10, 0, maxLife);
+            Debug.Log(life + " | " + maxLife);
+
+            if (life == maxLife) Repair(bonusT);
+            return;
+        }
+
+        if (broken && state_broken.activeSelf)
+        {
+            Debug.Log("Deatch:");
+            StartCoroutine(DetachAnimation(false));
+        }
     }
 }

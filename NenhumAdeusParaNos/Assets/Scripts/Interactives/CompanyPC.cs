@@ -32,9 +32,12 @@ public class CompanyPC : Interactives
     public Text questDesc_name;
     public Text questDesc_description;
     public Text questDesc_reward;
+    public Image questDesc_rewardImage;
     public Text questDesc_limit;
     public GameObject questDesc_acceptButton;
     public GameObject questDesc_refuseButton;
+
+    public GameObject blockButtonsImage;
     //public Text questDesc_contractor;
 
     bool in_progress_quests;
@@ -48,17 +51,22 @@ public class CompanyPC : Interactives
 
     public void ShowQuestDescription(Quest quest, QuestButton questB)
     {
+        if (blockButtonsImage == null) blockButtonsImage = questDesc_window.transform.Find("block_buttons").gameObject;
+
         questDesc_window.SetActive(true);
         actualQuestB = questB;
         if (!quest.Accepted)
         {
             questDesc_acceptButton.SetActive(true);
             questDesc_refuseButton.SetActive(true);
+            blockButtonsImage.SetActive(false);
         }
         else
         {
             questDesc_acceptButton.SetActive(false);
             questDesc_refuseButton.SetActive(false);
+            blockButtonsImage.SetActive(true);
+            questB.SetAccepted();
         }
 
         questDesc_name.text = quest.Name;
@@ -80,7 +88,9 @@ public class CompanyPC : Interactives
         //        break;
         //}
         //questDesc_reward.text = quest.MoneyReward.ToString("0.00") + " & " + quest.ResourceReward.ToString() + " " + resourceT;
-        questDesc_reward.text = quest.quest_itemRewards[0].itemName + "  x" + quest.quest_itemRQuants[0].ToString();
+        questDesc_reward.text =/* quest.quest_itemRewards[0].itemName + */"x" + quest.quest_itemRQuants[0].ToString();
+        if (questDesc_rewardImage == null) questDesc_rewardImage = questDesc_window.transform.Find("reward_image").GetComponent<Image>();
+        questDesc_rewardImage.sprite = quest.quest_itemRewards[0].itemSprite;
 
         questDesc_limit.text = GameManager.gameManager.calendarController.DaysOfWeek[quest.LimitDay] + " 23:59";
         //questDesc_contractor.text = quest.Contractor;
