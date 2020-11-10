@@ -8,6 +8,8 @@ public class Bed : Interactives
     Player p;
     public int timeTopass = 480;
 
+    public AudioClip clip_interaction;
+
     public override void Interact(Player player)
     {
         GameManager.gameManager.MainHud.FadeInOut();
@@ -24,6 +26,7 @@ public class Bed : Interactives
     void PassTime()
     {
         //GameManager.gameManager.calendarController.PassTime(0, 8, 0);
+        GameManager.gameManager.audioController.PlayEffect(clip_interaction);
         GameManager.gameManager.calendarController.PassTime(timeTopass);
     }
 

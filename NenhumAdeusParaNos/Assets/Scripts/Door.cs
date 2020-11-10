@@ -14,6 +14,8 @@ public class Door : MonoBehaviour
     public Quest quesToBeCompleted;
     public Quest quesToAccept;
 
+    public AudioClip clip_changeScene;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("npc") && !other.isTrigger) { Destroy(other.gameObject); return; }
@@ -36,6 +38,7 @@ public class Door : MonoBehaviour
                 //SceneManager.LoadScene(sceneName);
 
                 GameManager.gameManager.ChangeScene(sceneName, spawnpointID);
+                GameManager.gameManager.audioController.PlayEffect(clip_changeScene);
             }
             else
             {

@@ -49,7 +49,6 @@ public class GameManager : MonoBehaviour
     public Image black_screen;
     public Text title_txt;
 
-
     private void Awake()
     {
         if (gameManager != null && gameManager != this)
