@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     public bool NewGame { get { return newGame; } set { newGame = value; } }
 
     [SerializeField] bool battleUnlocked = false;
-    public bool BattleUnlocked { get { return battleUnlocked; } }
+    public bool BattleUnlocked { get { return battleUnlocked; } set { battleUnlocked = value; } }
 
     [HideInInspector] List<GameObject> playerCompanionsPref = new List<GameObject>();
     public List<GameObject> PlayerCompanionsPref { get { return playerCompanionsPref; } }
@@ -49,6 +49,10 @@ public class GameManager : MonoBehaviour
     public Image black_screen;
     public Text title_txt;
 
+    #region Cursor
+    public Texture2D cursor_default;
+    public Texture2D cursor_hover;
+    #endregion
 
     private void Awake()
     {
@@ -79,6 +83,7 @@ public class GameManager : MonoBehaviour
         GameManager.gameManager.repairController.OnLoadScene();
         GameManager.gameManager.questController.SpawnAllQuestMarks();
         GameManager.gameManager.LockUnlockPlayerBattle();
+        GameManager.gameManager.battleController.BattleUnlocked = battleUnlocked;
     }
 
     private void Update()
@@ -231,5 +236,11 @@ public class GameManager : MonoBehaviour
             timer += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
+    }
+
+    public void ChangeCursor(int state)
+    {
+        if (state == 1) Cursor.SetCursor(cursor_hover, Vector2.zero, CursorMode.Auto);
+        else Cursor.SetCursor(cursor_default, Vector2.zero, CursorMode.Auto);
     }
 }

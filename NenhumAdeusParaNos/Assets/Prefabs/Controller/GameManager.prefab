@@ -709,6 +709,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 219a4f523dd55f14e865fc641aeb3c82, type: 2}
   black_screen: {fileID: 5077922602581377428}
   title_txt: {fileID: 167846585498348974}
+  cursor_default: {fileID: 2800000, guid: 9d5b7a54e62404b49a71930642ededcf, type: 3}
+  cursor_hover: {fileID: 2800000, guid: 2ec076992eb7f99489acce36ad474f7c, type: 3}
 --- !u!114 &6258150706636257314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -781,6 +783,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a83622e8728702a4fa40043c92a1d1fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clip_openStorage: {fileID: 8300000, guid: 54d5876da0fd295489ce9d30d58e8eab, type: 3}
 --- !u!114 &6506660029207911039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -851,12 +854,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jobsChances: 000000000000000000000000
-  contractorNames:
-  - Oscar
-  - Bravo
-  - Foxtrot
-  - Charlie
-  - Lima
   maxEnemies: 1
   locationNames:
   - Sul da fazenda
@@ -1182,7 +1179,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: bd06b4f5a7d62aa43aa23653c3eb3f3e, type: 3}
     m_FontSize: 32
     m_FontStyle: 1
     m_BestFit: 0

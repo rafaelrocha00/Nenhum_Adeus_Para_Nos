@@ -14,21 +14,25 @@ public class StunGranade : Granade
 
     protected override void GranadeEffect()
     {
-        if (effect != null) Instantiate(effect, transform.position, Quaternion.identity);
-        if (!onPlayer)
+        if (GameManager.gameManager.battleController.ActiveBattle)
         {
-            INPC[] enemies = GameManager.gameManager.dialogueController.GetNearbyNPCs(transform.position, areaOfEffect);
-
-            for (int i = 0; i < enemies.Length; i++)
+            if (effect != null) Instantiate(effect, transform.position, Quaternion.identity);
+            if (!onPlayer)
             {
-                enemies[i].Stun(stunTime);
+                INPC[] enemies = GameManager.gameManager.dialogueController.GetNearbyNPCs(transform.position, areaOfEffect);
+
+                for (int i = 0; i < enemies.Length; i++)
+                {
+                    enemies[i].Stun(stunTime);
+                }
             }
+            //else
+            //{
+            //    if ((GameManager.gameManager.battleController.MainCharacter.transform.position - transform.position).sqrMagnitude <= areaOfEffect * areaOfEffect)
+            //        GameManager.gameManager.battleController.MainCharacter.ReceiveDamage(damage);
+            //}
+
         }
-        //else
-        //{
-        //    if ((GameManager.gameManager.battleController.MainCharacter.transform.position - transform.position).sqrMagnitude <= areaOfEffect * areaOfEffect)
-        //        GameManager.gameManager.battleController.MainCharacter.ReceiveDamage(damage);
-        //}
 
         Destroy(this.gameObject, 0.5f);
     }

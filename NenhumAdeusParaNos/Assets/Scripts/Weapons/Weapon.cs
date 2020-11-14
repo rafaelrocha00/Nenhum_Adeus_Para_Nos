@@ -27,8 +27,13 @@ public abstract class Weapon : MonoBehaviour
         return weaponConfig.range;
     }
 
-    public void EnableModel(bool value)
+    public virtual void EnableModel(bool value)
     {
         if (weaponModel != null) weaponModel.SetActive(value);
+    }
+
+    public virtual bool IsActive()
+    {
+        return weaponModel.activeSelf;
     }
 }

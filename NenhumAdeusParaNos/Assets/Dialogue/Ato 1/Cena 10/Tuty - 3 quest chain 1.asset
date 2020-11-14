@@ -15,13 +15,9 @@ MonoBehaviour:
   qName: "Fale com Thimmy na farm\xE1cia"
   id: 110
   description: quest_description
-  moneyReward: 0
-  resourceReward: 0
-  contractor: contractor_
   mustReturn: 0
   limitDay: -1
   generated: 0
-  resourceT: 4
   completingQuestDialogue: {fileID: 0}
   quest_itemRewards: []
   quest_itemRQuants: 
@@ -29,11 +25,14 @@ MonoBehaviour:
   accepted: 0
   cancelled: 0
   waitingReturnToNPC: 0
-  acceptText: 
+  acceptText: "Desde quando \xE9 t\xE3o caro? Daqui a pouco eu passo aqui. N\xE3o
+    posso voltar sem esse rem\xE9dio."
   completeText: 
   unlockableDialogues: []
   questToAccept: {fileID: 11400000, guid: 75179cc053688fe45a6130afeec8b148, type: 2}
   sceneStateChange: {fileID: 0}
+  endAct_1: 0
+  timeToPass: 0
   compToAdd:
   - {fileID: 544366100932895069, guid: e43995bb4f156bd48b1a5284a793c5bc, type: 3}
   - {fileID: 5593015891013515454, guid: da9fdac11a4e36044a41909f69eb8a4a, type: 3}

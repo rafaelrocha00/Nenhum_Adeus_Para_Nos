@@ -6,7 +6,7 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class ButtonDephtOfField : MonoBehaviour
 {
-    [SerializeField]PostProcessVolume _volume;
+    [SerializeField]PostProcessVolume _volume = null;
     DepthOfField _dof;
 
     Button butao;

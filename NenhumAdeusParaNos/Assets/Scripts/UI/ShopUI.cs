@@ -94,7 +94,7 @@ public class ShopUI : MonoBehaviour
                 shopItems.TryAlocateItem(choosenItems[i].ThisItemB);
                 choosenItems[i].Clear();
             }
-        }
+        }        
 
         shop.CancelTrade();
     }

@@ -267,7 +267,7 @@ public class INPC : NPC
     protected override void Movement()
     {
         float actualVelocity = navMesh.velocity.magnitude / navMesh.speed;
-        if (actualVelocity < 0.01f) return;
+        if (actualVelocity < 0.01f && !inBattle) return;
 
         if (anim != null) anim.SetFloat("Vel", actualVelocity);
         if (inBattle && !stunned && !charging)

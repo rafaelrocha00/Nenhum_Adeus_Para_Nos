@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ButtonCancelMusic : MonoBehaviour
 {
-    [SerializeField] AudioClip newMusic;
+    [SerializeField] AudioClip newMusic = null;
     void Start()
     {
         GetComponent<Button>().onClick.AddListener(MudarMusica);

@@ -49,6 +49,7 @@ public class Storage : Interactives
         }
         else OpenCloseStorage(true);
 
+        GameManager.gameManager.audioController.PlayEffect(GameManager.gameManager.inventoryController.clip_openStorage);
         GameManager.gameManager.MainHud.OpenCloseInventory(true);
         DesactiveBtp();
         CheckQuest();
@@ -275,6 +276,8 @@ public class Storage : Interactives
             }
 
             storageMenu.SetActive(value);
+
+            GameManager.gameManager.MainHud.CheckIfWindowOpen();
         }
     }
 

@@ -12,6 +12,10 @@ public class SpriteAnimator : MonoBehaviour
     [SerializeField] Sprite[] sprites = new Sprite[1];
     public Sprite[] Sprites { get { return sprites; } }
 
+    public bool playOnEnable = false;
+    public float delayToPlay = 0.0f;
+    public bool hideOnEndAnim = false;
+
     public void SetSprites(Sprite[] sps)
     {
         sprites = new Sprite[sps.Length];
@@ -26,14 +30,29 @@ public class SpriteAnimator : MonoBehaviour
         image = GetComponent<Image>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         image.sprite = sprites[0];
+        if (playOnEnable)
+        {
+            //Play();
+            Invoke("StartPlay", delayToPlay);
+        }
     }
 
-    public void Play(bool infinity = false)
+    void StartPlay()
     {
-        StartCoroutine(Animate(infinity, 2));
+        Play();
+    }
+    //private void Start()
+    //{        
+
+    //    if (playOnEnable) Play();
+    //}
+
+    public void Play(bool infinity = false, int cycles = 1)
+    {
+        StartCoroutine(Animate(infinity, cycles));
     }
     public void Stop()
     {
@@ -52,5 +71,7 @@ public class SpriteAnimator : MonoBehaviour
             }
             cycles--;
         }
+
+        if (hideOnEndAnim) gameObject.SetActive(false);
     }
 }

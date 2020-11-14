@@ -7,7 +7,8 @@ public class QuickItemSlot : DropSlot
 {
     public int id = 0;
 
-    QuickUseItem quickItem;
+    [HideInInspector] QuickUseItem quickItem = null;
+    public QuickUseItem QuickItem { get { return quickItem; } }
     Image image;
 
     bool hasInInventory = false;
@@ -50,6 +51,20 @@ public class QuickItemSlot : DropSlot
         return false;
     }
 
+    public void SetItem(Item i)
+    {
+        Debug.Log("OnDropNoSlot de item");
+        if (image == null) image = transform.GetChild(0).GetComponent<Image>();
+        image.color = Color.white;
+        quickItem = (QuickUseItem)i;
+        //thisItemB = itemButton;
+        image.sprite = i.itemSprite;
+        GameManager.gameManager.MainHud.SetQuickItemSprite(id, i.itemSprite);//quickItemSlots[id].SetSprite(itemButton.GetComponent<Image>().sprite);//////////////////////////////////
+        hasInInventory = true;
+        if (i is Notes) GameManager.gameManager.questController.mainNotes = (Notes)i;
+        //Invoke("CheckItemInventory", 0.01f);
+    }
+
     public void CheckItemInventory()
     {
         if (quickItem != null)
@@ -72,6 +87,13 @@ public class QuickItemSlot : DropSlot
             //GameManager.gameManager.MainHud.quickItemSlots[0].SetColor(auxColor);
             GameManager.gameManager.MainHud.SetQuickItemColor(id, auxColor);
         }
+    }
+    public bool CheckItemIventoryToSave()
+    {
+        InvenSlot aux = null;
+        if (quickItem != null) aux = GameManager.gameManager.inventoryController.Inventory.FindItem(quickItem.itemName);
+
+        return (aux != null);
     }
 
     public void UseItemEffect()

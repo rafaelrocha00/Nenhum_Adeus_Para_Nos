@@ -15,18 +15,17 @@ MonoBehaviour:
   qName: Consiga Morfina
   id: 113
   description: quest_description
-  contractor: contractor_
   mustReturn: 0
   limitDay: -1
   generated: 0
   completingQuestDialogue: {fileID: 0}
   quest_itemRewards: []
   quest_itemRQuants: 
-  completed: 1
-  accepted: 1
+  completed: 0
+  accepted: 0
   cancelled: 0
   waitingReturnToNPC: 0
-  acceptText: 
+  acceptText: "O rem\xE9dio da Leya \xE9 prioridade agora. Melhor ir conseguir pl\xE1stico."
   completeText: Com isso, eu posso voltar e entregar pra Leya.
   unlockableDialogues:
   - {fileID: 11400000, guid: 96b2495f02f55894b85a19a8263d3ed0, type: 2}

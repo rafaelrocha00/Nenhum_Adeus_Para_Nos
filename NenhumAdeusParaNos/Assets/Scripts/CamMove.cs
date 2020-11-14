@@ -41,8 +41,8 @@ public class CamMove : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (targetingPlayer) transform.position = Vector3.Slerp(transform.position, playerTransform.position + distanceToTarget, Time.deltaTime * cameraSmooth);
-        else if (inBattle) transform.position = Vector3.Slerp(transform.position, targetPos + distanceToTarget, Time.deltaTime * cameraSmooth);
+        if (targetingPlayer) transform.position = Vector3.Lerp(transform.position, playerTransform.position + distanceToTarget, Time.deltaTime * cameraSmooth);
+        else if (inBattle) transform.position = Vector3.Lerp(transform.position, targetPos + distanceToTarget, Time.deltaTime * cameraSmooth);
 
         if (targetingPlayer || inBattle)
         {
@@ -78,6 +78,13 @@ public class CamMove : MonoBehaviour
 
     public void CameraMouseControl()
     {
+        if (GameManager.gameManager.MainHud.OpenWindow)
+        {
+            SetDefaultXDist();
+            SetDefaultZDist();
+            return;
+        }
+
         if (Input.mousePosition.x >= Screen.width * 0.9f)
         {
             //timeInTopBorders += Time.deltaTime;
@@ -112,7 +119,7 @@ public class CamMove : MonoBehaviour
         //if (!GameManager.gameManager.battleController.ActiveBattle) distanceToTarget.x = defaultDistance.x * 1.6f;
         //else distanceToTarget.x = distanceInBattle.x * 1.6f;
         if (v) distanceToTarget.x = defaultDistance.x *  0.7f;
-        else   distanceToTarget.x = defaultDistance.x *  1.7f;
+        else   distanceToTarget.x = defaultDistance.x *  1.5f;
     }
     public void SetCameraToRight(bool v)
     {

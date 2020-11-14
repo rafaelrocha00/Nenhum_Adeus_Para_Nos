@@ -15,13 +15,9 @@ MonoBehaviour:
   qName: Fale com Tuty
   id: 107
   description: quest_description
-  moneyReward: 0
-  resourceReward: 0
-  contractor: contractor_
   mustReturn: 0
   limitDay: -1
   generated: 0
-  resourceT: 4
   completingQuestDialogue: {fileID: 0}
   quest_itemRewards: []
   quest_itemRQuants: 
@@ -29,11 +25,13 @@ MonoBehaviour:
   accepted: 0
   cancelled: 0
   waitingReturnToNPC: 0
-  acceptText: 
+  acceptText: "Agora, a Tuty estava brincando l\xE1 fora n\xE9."
   completeText: 
   unlockableDialogues: []
   questToAccept: {fileID: 11400000, guid: 7bd25e2e2d68e184298cc8897fa745f2, type: 2}
   sceneStateChange: {fileID: 0}
+  endAct_1: 0
+  timeToPass: 0
   compToAdd: []
   npcsToTalk:
   - Tuty

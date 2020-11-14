@@ -42,9 +42,20 @@ public class ItemGenerator : MonoBehaviour
         newItemRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, newItemRect.sizeDelta.x * item.slotSize.x);
         newItemRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, newItemRect.sizeDelta.y * item.slotSize.y);
         newItemObj.GetComponent<Image>().sprite = item.itemSprite;
+
         newItemObj.GetComponent<ItemButton>().Item = item;// Instantiate(item);
+        //if (item is WeaponItem)
+        //{
+        //    WeaponItem i = (WeaponItem)item;
+        //    i.StartDurability();
+        //}
+
 
         return newItemObj.GetComponent<ItemButton>();
     }
 
+    public void ChangeCursor(int state)
+    {
+        GameManager.gameManager.ChangeCursor(state);
+    }
 }

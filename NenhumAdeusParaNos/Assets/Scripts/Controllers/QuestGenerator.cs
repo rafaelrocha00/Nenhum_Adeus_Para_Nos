@@ -10,6 +10,7 @@ public class QuestGenerator : MonoBehaviour
 
     bool firstGen = true;
 
+    bool canGenKillQuest = false;
     //public List<string> contractorNames = new List<string>();
 
     [Header("Kill")]
@@ -150,13 +151,18 @@ public class QuestGenerator : MonoBehaviour
         //}
     }
 
+    public void UnlockKillQuests()
+    {
+        canGenKillQuest = true;
+    }
+
     public void GenQuest()
     {
         if (quest_queue.Count < 9)
         {
             float aux = Random.Range(0, 100);
 
-            if (aux < jobsChances[0])
+            if (aux < jobsChances[0] && canGenKillQuest)
             {
                 GenKillQuest();
                 return;
@@ -168,7 +174,9 @@ public class QuestGenerator : MonoBehaviour
                 return;
             }
             //GenRepQuest();
-            GenKillQuest();
+            aux = Random.value;
+            if (canGenKillQuest && aux > 0.5f) GenKillQuest();
+            else GenDelQuest();
         }
     }
 

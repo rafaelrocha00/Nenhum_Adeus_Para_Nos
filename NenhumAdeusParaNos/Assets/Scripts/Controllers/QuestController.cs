@@ -20,25 +20,47 @@ public class QuestController : MonoBehaviour
     public GameObject new_quest_marker_pref;
 
 
-    public void AddNote(string txt)
+    public void AddNote(string txt, Quest q)
     {
         if (txt.Equals("")) return;
 
         try
         {
-            mainNotes.AddNote(txt);
+            mainNotes.AddNote(txt, q);
         }
         catch
         {
             try
             {
-                InvenSlot ivSlot = GameManager.gameManager.inventoryController.Inventory.FindItem("Anotações #1");
-                Notes nt = (Notes)ivSlot.ThisItemButton.Item;
-                mainNotes = nt;
-                mainNotes.AddNote(txt);
+                //InvenSlot ivSlot = GameManager.gameManager.inventoryController.Inventory.FindItem("Anotações #1");
+                //Notes nt = (Notes)ivSlot.ThisItemButton.Item;
+                //mainNotes = nt;
+                //mainNotes.Main = true;
+                FindFirstNotes();
+                mainNotes.AddNote(txt, q);
             }
             catch { }
         }
+    }
+
+    public void ChangeMainNotes(Notes n)
+    {
+        mainNotes.Main = false;
+        //Debug.Log(mainNotes.itemName + " | " + mainNotes.Main);
+        //Debug.Log(n.itemName + " | " + n.Main);
+
+        n.Main = true;
+        mainNotes = n;
+    }
+
+    void FindFirstNotes()
+    {
+        if (mainNotes != null) return;
+
+        InvenSlot ivSlot = GameManager.gameManager.inventoryController.Inventory.FindItem("Anotações #1");
+        Notes nt = (Notes)ivSlot.ThisItemButton.Item;
+        mainNotes = nt;
+        mainNotes.Main = true;
     }
 
     public void AcceptQuest(Quest q)

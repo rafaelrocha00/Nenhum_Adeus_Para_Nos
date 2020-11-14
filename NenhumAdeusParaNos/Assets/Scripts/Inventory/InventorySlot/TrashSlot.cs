@@ -11,11 +11,13 @@ public class TrashSlot : DropSlot
     {
         //GameManager.gameManager.inventoryController.ItemDragged.ThisItemB.RemoveAndDestroy();
         itemToDelete.RemoveAndDestroy();
+        GameManager.gameManager.MainHud.ChangeCursor(0);
     }
     public void CancelDelete()
     {
         //GameManager.gameManager.inventoryController.DeletingItem = false;
         itemToDelete = null;
+        GameManager.gameManager.MainHud.ChangeCursor(0);
     }
 
     private void OnDisable()
@@ -25,7 +27,7 @@ public class TrashSlot : DropSlot
 
     public override bool OnDrop(ItemButton itemButton)
     {
-        if (itemButton.Item is Notes) return false;
+        if (itemButton.Item.indestructible) return false;
 
         //itemButton.RemoveAndDestroy();
         //Se for confirmar, abrir janela de confirmação

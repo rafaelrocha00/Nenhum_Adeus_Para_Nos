@@ -15,7 +15,6 @@ MonoBehaviour:
   qName: Acordar a familia
   id: 161
   description: quest_description
-  contractor: contractor_
   mustReturn: 0
   limitDay: -1
   generated: 0
@@ -27,11 +26,13 @@ MonoBehaviour:
   accepted: 0
   cancelled: 0
   waitingReturnToNPC: 0
-  acceptText: 
+  acceptText: Melhor avisar a Lucy
   completeText: 
   unlockableDialogues: []
   questToAccept: {fileID: 0}
   sceneStateChange: {fileID: 0}
+  endAct_1: 0
+  timeToPass: 0
   compToAdd: []
   npcsToTalk:
   - Lucy

@@ -62,7 +62,9 @@ public abstract class Quest : ScriptableObject
         cancelled = false;
         accepted = true;
         GameManager.gameManager.questController.AcceptQuest(this);
-        if (!generated) GameManager.gameManager.questController.AddNote(acceptText);//mainNotes.AddNote(acceptText);
+        //if (!generated) GameManager.gameManager.questController.AddNote(acceptText, this);
+        //mainNotes.AddNote(acceptText);
+        GameManager.gameManager.questController.AddNote((generated) ? description : acceptText, this);
 
         Debug.Log("QUEST ACEITA: " + qName);
 
@@ -101,7 +103,7 @@ public abstract class Quest : ScriptableObject
 
     void OnComplete()
     {
-        GameManager.gameManager.questController.AddNote(completeText);//mainNotes.AddNote(completeText);
+        //GameManager.gameManager.questController.AddNote(completeText);//mainNotes.AddNote(completeText);
         //for (int i = 0; i < quest_itemRewards.Length; i++)
         //{
         //    for (int j = 0; j < quest_itemRQuants[i]; j++)
@@ -130,7 +132,11 @@ public abstract class Quest : ScriptableObject
             }
         }
 
-        if (endAct_1) GameManager.gameManager.ShowTitle("VilaDaMadeira");
+        if (endAct_1)
+        {
+            GameManager.gameManager.BattleUnlocked = true;
+            GameManager.gameManager.ShowTitle("VilaDaMadeira");
+        }
 
         if (timeToPass > 0) GameManager.gameManager.calendarController.PassTime(timeToPass);
     }

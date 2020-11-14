@@ -31,6 +31,8 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         RemoveFromSlot();
         image.raycastTarget = false;
         image.color = new Color(1, 1, 1, 0.5f);
+
+        GameManager.gameManager.ChangeCursor(1);
     }
 
     public void RemoveFromSlot()
@@ -49,6 +51,8 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        GameManager.gameManager.ChangeCursor(0);
+
         if (!GameManager.gameManager.inventoryController.Dragging) return;
         Debug.Log("Drop");
         GameManager.gameManager.inventoryController.Dragging = false;

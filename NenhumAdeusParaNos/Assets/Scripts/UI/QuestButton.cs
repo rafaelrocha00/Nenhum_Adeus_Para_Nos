@@ -10,6 +10,9 @@ public class QuestButton : MonoBehaviour
     public Quest Quest { get { return quest; } }
     CompanyPC pc = null;
 
+    public Image jobStateIcon;
+    public Sprite jobAcceptedIcon;
+
     public void Set(Quest _quest, CompanyPC _pc)
     {
         quest = _quest;
@@ -24,6 +27,7 @@ public class QuestButton : MonoBehaviour
 
     public void AcceptQuest()
     {
+        SetAccepted();
         quest.AcceptQuest();
     }
 
@@ -31,5 +35,15 @@ public class QuestButton : MonoBehaviour
     {
         //quest.Cancel();
         Destroy(gameObject);
+    }
+
+    public void SetAccepted()
+    {
+        jobStateIcon.sprite = jobAcceptedIcon;
+    }
+
+    public void ChangeCursor(int state)
+    {
+        GameManager.gameManager.ChangeCursor(state);
     }
 }

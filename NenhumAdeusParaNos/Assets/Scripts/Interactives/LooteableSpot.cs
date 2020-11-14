@@ -68,7 +68,7 @@ public class LooteableSpot : Interactives, IDateEvent
 
         RemoveResource(aux, randItem, player);
 
-        EndInteraction();
+        //EndInteraction();
     }
 
     public void SpawnResource()
@@ -120,6 +120,7 @@ public class LooteableSpot : Interactives, IDateEvent
         }
 
         OnExit(p);
+        EndInteraction();
         //this.gameObject.SetActive(false);
     }
 }

@@ -55,6 +55,9 @@ public class MainHud : MonoBehaviour
     CompanyPC currentPC;
     bool onPC;
 
+    [HideInInspector] bool open_window = false;
+    public bool OpenWindow { get { return open_window; } }
+
     public Text date;
 
     public Image fadeScr;
@@ -64,6 +67,11 @@ public class MainHud : MonoBehaviour
     public Text itemDesc_description;
 
     public Transform popUpsHolder;
+
+    public Image repair_progress_bar;
+    ButtonToPress repair_progress_icon;
+
+    public AudioClip clip_passNotePage;
 
     #region Opçoes_de_Dialogo
     //public void OpenDialogueOptTab(DialogueWithChoice dialogue)
@@ -96,10 +104,13 @@ public class MainHud : MonoBehaviour
 
     #region Notes
     public GameObject notesMenu;
+    public CustomToggle mainToggle;
 
     public Transform allNotes;
-    Text[] notesTxtAreas;
-    Text[] notesStrikeTroughAreas;
+    //Text[] notesTxtAreas;
+    //Text[] notesStrikeTroughAreas;
+    NotepadNotes[] notes;
+    GridLayoutGroup[] allNotePages;
 
     public GameObject nextPageB;
     public GameObject prevPageB;
@@ -107,41 +118,92 @@ public class MainHud : MonoBehaviour
     int acPage = 0;
 
     bool gotTexts = false;
+    //string currentNoteTag = "";
+    Notes currentNote; 
 
     public void OpenCloseNotesMenu(bool value = true)
     {
         if (value) notesMenu.SetActive(!notesMenu.activeSelf);
-        else notesMenu.SetActive(false);
+        else { notesMenu.SetActive(false); ChangeCursor(0); }
         if (!gotTexts && notesMenu.activeSelf)
-        {            
-            List<Text> allTexts = new List<Text>();
+        {
+            //List<NotepadNotes> allNotes = new List<NotepadNotes>();
+            notes = allNotes.GetComponentsInChildren<NotepadNotes>(true);
+            allNotePages = allNotes.GetComponentsInChildren<GridLayoutGroup>(true);
+            //List<Text> mainTexts = new List<Text>();
+            //List<Text> strikeTroughs = new List<Text>();
 
-            List<Text> mainTexts = new List<Text>();
-            List<Text> strikeTroughs = new List<Text>();
+            //allNotes.GetComponentsInChildren(true, allTexts);
 
-            allNotes.GetComponentsInChildren(true, allTexts);
-
-            for (int i = 0; i < allTexts.Count; i++)
-            {
-                if (i % 2 == 0) mainTexts.Add(allTexts[i]);
-                else strikeTroughs.Add(allTexts[i]);
-            }
-            notesTxtAreas = mainTexts.ToArray();
-            notesStrikeTroughAreas = strikeTroughs.ToArray();
+            //for (int i = 0; i < allTexts.Count; i++)
+            //{
+            //    if (i % 2 == 0) mainTexts.Add(allTexts[i]);
+            //    else strikeTroughs.Add(allTexts[i]);
+            //}
+            //notesTxtAreas = mainTexts.ToArray();
+            //notesStrikeTroughAreas = strikeTroughs.ToArray();
 
             gotTexts = true;
-        }        
+        }
+        CheckIfWindowOpen();
     }
 
-    public void WriteNotes(string[] notes, string[] strokes)
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            if (notes[i].Equals("")) return;
+    //public void WriteNotes(string[] notes, string[] strokes)
+    //{
+    //    for (int i = 0; i < 10; i++)
+    //    {
+    //        if (notes[i].Equals("")) return;
 
-            notesStrikeTroughAreas[i].text = strokes[i];
-            notesTxtAreas[i].text = notes[i];
+    //        //notesStrikeTroughAreas[i].text = strokes[i];
+    //        //notesTxtAreas[i].text = notes[i];
+    //    }
+    //}
+    public void WriteNotes(List<string> texts, List<Quest> quests, bool main, Notes n)
+    {
+        //Debug.Log(noteTag);
+        mainToggle.Interactable = true;
+
+        //if (!currentNoteTag.Equals(noteTag))
+        //{
+        for (int i = 0; i < notes.Length; i++)
+        {
+            if (!notes[i].Written) break;
+
+            notes[i].EraseAll();
         }
+
+
+        if (texts.Count > 0)
+        {
+            for (int i = 0; i < texts.Count; i++)
+            {
+                notes[i].Write(texts[i], quests[i]);
+            }
+        }
+        //}
+        mainToggle.Switch(main);
+
+        currentNote = n;
+        //currentNoteTag = noteTag;
+        ErasureNote();
+    }
+
+    public void ErasureNote()
+    {
+        for (int i = 0; i < notes.Length; i++)
+        {
+            if (!notes[i].Written) return;
+
+            if (notes[i].Quest.Completed) notes[i].PutErasure();
+        }
+    }
+
+    public void MakeMain()
+    {
+        if (currentNote == null) return;
+
+        GameManager.gameManager.questController.ChangeMainNotes(currentNote);
+        //if (!GameManager.gameManager.questController.TryChangeMainNote(currentNote, mainToggle.isOn)) mainToggle.isOn = true;
     }
 
     public void NextPage()
@@ -161,13 +223,14 @@ public class MainHud : MonoBehaviour
     }
     void UpdatePage()
     {
-        for (int i = 0; i < notesTxtAreas.Length; i++)
+        GameManager.gameManager.audioController.PlayEffect(clip_passNotePage);
+        for (int i = 0; i < allNotePages.Length; i++)
         {
             Debug.Log(i);
-            notesTxtAreas[i].gameObject.SetActive(false);
+            allNotePages[i].gameObject.SetActive(false);
         }
         Debug.Log(acPage);
-        notesTxtAreas[acPage].gameObject.SetActive(true);
+        allNotePages[acPage].gameObject.SetActive(true);
     }
     #endregion
 
@@ -184,10 +247,13 @@ public class MainHud : MonoBehaviour
         //{
         Invoke("DelayOpen", 0.02f);
         //}
+
+        //CheckIfWindowOpen();
     }
     void DelayOpen()
     {
         GameManager.gameManager.inventoryController.Inventory.myGrid.Generate();
+        GameManager.gameManager.inventoryController.Inventory.LoadEquippedItems();
         //OpenCloseInventory(true);
         //Invoke("DelayClose", 0.01f);
     }
@@ -222,12 +288,23 @@ public class MainHud : MonoBehaviour
             else if (actualStorage != null && actualStorage.storageMenu.activeSelf) actualStorage.OpenCloseStorage(false);
             else if (shopUI.gameObject.activeSelf) shopUI.Exit();
             else if (inventory.activeSelf) OpenCloseInventory(false);
-            else if (pauseMenu.activeSelf) OpenClosePauseMenu(false);
+            else if (pauseMenu.activeSelf) OpenClosePauseMenu(false); 
             else OpenClosePauseMenu(true);
         }
 
     }
+    public void CheckIfWindowOpen()
+    {
+        if (notesMenu.activeSelf) open_window = true;
+        else if (onPC) open_window = true;
+        else if (actualStorage != null && actualStorage.storageMenu.activeSelf) open_window = true;
+        else if (shopUI.gameObject.activeSelf) open_window = true;
+        else if (inventory.activeSelf) open_window = true;
+        else if (pauseMenu.activeSelf) open_window = true;
+        else open_window = false;
 
+        Cursor.visible = open_window;
+    }
     //public void WaitingForAnswer(bool value)
     //{
     //    equippedDialogueB.GetComponent<Animator>().SetBool("WaitingAnswer", value);
@@ -271,6 +348,7 @@ public class MainHud : MonoBehaviour
     public void OpenCloseDestroyItem(bool value)
     {
         destroyItemConfirm.SetActive(value);
+        if (!value) ChangeCursor(0);
     }
 
     public void OpenCloseQuickMenu()
@@ -298,20 +376,23 @@ public class MainHud : MonoBehaviour
             CloseCraftSection();
             if (openingInventory != null) StopCoroutine(openingInventory);
             inventoryClosed.SetActive(false);
-            inventory.SetActive(false);            
+            inventory.SetActive(false);
+            CheckIfWindowOpen();
+            ChangeCursor(0);
         }
         else
         {
             openingInventory = StartCoroutine(InventoryOpenAnim());
         }
         OpenClosePauseMenu(false);;        
-        ShowHideQuickItemSlot(!value);       
+        ShowHideQuickItemSlot(!value);
     }
     IEnumerator InventoryOpenAnim()
     {
         inventoryClosed.SetActive(true);
         yield return new WaitForSeconds(0.15f);
-        inventory.SetActive(true);
+        inventory.SetActive(true);        
+        CheckIfWindowOpen();
     }
 
     public void OpenCraftSection(BrokenObject bo)
@@ -333,17 +414,28 @@ public class MainHud : MonoBehaviour
         OpenCloseInventory(true);
         shopUI.gameObject.SetActive(true);
         shopUI.Shop = shop;
+
+        CheckIfWindowOpen();
     }
     public void CloseShopUI()
     {
         shopUI.gameObject.SetActive(false);
         OpenCloseInventory(false);
+
+        CheckIfWindowOpen();
+        ChangeCursor(0);
     }
 
     public void OpenClosePauseMenu(bool value)
     {
         pauseMenu.SetActive(value);
         GameManager.gameManager.timeController.PauseResume(value);
+        if (!value)
+        {
+            ChangeCursor(0);
+        }
+
+        CheckIfWindowOpen();
     }
 
     public void UpdateDate(string day, int hour, int min)
@@ -464,11 +556,37 @@ public class MainHud : MonoBehaviour
         popUpsHolder.gameObject.SetActive(v);
     }
 
+    public void EnableRepairBar(Transform t, float h)
+    {
+        if (repair_progress_bar.transform.parent.gameObject.activeSelf) return;
+
+        repair_progress_bar.transform.parent.gameObject.SetActive(true);
+
+        if (repair_progress_icon == null) repair_progress_icon = repair_progress_bar.transform.parent.GetComponent<ButtonToPress>();
+
+        repair_progress_icon.SetTransf(t, h);
+    }
+    public void DisableRepairBar()
+    {
+        repair_progress_bar.fillAmount = 0;
+        repair_progress_bar.transform.parent.gameObject.SetActive(false);
+    }
+
+    public void UpdateRepairBar(float rate)
+    {
+        repair_progress_bar.fillAmount = rate;
+    }
+
     void DestroyChilds(Transform transform)
     {
         for (int i = 0; i < transform.childCount; i++)
         {
             Destroy(transform.GetChild(i).gameObject);
         }
+    }
+
+    public void ChangeCursor(int state)
+    {
+        GameManager.gameManager.ChangeCursor(state);
     }
 }
