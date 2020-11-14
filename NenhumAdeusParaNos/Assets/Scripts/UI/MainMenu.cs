@@ -39,6 +39,9 @@ public class MainMenu : MonoBehaviour
         GameManager.gameManager.MainHud.ShowHiddenUI(true);
         StartCoroutine(FadeOut());
         menuUI.SetActive(false);
+
+        GameManager.gameManager.MainHud.CheckIfWindowOpen();
+        ChangeCursor(0);
     }
     
     public void Quit()
@@ -80,5 +83,10 @@ public class MainMenu : MonoBehaviour
             GameManager.gameManager.battleController.MainCharacter.EnableCharController(true);
             GameManager.gameManager.battleController.MainCharacter.CanMove = false;
         }
+    }
+
+    public void ChangeCursor(int state)
+    {
+        GameManager.gameManager.ChangeCursor(state);
     }
 }

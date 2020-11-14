@@ -20,6 +20,11 @@ public class BrokenObject : Interactives
     public bool waitingToAttach = false;
     int bonusT;
 
+    private void OnEnable()
+    {
+        waitingToAttach = false;
+    }
+
     public override void Interact(Player player)
     {
         DesactiveBtp();
@@ -41,13 +46,13 @@ public class BrokenObject : Interactives
     public void FinishRepair(int bonusTime)
     {
         OnExit(p);
-        if (!repairableObject.repairByHit) repairableObject.Repair(bonusTime);
-        else
-        {
+        //if (!repairableObject.repairByHit) repairableObject.Repair(bonusTime);
+        //else
+        //{
             bonusT = bonusTime;
             waitingToAttach = true;
             StartCoroutine(ReenableInteraction());
-        }
+        //}
         GameManager.gameManager.MainHud.OpenCloseInventory(false);        
     }
 

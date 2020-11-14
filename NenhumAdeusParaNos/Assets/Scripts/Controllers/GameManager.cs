@@ -49,6 +49,11 @@ public class GameManager : MonoBehaviour
     public Image black_screen;
     public Text title_txt;
 
+    #region Cursor
+    public Texture2D cursor_default;
+    public Texture2D cursor_hover;
+    #endregion
+
     private void Awake()
     {
         if (gameManager != null && gameManager != this)
@@ -231,5 +236,11 @@ public class GameManager : MonoBehaviour
             timer += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
+    }
+
+    public void ChangeCursor(int state)
+    {
+        if (state == 1) Cursor.SetCursor(cursor_hover, Vector2.zero, CursorMode.Auto);
+        else Cursor.SetCursor(cursor_default, Vector2.zero, CursorMode.Auto);
     }
 }

@@ -9,4 +9,12 @@ public class WeaponConfig : ScriptableObject
     public float defaultDamage;
     public float defaultAttackSpeed;
     public float range;
+
+    //[SerializeField] WeaponItem myItem = null;
+    //public WeaponItem MyItem { get { return myItem; } set { myItem = value; } }
+
+    //public void DecreaseDurability()
+    //{
+    //    myItem.Durability.DecreaseDurability();
+    //}
 }

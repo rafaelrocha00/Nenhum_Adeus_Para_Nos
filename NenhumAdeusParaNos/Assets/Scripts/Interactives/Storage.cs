@@ -276,6 +276,8 @@ public class Storage : Interactives
             }
 
             storageMenu.SetActive(value);
+
+            GameManager.gameManager.MainHud.CheckIfWindowOpen();
         }
     }
 

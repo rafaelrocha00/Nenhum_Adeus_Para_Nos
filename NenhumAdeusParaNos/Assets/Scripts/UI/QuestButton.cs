@@ -41,4 +41,9 @@ public class QuestButton : MonoBehaviour
     {
         jobStateIcon.sprite = jobAcceptedIcon;
     }
+
+    public void ChangeCursor(int state)
+    {
+        GameManager.gameManager.ChangeCursor(state);
+    }
 }

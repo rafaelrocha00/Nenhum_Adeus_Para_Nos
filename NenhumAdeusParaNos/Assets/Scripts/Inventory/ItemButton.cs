@@ -94,12 +94,14 @@ public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerEnter(PointerEventData eventData)
     {
         Invoke("ShowDesc", 0.3f);
+        GameManager.gameManager.ChangeCursor(1);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         CancelInvoke();
         HideDesc();
+        if (!GameManager.gameManager.inventoryController.Dragging) GameManager.gameManager.ChangeCursor(0);
     }
 
     private void OnDisable()

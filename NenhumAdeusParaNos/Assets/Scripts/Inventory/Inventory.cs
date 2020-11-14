@@ -7,6 +7,7 @@ public class Inventory : MonoBehaviour
     public GridManager myGrid;
 
     int selectedItemID = 0;
+    public WeaponSlot[] weaponSlots = new WeaponSlot[2];
     public QuickItemSlot selectedItemSlot;
     public QuickItemSlot[] quickItems = new QuickItemSlot[3];
 
@@ -16,6 +17,8 @@ public class Inventory : MonoBehaviour
     public float Money { get { return money; } set { money = value; } }
 
     public ItemGenerator iGen;
+
+    bool loadedEquippedItems = false;
 
     private void Start()
     {
@@ -120,5 +123,63 @@ public class Inventory : MonoBehaviour
         {
             quickItems[i].CheckItemInventory();
         }
+    }
+
+    public void LoadEquippedItems()
+    {
+        if (loadedEquippedItems) return;
+
+        Debug.Log("Loading equip items in inventory");
+
+        GameManager.gameManager.inventoryController.LoadEquips();
+
+        loadedEquippedItems = true;
+    }
+
+    public void SetEquippedWeapons(Item[] i_weapons)
+    {
+        Debug.Log("Loading equip weapons");
+
+        for (int i = 0; i < 2; i++)
+        {
+            if (i_weapons[i] != null)
+            {
+                ItemButton aux = iGen.GenItem(i_weapons[i]);
+                weaponSlots[i].OnDrop(aux);
+            }
+        }
+    }
+
+    public void SetEquippedItems(Item[] i_quick)
+    {
+        Debug.Log("Loading equip quick");
+
+        for (int i = 0; i < i_quick.Length; i++)
+        {
+            if (i_quick[i] != null)
+            {
+                quickItems[i].SetItem(i_quick[i]);
+            }
+        }
+    }
+
+    private void OnDisable()
+    {
+        List<Item> eq_weapons = new List<Item>();
+        List<Item> eq_quickItems = new List<Item>();
+
+        for (int i = 0; i < weaponSlots.Length; i++)
+        {
+            if (weaponSlots[i].ThisItemB == null) eq_weapons.Add(null);
+            else eq_weapons.Add(weaponSlots[i].ThisItemB.Item);
+        }
+
+        for (int i = 0; i < quickItems.Length; i++)
+        {
+            if (quickItems[i].CheckItemIventoryToSave()) eq_quickItems.Add(quickItems[i].QuickItem);
+            else eq_quickItems.Add(null);
+        }
+
+        GameManager.gameManager.inventoryController.SaveEquips(eq_weapons.ToArray(), eq_quickItems.ToArray());
     }
 }

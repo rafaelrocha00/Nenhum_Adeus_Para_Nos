@@ -36,6 +36,10 @@ public class MeleeW : Weapon
     {
         allWeaponPresets[meleeConfig.weaponPresetIndex].Enable(value);
     }
+    public override bool IsActive()
+    {
+        return allWeaponPresets[meleeConfig.weaponPresetIndex].gameObject.activeSelf;
+    }
 
     public void SetStrongAttack()
     {
@@ -58,17 +62,22 @@ public class MeleeW : Weapon
             SetNormalAttack();
             return 0;
         }
-        else if (atkType >= 3 && specialAtkEnabled)
+        else if ((atkType == 3 || atkType == 5) && specialAtkEnabled)
         {
             Debug.Log("Special Attack");
             specialAtkEnabled = false;
             Invoke("InvokeOnAttackEffect", 0.5f);
             Invoke("SpecialAttackCooldown", meleeConfig.special.cooldown);
         }
+        else
+        {
+            SetNormalAttack();
+        }
 
         Debug.Log("Atacando");
-        if (sCollider == null) allWeaponPresets[meleeConfig.weaponPresetIndex].col.enabled = true;
-        else sCollider.enabled = true;
+        //if (sCollider == null) allWeaponPresets[meleeConfig.weaponPresetIndex].col.enabled = true;
+        //else sCollider.enabled = true;
+        Invoke("ActiveWeaponCollider", actualAtkspeed / 2.0f);
 
         selectedDamage *= attackMod;
         if (anim != null) anim.SetInteger("AttackType", atkType);
@@ -90,6 +99,11 @@ public class MeleeW : Weapon
         specialAtkEnabled = true;
     }
 
+    void ActiveWeaponCollider()
+    {
+        if (sCollider == null) allWeaponPresets[meleeConfig.weaponPresetIndex].col.enabled = true;
+        else sCollider.enabled = true;
+    }
     void StopAnim()
     {
         if (anim != null) anim.SetInteger("AttackType", 0);
@@ -113,7 +127,9 @@ public class MeleeW : Weapon
                 if (atkType == 3 || atkType == 5) meleeConfig.special.OnContactEffect(other.GetComponent<BattleUnit>());
                 hitted = true;
                 if (!meleeConfig.multAtk) Invoke("ResetHit", meleeConfig.defaultAttackSpeed);
-                else Invoke("ResetHit", 0.1f);
+                else Invoke("ResetHit", 0.25f);
+
+                //meleeConfig.DecreaseDurability();
                 //}
             }
             catch
@@ -123,7 +139,9 @@ public class MeleeW : Weapon
                 {
                     hitted = true;
                     ro.ReceiveHit(meleeConfig);
-                    Invoke("ResetHit", 0.1f);
+                    Invoke("ResetHit", 0.25f);
+
+                    //meleeConfig.DecreaseDurability();
                 }
             }
         }

@@ -175,7 +175,7 @@ public class Player : MonoBehaviour, BattleUnit
         forward = Vector3.Normalize(forward);
         right = Quaternion.Euler(new Vector3(0, 90, 0)) * forward;
 
-        if (!battleUnlocked) HideShowWeapon();
+        //*if (!battleUnlocked)*/ HideShowWeapon();
         //StartCoroutine(WalkSFX());
 
         if (!GameManager.gameManager.NewGame) EnableCharController(true);
@@ -304,7 +304,7 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            if (battleUnlocked) HideShowWeapon();
+            /*if (battleUnlocked)*/ HideShowWeapon();
         }
 
         if (!EventSystem.current.IsPointerOverGameObject() && !interacting)
@@ -816,8 +816,16 @@ public class Player : MonoBehaviour, BattleUnit
         //    equippedRanged.Equip(wconfig);
         //}
 
+        bool showNewEquip = false;
         if (id == 0)
         {
+            if (weapon_melee.IsActive() || weapon_extraRanged.IsActive())
+            {
+                weapon_melee.EnableModel(false);
+                weapon_extraRanged.EnableModel(false);
+                showNewEquip = true;
+            }
+
             if (wconfig is MeleeConfig)
             {
                 weapon_melee.Equip(wconfig);
@@ -831,6 +839,13 @@ public class Player : MonoBehaviour, BattleUnit
         }
         else
         {
+            if (weapon_ranged.IsActive() || weapon_extraMelee.IsActive())
+            {
+                weapon_ranged.EnableModel(false);
+                weapon_extraMelee.EnableModel(false);
+                showNewEquip = true;
+            }
+
             if (wconfig is RangedConfig)
             {
                 weapon_ranged.Equip(wconfig);
@@ -842,10 +857,13 @@ public class Player : MonoBehaviour, BattleUnit
             weapon_ranged.isEquipped     =  (wconfig is RangedConfig);
             weapon_extraMelee.isEquipped = !(wconfig is RangedConfig);
         }
+        if (showNewEquip) myWeapon.EnableModel(true);
+
         if (!myWeapon.isEquipped) SwitchMainWeapon();
     }
     void SwitchMainWeapon()
     {
+        Debug.Log("Switching Main Weapom");
         for (int i = 0; i < 4; i++)
         {
             if (weapons[i].isEquipped)

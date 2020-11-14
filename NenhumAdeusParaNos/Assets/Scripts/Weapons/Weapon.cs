@@ -31,4 +31,9 @@ public abstract class Weapon : MonoBehaviour
     {
         if (weaponModel != null) weaponModel.SetActive(value);
     }
+
+    public virtual bool IsActive()
+    {
+        return weaponModel.activeSelf;
+    }
 }

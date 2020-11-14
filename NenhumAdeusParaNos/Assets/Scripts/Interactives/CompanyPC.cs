@@ -240,6 +240,7 @@ public class CompanyPC : Interactives
         pcScreen.SetActive(false);
         pcLight.SetActive(false);
 
+        ChangeCursor(0);
         Invoke("EnableQMs", 1.0f);
     }
     void EnableQMs()
@@ -359,4 +360,9 @@ public class CompanyPC : Interactives
     //        }
     //    }
     //}
+
+    public void ChangeCursor(int state)
+    {
+        GameManager.gameManager.ChangeCursor(state);
+    }
 }

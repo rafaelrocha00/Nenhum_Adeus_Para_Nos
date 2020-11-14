@@ -78,6 +78,13 @@ public class CamMove : MonoBehaviour
 
     public void CameraMouseControl()
     {
+        if (GameManager.gameManager.MainHud.OpenWindow)
+        {
+            SetDefaultXDist();
+            SetDefaultZDist();
+            return;
+        }
+
         if (Input.mousePosition.x >= Screen.width * 0.9f)
         {
             //timeInTopBorders += Time.deltaTime;

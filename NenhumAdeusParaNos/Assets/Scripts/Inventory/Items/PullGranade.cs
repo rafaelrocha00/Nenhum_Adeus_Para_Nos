@@ -15,14 +15,17 @@ public class PullGranade : Granade
 
     protected override void GranadeEffect()
     {
-        if (effect != null) Instantiate(effect, transform.position, Quaternion.identity);
-        INPC[] enemies = GameManager.gameManager.dialogueController.GetNearbyNPCs(transform.position, areaOfEffect);
-        for (int i = 0; i < enemies.Length; i++)
+        if (GameManager.gameManager.battleController.ActiveBattle)
         {
-            enemies[i].Stun(stunTime);
-            StartCoroutine(Pull(enemies[i].transform));
-        }
+            if (effect != null) Instantiate(effect, transform.position, Quaternion.identity);
+            INPC[] enemies = GameManager.gameManager.dialogueController.GetNearbyNPCs(transform.position, areaOfEffect);
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                enemies[i].Stun(stunTime);
+                StartCoroutine(Pull(enemies[i].transform));
+            }
 
+        }
         Destroy(this.gameObject, 0.5f);
     }
 
