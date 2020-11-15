@@ -26,7 +26,7 @@ public class NotepadNotes : MonoBehaviour
 
     public void PutErasure()
     {
-        erasure.text = new string('_', note.text.Length);
+        erasure.text = new string('_', note.text.Length + Mathf.Clamp(note.text.Length, 0, 1) * 5);
     }
 
     void GetTexts()

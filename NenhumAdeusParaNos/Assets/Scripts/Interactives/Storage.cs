@@ -285,4 +285,13 @@ public class Storage : Interactives
     {
         OpenCloseStorage(false);
     }
+
+    private void OnDisable()
+    {
+        CustomEvents.instance.onQuestAccepted -= CheckForQuestObjectives;
+
+        if (quest_mark != null) quest_mark.SetActive(false);
+
+        OnExit(GameManager.gameManager.battleController.MainCharacter);
+    }
 }

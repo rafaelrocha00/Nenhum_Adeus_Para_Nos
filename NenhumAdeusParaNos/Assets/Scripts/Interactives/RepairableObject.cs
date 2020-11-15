@@ -122,7 +122,7 @@ public class RepairableObject : Interactives, IDateEvent
             GameManager.gameManager.repairController.AddActiveDateEvent(this);
         }
         broken = false;
-        maxLife = baseLife;
+        maxLife = state_broken_detached.GetComponent<BrokenObject>().MinCombinedValue;
         life = maxLife;
         if (unlockableInt != null)
         {
@@ -141,8 +141,8 @@ public class RepairableObject : Interactives, IDateEvent
         waitingToHit = false;
         //maxLife = 0;
         //life = 0;
-        maxLife = baseLife;
-        life = maxLife;
+        //maxLife = baseLife;
+        //life = maxLife;
 
         state_broken.SetActive(false);
         state_repaired.SetActive(true);
@@ -240,6 +240,12 @@ public class RepairableObject : Interactives, IDateEvent
         }
         else if (state_repaired.activeSelf)
         {
+            if (maxLife == 0)
+            {
+                maxLife = state_broken_detached.GetComponent<BrokenObject>().MinCombinedValue;
+                life = maxLife;
+            }
+
             StartCoroutine(ShakeObject());
 
             life = Mathf.Clamp(life -= (int)mconfig.defaultDamage, 0, maxLife);

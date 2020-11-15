@@ -38,7 +38,7 @@ public class QuickItemSlot : DropSlot
                 image.sprite = itemButton.GetComponent<Image>().sprite;
                 GameManager.gameManager.MainHud.SetQuickItemSprite(id, itemButton.GetComponent<Image>().sprite);//quickItemSlots[id].SetSprite(itemButton.GetComponent<Image>().sprite);//////////////////////////////////
                 hasInInventory = true;
-                if (itemButton.Item is Notes) GameManager.gameManager.questController.mainNotes = (Notes)itemButton.Item;
+                //if (itemButton.Item is Notes) GameManager.gameManager.questController.mainNotes = (Notes)itemButton.Item;
                 Invoke("CheckItemInventory", 0.01f);
                 if (!itemButton.OriginSlots[0, 0].MyGridManager.CompareTag("inventory")) return true;
                 else return false;
@@ -61,7 +61,7 @@ public class QuickItemSlot : DropSlot
         image.sprite = i.itemSprite;
         GameManager.gameManager.MainHud.SetQuickItemSprite(id, i.itemSprite);//quickItemSlots[id].SetSprite(itemButton.GetComponent<Image>().sprite);//////////////////////////////////
         hasInInventory = true;
-        if (i is Notes) GameManager.gameManager.questController.mainNotes = (Notes)i;
+        //if (i is Notes) GameManager.gameManager.questController.mainNotes = (Notes)i;
         //Invoke("CheckItemInventory", 0.01f);
     }
 
