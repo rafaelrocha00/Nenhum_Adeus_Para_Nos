@@ -8849,7 +8849,7 @@ PrefabInstance:
     - target: {fileID: 8511842793438932524, guid: 317b3f4374cfd4f4cbc8c78dc822d265,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -124.56579
+      value: -124.57
       objectReference: {fileID: 0}
     - target: {fileID: 8511842793438932524, guid: 317b3f4374cfd4f4cbc8c78dc822d265,
         type: 3}
@@ -8859,7 +8859,7 @@ PrefabInstance:
     - target: {fileID: 8511842793438932524, guid: 317b3f4374cfd4f4cbc8c78dc822d265,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -70.86836
+      value: -71.86
       objectReference: {fileID: 0}
     - target: {fileID: 8511842793438932524, guid: 317b3f4374cfd4f4cbc8c78dc822d265,
         type: 3}
@@ -15309,6 +15309,7 @@ GameObject:
   - component: {fileID: 1232842035}
   - component: {fileID: 1232842037}
   - component: {fileID: 1232842036}
+  - component: {fileID: 1232842038}
   m_Layer: 0
   m_Name: lixo.001 (1)
   m_TagString: Untagged
@@ -15377,6 +15378,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1232842034}
   m_Mesh: {fileID: -3945752924640212783, guid: d06e11cc245ecb542b3d8374116e6bd5, type: 3}
+--- !u!135 &1232842038
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232842034}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.39941263
+  m_Center: {x: 0.00068202615, y: 0.36243027, z: 0.000044941902}
 --- !u!1001 &1233343605
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20907,6 +20921,7 @@ GameObject:
   - component: {fileID: 1745768199}
   - component: {fileID: 1745768201}
   - component: {fileID: 1745768200}
+  - component: {fileID: 1745768202}
   m_Layer: 0
   m_Name: vaso.002
   m_TagString: Untagged
@@ -20975,6 +20990,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1745768198}
   m_Mesh: {fileID: -5257483381632482636, guid: d06e11cc245ecb542b3d8374116e6bd5, type: 3}
+--- !u!136 &1745768202
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1745768198}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.33
+  m_Height: 1.78
+  m_Direction: 1
+  m_Center: {x: -0.0027009698, y: -0.0441626, z: -0.012925565}
 --- !u!1001 &1751444654
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22677,6 +22706,7 @@ GameObject:
   - component: {fileID: 1814332390}
   - component: {fileID: 1814332392}
   - component: {fileID: 1814332391}
+  - component: {fileID: 1814332393}
   m_Layer: 0
   m_Name: lixo.001
   m_TagString: Untagged
@@ -22745,6 +22775,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1814332389}
   m_Mesh: {fileID: -3945752924640212783, guid: d06e11cc245ecb542b3d8374116e6bd5, type: 3}
+--- !u!135 &1814332393
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1814332389}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.39941263
+  m_Center: {x: 0.00068202615, y: 0.36243123, z: 0.0000487566}
 --- !u!1 &1822079173
 GameObject:
   m_ObjectHideFlags: 0
