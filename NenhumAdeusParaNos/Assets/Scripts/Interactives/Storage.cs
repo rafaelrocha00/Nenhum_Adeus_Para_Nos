@@ -292,6 +292,6 @@ public class Storage : Interactives
 
         if (quest_mark != null) quest_mark.SetActive(false);
 
-        OnExit(GameManager.gameManager.battleController.MainCharacter);
+        if (buttonPref != null && buttonPref.activeSelf) OnExit(GameManager.gameManager.battleController.MainCharacter);
     }
 }
