@@ -284,6 +284,7 @@ MonoBehaviour:
   toBeAccepted: 1
   questAcceptedToDespawn: {fileID: 0}
   questCompletedToDespawn: {fileID: 0}
+  rotates: 1
   hostile: 1
   heavy: 0
   dashTime: 0.5
@@ -522,6 +523,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 3771c7ff0969fea459bba85648450a75, type: 2}
+    - target: {fileID: -6686056005834992781, guid: 31881929d646f7c48acf28be81e1e29e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e99a6a7ebcdee0a499d1d62ba77c6a90, type: 2}
     - target: {fileID: -4216859302048453862, guid: 31881929d646f7c48acf28be81e1e29e,
         type: 3}
       propertyPath: m_LocalPosition.x
