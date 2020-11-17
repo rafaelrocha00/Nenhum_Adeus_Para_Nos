@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5710137ba23d8b54aa6763a618ea7169, type: 3}
   m_Name: Scythe&Hammer
   m_EditorClassIdentifier: 
-  itemName: Foice e Martelo
-  description: 
-  itemSprite: {fileID: 21300000, guid: 83ff1bcc18333744caadcd4edf9ca886, type: 3}
+  itemName: Foice
+  description: "Uma foice, usada para agricultura, mas \xE9 uma bela arma."
+  itemSprite: {fileID: 4545811402754661733, guid: 98f15665a596cfa4696272d00f6ec155,
+    type: 3}
+  indestructible: 0
   slotSize: {x: 1, y: 1}
-  item_value: 0
+  item_value: 50
   thisWeapon: {fileID: 11400000, guid: 9a15bcdafa165194992446d2cc4c0b74, type: 2}

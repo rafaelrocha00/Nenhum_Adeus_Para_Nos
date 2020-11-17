@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: ScytheHammerNPC
   m_EditorClassIdentifier: 
   weaponName: "Bast\xE3o de beisebol"
-  defaultDamage: 15
-  defaultAttackSpeed: 1.75
-  range: 2.6
+  defaultDamage: 8
+  defaultAttackSpeed: 1.5
+  range: 1.9
   stopToAtk: 1
   multAtk: 1
+  weaponPresetIndex: 0
+  defaultAtkAnim: 2
   special: {fileID: 11400000, guid: ffe9d7885f1f62c4e900c0f994222b37, type: 2}

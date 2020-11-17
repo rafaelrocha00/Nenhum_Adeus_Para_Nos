@@ -192,7 +192,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2655453098499286987}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: dd3d8cd401b505e49aed93f63beff1f7, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 21cf551c017898449a5b44507cee1f8d, type: 2}
   m_Controller: {fileID: 9100000, guid: 160d96c16db7e204f827e4cf164583a4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -303,6 +303,7 @@ MonoBehaviour:
   toBeAccepted: 1
   questAcceptedToDespawn: {fileID: 0}
   questCompletedToDespawn: {fileID: 0}
+  rotates: 1
   hostile: 1
   heavy: 0
   dashTime: 0.5
@@ -572,11 +573,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1809608141639780823, guid: dd3d8cd401b505e49aed93f63beff1f7,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e45bc19ef2e88234fb6879749ac8a014, type: 2}
     - target: {fileID: -927199367670048503, guid: dd3d8cd401b505e49aed93f63beff1f7,
         type: 3}
       propertyPath: m_Name
       value: LustroRanged
       objectReference: {fileID: 0}
+    - target: {fileID: 5059720761137353411, guid: dd3d8cd401b505e49aed93f63beff1f7,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e45bc19ef2e88234fb6879749ac8a014, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd3d8cd401b505e49aed93f63beff1f7, type: 3}
 --- !u!1 &2655453098499286987 stripped

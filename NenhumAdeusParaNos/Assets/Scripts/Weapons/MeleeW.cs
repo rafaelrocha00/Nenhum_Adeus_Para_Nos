@@ -18,6 +18,7 @@ public class MeleeW : Weapon
     public Collider sCollider;
     public WeaponPreset[] allWeaponPresets;
 
+    public float activeColDelay = 0.5f;
     //float attackDelay = 0;
     bool hitted = false;
 
@@ -66,7 +67,7 @@ public class MeleeW : Weapon
         {
             Debug.Log("Special Attack");
             specialAtkEnabled = false;
-            Invoke("InvokeOnAttackEffect", 0.5f);
+            Invoke("InvokeOnAttackEffect", activeColDelay);
             Invoke("SpecialAttackCooldown", meleeConfig.special.cooldown);
         }
         else
@@ -77,7 +78,7 @@ public class MeleeW : Weapon
         Debug.Log("Atacando");
         //if (sCollider == null) allWeaponPresets[meleeConfig.weaponPresetIndex].col.enabled = true;
         //else sCollider.enabled = true;
-        Invoke("ActiveWeaponCollider", actualAtkspeed / 2.0f);
+        Invoke("ActiveWeaponCollider", activeColDelay / 2.0f);
 
         selectedDamage *= attackMod;
         if (anim != null) anim.SetInteger("AttackType", atkType);
