@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Escopeta
   defaultDamage: 10
-  defaultAttackSpeed: 2
+  defaultAttackSpeed: 1.5
   range: 3
   bulletPref: {fileID: 2060041394054689681, guid: 97c64051a94660e4c8f842a654ff3816,
     type: 3}
@@ -22,13 +22,14 @@ MonoBehaviour:
   delayToShoot: 0.1
   stopToShoot: 0
   auto: 0
-  maxAmmo: 1
+  maxAmmo: 6
   reloadTime: 3
-  recoil: 0
+  recoil: 0.5
+  weaponPresetIndex: 3
   clip_shoots:
   - {fileID: 8300000, guid: 264df01553cfa8f449a6b9187a0ba988, type: 3}
   - {fileID: 8300000, guid: 6f924d684ccb606488f5d4530d6e467a, type: 3}
   - {fileID: 8300000, guid: f5c94d8fe6a781242b2392ccb8500752, type: 3}
   clip_reload: {fileID: 8300000, guid: 01c149064cab3544f92e60c08c702e74, type: 3}
   shootAngle: 30
-  shootQuant: 8
+  shootQuant: 5

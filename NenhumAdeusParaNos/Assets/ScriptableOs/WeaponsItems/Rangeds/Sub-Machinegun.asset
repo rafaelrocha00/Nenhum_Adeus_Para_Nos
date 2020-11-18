@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5710137ba23d8b54aa6763a618ea7169, type: 3}
   m_Name: Sub-Machinegun
   m_EditorClassIdentifier: 
-  itemName: Metralhadora
-  description: 
-  itemSprite: {fileID: 21300000, guid: 24c6eb3993415f84687263b0d38cec5e, type: 3}
+  itemName: Sub-Metralhadora
+  description: Uma metralhadora
+  itemSprite: {fileID: -1624119089138155519, guid: 98f15665a596cfa4696272d00f6ec155,
+    type: 3}
+  indestructible: 0
   slotSize: {x: 1, y: 1}
-  item_value: 0
+  item_value: 50
   thisWeapon: {fileID: 11400000, guid: 7758dc789a1f89e4091fe7a8c38261f8, type: 2}

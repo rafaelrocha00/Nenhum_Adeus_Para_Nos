@@ -15,11 +15,19 @@ public class RangedW : Weapon
     [HideInInspector] protected int ammo;
     public int Ammo { get { return ammo; } }
 
+    public WeaponPreset[] allWeaponPresets;
+
     private void Start()
     {
         //normalRConfig = (NormalRangedConfig)weaponConfig;
         weaponConfig = rangedWConfig;
         ammo = rangedWConfig.maxAmmo;
+    }
+
+    public override void EnableModel(bool value)
+    {
+        allWeaponPresets[rangedWConfig.weaponPresetIndex].Enable(value);
+        if (value) ammo = rangedWConfig.maxAmmo;
     }
 
     public override float Attack(Animator animator = null, float attackMod = 1)

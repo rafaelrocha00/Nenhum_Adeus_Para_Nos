@@ -20,19 +20,21 @@ public class WeaponSlot : DropSlot
             weaponItem = (WeaponItem)itemButton.Item;
             //if ((weaponItem.thisWeapon is RangedConfig && isRanged) || (weaponItem.thisWeapon is MeleeConfig && !isRanged))
             //{
-                if (thisItemB != null)
-                {
-                    thisItemB.OriginDropSlot = null;
-                    itemButton.OriginSlots[0, 0].MyGridManager.AlocateBigItem(thisItemB, itemButton.OriginSlots);
-                }
+            if (thisItemB != null) return false;
 
-                itemButton.transform.SetParent(transform);
-                itemButton.OriginDropSlot = this;
-                thisItemB = itemButton;
-                itemButton.transform.position = this.transform.position;
-                itemButton.ClearOrigin();
-                MainCharacter.EquipWeapon(weaponItem.thisWeapon, slotID);
-                return true;
+            if (thisItemB != null)
+            {
+                thisItemB.OriginDropSlot = null;
+                itemButton.OriginSlots[0, 0].MyGridManager.AlocateBigItem(thisItemB, itemButton.OriginSlots);
+            }
+
+            itemButton.transform.SetParent(transform);
+            itemButton.OriginDropSlot = this;
+            thisItemB = itemButton;
+            itemButton.transform.position = this.transform.position;
+            itemButton.ClearOrigin();
+            MainCharacter.EquipWeapon(weaponItem.thisWeapon, slotID);
+            return true;
             //}
             //else return false;
         }

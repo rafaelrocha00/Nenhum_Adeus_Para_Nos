@@ -10,6 +10,8 @@ public class Bed : Interactives
 
     public AudioClip clip_interaction;
 
+    public Item itemToGive;
+
     public override void Interact(Player player)
     {
         GameManager.gameManager.MainHud.FadeInOut();
@@ -21,6 +23,7 @@ public class Bed : Interactives
         Invoke("ActivePlayer", 3);
         CheckQuest();
         canInteract = false;
+        if (itemToGive != null) GameManager.gameManager.inventoryController.Inventory.AddItem(itemToGive);
     }
 
     void PassTime()
