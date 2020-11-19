@@ -174,6 +174,7 @@ public class RepairableObject : Interactives, IDateEvent
         if (!byPlayer && genRepairQuest && !AlreadyHasQuest()) GameManager.gameManager.questGenerator.GenRepQuest(Name);
         //Mudar estado de textura/modelo.
         state_repaired.SetActive(false);
+        if (state_broken == null) Debug.Log(gameObject.name + " não setado");
         state_broken.SetActive(true);
     }
 
