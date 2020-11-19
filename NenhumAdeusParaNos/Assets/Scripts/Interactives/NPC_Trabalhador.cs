@@ -14,6 +14,7 @@ public class NPC_Trabalhador : MonoBehaviour
     [SerializeField] SimpleNPC npc;
     [SerializeField] NPC_Movimento mov;
     ControladorTrabalho trabalho;
+    [SerializeField] Animator anim;
     float contador;
 
 
@@ -56,7 +57,13 @@ public class NPC_Trabalhador : MonoBehaviour
     {
         if(seguindo && Vector3.Distance(transform.position, Player.transform.position) > distanciaMinimaParaSeguir)
         {
+            anim.SetBool("Walk", true);
             npc.MoveNavMesh(Player.transform.position + new Vector3(1, 0, 0));
+        }
+        else
+        {
+            anim.SetBool("Walk", false);
+
         }
     }
 
