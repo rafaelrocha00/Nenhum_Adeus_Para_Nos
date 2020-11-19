@@ -2559,6 +2559,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5271045013885438265, guid: e08ef83d79190004c84b81be862b4190,
+        type: 3}
+      propertyPath: m_UpdateWhenOffscreen
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8794528357842232904, guid: e08ef83d79190004c84b81be862b4190,
         type: 3}
       propertyPath: m_Name

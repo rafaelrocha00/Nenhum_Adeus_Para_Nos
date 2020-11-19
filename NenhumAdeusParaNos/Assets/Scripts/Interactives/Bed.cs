@@ -40,4 +40,13 @@ public class Bed : Interactives
         //DesactiveBtp();
         EndInteraction();
     }
+
+    private void OnDisable()
+    {
+        CustomEvents.instance.onQuestAccepted -= CheckForQuestObjectives;
+
+        if (quest_mark != null) quest_mark.SetActive(false);
+
+        if (buttonPref != null && buttonPref.activeSelf) OnExit(GameManager.gameManager.battleController.MainCharacter);
+    }
 }
