@@ -31,6 +31,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         RemoveFromSlot();
         image.raycastTarget = false;
         image.color = new Color(1, 1, 1, 0.5f);
+        GameManager.gameManager.audioController.PlayEffect(GameManager.gameManager.MainHud.clip_dragItem);
 
         GameManager.gameManager.ChangeCursor(1);
     }
@@ -58,6 +59,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         GameManager.gameManager.inventoryController.Dragging = false;
         //InvenSlot auxSlot = GameManager.gameManager.inventoryController.ActualInvenSlot;
 
+        GameManager.gameManager.audioController.PlayEffect(GameManager.gameManager.MainHud.clip_dropItem);
         if (GameManager.gameManager.inventoryController.ActualDropSlot != null)
         {
             if (!GameManager.gameManager.inventoryController.ActualDropSlot.OnDrop(itemButton))

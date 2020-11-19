@@ -246,6 +246,8 @@ public class Player : MonoBehaviour, BattleUnit
         RaycastHit hit;
         //Debug.Log(moving);
 
+        if (Input.anyKeyDown && canExitSeat && seated) ExitSeat();
+
         if (cc.enabled && !cc.isGrounded)
         {
             Vector3 downForce = new Vector3(0, -9.81f, 0) * Time.deltaTime;
@@ -276,7 +278,7 @@ public class Player : MonoBehaviour, BattleUnit
                 battleAim = hit.point - transform.position;
                 battleAim.y = 0;
             }
-            /*if (aimingThrowable || placingItem)*/ transform.rotation = Quaternion.LookRotation(battleAim); //transform.LookAt(battleAim);
+            if (!seated) transform.rotation = Quaternion.LookRotation(battleAim); //transform.LookAt(battleAim);
             //Debug.Log(lookPos);
         }
 
@@ -1097,7 +1099,7 @@ public class Player : MonoBehaviour, BattleUnit
     {
         GameManager.gameManager.dialogueController.EndDialogue();
         GameManager.gameManager.MainHud.GameOver();
-        animator.SetBool("Died", true);
+        animator.SetTrigger("Die");
     }
 
     public Vector3 GetPos()
@@ -1218,4 +1220,26 @@ public class Player : MonoBehaviour, BattleUnit
     {
         cc.enabled = v;
     }
+
+    #region Seat
+    bool seated = false;
+    bool canExitSeat = false;
+    public void Sit()
+    {
+        animator.SetBool("Seated", true);
+        seated = true;
+        canExitSeat = false;
+        Invoke("SetCanExitSeat", 1.5f);
+    }
+    public void ExitSeat()
+    {
+        seated = false;
+        animator.SetBool("Seated", false);
+        canMove = true;
+    }
+    void SetCanExitSeat()
+    {
+        canExitSeat = true;
+    }
+    #endregion
 }

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36a43251252284c45a1765f66ea1824d, type: 3}
+  m_Name: soda
+  m_EditorClassIdentifier: 
+  itemName: Refrigerante
+  description: Uma garrafa de Soda Top
+  itemSprite: {fileID: -3737576893084796587, guid: ce90e76d5356b0547ad775dcb98fce32,
+    type: 3}
+  indestructible: 0
+  slotSize: {x: 1, y: 1}
+  item_value: 10
+  animTime: 1.8
+  instantUse: 0
+  healingStrenght: 10

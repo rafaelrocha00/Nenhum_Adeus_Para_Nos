@@ -26,6 +26,8 @@ public class Storage : Interactives
     public List<Item> items = new List<Item>();
     bool generatedMenu;
 
+    public AudioClip clip_openStorage;
+
     public override void CheckForQuestObjectives(Quest q_)
     {
         base.CheckForQuestObjectives(q_);
@@ -49,7 +51,8 @@ public class Storage : Interactives
         }
         else OpenCloseStorage(true);
 
-        GameManager.gameManager.audioController.PlayEffect(GameManager.gameManager.inventoryController.clip_openStorage);
+        if (clip_openStorage == null) GameManager.gameManager.audioController.PlayEffect(GameManager.gameManager.inventoryController.clip_openStorage);
+        else GameManager.gameManager.audioController.PlayEffect(clip_openStorage);
         GameManager.gameManager.MainHud.OpenCloseInventory(true);
         DesactiveBtp();
         CheckQuest();

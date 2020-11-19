@@ -15,6 +15,8 @@ public class RangedConfig : WeaponConfig
     public float reloadTime = 2.0f;
     public float recoil = 0.0f;
 
+    public int weaponPresetIndex = 0;
+
     public AudioClip[] clip_shoots;
     public AudioClip clip_reload;
     //[HideInInspector] int ammo;

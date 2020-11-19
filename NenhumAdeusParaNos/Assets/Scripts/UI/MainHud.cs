@@ -71,7 +71,14 @@ public class MainHud : MonoBehaviour
     public Image repair_progress_bar;
     ButtonToPress repair_progress_icon;
 
+
+    #region Audio Clips
     public AudioClip clip_passNotePage;
+    public AudioClip clip_buttonPress;
+    public AudioClip clip_openInventory;
+    public AudioClip clip_dragItem;
+    public AudioClip clip_dropItem;
+    #endregion
 
     #region Opçoes_de_Dialogo
     //public void OpenDialogueOptTab(DialogueWithChoice dialogue)
@@ -123,7 +130,7 @@ public class MainHud : MonoBehaviour
 
     public void OpenCloseNotesMenu(bool value = true)
     {
-        if (value) notesMenu.SetActive(!notesMenu.activeSelf);
+        if (value) { notesMenu.SetActive(!notesMenu.activeSelf); GameManager.gameManager.audioController.PlayEffect(clip_passNotePage); }
         else { notesMenu.SetActive(false); ChangeCursor(0); }
         if (!gotTexts && notesMenu.activeSelf)
         {
@@ -382,6 +389,7 @@ public class MainHud : MonoBehaviour
         }
         else
         {
+            GameManager.gameManager.audioController.PlayEffect(clip_openInventory);
             openingInventory = StartCoroutine(InventoryOpenAnim());
         }
         OpenClosePauseMenu(false);;        

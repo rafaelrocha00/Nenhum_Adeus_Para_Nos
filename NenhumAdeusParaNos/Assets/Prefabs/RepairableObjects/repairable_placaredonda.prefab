@@ -396,10 +396,20 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.009999997
       objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: cda5b65b4a152e54683be83525d8774e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9f2c44010665e1e4ba92dadde2c47eb9, type: 2}
     - target: {fileID: -927199367670048503, guid: cda5b65b4a152e54683be83525d8774e,
         type: 3}
       propertyPath: m_Name
       value: PlacaRedonda
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: cda5b65b4a152e54683be83525d8774e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cda5b65b4a152e54683be83525d8774e, type: 3}
@@ -481,10 +491,20 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.009999997
       objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: cda5b65b4a152e54683be83525d8774e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9f2c44010665e1e4ba92dadde2c47eb9, type: 2}
     - target: {fileID: -927199367670048503, guid: cda5b65b4a152e54683be83525d8774e,
         type: 3}
       propertyPath: m_Name
       value: PlacaRedonda
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: cda5b65b4a152e54683be83525d8774e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cda5b65b4a152e54683be83525d8774e, type: 3}
@@ -556,6 +576,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: 41178aedc68897f45b439621cc7205b8,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9f2c44010665e1e4ba92dadde2c47eb9, type: 2}
     - target: {fileID: -927199367670048503, guid: 41178aedc68897f45b439621cc7205b8,
         type: 3}
       propertyPath: m_Name

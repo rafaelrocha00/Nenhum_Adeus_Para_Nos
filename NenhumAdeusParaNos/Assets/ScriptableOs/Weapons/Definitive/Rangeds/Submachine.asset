@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Submachine
   m_EditorClassIdentifier: 
   weaponName: Sub-metralhadora
-  defaultDamage: 4.5
-  defaultAttackSpeed: 0.2
+  defaultDamage: 5.5
+  defaultAttackSpeed: 0.25
   range: 7.5
   bulletPref: {fileID: 2060041394054689681, guid: 97c64051a94660e4c8f842a654ff3816,
     type: 3}
@@ -25,6 +25,7 @@ MonoBehaviour:
   maxAmmo: 30
   reloadTime: 3
   recoil: 0
+  weaponPresetIndex: 5
   clip_shoots:
   - {fileID: 8300000, guid: a1cb57334e0dd20469f59643c8b82756, type: 3}
   - {fileID: 8300000, guid: 908be659a0b54694f8f0ac43b448b0dd, type: 3}

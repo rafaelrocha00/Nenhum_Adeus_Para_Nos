@@ -89,4 +89,9 @@ public class MainMenu : MonoBehaviour
     {
         GameManager.gameManager.ChangeCursor(state);
     }
+
+    public void ChangeScene(string sn)
+    {
+        SceneManager.LoadScene(sn);
+    }
 }

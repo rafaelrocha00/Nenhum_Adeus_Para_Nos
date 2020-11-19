@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Auto-Shotgun
   m_EditorClassIdentifier: 
   weaponName: "Escopeta Autom\xE1tica"
-  defaultDamage: 7
+  defaultDamage: 8
   defaultAttackSpeed: 0.65
   range: 3
   bulletPref: {fileID: 5509721553978357322, guid: 2b1e1ec5cbd687647bc9e4167d6fc487,
@@ -24,7 +24,8 @@ MonoBehaviour:
   auto: 1
   maxAmmo: 10
   reloadTime: 3
-  recoil: 0.8
+  recoil: 0.4
+  weaponPresetIndex: 4
   clip_shoots:
   - {fileID: 8300000, guid: 264df01553cfa8f449a6b9187a0ba988, type: 3}
   - {fileID: 8300000, guid: 6f924d684ccb606488f5d4530d6e467a, type: 3}
