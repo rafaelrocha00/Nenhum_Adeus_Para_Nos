@@ -30,11 +30,13 @@ public class INPC : NPC
     //public Dialogue dialogueWithOtherNPC;
     //public DialogueOptions[] myDialogues = new DialogueOptions[3];
     public bool toBeAccepted = true;
+    public bool exclusive = false;
 
     public Quest questAcceptedToDespawn;
     public Quest questCompletedToDespawn;
 
     public bool rotates = true;
+    public bool lockAnim = false;
 
     [Header("--------------- Comabte ---------------")]
     public bool hostile = false;
@@ -70,6 +72,7 @@ public class INPC : NPC
 
         originRot = transform.rotation;
 
+        if (lockAnim) return;
         CustomEvents.instance.onDialogueStart += EnterDialogueAnim;
         CustomEvents.instance.onDialogueEnd += ExitDialogueAnim;
 
@@ -79,6 +82,7 @@ public class INPC : NPC
 
     private void OnDestroy()
     {
+        if (lockAnim) return;
         CustomEvents.instance.onDialogueStart -= EnterDialogueAnim;
         CustomEvents.instance.onDialogueEnd -= ExitDialogueAnim;
     }
@@ -130,6 +134,11 @@ public class INPC : NPC
     {
         if (questAcceptedToDespawn != null && questCompletedToDespawn != null)
         {
+            if (exclusive && (questAcceptedToDespawn.Accepted || !questCompletedToDespawn.Completed))
+            {
+                return true;
+            }
+            else if (exclusive) return false;
 
             if (toBeAccepted)
             {
@@ -141,7 +150,6 @@ public class INPC : NPC
                 if (!questAcceptedToDespawn.Accepted || questCompletedToDespawn.Completed) return true;
                 else return false;
             }
-
 
         }
 

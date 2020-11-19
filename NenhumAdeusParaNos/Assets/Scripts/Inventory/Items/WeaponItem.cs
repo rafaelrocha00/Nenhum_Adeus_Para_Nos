@@ -7,6 +7,10 @@ public class WeaponItem : Item
 {
     public WeaponConfig thisWeapon;
 
+    public int durability = 100;
+    [HideInInspector] int currentDurability;
+    public int CurrentDurability { get { return currentDurability; } }
+
     //[HideInInspector] ItemDurability durability = null;
     //public ItemDurability Durability { get { return durability; } /*set { durability = value; }*/ }
 
@@ -17,10 +21,19 @@ public class WeaponItem : Item
     //    durability = new ItemDurability();
     //}
 
-    //private void OnEnable()
-    //{
-    //    durability = null;
+    public void ReduceDurability()
+    {
+        currentDurability--;
+    }
 
-    //    thisWeapon.MyItem = this;
-    //}
+    public float GetDurabilityRate()
+    {
+        return currentDurability / (float)durability;
+    }
+
+    private void OnEnable()
+    {
+        currentDurability = durability;
+        //thisWeapon.MyItem = this;
+    }
 }

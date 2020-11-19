@@ -13,8 +13,11 @@ public class WeaponConfig : ScriptableObject
     //[SerializeField] WeaponItem myItem = null;
     //public WeaponItem MyItem { get { return myItem; } set { myItem = value; } }
 
-    //public void DecreaseDurability()
-    //{
-    //    myItem.Durability.DecreaseDurability();
-    //}
+    public void DecreaseDurability()
+    {
+        //myItem.durability--;
+        //Debug.Log("Durabilidade: " + myItem.durability);
+
+        GameManager.gameManager.battleController.MainCharacter.ReduceCurrentWeaponDurability();
+    }
 }

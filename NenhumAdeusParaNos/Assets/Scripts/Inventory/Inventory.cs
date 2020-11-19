@@ -125,6 +125,11 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    public ItemButton GetEquippedWeapon(int id)
+    {
+        return weaponSlots[id].ThisItemB;
+    }
+
     public void LoadEquippedItems()
     {
         if (loadedEquippedItems) return;

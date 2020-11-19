@@ -541,6 +541,12 @@ public class MainHud : MonoBehaviour
         itemDesc_obj.transform.position = pos;
         itemDesc_name.text = i.itemName;
         itemDesc_description.text = i.description;
+        //if (i is WeaponItem)
+        //{
+        //    WeaponItem it = (WeaponItem)i;
+
+        //    itemDesc_description.text += "Durabilidade: " + it.durability;
+        //}
     }
     public void HideItemDesc()
     {

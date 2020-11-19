@@ -39,6 +39,8 @@ public class RangedW : Weapon
         rangedWConfig.Attack(transform, gameObject.layer, attackMod);
         if (rangedWConfig.clip_shoots.Length > 0) GameManager.gameManager.audioController.PlayEffect(rangedWConfig.clip_shoots[Random.Range(0, rangedWConfig.clip_shoots.Length)]);
 
+        weaponConfig.DecreaseDurability();
+
         ammo--;
         if (rangedWConfig.recoil > 0) myHolder.Knockback(rangedWConfig.recoil); 
         //Debug.Log(ammo);

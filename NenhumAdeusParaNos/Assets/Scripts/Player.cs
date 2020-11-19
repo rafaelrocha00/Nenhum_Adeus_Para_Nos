@@ -327,6 +327,7 @@ public class Player : MonoBehaviour, BattleUnit
                                 Attack();
                                 if (ranged.IsAuto())
                                 {
+                                    //StopShooting();
                                     autoShooting = true;
                                     StartCoroutine(AutoShoot(ranged));
                                 }
@@ -384,7 +385,8 @@ public class Player : MonoBehaviour, BattleUnit
                     }
                     else
                     {
-                        autoShooting = false;
+                        //autoShooting = false;
+                        StopShooting();
                     }
                 }
             }
@@ -488,6 +490,11 @@ public class Player : MonoBehaviour, BattleUnit
         shooting = false;
     }
 
+    public void StopShooting()
+    {
+        autoShooting = false;
+    }
+
     IEnumerator AutoShoot(RangedW ranged)
     {
         //slowMoving = true;
@@ -495,6 +502,7 @@ public class Player : MonoBehaviour, BattleUnit
         do
         {
             yield return new WaitForSeconds(0.1f);
+            Debug.Log("AutoShooting");
             if (ranged.HasAmmo())
             {
                if (!ranged.Reloading) Attack();
@@ -550,7 +558,7 @@ public class Player : MonoBehaviour, BattleUnit
         //movingTowardWall = 1;
         //if (Physics.Raycast(transform.up * 0.2f + transform.position, heading, out hit, 0.5f, dashMask)) movingTowardWall = 0;
 
-        //transform.position += heading * moveSpeed * Time.deltaTime * movingTowardWall;
+        //transform.position += heading * moveSpeed * Time.deltaTime;// * movingTowardWall;
         cc.Move(heading * moveSpeed * Time.deltaTime);
 
         if (aimLocked)
@@ -817,6 +825,8 @@ public class Player : MonoBehaviour, BattleUnit
         //{
         //    equippedRanged.Equip(wconfig);
         //}
+
+        //wconfig.MyItem = GameManager.gameManager.inventoryController.Inventory.GetEquippedWeapon(id);
 
         bool showNewEquip = false;
         if (id == 0)
@@ -1242,4 +1252,18 @@ public class Player : MonoBehaviour, BattleUnit
         canExitSeat = true;
     }
     #endregion
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        Rigidbody body = hit.collider.attachedRigidbody;
+        if (body != null && !body.isKinematic)
+            body.velocity += hit.controller.velocity * 2;
+    }
+
+    public void ReduceCurrentWeaponDurability()
+    {
+        ItemButton w = GameManager.gameManager.inventoryController.Inventory.GetEquippedWeapon(myWeapon.refID);
+        w.ReduceDurability();
+        //Debug.Log("Durabilidade: " + w.durability);
+    }
 }

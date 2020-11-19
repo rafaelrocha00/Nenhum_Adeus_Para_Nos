@@ -47,14 +47,26 @@ public class RepairableObject : Interactives, IDateEvent
 
         base.CheckForQuestObjectives(q_);
 
-        if (!(q_ is RepairQuest)) return;
-
-        RepairQuest q = (RepairQuest)q_;
-        if (q.ObjectToRepair.Equals(Name))
+        if ((q_ is RepairQuest))
         {
-            SpawnQuestMarker();
-            active_quest = q;
-            return;
+
+            RepairQuest q = (RepairQuest)q_;
+            if (q.ObjectToRepair.Equals(Name))
+            {
+                SpawnQuestMarker();
+                active_quest = q;
+                return;
+            }
+        }
+        else if (q_ is BreakQuest)
+        {
+            BreakQuest q = (BreakQuest)q_;
+            if (q.objectToBreak.Equals(Name))
+            {
+                SpawnQuestMarker();
+                active_quest = q;
+                return;
+            }
         }
     }
 
@@ -172,6 +184,7 @@ public class RepairableObject : Interactives, IDateEvent
         //if (!repairByHit) EnableInteraction(true);
         GameManager.gameManager.repairController.RemoveDateEvent(Name);
         if (!byPlayer && genRepairQuest && !AlreadyHasQuest()) GameManager.gameManager.questGenerator.GenRepQuest(Name);
+        else if (byPlayer) GameManager.gameManager.questController.CheckQuests(this);
         //Mudar estado de textura/modelo.
         state_repaired.SetActive(false);
         state_broken.SetActive(true);

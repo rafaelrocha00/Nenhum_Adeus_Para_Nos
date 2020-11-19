@@ -43,13 +43,14 @@ public class ItemGenerator : MonoBehaviour
         newItemRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, newItemRect.sizeDelta.y * item.slotSize.y);
         newItemObj.GetComponent<Image>().sprite = item.itemSprite;
 
-        newItemObj.GetComponent<ItemButton>().Item = item;// Instantiate(item);
-        //if (item is WeaponItem)
-        //{
-        //    WeaponItem i = (WeaponItem)item;
-        //    i.StartDurability();
-        //}
-
+        if (item is WeaponItem && !item.isInstance)
+        {
+            Debug.Log("Criando Instancia do Item");
+            Item i = Instantiate(item);
+            i.isInstance = true;
+            newItemObj.GetComponent<ItemButton>().Item = i;
+        }
+        else newItemObj.GetComponent<ItemButton>().Item = item;// Instantiate(item);
 
         return newItemObj.GetComponent<ItemButton>();
     }

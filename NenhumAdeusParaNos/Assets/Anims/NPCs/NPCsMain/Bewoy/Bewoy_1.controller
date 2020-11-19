@@ -84,7 +84,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 36dbff0e4ddcd32459046fc09b389932, type: 2}
+  m_Motion: {fileID: 7400000, guid: 02d04fab5f3a9ab40bf87b01dfc9b916, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -127,7 +127,7 @@ BlendTree:
   m_Name: Walking
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 1328084fa2e8ff3468202d3bbad782cd, type: 2}
+    m_Motion: {fileID: 7400000, guid: 68402aada37c88644ae3c733d2a06a4e, type: 2}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -135,10 +135,10 @@ BlendTree:
     m_DirectBlendParameter: Vel
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: f9fad8656b26ac0438da9266789b1c02, type: 2}
+    m_Motion: {fileID: 7400000, guid: b7236a2f633854d47aac57deb79ba9f0, type: 2}
     m_Threshold: 1
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 1.5
+    m_TimeScale: 1.75
     m_CycleOffset: 0
     m_DirectBlendParameter: Vel
     m_Mirror: 0
@@ -182,7 +182,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Tuty
+  m_Name: Bewoy_1
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Talking
@@ -237,7 +237,8 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 6ffa452fc7c856f478efb8e3c898f34b, type: 2}
+  m_Motion: {fileID: -8570250724429962863, guid: 78c6386f71ea17f42891f01888d0339e,
+    type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

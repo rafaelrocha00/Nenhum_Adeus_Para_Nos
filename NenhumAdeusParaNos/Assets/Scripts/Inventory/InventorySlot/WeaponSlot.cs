@@ -31,9 +31,13 @@ public class WeaponSlot : DropSlot
             itemButton.transform.SetParent(transform);
             itemButton.OriginDropSlot = this;
             thisItemB = itemButton;
+
             itemButton.transform.position = this.transform.position;
             itemButton.ClearOrigin();
+            //weaponItem.thisWeapon.MyItem = weaponItem;
+            MainCharacter.StopShooting();
             MainCharacter.EquipWeapon(weaponItem.thisWeapon, slotID);
+
             return true;
             //}
             //else return false;
@@ -44,6 +48,7 @@ public class WeaponSlot : DropSlot
     public override void OnRemove()
     {
         base.OnRemove();
+
         MainCharacter.EquipOriginalWeapon(slotID);
         thisItemB = null;
     }

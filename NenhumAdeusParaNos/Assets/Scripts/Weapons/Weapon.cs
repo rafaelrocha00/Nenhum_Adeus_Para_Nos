@@ -14,6 +14,8 @@ public abstract class Weapon : MonoBehaviour
     [SerializeField] bool equipped = false;
     public bool isEquipped { get { return equipped; } set { equipped = value; } }
 
+    public int refID;
+
     //public float defaultDamage;
     //public float defaultAtkSpeed;
     //public float range;
