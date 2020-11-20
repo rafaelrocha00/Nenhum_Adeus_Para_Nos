@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a468149ff3938840910728463eae8b2, type: 3}
-  m_Name: Melee Dash
+  m_Script: {fileID: 11500000, guid: ab61170cb4e2c82459066b7b28aa4bf2, type: 3}
+  m_Name: On Contact Stun_scouring
   m_EditorClassIdentifier: 
-  damage: 0
-  animationID: 5
-  animationTime: 1
-  cooldown: 5
-  dashDamage: 40
+  damage: 45
+  animationID: 3
+  animationTime: 1.2
+  cooldown: 10
+  stunTime: 3

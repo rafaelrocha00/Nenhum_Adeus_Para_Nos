@@ -51,7 +51,7 @@ public class CamMove : MonoBehaviour
             //else if (xDistance > 26.5) SetDefaultDistance();
         }
 
-        CameraMouseControl();
+        //CameraMouseControl();
     }
 
     public void StartBattle(Vector3 newTarget)
