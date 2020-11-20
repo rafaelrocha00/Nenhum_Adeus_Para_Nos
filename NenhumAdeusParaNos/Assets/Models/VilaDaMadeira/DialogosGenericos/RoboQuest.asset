@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cc231529148de24ca6aeda3695e168a, type: 3}
+  m_Name: RoboQuest
+  m_EditorClassIdentifier: 
+  allStrings:
+  - "Por favor, salve meu irm\xE3o."
+  - "Ele te servir\xE1 para sempre, meu senhor.\n"
+  - 'Como ele quebrou?
+
+'
+  - 'Eu matei ele.
+
+'
+  mcStrings: 02000000
+  unlockableDialogues:
+  - {fileID: 11400000, guid: b375c7760928d6b4b9bcd2e0595cc772, type: 2}
+  lockPlayerMovement: 0
+  unlockPlayerMovement: 0
+  makeNPCWalk: 0
+  finalPoint: {x: 0, y: 0, z: 0}
+  changeSceneState: 0
+  sceneState: {fileID: 0}
+  objectToBreak: 
+  quest: {fileID: 11400000, guid: 534ff1b079a4d6f4da5377a6e95b46cf, type: 2}
+  accepting: 1

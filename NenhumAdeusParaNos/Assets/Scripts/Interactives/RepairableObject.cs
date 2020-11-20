@@ -187,6 +187,7 @@ public class RepairableObject : Interactives, IDateEvent
         else if (byPlayer) GameManager.gameManager.questController.CheckQuests(this);
         //Mudar estado de textura/modelo.
         state_repaired.SetActive(false);
+        if (state_broken == null) Debug.Log(gameObject.name + " não setado");
         state_broken.SetActive(true);
     }
 

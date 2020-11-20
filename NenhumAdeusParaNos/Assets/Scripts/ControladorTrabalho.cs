@@ -27,6 +27,7 @@ public class ControladorTrabalho : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.K))
         {
+            if (jogador == null) jogador = GameObject.FindGameObjectWithTag("player");
             Collider[] hitColliders = Physics.OverlapSphere(jogador.transform.position, raioDeVisao);
             for (int i = 0; i < hitColliders.Length; i++)
             {
