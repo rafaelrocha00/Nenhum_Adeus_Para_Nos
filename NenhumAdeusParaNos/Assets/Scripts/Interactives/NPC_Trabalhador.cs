@@ -11,7 +11,7 @@ public class NPC_Trabalhador : MonoBehaviour
     [SerializeField]float distanciaMinima = 3f;
     [SerializeField] float distanciaMinimaParaSeguir = 3f;
     [SerializeField] GameObject Player;
-    [SerializeField] SimpleNPC npc;
+    [SerializeField] NavMeshAgent agent;
     [SerializeField] NPC_Movimento mov;
     ControladorTrabalho trabalho;
     [SerializeField] Animator anim;
@@ -22,7 +22,8 @@ public class NPC_Trabalhador : MonoBehaviour
     {
         Player = GameObject.FindGameObjectWithTag("player");
         trabalho = GameManager.gameManager.GetComponent<ControladorTrabalho>();
-        npc = GetComponent<SimpleNPC>();
+        anim = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
         mov = GetComponent<NPC_Movimento>();
     }
     private void Update()
@@ -57,30 +58,47 @@ public class NPC_Trabalhador : MonoBehaviour
     {
         if(seguindo && Vector3.Distance(transform.position, Player.transform.position) > distanciaMinimaParaSeguir)
         {
-            anim.SetBool("Walk", true);
-            npc.MoveNavMesh(Player.transform.position + new Vector3(1, 0, 0));
+            Mover(Player.transform.position, 1f);
         }
-        if(Vector3.Distance(transform.position, Player.transform.position) < 1f)
+
+        if(agent.isStopped)
         {
             anim.SetBool("Walk", false);
         }
+        else
+        {
+            anim.SetBool("Walk", true);
+        }
 
 
+    }
+
+    void Mover(Vector3 posicao, float ofsset = 0.1f)
+    {
+        agent.isStopped = false;
+        agent.destination = posicao;
+        agent.stoppingDistance = ofsset;
     }
 
     public void FazerTrabalho(TrabalhoColeta coleta)
     {
         if (trabalhando) return;
         trabalhando = true;
-        npc.MoveNavMesh(coleta.transform.position);
+        Mover(coleta.transform.position);
         StartCoroutine(Trabalhar(coleta.TempoDeTrabalho, coleta));
     }
 
     IEnumerator Trabalhar(float tempo, TrabalhoColeta coleta)
     {
+        while (!agent.isStopped)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        anim.SetBool("Hit", true);
         yield return new WaitForSeconds(tempo);
+        anim.SetBool("Hit", false);
         coleta.gameObject.SetActive(false);
-        npc.MoveNavMesh(coleta.transform.position);
+        Mover(coleta.transform.position);
         GameManager.gameManager.inventoryController.Inventory.AddItem(coleta.itemObtido);
         trabalhando = false;
     }
