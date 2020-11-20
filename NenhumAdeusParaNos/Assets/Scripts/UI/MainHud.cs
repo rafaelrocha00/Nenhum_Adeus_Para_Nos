@@ -489,6 +489,8 @@ public class MainHud : MonoBehaviour
         EnablePopUps(!v);
         onPC = v;
         currentPC = pc;
+
+        CheckIfWindowOpen();
     }
 
     public void FadeInOut()

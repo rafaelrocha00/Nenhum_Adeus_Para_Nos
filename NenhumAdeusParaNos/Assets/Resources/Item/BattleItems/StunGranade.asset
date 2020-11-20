@@ -15,8 +15,10 @@ MonoBehaviour:
   itemName: Granada Paralisante
   description: Explode e paralisa os inimigos atingidos
   itemSprite: {fileID: 21300000, guid: fd4598c3f365abb4bb0807ab71be4013, type: 3}
+  isInstance: 0
+  indestructible: 0
   slotSize: {x: 1, y: 1}
-  item_value: 60
+  item_value: 20
   animTime: 0.5
   instantUse: 1
   itemToThrow: {fileID: 1995941493000663748, guid: 7679225f6a57b9e4483374421f356299,

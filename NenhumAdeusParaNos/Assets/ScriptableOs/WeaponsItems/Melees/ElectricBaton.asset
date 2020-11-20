@@ -13,11 +13,10 @@ MonoBehaviour:
   m_Name: ElectricBaton
   m_EditorClassIdentifier: 
   itemName: "Bast\xE3o El\xE9trico"
-  description: "Um martelo vers\xE1til. Pode consertar coisas... ou quebr\xE1-las."
-  itemSprite: {fileID: -9207119469136092895, guid: 98f15665a596cfa4696272d00f6ec155,
-    type: 3}
+  description: "Um bast\xE3o com fortes correntes el\xE9tricas paralisantes."
+  itemSprite: {fileID: 21300000, guid: 83ff1bcc18333744caadcd4edf9ca886, type: 3}
   isInstance: 0
-  indestructible: 1
+  indestructible: 0
   slotSize: {x: 1, y: 1}
   item_value: 40
   thisWeapon: {fileID: 11400000, guid: 69e9ad82c9dd4d6468aca6b44f28b9af, type: 2}

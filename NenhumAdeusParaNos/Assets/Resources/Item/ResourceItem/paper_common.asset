@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: paper_common
   m_EditorClassIdentifier: 
   itemName: Papel
-  description: "S\xF3 um monte de papel"
+  description: "S\xF3 um monte de papel resistente"
   itemSprite: {fileID: 8716027098097571078, guid: ce90e76d5356b0547ad775dcb98fce32,
     type: 3}
+  isInstance: 0
+  indestructible: 0
   slotSize: {x: 1, y: 1}
-  item_value: 10
+  item_value: 20
   matType: 5
-  bonusTime: 10
+  bonusTime: 5
   rarity: 69

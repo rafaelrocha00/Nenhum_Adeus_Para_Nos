@@ -57,13 +57,13 @@ public class MeleeW : Weapon
 
     public override float Attack(Animator animator = null, float attackMod = 1)
     {
-        if ((atkType == 3 || atkType == 5) && !specialAtkEnabled)
+        if ((atkType == 3 || atkType >= 5) && !specialAtkEnabled)
         {
             Debug.Log("Incooldown");
             SetNormalAttack();
             return 0;
         }
-        else if ((atkType == 3 || atkType == 5) && specialAtkEnabled)
+        else if ((atkType == 3 || atkType >= 5) && specialAtkEnabled)
         {
             Debug.Log("Special Attack");
             specialAtkEnabled = false;
@@ -84,6 +84,7 @@ public class MeleeW : Weapon
         if (anim != null) anim.SetInteger("AttackType", atkType);
         if (animator != null) animator.SetInteger("Attacking", atkType);
         //attackDelay = actualAtkspeed;
+        //Debug.Log("actualAtkspeed: " + (actualAtkspeed - 0.1f));
         Invoke("StopAnim", actualAtkspeed - 0.1f);
 
         return meleeConfig.defaultAttackSpeed;
@@ -107,6 +108,7 @@ public class MeleeW : Weapon
     }
     void StopAnim()
     {
+        //Debug.Log("Stopping Anim");
         if (anim != null) anim.SetInteger("AttackType", 0);
         if (sCollider == null) allWeaponPresets[meleeConfig.weaponPresetIndex].col.enabled = false;
         else sCollider.enabled = false;
@@ -125,12 +127,12 @@ public class MeleeW : Weapon
                 //if (other.GetComponent<BattleUnit>().IsInBattle())
                 //{
                 other.GetComponent<BattleUnit>().ReceiveDamage(selectedDamage);
-                if (atkType == 3 || atkType == 5) meleeConfig.special.OnContactEffect(other.GetComponent<BattleUnit>());
+                if (atkType == 3 || atkType >= 5) meleeConfig.special.OnContactEffect(other.GetComponent<BattleUnit>());
                 hitted = true;
                 if (!meleeConfig.multAtk) Invoke("ResetHit", meleeConfig.defaultAttackSpeed);
                 else Invoke("ResetHit", 0.25f);
 
-                if (gameObject.layer.Equals("Player")) weaponConfig.DecreaseDurability();
+                if (gameObject.layer == 9 && !weaponConfig.weaponName.Equals("EdPunch")) weaponConfig.DecreaseDurability();
                 //}
             }
             catch
@@ -139,10 +141,10 @@ public class MeleeW : Weapon
                 if (ro != null)
                 {
                     hitted = true;
-                    ro.ReceiveHit(meleeConfig);
+                    bool aux = ro.ReceiveHit(meleeConfig);
                     Invoke("ResetHit", 0.25f);
 
-                    if (gameObject.layer.Equals("Player")) weaponConfig.DecreaseDurability();
+                    if (gameObject.layer == 9 && !weaponConfig.weaponName.Equals("EdPunch") && aux) weaponConfig.DecreaseDurability();
                 }
             }
         }

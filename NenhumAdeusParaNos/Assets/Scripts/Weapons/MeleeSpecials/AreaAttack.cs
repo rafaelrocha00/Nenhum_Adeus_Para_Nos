@@ -30,11 +30,16 @@ namespace MeleeSpceial
             {
                 if (!col.gameObject.layer.Equals(mb.gameObject.layer))
                 {
-                    try
+                    //try
+                    // {
+                    //    col.GetComponent<BattleUnit>().ReceiveDamage(areaDamage);
+                    //}
+                    //catch { Debug.Log("Not a Battle unit"); }
+                    if (col.GetComponent<BattleUnit>() == null) Debug.Log("Not a Battle unit");
+                    else
                     {
                         col.GetComponent<BattleUnit>().ReceiveDamage(areaDamage);
                     }
-                    catch { Debug.Log("Not a Battle unit"); }
                 }
             }
         }

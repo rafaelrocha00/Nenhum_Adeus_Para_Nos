@@ -222,10 +222,10 @@ public class RepairableObject : Interactives, IDateEvent
         c.enabled = v;
     }
 
-    public void ReceiveHit(MeleeConfig mconfig)
+    public bool ReceiveHit(MeleeConfig mconfig)
     {
         Debug.Log(mconfig.weaponName);
-        if (!mconfig.weaponName.Equals("Martelo")) return;
+        if (!mconfig.weaponName.Equals("Martelo")) return false;
 
         if (waitingToHit)
         {
@@ -242,7 +242,7 @@ public class RepairableObject : Interactives, IDateEvent
                 Repair(bonusT);
                 GameManager.gameManager.MainHud.DisableRepairBar();
             }
-            return;
+            return true;
         }
 
         if (broken && state_broken.activeSelf)
@@ -250,6 +250,7 @@ public class RepairableObject : Interactives, IDateEvent
             StartCoroutine(ShakeObject());
             Debug.Log("Deatch:");
             StartCoroutine(DetachAnimation(false));
+            return true;
         }
         else if (state_repaired.activeSelf)
         {
@@ -276,7 +277,9 @@ public class RepairableObject : Interactives, IDateEvent
                     GameManager.gameManager.inventoryController.Inventory.AddItem(returnableItem);
                 }
             }
+            return true;
         }
+        return false;
     }
 
     IEnumerator ShakeObject()
