@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7538afdc471f674686979fda2705b48, type: 3}
   m_Name: Robot
   m_EditorClassIdentifier: 
-  qName: Robot Rescue
+  qName: RoboQuebrado
   id: 946
   description: quest_description
   mustReturn: 0
@@ -26,7 +26,7 @@ MonoBehaviour:
   cancelled: 0
   waitingReturnToNPC: 0
   acceptText: "Salva meu irm\xE3o."
-  completeText: "Meu irm\xE3o foi salvo."
+  completeText: 
   unlockableDialogues:
   - {fileID: 11400000, guid: b375c7760928d6b4b9bcd2e0595cc772, type: 2}
   questToAccept: {fileID: 0}
@@ -34,5 +34,5 @@ MonoBehaviour:
   endAct_1: 0
   timeToPass: 0
   compToAdd: []
-  objectToRepair: RoboQuebrado1
+  objectToRepair: RoboQuebrado
   toInstantiate: {fileID: 0}

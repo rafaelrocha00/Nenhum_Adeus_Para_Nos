@@ -60,11 +60,12 @@ public class NPC_Trabalhador : MonoBehaviour
             anim.SetBool("Walk", true);
             npc.MoveNavMesh(Player.transform.position + new Vector3(1, 0, 0));
         }
-        else
+        if(Vector3.Distance(transform.position, Player.transform.position) < 1f)
         {
             anim.SetBool("Walk", false);
-
         }
+
+
     }
 
     public void FazerTrabalho(TrabalhoColeta coleta)

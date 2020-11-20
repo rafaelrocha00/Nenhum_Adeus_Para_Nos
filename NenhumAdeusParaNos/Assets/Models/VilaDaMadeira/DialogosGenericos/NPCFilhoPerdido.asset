@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cc231529148de24ca6aeda3695e168a, type: 3}
+  m_Name: NPCFilhoPerdido
+  m_EditorClassIdentifier: 
+  allStrings:
+  - "Meu filho saiu faz algum tempo e ainda n\xE3o voltou, aquele tonto."
+  - "Se voc\xEA achar ele, pode me dizer? Ele saiu de bicicleta."
+  mcStrings: 
+  unlockableDialogues:
+  - {fileID: 11400000, guid: 55259d609114add47afc81e4a127dc47, type: 2}
+  lockPlayerMovement: 0
+  unlockPlayerMovement: 0
+  makeNPCWalk: 0
+  finalPoint: {x: 0, y: 0, z: 0}
+  changeSceneState: 0
+  sceneState: {fileID: 0}
+  objectToBreak: 
+  quest: {fileID: 11400000, guid: af448e1bd80a4b24db09a9b30c755b85, type: 2}
+  accepting: 1
