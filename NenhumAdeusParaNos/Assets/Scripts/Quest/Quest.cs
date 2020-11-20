@@ -136,6 +136,7 @@ public abstract class Quest : ScriptableObject
         {
             GameManager.gameManager.BattleUnlocked = true;
             GameManager.gameManager.ShowTitle("VilaDaMadeira");
+            GameManager.gameManager.questGenerator.UnlockKillQuests();
         }
 
         if (timeToPass > 0) GameManager.gameManager.calendarController.PassTime(timeToPass);

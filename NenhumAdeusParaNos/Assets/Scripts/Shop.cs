@@ -173,12 +173,22 @@ public class Shop : MonoBehaviour, IDialogueable
 
     public string GetName()
     {
-        return GetComponent<INPC>().Name;
+        string aux = "";
+
+        if (GetComponent<INPC>() != null) aux = GetComponent<INPC>().Name;
+        else if (GetComponent<SimpleNPC>() != null) aux = GetComponent<SimpleNPC>().Name;
+
+        return aux;
     }
 
     public Sprite GetPortrait()
     {
-        return GetComponent<INPC>().portrait;
+        Sprite aux = null;
+
+        if (GetComponent<INPC>() != null) aux = GetComponent<INPC>().portrait;
+        else if (GetComponent<SimpleNPC>() != null) aux = GetComponent<SimpleNPC>().portrait;
+
+        return aux;
     }
 
     public Transform GetTransform()

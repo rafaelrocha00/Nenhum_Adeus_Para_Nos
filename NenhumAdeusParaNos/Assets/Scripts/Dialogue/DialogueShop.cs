@@ -18,12 +18,22 @@ public class DialogueShop : Dialogue
             GameManager.gameManager.dialogueController.EndDialogue();
             myNPC.EndDialogue();
 
-            try
+            if (myNPC is NPC)
             {
                 NPC aux = (NPC)myNPC;
                 aux.GetComponent<Shop>().OpenShop();
             }
-            catch { }
+            else if (myNPC is SimpleNPC)
+            {
+                SimpleNPC aux = (SimpleNPC)myNPC;
+                aux.GetComponent<Shop>().OpenShop();
+            }
+            //try
+            //{
+            //    NPC aux = (NPC)myNPC;
+            //    aux.GetComponent<Shop>().OpenShop();
+            //}
+            //catch { }
 
             ResetDialogue();
             CheckPostDialogueActions();

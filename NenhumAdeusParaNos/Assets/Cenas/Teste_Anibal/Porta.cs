@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class Porta : MonoBehaviour
 {
-        void Update()
+    Rigidbody rb;
+
+    void Start()
     {
-        GetComponent<Rigidbody>().WakeUp();
+        rb = GetComponent<Rigidbody>();
+    }
+    void FixedUpdate()
+    {
+        rb.WakeUp();
     }
 }

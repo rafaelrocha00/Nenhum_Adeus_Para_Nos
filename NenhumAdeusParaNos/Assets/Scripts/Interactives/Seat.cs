@@ -7,6 +7,11 @@ public class Seat : Interactives
     [Header("Seat")]
     public Transform edPos;
 
+    private void Start()
+    {
+        if (GameManager.gameManager.NewGame) canInteract = false;
+    }
+
     public override void Interact(Player player)
     {
         DesactiveBtp();
