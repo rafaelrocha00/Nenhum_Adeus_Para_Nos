@@ -15,7 +15,7 @@ public class INPC : NPC
     //public Sprite portrait;
 
     public enum Personalities { Tsundere, Yandere }
-    public enum EnemyType { Lustro, Citzen, Capitalist, Communist, None }
+    public enum EnemyType { Lustro, Citzen, Capitalist, Communist, Hipster, Military, None }
 
     public Personalities thisPersonality;
     public EnemyType enemyType;
@@ -314,6 +314,14 @@ public class INPC : NPC
         }
         else cd = myWeapon.Attack(null, attackModifier);
         Invoke("AttackCooldown", cd);
+        StartCoroutine(ResetShootAnim());
+    }
+
+    IEnumerator ResetShootAnim()
+    {
+        if (anim == null || !isRanged || !rangedW.IsAuto()) yield break;
+        yield return new WaitForSeconds(rangedW.rangedWConfig.defaultAttackSpeed / 2);
+        anim.SetInteger("AtkType", 0);
     }
 
     void SpecialAttack()
@@ -484,6 +492,8 @@ public class INPC : NPC
                 Debug.Log("NPC entrou na batalha");
                 lifeBar.transform.parent.gameObject.SetActive(true);
                 StartCoroutine("SetTarget");
+
+                if (isRanged && anim != null) anim.SetBool("inBattle", true);
             }
             else
             {
@@ -505,6 +515,8 @@ public class INPC : NPC
         Invoke("ActiveInteractionCollider", 3.0f);
         lifeBar.transform.parent.gameObject.SetActive(false);
         attackModifier = 1.0f;
+
+        if (isRanged && anim != null) anim.SetBool("inBattle", false);
     }
     public void LeaveBattle()
     {

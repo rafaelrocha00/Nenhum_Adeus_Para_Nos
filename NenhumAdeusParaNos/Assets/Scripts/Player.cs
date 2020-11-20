@@ -153,7 +153,7 @@ public class Player : MonoBehaviour, BattleUnit
 
         if (myWeapon == null) myWeapon = GetComponentInChildren<Weapon>();
 
-        weaponConfig_default = weapon_melee.meleeConfig;
+        //weaponConfig_default = weapon_melee.meleeConfig;
         //originalRconfig = equippedRanged.rangedWConfig;
 
         //equippedMelee.myHolder = this;
@@ -498,6 +498,7 @@ public class Player : MonoBehaviour, BattleUnit
     IEnumerator AutoShoot(RangedW ranged)
     {
         //slowMoving = true;
+        Debug.Log("Start Auto Shoot");
         StartCoroutine(Slowdown(defaultSlow));
         do
         {
@@ -897,6 +898,7 @@ public class Player : MonoBehaviour, BattleUnit
 
         //if (slotID == 0) weapon_melee.Equip(weaponConfig_default);
         //else weapon_melee.Equip(weaponConfig_default);
+        StopShooting();
         EquipWeapon(weaponConfig_default, slotID);
     }
 

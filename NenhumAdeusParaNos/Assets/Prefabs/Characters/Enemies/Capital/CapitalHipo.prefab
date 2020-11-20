@@ -125,10 +125,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponModel: {fileID: 0}
   equipped: 0
+  refID: 0
   meleeConfig: {fileID: 11400000, guid: 676ea20485da59248b0e082eee44e7aa, type: 2}
   anim: {fileID: 0}
   sCollider: {fileID: 1725179913454492682}
   allWeaponPresets: []
+  activeColDelay: 0.5
 --- !u!1 &2206121925282134042
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,9 +229,11 @@ MonoBehaviour:
   questDialogues: []
   directQuestDialogue: []
   toBeAccepted: 1
+  exclusive: 0
   questAcceptedToDespawn: {fileID: 0}
   questCompletedToDespawn: {fileID: 0}
   rotates: 1
+  lockAnim: 0
   hostile: 1
   heavy: 0
   dashTime: 0.2

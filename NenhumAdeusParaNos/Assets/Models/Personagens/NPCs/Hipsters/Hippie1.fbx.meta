@@ -4,11 +4,29 @@ ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable:
   - first:
+      74: -3007804902968808819
+    second: Armature|Andar_Batalha
+  - first:
+      74: 5103667516527363092
+    second: Armature|Chute
+  - first:
+      74: -7088642357816591604
+    second: Armature|Dano_Batalha
+  - first:
       74: -8945691123924629249
-    second: hipster_1_idle
+    second: Armature|Idle
+  - first:
+      74: 7767599727372214256
+    second: Armature|Idle_Batalha
   - first:
       74: -740940109814165821
-    second: hipster_1_talk
+    second: Armature|Interacao
+  - first:
+      74: 355862712217087266
+    second: Armature|Morte_batalha
+  - first:
+      74: -7453019217233914794
+    second: Armature|pose
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -36,65 +54,7 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: hipster_1_idle
-      takeName: Armature|Idle
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 60
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: hipster_1_talk
-      takeName: Armature|Interacao
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 245
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+    clipAnimations: []
     isReadable: 0
   meshes:
     lODScreenPercentages: []
