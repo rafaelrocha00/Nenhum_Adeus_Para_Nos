@@ -9,6 +9,8 @@ public class Item : ScriptableObject
     public string description;
     public Sprite itemSprite;
 
+    public bool isInstance = false;
+
     public bool indestructible = false;
 
     public Vector2Int slotSize = new Vector2Int(1, 1);

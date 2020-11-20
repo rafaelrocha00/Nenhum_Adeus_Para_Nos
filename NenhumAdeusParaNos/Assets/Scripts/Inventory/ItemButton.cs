@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -21,6 +22,9 @@ public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     [HideInInspector] bool wasInMaterialSlot;
     public bool WasInMaterialSlot { get { return wasInMaterialSlot; } set { wasInMaterialSlot = value; } }
+
+    public GameObject durabilityBar;
+    public Image durability;
 
     public void SetSlot(InvenSlot[,] slot)
     {
@@ -104,9 +108,42 @@ public class ItemButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         if (!GameManager.gameManager.inventoryController.Dragging) GameManager.gameManager.ChangeCursor(0);
     }
 
+    private void OnEnable()
+    {
+        if (item != null && item is WeaponItem)
+        {
+            CheckDurability();
+        }
+    }
+
     private void OnDisable()
     {
         CancelInvoke();
         HideDesc();
+    }
+
+    public void ReduceDurability()
+    {
+        WeaponItem i = (WeaponItem)item;
+
+        i.ReduceDurability();
+        float rate = i.GetDurabilityRate();
+        if (rate <= 0) RemoveAndDestroy();
+        else SetActiveDurability(true, rate);
+    }
+
+    void CheckDurability()
+    {
+        WeaponItem i = (WeaponItem)item;
+        float rate = i.GetDurabilityRate();
+
+        if (rate < 1) SetActiveDurability(true, rate);
+    }
+
+    public void SetActiveDurability(bool v, float rate = 0.0f)
+    {
+        durabilityBar.SetActive(v);
+
+        durability.fillAmount = rate;
     }
 }

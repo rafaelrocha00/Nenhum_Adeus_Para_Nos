@@ -84,7 +84,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 02d04fab5f3a9ab40bf87b01dfc9b916, type: 2}
+  m_Motion: {fileID: 7400000, guid: 623ae51f75618c04199fd1b34bb2a1ee, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -127,7 +127,7 @@ BlendTree:
   m_Name: Walking
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 68402aada37c88644ae3c733d2a06a4e, type: 2}
+    m_Motion: {fileID: 7400000, guid: 1587f1817e67e2b4da3fce7bb7bd6259, type: 2}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -135,10 +135,10 @@ BlendTree:
     m_DirectBlendParameter: Vel
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: b7236a2f633854d47aac57deb79ba9f0, type: 2}
+    m_Motion: {fileID: 7400000, guid: 02c3955fd4e68b44dbf64a4931202a60, type: 2}
     m_Threshold: 1
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 1.75
+    m_TimeScale: 2.8
     m_CycleOffset: 0
     m_DirectBlendParameter: Vel
     m_Mirror: 0
@@ -182,7 +182,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Bewoy
+  m_Name: Thimmy_1
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Talking
@@ -237,8 +237,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -8570250724429962863, guid: 78c6386f71ea17f42891f01888d0339e,
-    type: 3}
+  m_Motion: {fileID: 7400000, guid: 71674c1db6e178f4db849db759573bc6, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

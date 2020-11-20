@@ -84,7 +84,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 623ae51f75618c04199fd1b34bb2a1ee, type: 2}
+  m_Motion: {fileID: 7400000, guid: 36dbff0e4ddcd32459046fc09b389932, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -127,7 +127,7 @@ BlendTree:
   m_Name: Walking
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 1587f1817e67e2b4da3fce7bb7bd6259, type: 2}
+    m_Motion: {fileID: 7400000, guid: 1328084fa2e8ff3468202d3bbad782cd, type: 2}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
@@ -135,10 +135,10 @@ BlendTree:
     m_DirectBlendParameter: Vel
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 02c3955fd4e68b44dbf64a4931202a60, type: 2}
+    m_Motion: {fileID: 7400000, guid: f9fad8656b26ac0438da9266789b1c02, type: 2}
     m_Threshold: 1
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 2.8
+    m_TimeScale: 1.5
     m_CycleOffset: 0
     m_DirectBlendParameter: Vel
     m_Mirror: 0
@@ -182,7 +182,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Thimmy
+  m_Name: Tuty_1
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Talking
@@ -237,7 +237,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 71674c1db6e178f4db849db759573bc6, type: 2}
+  m_Motion: {fileID: 7400000, guid: 6ffa452fc7c856f478efb8e3c898f34b, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

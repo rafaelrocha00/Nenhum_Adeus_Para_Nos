@@ -130,7 +130,7 @@ public class MeleeW : Weapon
                 if (!meleeConfig.multAtk) Invoke("ResetHit", meleeConfig.defaultAttackSpeed);
                 else Invoke("ResetHit", 0.25f);
 
-                //meleeConfig.DecreaseDurability();
+                weaponConfig.DecreaseDurability();
                 //}
             }
             catch
@@ -142,7 +142,7 @@ public class MeleeW : Weapon
                     ro.ReceiveHit(meleeConfig);
                     Invoke("ResetHit", 0.25f);
 
-                    //meleeConfig.DecreaseDurability();
+                    weaponConfig.DecreaseDurability();
                 }
             }
         }
