@@ -101,8 +101,11 @@ MonoBehaviour:
   questDialogues: []
   directQuestDialogue: []
   toBeAccepted: 1
+  exclusive: 0
   questAcceptedToDespawn: {fileID: 0}
   questCompletedToDespawn: {fileID: 0}
+  rotates: 1
+  lockAnim: 0
   hostile: 1
   heavy: 0
   dashTime: 0.5
@@ -260,7 +263,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponModel: {fileID: 0}
   equipped: 0
+  refID: 0
   rangedWConfig: {fileID: 11400000, guid: 59712a1302265bc4b91041e66c15949f, type: 2}
+  allWeaponPresets: []
 --- !u!1 &3458080455124700577
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,6 +600,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bewoy
       objectReference: {fileID: 0}
+    - target: {fileID: 1204252013573664724, guid: 637bb734e25698c49a657c00ac4234ce,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a54f5a8cd592dc04396c4347c3bb5342, type: 2}
     - target: {fileID: 2739049774164662144, guid: 637bb734e25698c49a657c00ac4234ce,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

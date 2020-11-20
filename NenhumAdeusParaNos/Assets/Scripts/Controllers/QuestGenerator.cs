@@ -22,6 +22,8 @@ public class QuestGenerator : MonoBehaviour
     List<GameObject> enemy_capitalist = new List<GameObject>();
     List<GameObject> enemy_lustrous = new List<GameObject>();
     List<GameObject> enemy_citzen = new List<GameObject>();
+    //List<GameObject> enemy_hippies = new List<GameObject>();
+    //List<GameObject> enemy_militaries = new List<GameObject>();
     public GameObject[] enemy_all;
     #endregion
 
@@ -197,7 +199,7 @@ public class QuestGenerator : MonoBehaviour
 
             rand = Random.Range(1, maxEnemies + 1);
 
-            kq.enemyType = (INPC.EnemyType)Random.Range(0, 4);
+            kq.enemyType = (INPC.EnemyType)Random.Range(0, 4);//6
             if (kq.enemyType == INPC.EnemyType.Lustro)
             {
                 etype = "Lustros";
@@ -216,7 +218,20 @@ public class QuestGenerator : MonoBehaviour
                 for (int i = 0; i < rand; i++)
                     toInst.Add(enemy_capitalist[Random.Range(0, enemy_capitalist.Count)]);
             }
+            //else if (kq.enemyType == INPC.EnemyType.Hipster)
+            //{
+            //    etype = "Hippies";
+            //    for (int i = 0; i < rand; i++)
+            //        toInst.Add(enemy_communist[Random.Range(0, enemy_communist.Count)]);
             //}
+            //else if (kq.enemyType == INPC.EnemyType.Military)
+            //{
+            //    etype = "Militares";
+            //    for (int i = 0; i < rand; i++)
+            //        toInst.Add(enemy_capitalist[Random.Range(0, enemy_capitalist.Count)]);
+            //}
+            //}
+
             //kq.MoneyReward = 100 * rand;
             //kq.ResourceReward = 10 * rand;
             kq.QuantToKill = rand;
