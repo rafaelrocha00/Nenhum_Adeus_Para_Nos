@@ -38,8 +38,16 @@ public class Shop : MonoBehaviour, IDialogueable
     }
 
     private void OnEnable()
+    {        
+
+        ///*if (!firstEnable) */CustomEvents.instance.onQuestAccepted += CheckForQuestObjectives;
+        StartCoroutine(AddEvent());
+    }
+    IEnumerator AddEvent()
     {
-        /*if (!firstEnable) */CustomEvents.instance.onQuestAccepted += CheckForQuestObjectives;
+        yield return new WaitForEndOfFrame();
+        Debug.Log(CustomEvents.instance == null);
+        CustomEvents.instance.onQuestAccepted += CheckForQuestObjectives;
     }
 
     private void OnDisable()
