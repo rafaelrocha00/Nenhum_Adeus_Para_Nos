@@ -18,6 +18,13 @@ public class ObjectInstancer : MonoBehaviour
 
     public void SpawnEnemyGroup(string locName, GameObject[] enems)
     {
+        bool canspawn = false;
+        for (int i = 0; i < enemyLocationObj.childCount; i++)
+        {
+            if (locName.Equals(enemyLocationObj.GetChild(i).name)) canspawn = true; 
+        }
+        if (!canspawn) return;
+
         enemieSpawnPoints = enemyLocationObj.Find(locName).GetComponentsInChildren<ObjectSpawnPoint>();
 
         try
@@ -44,6 +51,13 @@ public class ObjectInstancer : MonoBehaviour
 
     public void SpawnSingleEnemy(string locName, string tarName, GameObject enem)
     {
+        bool canspawn = false;
+        for (int i = 0; i < enemyLocationObj.childCount; i++)
+        {
+            if (locName.Equals(enemyLocationObj.GetChild(i).name)) canspawn = true;
+        }
+        if (!canspawn) return;
+
         enemieSpawnPoints = enemyLocationObj.Find(locName).GetComponentsInChildren<ObjectSpawnPoint>();
 
         try
