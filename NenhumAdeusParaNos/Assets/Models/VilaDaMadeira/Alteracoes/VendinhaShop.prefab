@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7635977961792991427
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7635977961792991431}
+  - component: {fileID: 7635977961792991430}
+  - component: {fileID: 7635977961792991429}
+  - component: {fileID: 7635977961792991428}
+  m_Layer: 10
+  m_Name: VendinhaShop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7635977961792991431
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7635977961792991427}
+  m_LocalRotation: {x: -0, y: -0.7933529, z: -0, w: 0.6087621}
+  m_LocalPosition: {x: 5.17, y: -12.530434, z: -23.029999}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7635977961792991430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7635977961792991427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c003e7b3af9ee6a4ab8f88252d90ee3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myName: Lojinha
+  buttonToPressPref: {fileID: 7946430027621689139, guid: 2566e8908f0cc0e42919a4e2f9fae37e,
+    type: 3}
+  popUPHigh: 2.5
+  oneInteraction: 0
+  canInteract: 1
+  onlyAcceptedQuest: 0
+  onlyCompletedQuest: 0
+  triggerQuest: {fileID: 0}
+  portrait: {fileID: 0}
+  myDialogues: {fileID: 11400000, guid: 54c50c72494dde84faa53b2bad4dcdde, type: 2}
+--- !u!114 &7635977961792991429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7635977961792991427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e32c23894d9ece4caae436868c9331e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sellingItems:
+  - {fileID: 11400000, guid: a7abdcf6cf12013459d270833bea0f1f, type: 2}
+  - {fileID: 11400000, guid: a7abdcf6cf12013459d270833bea0f1f, type: 2}
+  - {fileID: 11400000, guid: a7abdcf6cf12013459d270833bea0f1f, type: 2}
+  - {fileID: 11400000, guid: a7abdcf6cf12013459d270833bea0f1f, type: 2}
+  - {fileID: 11400000, guid: ce83947d67fc93e4d8914db4c63e5c3f, type: 2}
+  - {fileID: 11400000, guid: ce83947d67fc93e4d8914db4c63e5c3f, type: 2}
+  - {fileID: 11400000, guid: ce83947d67fc93e4d8914db4c63e5c3f, type: 2}
+  - {fileID: 11400000, guid: ce83947d67fc93e4d8914db4c63e5c3f, type: 2}
+  - {fileID: 11400000, guid: ce83947d67fc93e4d8914db4c63e5c3f, type: 2}
+  - {fileID: 11400000, guid: 7c07c217a97f473488232c455f3ddf24, type: 2}
+  - {fileID: 11400000, guid: cdafbeed9a8c77a4e80204f30e69caed, type: 2}
+  - {fileID: 11400000, guid: ae8a7623015c15e4d9e7c78b39d95b77, type: 2}
+  - {fileID: 11400000, guid: ae8a7623015c15e4d9e7c78b39d95b77, type: 2}
+  - {fileID: 11400000, guid: ae8a7623015c15e4d9e7c78b39d95b77, type: 2}
+  - {fileID: 11400000, guid: ae8a7623015c15e4d9e7c78b39d95b77, type: 2}
+  acceptableItems:
+  - {fileID: 11400000, guid: 14ec03ebe0cd597438d186e1c685c907, type: 2}
+  - {fileID: 11400000, guid: ae8a7623015c15e4d9e7c78b39d95b77, type: 2}
+  - {fileID: 11400000, guid: cb5d933ccd04cee4bb16179ade3e3c9d, type: 2}
+  - {fileID: 11400000, guid: c0db047aa5cb2ef4c82c7d18639630fb, type: 2}
+  postTradeDialogues: {fileID: 0}
+  postCancelDialogues: {fileID: 0}
+--- !u!135 &7635977961792991428
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7635977961792991427}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.4
+  m_Center: {x: 0, y: 0, z: 0}
