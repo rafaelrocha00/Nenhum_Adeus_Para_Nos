@@ -14,22 +14,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allStrings:
   - "Isso \xE9 sopa de carne? T\xE1 com um cheiro bom.\r\nMas o seu \xE9 melhor.\r"
+  - "Assim mesmo? Antes do caf\xE9 da manh\xE3?"
   - "Ainda bem que as crian\xE7as n\xE3o est\xE3o aqui."
-  - "Mas sim, sobrou de ontem. Ainda tem muito, d\xE1 at\xE9 para dividir com o senhor
-    Benjo."
-  - "E voc\xEA t\xE1 precisando de um banho. V\xEA se arruma os canos."
-  - "Eles estragaram da \xFAltima vez que o Bewoy usou o chuveiro.\r\n"
-  - 'De novo? Eu vou ter que trocar o chuveiro, desse jeito.
-
-'
-  mcStrings: 0000000005000000
+  - Mas sim, sobrou de ontem.
+  - "Ainda tem muito, d\xE1 at\xE9 para dividir com o senhor Benjo."
+  - "E diferente de mim, seu cheiro n\xE3o est\xE1 t\xE3o agrad\xE1vel. "
+  - "Mas o teto do banheiro ta quebrado, a\xED n\xE3o tem onde colocar o chuveiro."
+  - "O chuveiro n\xE3o era para estar no teto..."
+  - Mas como aquilo quebrou?
+  - "N\xE3o me pergunta, mas que foi o Bewoy, foi."
+  - "Devia estar b\xEAbado de novo."
+  - "Ah... Ainda bem que sobrou umas t\xE1buas do \xFAltimo trabalho."
+  - Adoro o Seu Benjo.
+  - "Eu tamb\xE9m."
+  - "Ele acorda cedo, j\xE1 deve t\xE1 te esperando."
+  - "Conserta l\xE1 e toma um banho rapidinho."
+  - "N\xE3o esquece de pegar o martelo."
+  - "T\xE1 no ba\xFA embaixo da escada."
+  - "E do caderninho que est\xE1 com voc\xEA."
+  mcStrings: 0000000007000000080000000a0000000b0000000d000000
   unlockableDialogues:
   - {fileID: 11400000, guid: a7f4e301705faa64e900ef6419d89c70, type: 2}
+  lockPlayerMovement: 0
   unlockPlayerMovement: 0
   makeNPCWalk: 0
   finalPoint: {x: 0, y: 0, z: 0}
   changeSceneState: 0
-  changingState: 0
+  sceneState: {fileID: 0}
   objectToBreak: 
   quest: {fileID: 11400000, guid: 353e3390724607d4c99d64c93caf8d00, type: 2}
   accepting: 1

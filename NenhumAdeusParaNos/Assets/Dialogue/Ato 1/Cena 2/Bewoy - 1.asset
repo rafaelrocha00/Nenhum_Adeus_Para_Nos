@@ -13,16 +13,18 @@ MonoBehaviour:
   m_Name: Bewoy - 1
   m_EditorClassIdentifier: 
   allStrings:
-  - "Acorda. O sol j\xE1 saiu."
-  - "Oi meu bom, n\xE3o precisa gritar tamb\xE9m, vai acabar acordando a mulher.\n"
-  - "Apesar que esse possa ser o objetivo. \r"
-  - "\xC9\u2026 acabei dormindo no sof\xE1 de novo. Esse cobertor n\xE3o tava aqui."
-  mcStrings: 00000000
+  - 'Acorda! '
+  - "O sol j\xE1 saiu.\n"
+  - "Oi meu bom, n\xE3o precisa gritar tamb\xE9m.\r\n"
+  - "\xC9\u2026 acabei dormindo no sof\xE1 de novo. \r\n\n"
+  - "E esse cobertor n\xE3o tava aqui.\r\n\n"
+  mcStrings: 0000000001000000
   unlockableDialogues:
   - {fileID: 11400000, guid: 22665e3f4902acf43bc3d2f49803992d, type: 2}
+  lockPlayerMovement: 0
   unlockPlayerMovement: 0
   makeNPCWalk: 0
   finalPoint: {x: 0, y: 0, z: 0}
   changeSceneState: 0
-  changingState: 0
+  sceneState: {fileID: 0}
   objectToBreak: 
