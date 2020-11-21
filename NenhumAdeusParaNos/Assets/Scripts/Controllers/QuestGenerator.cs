@@ -22,8 +22,8 @@ public class QuestGenerator : MonoBehaviour
     List<GameObject> enemy_capitalist = new List<GameObject>();
     List<GameObject> enemy_lustrous = new List<GameObject>();
     List<GameObject> enemy_citzen = new List<GameObject>();
-    //List<GameObject> enemy_hippies = new List<GameObject>();
-    //List<GameObject> enemy_militaries = new List<GameObject>();
+    List<GameObject> enemy_hippies = new List<GameObject>();
+    List<GameObject> enemy_militaries = new List<GameObject>();
     public GameObject[] enemy_all;
     #endregion
 
@@ -58,6 +58,8 @@ public class QuestGenerator : MonoBehaviour
             if (et == INPC.EnemyType.Lustro) enemy_lustrous.Add(enemy_all[i]);
             else if (et == INPC.EnemyType.Citzen) enemy_citzen.Add(enemy_all[i]);
             else if (et == INPC.EnemyType.Communist) enemy_communist.Add(enemy_all[i]);
+            else if (et == INPC.EnemyType.Hipster) enemy_hippies.Add(enemy_all[i]);
+            else if (et == INPC.EnemyType.Military) enemy_militaries.Add(enemy_all[i]);
             else enemy_capitalist.Add(enemy_all[i]);
             //Debug.Log(et);
         }
@@ -66,9 +68,14 @@ public class QuestGenerator : MonoBehaviour
         {
             firstGen = false;
             //GenKillQuest();
+
             GenDelQuest();
             GenDelQuest();
             GenDelQuest();
+            //GenKillQuest();
+            //GenKillQuest();
+            //GenKillQuest();
+
             //GenRepQuest();
         }
     }
@@ -156,6 +163,7 @@ public class QuestGenerator : MonoBehaviour
     public void UnlockKillQuests()
     {
         canGenKillQuest = true;
+        GenKillQuest();
     }
 
     public void GenQuest()
@@ -199,7 +207,7 @@ public class QuestGenerator : MonoBehaviour
 
             rand = Random.Range(1, maxEnemies + 1);
 
-            kq.enemyType = (INPC.EnemyType)Random.Range(0, 4);//6
+            kq.enemyType = (INPC.EnemyType)Random.Range(0, 6);//6
             if (kq.enemyType == INPC.EnemyType.Lustro)
             {
                 etype = "Lustros";
@@ -218,18 +226,18 @@ public class QuestGenerator : MonoBehaviour
                 for (int i = 0; i < rand; i++)
                     toInst.Add(enemy_capitalist[Random.Range(0, enemy_capitalist.Count)]);
             }
-            //else if (kq.enemyType == INPC.EnemyType.Hipster)
-            //{
-            //    etype = "Hippies";
-            //    for (int i = 0; i < rand; i++)
-            //        toInst.Add(enemy_communist[Random.Range(0, enemy_communist.Count)]);
-            //}
-            //else if (kq.enemyType == INPC.EnemyType.Military)
-            //{
-            //    etype = "Militares";
-            //    for (int i = 0; i < rand; i++)
-            //        toInst.Add(enemy_capitalist[Random.Range(0, enemy_capitalist.Count)]);
-            //}
+            else if (kq.enemyType == INPC.EnemyType.Hipster)
+            {
+                etype = "Hippies";
+                for (int i = 0; i < rand; i++)
+                    toInst.Add(enemy_hippies[Random.Range(0, enemy_hippies.Count)]);
+            }
+            else if (kq.enemyType == INPC.EnemyType.Military)
+            {
+                etype = "Militares";
+                for (int i = 0; i < rand; i++)
+                    toInst.Add(enemy_militaries[Random.Range(0, enemy_militaries.Count)]);
+            }
             //}
 
             //kq.MoneyReward = 100 * rand;
